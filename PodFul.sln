@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library", "PodFul.Library\PodFul.Library.fsproj", "{070B485B-B472-4DA6-A026-92A91A44ED94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.Console", "PodFul.Console\PodFul.Console.csproj", "{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{070B485B-B472-4DA6-A026-92A91A44ED94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{070B485B-B472-4DA6-A026-92A91A44ED94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{070B485B-B472-4DA6-A026-92A91A44ED94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{070B485B-B472-4DA6-A026-92A91A44ED94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
