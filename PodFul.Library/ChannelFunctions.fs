@@ -21,10 +21,6 @@ module public ChannelFunctions =
     let moveToNextSibling (reader: XmlReader, nodeName) = 
         reader.ReadToNextSibling(nodeName) |> verifyMove nodeName
 
-    (*let getStringFromNode (reader : XmlReader, nodeName) = 
-        moveToNextSibling(reader,nodeName) |> ignore
-        reader.ReadElementContentAsString();*)
-
     let getDataFromNode moveFn readFn = 
         moveFn |> ignore
         readFn()
