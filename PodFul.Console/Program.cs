@@ -8,13 +8,31 @@ namespace PodFul.Console
   {
     static void Main(string[] args)
     {
-      ChannelRecord record = ChannelFunctions.getChannelRecordFromRSS("RssURL", "Directory", @"C:\Projects\PodFul.Library\podcast.rss");
+      ChannelRecord record = ChannelFunctions.readChannelRecordFromRSSFile("RssURL", "Directory", @"C:\Projects\PodFul\podcast.rss");
 
+      DisplayChannel(record);
+
+      ChannelFunctions.writeChannelRecordToFile(record, @"C:\Projects\PodFul\output.txt");
+
+      record = ChannelFunctions.readChannelRecordFromFile(@"C:\Projects\PodFul\output.txt");
+
+      DisplayChannel(record);
+
+      Console.ReadKey();
+    }
+
+    private static void DisplayChannel(ChannelRecord record)
+    {
       Console.WriteLine(record.Title);
       Console.WriteLine(record.Website);
       Console.WriteLine(record.Description);
       Console.WriteLine(record.Podcasts.Length);
       Console.WriteLine();
+
+      if (record.Podcasts.Length == 0)
+      {
+        return;
+      }
 
       foreach (var podcastRecord in record.Podcasts)
       {
@@ -23,8 +41,6 @@ namespace PodFul.Console
         Console.WriteLine(podcastRecord.URL);
         Console.WriteLine();
       }
-
-      Console.ReadKey();
     }
   }
 }

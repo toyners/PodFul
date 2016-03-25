@@ -72,7 +72,7 @@ module public ChannelFunctions =
                 // Set the threaded state to be the XML reader
                 Some(podcastRecord, reader)
 
-    let getChannelRecordFromRSS (rssURL : string, directory : string, fileName : string) = 
+    let readChannelRecordFromRSSFile (rssURL : string, directory : string, fileName : string) = 
     
         use stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read)
         use reader = XmlReader.Create(stream)
@@ -84,5 +84,27 @@ module public ChannelFunctions =
             Description = getDataFromNode (moveToFollowing(reader, "description")) reader.ReadElementContentAsString
             Directory = directory
             Feed = rssURL
-            Podcasts =  List.unfold getPodcastRecordsFromRSS (reader) |> List.toArray
+            Podcasts = List.unfold getPodcastRecordsFromRSS (reader) |> List.toArray
         }
+
+    let splitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
+
+    let readChannelRecordFromFile(filePath : string) =
+        
+        use reader = new StreamReader(filePath)
+        let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
+
+        { 
+            Title = fields.[0]
+            Website = fields.[1]
+            Directory = fields.[2]
+            Feed = fields.[3]
+            Description = fields.[4]
+            Podcasts = [||] //List.unfold getPodcastRecordsFromRSS (reader) |> List.toArray
+        }
+
+    let writeChannelRecordToFile (record : ChannelRecord, filePath : string) =
+        
+        use writer = new StreamWriter(filePath)
+
+        writer.WriteLine(record.Title + "|" + record.Website + "|" + record.Directory + "|" + record.Feed + "|" + record.Description);
