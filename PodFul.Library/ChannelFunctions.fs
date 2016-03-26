@@ -87,7 +87,46 @@ module public ChannelFunctions =
             Podcasts = List.unfold getPodcastRecordsFromRSS (reader) |> List.toArray
         }
 
+    let verifyRawText text = 
+        match text with
+        | null ->   failwith "Raw text is null."
+        | "" ->     failwith "Raw text is empty."
+        | _ -> text
+
+    let verifyFields (fields: string[]) =
+        if fields = null then
+            failwith "Fields array is null."
+        else if fields.Length = 0 then
+            failwith "Fields array is empty."
+        else
+            fields
+
     let splitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
+
+    let getPodcastRecordFromFile (reader: StreamReader) = 
+        match reader.EndOfStream with
+        | true -> None
+        | _ ->
+              // Read the next line
+              let text = reader.ReadLine()
+
+              // TODO: check text exists
+
+              // Create fields array from text
+              let fields = reader.ReadLine() |> verifyRawText |> splitStringUsingCharacter '|' |> verifyFields
+
+              // Create the podcast record
+              let podcastRecord = 
+                {
+                    Title = fields.[0]
+                    PubDate = System.DateTime.Parse(fields.[1])
+                    URL = fields.[2]
+                    FileSize = Int64.Parse(fields.[3])
+                    Description = fields.[4]
+                }
+
+              // Set the threaded state to be the XML reader
+              Some(podcastRecord, reader)
 
     let readChannelRecordFromFile(filePath : string) =
         
@@ -100,7 +139,7 @@ module public ChannelFunctions =
             Directory = fields.[2]
             Feed = fields.[3]
             Description = fields.[4]
-            Podcasts = [||] //List.unfold getPodcastRecordsFromRSS (reader) |> List.toArray
+            Podcasts = List.unfold getPodcastRecordFromFile (reader) |> List.toArray
         }
 
     let writeChannelRecordToFile (record : ChannelRecord, filePath : string) =
