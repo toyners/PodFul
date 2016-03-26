@@ -87,7 +87,8 @@ module public ChannelFunctions =
             Podcasts = List.unfold getPodcastRecordsFromRSS (reader) |> List.toArray
         }
 
-    let verifyRawText text = 
+    let readLineFromFile (reader: StreamReader) = 
+        let text = reader.ReadLine()
         match text with
         | null ->   failwith "Raw text is null."
         | "" ->     failwith "Raw text is empty."
@@ -98,6 +99,8 @@ module public ChannelFunctions =
             failwith "Fields array is null."
         else if fields.Length = 0 then
             failwith "Fields array is empty."
+        else if fields.Length < 5 then
+            failwith ("Fields array only has " + fields.Length.ToString() + " field(s).")
         else
             fields
 
@@ -110,12 +113,10 @@ module public ChannelFunctions =
               // Read the next line
               let text = reader.ReadLine()
 
-              // TODO: check text exists
+              // Create fields array using line read from reader.
+              let fields = readLineFromFile reader |> splitStringUsingCharacter '|' |> verifyFields
 
-              // Create fields array from text
-              let fields = reader.ReadLine() |> verifyRawText |> splitStringUsingCharacter '|' |> verifyFields
-
-              // Create the podcast record
+              // Create the podcast record.
               let podcastRecord = 
                 {
                     Title = fields.[0]
@@ -125,7 +126,7 @@ module public ChannelFunctions =
                     Description = fields.[4]
                 }
 
-              // Set the threaded state to be the XML reader
+              // Set the threaded state to be the XML reader.
               Some(podcastRecord, reader)
 
     let readChannelRecordFromFile(filePath : string) =
