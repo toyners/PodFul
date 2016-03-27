@@ -7,6 +7,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library", "PodFul.Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.Console", "PodFul.Console\PodFul.Console.csproj", "{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library.IntegrationTests", "PodFul.Library.IntegrationTests\PodFul.Library.IntegrationTests.fsproj", "{A6FC5368-E6D4-40DE-BFDE-9A2E400F7748}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D53ABC4C-5405-4EE7-8470-60C3BE48EEC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6FC5368-E6D4-40DE-BFDE-9A2E400F7748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6FC5368-E6D4-40DE-BFDE-9A2E400F7748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6FC5368-E6D4-40DE-BFDE-9A2E400F7748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6FC5368-E6D4-40DE-BFDE-9A2E400F7748}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
