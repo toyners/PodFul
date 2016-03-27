@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+>
+
+<channel>
+	<title>Channel Title</title>
+	<atom:link href="http://www.astronomycast.com/feed/" rel="self" type="application/rss+xml" />
+	<link>Channel Website</link>
+	<description>Channel Description</description>
+	<lastBuildDate>Tue, 15 Mar 2016 19:04:41 +0000</lastBuildDate>
+	<language>en-US</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.0.10</generator>
+<!-- podcast_generator="Blubrry PowerPress/5.0.9" mode="advanced" -->
+	<itunes:summary>Take a facts-based journey through the universe.</itunes:summary>
+	<itunes:author>Astronomy Cast</itunes:author>
+	<itunes:explicit>no</itunes:explicit>
+	<itunes:image href="http://www.astronomycast.com/wp-content/plugins/powerpress/itunes_default.jpg" />
+	<itunes:subtitle>Take a facts-based journey through the universe.</itunes:subtitle>
+	<image>
+		<title>Astronomy Cast</title>
+		<url>http://www.astronomycast.com/wp-content/plugins/powerpress/rss_default.jpg</url>
+		<link>http://www.astronomycast.com</link>
+	</image>
+	<item>
+		<title>Podcast #1 Title</title>
+		<link>http://www.astronomycast.com/2016/03/ep-406-stellar-cannibalism/</link>
+		<comments>http://www.astronomycast.com/2016/03/ep-406-stellar-cannibalism/#comments</comments>
+		<pubDate>Mon, 14 Mar 2016 18:16:10</pubDate>
+		<dc:creator><![CDATA[susie]]></dc:creator>
+				<category><![CDATA[Stars]]></category>
+		<category><![CDATA[collisions]]></category>
+		<category><![CDATA[stars]]></category>
+
+		<guid isPermaLink="false">http://www.astronomycast.com/?p=4417</guid>
+		<description><![CDATA[Podcast #1 Description]]></description>
+				<content:encoded><![CDATA[]]></content:encoded>
+			<wfw:commentRss>http://www.astronomycast.com/2016/03/ep-406-stellar-cannibalism/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+<enclosure url="podcast1.mp3" length="1" type="audio/mpeg" />
+			<itunes:keywords>collisions,stars</itunes:keywords>
+	<itunes:subtitle>Most of the time stars hang around for billions of years. But the Universe is a big place, and anything that can go wrong, inevitably does. Today we talk about what happens when these stars come together. The outcome is violent, and fortunately for you,</itunes:subtitle>
+		<itunes:summary>Most of the time stars hang around for billions of years. But the Universe is a big place, and anything that can go wrong, inevitably does. Today we talk about what happens when these stars come together. The outcome is violent, and fortunately for you, also interesting.</itunes:summary>
+		<itunes:author>Astronomy Cast</itunes:author>
+		<itunes:explicit>no</itunes:explicit>
+	</item>
+		<item>
+		<title>Podcast #2 Title</title>
+		<link>http://www.astronomycast.com/2016/03/ep-405-method-not-found/</link>
+		<comments>http://www.astronomycast.com/2016/03/ep-405-method-not-found/#comments</comments>
+		<pubDate>Mon, 07 Mar 2016 17:40:54</pubDate>
+		<dc:creator><![CDATA[susie]]></dc:creator>
+				<category><![CDATA[Astronomy]]></category>
+		<category><![CDATA[knowledge]]></category>
+		<category><![CDATA[Questions]]></category>
+		<category><![CDATA[Science]]></category>
+		<category><![CDATA[space]]></category>
+
+		<guid isPermaLink="false">http://www.astronomycast.com/?p=4414</guid>
+		<description><![CDATA[Podcast #2 Description]]></description>
+				<content:encoded><![CDATA[]]></content:encoded>
+			<wfw:commentRss>http://www.astronomycast.com/2016/03/ep-405-method-not-found/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+<enclosure url="podcast2.mp3" length="2" type="audio/mpeg" />
+			<itunes:keywords>knowledge,Questions,Science,space</itunes:keywords>
+	<itunes:subtitle>Last week we talked about knowledge, what we do and don’t know. This week we talk about questions which are impossible to ask, where the answers don’t actually exist. Download the show [MP3] | Jump to Shownotes | Jump to Transcript </itunes:subtitle>
+		<itunes:summary>Last week we talked about knowledge, what we do and don’t know. Thi</itunes:summary>
+		<itunes:author>Astronomy Cast</itunes:author>
+		<itunes:explicit>no</itunes:explicit>
+	</item>
+		<item>
+		<title>Podcast #3 Title</title>
+		<link>http://www.astronomycast.com/2016/03/ep-404-the-difference-between-cant-know-dont-know-just-awaiting-better-tech/</link>
+		<comments>http://www.astronomycast.com/2016/03/ep-404-the-difference-between-cant-know-dont-know-just-awaiting-better-tech/#comments</comments>
+		<pubDate>Tue, 01 Mar 2016 20:52:44</pubDate>
+		<dc:creator><![CDATA[susie]]></dc:creator>
+				<category><![CDATA[Astronomy]]></category>
+		<category><![CDATA[funding]]></category>
+		<category><![CDATA[research]]></category>
+
+		<guid isPermaLink="false">http://www.astronomycast.com/?p=4400</guid>
+		<description><![CDATA[Podcast #3 Description]]></description>
+				<content:encoded><![CDATA[<p>Th]]></content:encoded>
+			<wfw:commentRss>http://www.astronomycast.com/2016/03/ep-404-the-difference-between-cant-know-dont-know-just-awaiting-better-tech/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+<enclosure url="podcast3.mp3" length="3" type="audio/mpeg" />
+			<itunes:keywords>funding,research</itunes:keywords>
+	<itunes:subtitle>There the things we know, the things we don’t know, and the things we can’t know. How do we know which one is when when we’re deciding to fund research and direct our scientific inquiry. - Download the show [MP3] | Jump to Shownotes | Jump to Transcri...</itunes:subtitle>
+		<itunes:summary>There ing in, everywhere from Twitter to Facebook, so on and so forth,</itunes:summary>
+		<itunes:author>Astronomy Cast</itunes:author>
+		<itunes:explicit>no</itunes:explicit>
+	</item>
+	</channel>
+</rss>
