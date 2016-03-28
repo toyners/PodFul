@@ -19,7 +19,7 @@ type ChannelFunctions_IntergrationTests() =
         Directory.CreateDirectory(workingDirectory) |> ignore
 
     [<Test>]
-    member public this.``First Test``() = 
+    member public this.``Creating Channel record from RSS file.``() = 
         // Arrange
         let inputPath = workingDirectory + "podcast.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
