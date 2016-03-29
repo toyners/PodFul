@@ -110,9 +110,6 @@ module public ChannelFunctions =
         match reader.EndOfStream with
         | true -> None
         | _ ->
-              // Read the next line
-              let text = reader.ReadLine()
-
               // Create fields array using line read from reader.
               let fields = readLineFromFile reader |> splitStringUsingCharacter '|' |> verifyFields
 
@@ -148,3 +145,6 @@ module public ChannelFunctions =
         use writer = new StreamWriter(filePath)
 
         writer.WriteLine(record.Title + "|" + record.Website + "|" + record.Directory + "|" + record.Feed + "|" + record.Description);
+
+        for podcast in record.Podcasts do
+            writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + podcast.Description)
