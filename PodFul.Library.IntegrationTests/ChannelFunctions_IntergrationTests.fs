@@ -20,19 +20,19 @@ type ChannelFunctions_IntergrationTests() =
 
     let firstPodcastTitle = "Podcast #1 Title"
     let firstPodcastDescription = "Podcast #1 Description"
-    let firstPodcastURL = "Podcast #1 url"
+    let firstPodcastURL = "Podcast1.mp3"
     let firstPodcastFileSize = 1L
     let firstPodcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
 
     let secondPodcastTitle = "Podcast #2 Title"
     let secondPodcastDescription = "Podcast #2 Description"
-    let secondPodcastURL = "Podcast #2 url"
+    let secondPodcastURL = "Podcast2.mp3"
     let secondPodcastFileSize = 2L
     let secondPodcastPubDate = new DateTime(2015, 3, 4, 10, 11, 12)
 
     let thirdPodcastTitle = "Podcast #3 Title"
     let thirdPodcastDescription = "Podcast #3 Description"
-    let thirdPodcastURL = "Podcast #3 url"
+    let thirdPodcastURL = "Podcast3.mp3"
     let thirdPodcastFileSize = 3L
     let thirdPodcastPubDate = new DateTime(2016, 5, 6, 15, 16, 17)
 
@@ -83,35 +83,35 @@ type ChannelFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
         
         // Act
-        let record = ChannelFunctions.readChannelRecordFromRSSFile("RssURL", "Directory", inputPath);
+        let record = ChannelFunctions.readChannelRecordFromRSSFile(channelFeed, channelDirectory, inputPath);
 
         // Assert
         record |> should not' (be null)
-        record.Title |> should equal "Channel Title"
-        record.Description |> should equal "Channel Description"
-        record.Website |> should equal "Channel Website"
-        record.Directory |> should equal "Directory"
-        record.Feed |> should equal "RssURL"
+        record.Title |> should equal channelTitle
+        record.Description |> should equal channelDescription
+        record.Website |> should equal channelWebsite
+        record.Directory |> should equal channelDirectory
+        record.Feed |> should equal channelFeed
         record.Podcasts |> should not' (be null)
         record.Podcasts.Length |> should equal 3
 
-        record.Podcasts.[0].Title |> should equal "Podcast #1 Title"
-        record.Podcasts.[0].Description |> should equal "Podcast #1 Description"
-        record.Podcasts.[0].URL |> should equal "podcast1.mp3"
-        record.Podcasts.[0].FileSize |> should equal 1L
-        record.Podcasts.[0].PubDate |> should equal (new System.DateTime(2016, 3, 14, 18, 16, 10))
+        record.Podcasts.[0].Title |> should equal firstPodcastTitle
+        record.Podcasts.[0].Description |> should equal firstPodcastDescription
+        record.Podcasts.[0].URL |> should equal firstPodcastURL
+        record.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
+        record.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
 
-        record.Podcasts.[1].Title |> should equal "Podcast #2 Title"
-        record.Podcasts.[1].Description |> should equal "Podcast #2 Description"
-        record.Podcasts.[1].URL |> should equal "podcast2.mp3"
-        record.Podcasts.[1].FileSize |> should equal 2L
-        record.Podcasts.[1].PubDate |> should equal (new System.DateTime(2016, 3, 7, 17, 40, 54))
+        record.Podcasts.[1].Title |> should equal secondPodcastTitle
+        record.Podcasts.[1].Description |> should equal secondPodcastDescription
+        record.Podcasts.[1].URL |> should equal secondPodcastURL
+        record.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
+        record.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
 
-        record.Podcasts.[2].Title |> should equal "Podcast #3 Title"
-        record.Podcasts.[2].Description |> should equal "Podcast #3 Description"
-        record.Podcasts.[2].URL |> should equal "podcast3.mp3"
-        record.Podcasts.[2].FileSize |> should equal 3L
-        record.Podcasts.[2].PubDate |> should equal (new System.DateTime(2016, 3, 1, 20, 52, 44))
+        record.Podcasts.[2].Title |> should equal thirdPodcastTitle
+        record.Podcasts.[2].Description |> should equal thirdPodcastDescription
+        record.Podcasts.[2].URL |> should equal thirdPodcastURL
+        record.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
+        record.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
 
     [<Test>]
     member public this.``Writing/Reading cycle of Channel record``() = 

@@ -15,21 +15,21 @@
 	  <description>Channel Description</description>
 	  <item>
 		  <title>Podcast #1 Title</title>
-		  <pubDate>Mon, 14 Mar 2016 18:16:10</pubDate>
+		  <pubDate>2 Jan 2014 01:02:03</pubDate>
 		  <description><![CDATA[Podcast #1 Description]]></description>
-      <enclosure url="podcast1.mp3" length="1" type="audio/mpeg" />
+      <enclosure url="Podcast1.mp3" length="1" type="audio/mpeg" />
 	  </item>
 	  <item>
 		  <title>Podcast #2 Title</title>
-		  <pubDate>Mon, 07 Mar 2016 17:40:54</pubDate>
+		  <pubDate>04 Mar 2015 10:11:12</pubDate>
 		  <description><![CDATA[Podcast #2 Description]]></description>
-      <enclosure url="podcast2.mp3" length="2" type="audio/mpeg" />
+      <enclosure url="Podcast2.mp3" length="2" type="audio/mpeg" />
 	  </item>
 	  <item>
 		  <title>Podcast #3 Title</title>
-		  <pubDate>Tue, 01 Mar 2016 20:52:44</pubDate>
+		  <pubDate>06 May 2016 15:16:17</pubDate>
 		  <description><![CDATA[Podcast #3 Description]]></description>
-      <enclosure url="podcast3.mp3" length="3" type="audio/mpeg" />
+      <enclosure url="Podcast3.mp3" length="3" type="audio/mpeg" />
 	  </item>
 	</channel>
 </rss>
