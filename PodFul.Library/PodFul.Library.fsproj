@@ -54,9 +54,10 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="PodcastRecord.fs" />
     <Compile Include="ChannelRecord.fs" />
+    <Compile Include="ChannelFunctions.fs" />
+    <Compile Include="DownloadFunctions.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
-    <Compile Include="ChannelFunctions.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">

@@ -2,6 +2,7 @@
 
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
+open PodFul.Library
 
 type DownloadFunctions_IntergrationTests() = 
 
@@ -13,5 +14,7 @@ type DownloadFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Test``() =
-        ignore
+        let url = ""
+        let path = ""
+        DownloadFunctions.downloadFile url path |> ignore
 
