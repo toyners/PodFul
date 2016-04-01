@@ -2,6 +2,7 @@
 
 open FsUnit
 open Jabberwocky.Toolkit.Assembly
+open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
 open System
@@ -71,10 +72,7 @@ type ChannelFunctions_IntergrationTests() =
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
-        if Directory.Exists(workingDirectory) then
-            Directory.Delete(workingDirectory, true)
-
-        Directory.CreateDirectory(workingDirectory) |> ignore
+        DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
 
     [<Test>]
     member public this.``Creating Channel record from RSS file``() = 

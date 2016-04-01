@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ChannelFunctions_IntergrationTests.fs" />
+    <Compile Include="DownloadFunctions_IntergrationTests.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <EmbeddedResource Include="podcast.rss" />
@@ -67,7 +68,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Jabberwocky.Toolkit">
-      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.5.0\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
+      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.6.0\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
