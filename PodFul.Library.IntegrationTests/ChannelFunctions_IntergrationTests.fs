@@ -11,7 +11,7 @@ open System.Reflection
 
 type ChannelFunctions_IntergrationTests() = 
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Test\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\ChannelFunctions_IntergrationTests\";
 
     let channelTitle = "Channel Title"
     let channelDescription = "Channel Description"
