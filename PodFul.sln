@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.Console", "PodFul.Co
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library.IntegrationTests", "PodFul.Library.IntegrationTests\PodFul.Library.IntegrationTests.fsproj", "{A6FC5368-E6D4-40DE-BFDE-9A2E400F7748}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C5AF10E4-6FA2-4523-AB60-C037275AD7EA}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
