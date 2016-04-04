@@ -64,7 +64,7 @@ module public ChannelFunctions =
 
     let splitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
 
-    let getPodcastRecordFromFile (reader: StreamReader) = 
+    let getPodcastFromFile (reader: StreamReader) = 
         match reader.EndOfStream with
         | true -> None
         | _ ->
@@ -95,7 +95,7 @@ module public ChannelFunctions =
             Directory = fields.[2]
             Feed = fields.[3]
             Description = fields.[4]
-            Podcasts = List.unfold getPodcastRecordFromFile (reader) |> List.toArray
+            Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
         }
 
     let writeChannelToFile (channel : Channel) (filePath : string) : unit =
