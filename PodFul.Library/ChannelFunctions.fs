@@ -11,19 +11,19 @@ module public ChannelFunctions =
     let xn name = XName.Get(name)
 
     // This implementation of the dynamic operator ? returns the child element from the parent that matches the name.
-    let (?) (parent : XElement) name = 
+    let (?) (parent : XElement) name : XElement = 
         let child = parent.Element(xn name)
         match child with
         | null -> failwith ("Element '" + name + "' not found in '" + parent.Name.LocalName + "'")
         | _ -> child;
 
-    let GetAttributeValue (element: XElement) name = 
+    let GetAttributeValue (element: XElement) name : string = 
         let attribute = element.Attribute(xn name)
         match attribute with 
         | null -> failwith ("Atributr '" + name + "' not found in '" + element.Name.LocalName + "'")
         | _ -> attribute.Value
 
-    let DownloadRSSFeed(url) = 
+    let DownloadRSSFeed(url) : Channel = 
         let webClient = new WebClient()
         let data = webClient.DownloadString(Uri(url))
         let document = XDocument.Parse(data)
@@ -45,14 +45,14 @@ module public ChannelFunctions =
                             }] |> List.toArray
         }
 
-    let readLineFromFile (reader: StreamReader) = 
+    let readLineFromFile (reader: StreamReader) : string = 
         let text = reader.ReadLine()
         match text with
         | null ->   failwith "Raw text is null."
         | "" ->     failwith "Raw text is empty."
         | _ -> text
 
-    let verifyFields (fields: string[]) =
+    let verifyFields (fields: string[]) : string[] =
         if fields = null then
             failwith "Fields array is null."
         else if fields.Length = 0 then
