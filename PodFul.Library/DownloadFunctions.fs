@@ -14,10 +14,10 @@ module DownloadFunctions =
         | null -> failwith ("Element '" + name + "' not found in '" + element.Name.LocalName + "'")
         | _ -> el;
 
-    let GetAttributeValue (element: XElement) attribName = 
-        let attribute = element.Attribute(xn attribName)
+    let GetAttributeValue (element: XElement) name = 
+        let attribute = element.Attribute(xn name)
         match attribute with 
-        | null -> failwith ""
+        | null -> failwith ("Atributr '" + name + "' not found in '" + element.Name.LocalName + "'")
         | _ -> attribute.Value
 
     let DownloadRSSFeed(url) = 
@@ -32,16 +32,13 @@ module DownloadFunctions =
              Website = channel?link.Value
              Directory = null
              Feed = null
-             Podcasts = 
-                [ 
-                  for element in document.Descendants(xn "items") do
-                  {
-                    Title = element?title.Value
-                    Description = element?description.Value
-                    PubDate = element?pubDate.Value |> DateTime.Parse
-                    URL = GetAttributeValue element?enclosure "url"
-                    FileSize = GetAttributeValue element?enclosure "length" |> Int64.Parse
-                  }
-                ] |> List.toArray
+             Podcasts = [ for element in document.Descendants(xn "item") do
+                            yield {
+                                Title = element?title.Value
+                                Description = element?description.Value
+                                PubDate = element?pubDate.Value |> DateTime.Parse
+                                URL = GetAttributeValue element?enclosure "url"
+                                FileSize = GetAttributeValue element?enclosure "length" |> Int64.Parse
+                            }] |> List.toArray
         }
 
