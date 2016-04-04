@@ -8,33 +8,33 @@ namespace PodFul.Console
   {
     static void Main(string[] args)
     {
-      ChannelRecord record = ChannelFunctions.readChannelRecordFromRSSFile("RssURL", "Directory", @"C:\Projects\PodFul\podcast.rss");
+      Channel channel = ChannelFunctions.readChannelRecordFromRSSFile("RssURL", "Directory", @"C:\Projects\PodFul\podcast.rss");
 
-      DisplayChannel(record);
+      DisplayChannel(channel);
 
-      ChannelFunctions.writeChannelRecordToFile(record, @"C:\Projects\PodFul\output.txt");
+      ChannelFunctions.writeChannelToFile(channel, @"C:\Projects\PodFul\output.txt");
 
-      record = ChannelFunctions.readChannelRecordFromFile(@"C:\Projects\PodFul\output.txt");
+      channel = ChannelFunctions.readChannelFromFile(@"C:\Projects\PodFul\output.txt");
 
-      DisplayChannel(record);
+      DisplayChannel(channel);
 
       Console.ReadKey();
     }
 
-    private static void DisplayChannel(ChannelRecord record)
+    private static void DisplayChannel(Channel channel)
     {
-      Console.WriteLine(record.Title);
-      Console.WriteLine(record.Website);
-      Console.WriteLine(record.Description);
-      Console.WriteLine(record.Podcasts.Length);
+      Console.WriteLine(channel.Title);
+      Console.WriteLine(channel.Website);
+      Console.WriteLine(channel.Description);
+      Console.WriteLine(channel.Podcasts.Length);
       Console.WriteLine();
 
-      if (record.Podcasts.Length == 0)
+      if (channel.Podcasts.Length == 0)
       {
         return;
       }
 
-      foreach (var podcastRecord in record.Podcasts)
+      foreach (var podcastRecord in channel.Podcasts)
       {
         Console.WriteLine(podcastRecord.Title);
         Console.WriteLine(podcastRecord.FileSize);

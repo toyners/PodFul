@@ -52,8 +52,8 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="PodcastRecord.fs" />
-    <Compile Include="ChannelRecord.fs" />
+    <Compile Include="Podcast.fs" />
+    <Compile Include="Channel.fs" />
     <Compile Include="ChannelFunctions.fs" />
     <Compile Include="DownloadFunctions.fs" />
     <None Include="Script.fsx" />

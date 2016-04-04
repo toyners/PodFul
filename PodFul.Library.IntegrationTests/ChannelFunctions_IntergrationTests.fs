@@ -115,12 +115,12 @@ type ChannelFunctions_IntergrationTests() =
     member public this.``Writing/Reading cycle of Channel record``() = 
         let testRecord = this.CreateChannelRecord
         let outputPath = workingDirectory + "record.txt";
-        ChannelFunctions.writeChannelRecordToFile(testRecord, outputPath)
+        ChannelFunctions.writeChannelToFile(testRecord, outputPath)
 
         File.Exists(outputPath) |> should be True
 
         let inputPath = outputPath
-        let resultRecord = ChannelFunctions.readChannelRecordFromFile(inputPath)
+        let resultRecord = ChannelFunctions.readChannelFromFile(inputPath)
 
         resultRecord |> should not' (be sameAs testRecord)
 

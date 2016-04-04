@@ -114,7 +114,7 @@ module public ChannelFunctions =
               let fields = readLineFromFile reader |> splitStringUsingCharacter '|' |> verifyFields
 
               // Create the podcast record.
-              let podcastRecord = 
+              let podcast = 
                 {
                     Title = fields.[0]
                     PubDate = System.DateTime.Parse(fields.[1])
@@ -124,9 +124,9 @@ module public ChannelFunctions =
                 }
 
               // Set the threaded state to be the XML reader.
-              Some(podcastRecord, reader)
+              Some(podcast, reader)
 
-    let readChannelRecordFromFile(filePath : string) =
+    let readChannelFromFile(filePath : string) =
         
         use reader = new StreamReader(filePath)
         let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
@@ -140,11 +140,11 @@ module public ChannelFunctions =
             Podcasts = List.unfold getPodcastRecordFromFile (reader) |> List.toArray
         }
 
-    let writeChannelRecordToFile (record : ChannelRecord, filePath : string) =
+    let writeChannelToFile (channel : Channel, filePath : string) =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(record.Title + "|" + record.Website + "|" + record.Directory + "|" + record.Feed + "|" + record.Description);
+        writer.WriteLine(channel.Title + "|" + channel.Website + "|" + channel.Directory + "|" + channel.Feed + "|" + channel.Description);
 
-        for podcast in record.Podcasts do
+        for podcast in channel.Podcasts do
             writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + podcast.Description)

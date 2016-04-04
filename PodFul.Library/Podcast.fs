@@ -2,7 +2,7 @@
 
 open System
 
-type PodcastRecord =
+type Podcast =
     {
         Title : string;
         Description : string;
