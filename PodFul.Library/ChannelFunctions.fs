@@ -1,90 +1,48 @@
 ﻿namespace PodFul.Library
 
 open System
-open System.Xml
 open System.IO
+open System.Net
+open System.Xml.Linq
 open FSharp.Data
 
 module public ChannelFunctions =
 
-    let verifyMove nodeName result = 
-        match result with
-        | false -> failwith ("'" + nodeName + "' node not found.")
-        | _ -> ignore
+    let xn name = XName.Get(name)
 
-    let moveToDescendant (reader : XmlReader, nodeName) =
-        reader.ReadToDescendant(nodeName) |> verifyMove nodeName
+    // This implementation of the dynamic operator ? returns the child element from the parent that matches the name.
+    let (?) (parent : XElement) name = 
+        let child = parent.Element(xn name)
+        match child with
+        | null -> failwith ("Element '" + name + "' not found in '" + parent.Name.LocalName + "'")
+        | _ -> child;
 
-    let moveToFollowing (reader: XmlReader, nodeName) =
-        reader.ReadToFollowing(nodeName) |> verifyMove nodeName
+    let GetAttributeValue (element: XElement) name = 
+        let attribute = element.Attribute(xn name)
+        match attribute with 
+        | null -> failwith ("Atributr '" + name + "' not found in '" + element.Name.LocalName + "'")
+        | _ -> attribute.Value
 
-    let moveToNextSibling (reader: XmlReader, nodeName) = 
-        reader.ReadToNextSibling(nodeName) |> verifyMove nodeName
+    let DownloadRSSFeed(url) = 
+        let webClient = new WebClient()
+        let data = webClient.DownloadString(Uri(url))
+        let document = XDocument.Parse(data)
+        let channel = document.Element(xn "rss").Element(xn "channel")
 
-    let getDataFromNode moveFn readFn = 
-        moveFn |> ignore
-        readFn()
-
-    let getPubDateFromNode (reader: XmlReader) =
-        reader.ReadToNextSibling("pubDate") |> verifyMove "pubDate" |> ignore
-        System.DateTime.Parse(reader.ReadElementContentAsString())
-
-    let getAttribute (reader: XmlReader, attributeName: string) = 
-        let content = reader.GetAttribute(attributeName)
-        match content with 
-        | null -> failwith ("'" + attributeName + "' attribute not found.")
-        | _ -> content
-
-    let getFileDetails (reader: XmlReader) =
-        reader.ReadToNextSibling("enclosure") |> verifyMove "enclosure" |> ignore
-        
-        let url = getAttribute(reader, "url")
-        let length = getAttribute(reader, "length")
-
-        (url, Int64.Parse(length))
-
-    let getPodcastRecordsFromRSS (reader: XmlReader) =
-        match reader.ReadToNextSibling("item") with
-        | false -> None
-        | _ ->  
-                // Create a sub reader to read the item nodes.
-                let itemReader = reader.ReadSubtree();
-                itemReader.Read() |> ignore
-
-                // Create the podcast record
-                let podcastRecord = 
-                    {
-                        Title = getDataFromNode (moveToDescendant(itemReader, "title")) itemReader.ReadElementContentAsString 
-                        PubDate = getPubDateFromNode itemReader
-                        Description = getDataFromNode (moveToNextSibling(itemReader, "description")) itemReader.ReadElementContentAsString
-                        URL = null
-                        FileSize = 0L
-                    }
-
-                // Read the url and file length and set these properties on the podcast record.
-                let url, fileSize = getFileDetails itemReader
-                let podcastRecord = { podcastRecord with URL = url; FileSize = fileSize }
-
-                // Close the sub reader. This will set the parent reader to the end element of the item node ready
-                // to move onto the next item.
-                itemReader.Close()
-
-                // Set the threaded state to be the XML reader
-                Some(podcastRecord, reader)
-
-    let readChannelRecordFromRSSFile (rssURL : string, directory : string, fileName : string) = 
-    
-        use stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read)
-        use reader = XmlReader.Create(stream)
-        moveToFollowing (reader, "channel") |> ignore
-         
-        { 
-            Title = getDataFromNode (moveToDescendant(reader, "title")) reader.ReadElementContentAsString
-            Website = getDataFromNode (moveToFollowing(reader, "link")) reader.ReadElementContentAsString
-            Description = getDataFromNode (moveToFollowing(reader, "description")) reader.ReadElementContentAsString
-            Directory = directory
-            Feed = rssURL
-            Podcasts = List.unfold getPodcastRecordsFromRSS (reader) |> List.toArray
+        {
+             Title = channel?title.Value
+             Description = channel?description.Value
+             Website = channel?link.Value
+             Directory = null
+             Feed = null
+             Podcasts = [ for element in document.Descendants(xn "item") do
+                            yield {
+                                Title = element?title.Value
+                                Description = element?description.Value
+                                PubDate = element?pubDate.Value |> DateTime.Parse
+                                URL = GetAttributeValue element?enclosure "url"
+                                FileSize = GetAttributeValue element?enclosure "length" |> Int64.Parse
+                            }] |> List.toArray
         }
 
     let readLineFromFile (reader: StreamReader) = 
@@ -126,7 +84,7 @@ module public ChannelFunctions =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
-    let readChannelFromFile(filePath : string) =
+    let readChannelFromFile(filePath : string) : Channel =
         
         use reader = new StreamReader(filePath)
         let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
@@ -140,7 +98,7 @@ module public ChannelFunctions =
             Podcasts = List.unfold getPodcastRecordFromFile (reader) |> List.toArray
         }
 
-    let writeChannelToFile (channel : Channel, filePath : string) =
+    let writeChannelToFile (channel : Channel) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
 

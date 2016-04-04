@@ -75,47 +75,44 @@ type ChannelFunctions_IntergrationTests() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
 
     [<Test>]
-    member public this.``Creating Channel record from RSS file``() = 
-        // Arrange
+    member public this.``Create Channel from RSS url``() =
         let inputPath = workingDirectory + "podcast.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
-        
-        // Act
-        let record = ChannelFunctions.readChannelRecordFromRSSFile(channelFeed, channelDirectory, inputPath);
+        let feed = ChannelFunctions.DownloadRSSFeed inputPath
 
-        // Assert
-        record |> should not' (be null)
-        record.Title |> should equal channelTitle
-        record.Description |> should equal channelDescription
-        record.Website |> should equal channelWebsite
-        record.Directory |> should equal channelDirectory
-        record.Feed |> should equal channelFeed
-        record.Podcasts |> should not' (be null)
-        record.Podcasts.Length |> should equal 3
+        feed |> should not' (equal null)
+        feed.Title |> should equal channelTitle
+        feed.Description |> should equal channelDescription
+        feed.Website |> should equal channelWebsite
+        feed.Directory |> should equal null
+        feed.Feed |> should equal null
 
-        record.Podcasts.[0].Title |> should equal firstPodcastTitle
-        record.Podcasts.[0].Description |> should equal firstPodcastDescription
-        record.Podcasts.[0].URL |> should equal firstPodcastURL
-        record.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
-        record.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
+        feed.Podcasts |> should not' (be null)
+        feed.Podcasts.Length |> should equal 3
 
-        record.Podcasts.[1].Title |> should equal secondPodcastTitle
-        record.Podcasts.[1].Description |> should equal secondPodcastDescription
-        record.Podcasts.[1].URL |> should equal secondPodcastURL
-        record.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
-        record.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
+        feed.Podcasts.[0].Title |> should equal firstPodcastTitle
+        feed.Podcasts.[0].Description |> should equal firstPodcastDescription
+        feed.Podcasts.[0].URL |> should equal firstPodcastURL
+        feed.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
+        feed.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
 
-        record.Podcasts.[2].Title |> should equal thirdPodcastTitle
-        record.Podcasts.[2].Description |> should equal thirdPodcastDescription
-        record.Podcasts.[2].URL |> should equal thirdPodcastURL
-        record.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
-        record.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
+        feed.Podcasts.[1].Title |> should equal secondPodcastTitle
+        feed.Podcasts.[1].Description |> should equal secondPodcastDescription
+        feed.Podcasts.[1].URL |> should equal secondPodcastURL
+        feed.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
+        feed.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
+
+        feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
+        feed.Podcasts.[2].Description |> should equal thirdPodcastDescription
+        feed.Podcasts.[2].URL |> should equal thirdPodcastURL
+        feed.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
+        feed.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
 
     [<Test>]
     member public this.``Writing/Reading cycle of Channel record``() = 
         let testRecord = this.CreateChannelRecord
         let outputPath = workingDirectory + "record.txt";
-        ChannelFunctions.writeChannelToFile(testRecord, outputPath)
+        ChannelFunctions.writeChannelToFile testRecord outputPath
 
         File.Exists(outputPath) |> should be True
 

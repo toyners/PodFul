@@ -8,7 +8,7 @@ namespace PodFul.Console
   {
     static void Main(string[] args)
     {
-      Channel channel = ChannelFunctions.readChannelRecordFromRSSFile("RssURL", "Directory", @"C:\Projects\PodFul\podcast.rss");
+      Channel channel = ChannelFunctions.DownloadRSSFeed(@"C:\Projects\PodFul\podcast.rss");
 
       DisplayChannel(channel);
 
