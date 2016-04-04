@@ -8,11 +8,12 @@ module DownloadFunctions =
 
     let xn name = XName.Get(name)
 
-    let (?) (element : XElement) name = 
-        let el = element.Element(xn name)
-        match el with
-        | null -> failwith ("Element '" + name + "' not found in '" + element.Name.LocalName + "'")
-        | _ -> el;
+    // This implementation of the dynamic operator ? returns the child element from the parent that matches the name.
+    let (?) (parent : XElement) name = 
+        let child = parent.Element(xn name)
+        match child with
+        | null -> failwith ("Element '" + name + "' not found in '" + parent.Name.LocalName + "'")
+        | _ -> child;
 
     let GetAttributeValue (element: XElement) name = 
         let attribute = element.Attribute(xn name)
