@@ -12,9 +12,9 @@ namespace PodFul.Console
 
       DisplayChannel(channel);
 
-      ChannelFunctions.writeChannelToFile(channel, @"C:\Projects\PodFul\output.txt");
+      ChannelFunctions.WriteChannelToFile(channel, @"C:\Projects\PodFul\output.txt");
 
-      channel = ChannelFunctions.readChannelFromFile(@"C:\Projects\PodFul\output.txt");
+      channel = ChannelFunctions.ReadChannelFromFile(@"C:\Projects\PodFul\output.txt");
 
       DisplayChannel(channel);
 

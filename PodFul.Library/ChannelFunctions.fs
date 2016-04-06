@@ -45,14 +45,14 @@ module public ChannelFunctions =
                             }] |> List.toArray
         }
 
-    let readLineFromFile (reader: StreamReader) : string = 
+    let ReadLineFromFile (reader: StreamReader) : string = 
         let text = reader.ReadLine()
         match text with
         | null ->   failwith "Raw text is null."
         | "" ->     failwith "Raw text is empty."
         | _ -> text
 
-    let verifyFields (fields: string[]) : string[] =
+    let VerifyFields (fields: string[]) : string[] =
         if fields = null then
             failwith "Fields array is null."
         else if fields.Length = 0 then
@@ -62,14 +62,14 @@ module public ChannelFunctions =
         else
             fields
 
-    let splitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
+    let SplitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
 
-    let getPodcastFromFile (reader: StreamReader) = 
+    let GetPodcastFromFile (reader: StreamReader) = 
         match reader.EndOfStream with
         | true -> None
         | _ ->
               // Create fields array using line read from reader.
-              let fields = readLineFromFile reader |> splitStringUsingCharacter '|' |> verifyFields
+              let fields = ReadLineFromFile reader |> SplitStringUsingCharacter '|' |> VerifyFields
 
               // Create the podcast record.
               let podcast = 
@@ -84,10 +84,10 @@ module public ChannelFunctions =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
-    let readChannelFromFile(filePath : string) : Channel =
+    let ReadChannelFromFile(filePath : string) : Channel =
         
         use reader = new StreamReader(filePath)
-        let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
+        let fields =  reader.ReadLine() |> SplitStringUsingCharacter '|' 
 
         { 
             Title = fields.[0]
@@ -95,10 +95,10 @@ module public ChannelFunctions =
             Directory = fields.[2]
             Feed = fields.[3]
             Description = fields.[4]
-            Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
+            Podcasts = List.unfold GetPodcastFromFile (reader) |> List.toArray
         }
 
-    let writeChannelToFile (channel : Channel) (filePath : string) : unit =
+    let WriteChannelToFile (channel : Channel) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
 
