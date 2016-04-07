@@ -106,3 +106,6 @@ module public ChannelFunctions =
 
         for podcast in channel.Podcasts do
             writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + podcast.Description)
+
+    
+
