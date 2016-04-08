@@ -10,7 +10,7 @@ type Download() =
     let download url filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
         async {
             let request = WebRequest.Create(Uri(url))
-            use! response = request.AsyncGetResponse()
+            let response = request.GetResponse()
             use stream = response.GetResponseStream()
             use writer = new FileStream(filePath, FileMode.Create, FileAccess.Write)
 
