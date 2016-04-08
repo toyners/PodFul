@@ -2,6 +2,7 @@
 namespace PodFul.Console
 {
   using System;
+  using System.Threading;
   using System.Threading.Tasks;
   using PodFul.Library;
 
@@ -9,24 +10,18 @@ namespace PodFul.Console
   {
     static void Main(string[] args)
     {
-      /*Channel channel = ChannelFunctions.DownloadRSSFeed(@"C:\Projects\PodFul\podcast.rss");
+      var cancellationSource = new CancellationTokenSource();
+      CancellationToken token = cancellationSource.Token;
+      var test = new Test(cancellationSource);
 
-      DisplayChannel(channel);
-
-      ChannelFunctions.WriteChannelToFile(channel, @"C:\Projects\PodFul\output.txt");
-
-      channel = ChannelFunctions.ReadChannelFromFile(@"C:\Projects\PodFul\output.txt");
-
-      DisplayChannel(channel);*/
-      var test = new Test();
       Task t = new File1().DownloadAsync(@"http://open.live.bbc.co.uk/mediaselector/5/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p03pmy3l.mp3",
-        @"C:\Projects\PodFul\test.mp3", test.UpdateProgress);
+        @"C:\Projects\PodFul\test.mp3",
+        token,
+        test.UpdateProgress);
       t.Wait();
 
       Console.ReadKey();
     }
-      
-    
 
     private static void DisplayChannel(Channel channel)
     {
@@ -53,9 +48,22 @@ namespace PodFul.Console
 
   public class Test
   {
+    private CancellationTokenSource cancellationSource;
+    private Int32 count = 5;
+
+    public Test(CancellationTokenSource cancellationSource)
+    {
+      this.cancellationSource = cancellationSource;
+    }
+
     public void UpdateProgress(Int32 bytesRead)
     {
       Console.WriteLine(bytesRead);
+      if (--count == 0)
+      {
+        Console.WriteLine("Cancelled");
+        this.cancellationSource.Cancel();
+      }
     }
   }
 }
