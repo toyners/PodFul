@@ -14,7 +14,7 @@ namespace PodFul.Console
       CancellationToken token = cancellationSource.Token;
       var test = new Test(cancellationSource);
 
-      Task t = new File1().DownloadAsync(@"http://open.live.bbc.co.uk/mediaselector/5/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p03pmy3l.mp3",
+      Task t = new Download().DownloadAsync(@"http://open.live.bbc.co.uk/mediaselector/5/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p03pmy3l.mp3",
         @"C:\Projects\PodFul\test.mp3",
         token,
         test.UpdateProgress);

@@ -5,7 +5,7 @@ open System.IO
 open System.Net
 open System.Threading
 
-type File1() =
+type Download() =
 
     let download url filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
         async {
