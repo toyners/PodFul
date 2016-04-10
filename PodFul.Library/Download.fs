@@ -7,9 +7,12 @@ open System.Threading
 
 type Download() =
 
-    let download url filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
+    let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
         async {
-            let request = WebRequest.Create(Uri(url))
+            // Downcast the web request object to a HttpWebRequest object so that 
+            // the UserAgent property can be set.
+            let request = WebRequest.Create(Uri(url)) :?> HttpWebRequest
+            request.UserAgent <- "Podful Podcatcher";
 
             let response = request.GetResponse()
 
