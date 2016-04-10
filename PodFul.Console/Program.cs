@@ -2,6 +2,8 @@
 namespace PodFul.Console
 {
   using System;
+  using System.IO;
+  using System.Net;
   using System.Threading;
   using System.Threading.Tasks;
   using PodFul.Library;
@@ -10,17 +12,49 @@ namespace PodFul.Console
   {
     static void Main(string[] args)
     {
+      //var url = @"http://open.live.bbc.co.uk/mediaselector/5/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p03pmy3l.mp3";
+      var url = @"http://www.giantbomb.com/podcasts/download/1563/Ep46_-_The_Giant_Beastcast-04-07-2016-4786568344.mp3";
+
+      // DoWebRequest(url)
+
       var cancellationSource = new CancellationTokenSource();
       CancellationToken token = cancellationSource.Token;
       var test = new Test(cancellationSource);
 
-      Task t = new Download().DownloadAsync(@"http://open.live.bbc.co.uk/mediaselector/5/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p03pmy3l.mp3",
+      Task t = new Download().DownloadAsync(url,
         @"C:\Projects\PodFul\test.mp3",
         token,
         test.UpdateProgress);
-      t.Wait();
+
+      try
+      {
+        t.Wait();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine();
+      }
 
       Console.ReadKey();
+    }
+
+    private static void DoWebRequest(String url)
+    {
+      try
+      {
+        var request = WebRequest.Create(url);
+        ((HttpWebRequest)request).UserAgent = "Podful Podcatcher";
+        var response = request.GetResponse();
+      }
+      catch (WebException we)
+      {
+        string responseText;
+
+        using (var reader = new StreamReader(we.Response.GetResponseStream()))
+        {
+          responseText = reader.ReadToEnd();
+        }
+      }
     }
 
     private static void DisplayChannel(Channel channel)
