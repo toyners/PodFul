@@ -86,6 +86,7 @@
       this.AddFeed.TabIndex = 2;
       this.AddFeed.Text = "Add";
       this.AddFeed.UseVisualStyleBackColor = true;
+      this.AddFeed.Click += new System.EventHandler(this.AddFeed_Click);
       // 
       // RemoveFeed
       // 
