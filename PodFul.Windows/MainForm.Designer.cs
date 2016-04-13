@@ -28,12 +28,12 @@
     /// </summary>
     private void InitializeComponent()
     {
-      this.FeedList = new System.Windows.Forms.ListBox();
+      this.feeds = new System.Windows.Forms.ListBox();
       this.label1 = new System.Windows.Forms.Label();
-      this.PodcastList = new System.Windows.Forms.ListBox();
-      this.AddFeed = new System.Windows.Forms.Button();
-      this.RemoveFeed = new System.Windows.Forms.Button();
-      this.ScanFeeds = new System.Windows.Forms.Button();
+      this.podcasts = new System.Windows.Forms.ListBox();
+      this.addFeed = new System.Windows.Forms.Button();
+      this.removeFeed = new System.Windows.Forms.Button();
+      this.scanFeeds = new System.Windows.Forms.Button();
       this.label2 = new System.Windows.Forms.Label();
       this.label4 = new System.Windows.Forms.Label();
       this.label5 = new System.Windows.Forms.Label();
@@ -53,13 +53,13 @@
       this.label10 = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
-      // FeedList
+      // feeds
       // 
-      this.FeedList.FormattingEnabled = true;
-      this.FeedList.Location = new System.Drawing.Point(12, 25);
-      this.FeedList.Name = "FeedList";
-      this.FeedList.Size = new System.Drawing.Size(156, 251);
-      this.FeedList.TabIndex = 0;
+      this.feeds.FormattingEnabled = true;
+      this.feeds.Location = new System.Drawing.Point(12, 25);
+      this.feeds.Name = "feeds";
+      this.feeds.Size = new System.Drawing.Size(156, 251);
+      this.feeds.TabIndex = 0;
       // 
       // label1
       // 
@@ -70,41 +70,41 @@
       this.label1.TabIndex = 1;
       this.label1.Text = "Feeds";
       // 
-      // PodcastList
+      // podcasts
       // 
-      this.PodcastList.FormattingEnabled = true;
-      this.PodcastList.Location = new System.Drawing.Point(446, 25);
-      this.PodcastList.Name = "PodcastList";
-      this.PodcastList.Size = new System.Drawing.Size(205, 290);
-      this.PodcastList.TabIndex = 0;
+      this.podcasts.FormattingEnabled = true;
+      this.podcasts.Location = new System.Drawing.Point(446, 25);
+      this.podcasts.Name = "podcasts";
+      this.podcasts.Size = new System.Drawing.Size(205, 290);
+      this.podcasts.TabIndex = 0;
       // 
-      // AddFeed
+      // addFeed
       // 
-      this.AddFeed.Location = new System.Drawing.Point(12, 281);
-      this.AddFeed.Name = "AddFeed";
-      this.AddFeed.Size = new System.Drawing.Size(61, 35);
-      this.AddFeed.TabIndex = 2;
-      this.AddFeed.Text = "Add";
-      this.AddFeed.UseVisualStyleBackColor = true;
-      this.AddFeed.Click += new System.EventHandler(this.AddFeed_Click);
+      this.addFeed.Location = new System.Drawing.Point(12, 281);
+      this.addFeed.Name = "addFeed";
+      this.addFeed.Size = new System.Drawing.Size(61, 35);
+      this.addFeed.TabIndex = 2;
+      this.addFeed.Text = "Add";
+      this.addFeed.UseVisualStyleBackColor = true;
+      this.addFeed.Click += new System.EventHandler(this.AddFeed_Click);
       // 
-      // RemoveFeed
+      // removeFeed
       // 
-      this.RemoveFeed.Location = new System.Drawing.Point(107, 281);
-      this.RemoveFeed.Name = "RemoveFeed";
-      this.RemoveFeed.Size = new System.Drawing.Size(61, 35);
-      this.RemoveFeed.TabIndex = 2;
-      this.RemoveFeed.Text = "Remove";
-      this.RemoveFeed.UseVisualStyleBackColor = true;
+      this.removeFeed.Location = new System.Drawing.Point(107, 281);
+      this.removeFeed.Name = "removeFeed";
+      this.removeFeed.Size = new System.Drawing.Size(61, 35);
+      this.removeFeed.TabIndex = 2;
+      this.removeFeed.Text = "Remove";
+      this.removeFeed.UseVisualStyleBackColor = true;
       // 
-      // ScanFeeds
+      // scanFeeds
       // 
-      this.ScanFeeds.Location = new System.Drawing.Point(174, 281);
-      this.ScanFeeds.Name = "ScanFeeds";
-      this.ScanFeeds.Size = new System.Drawing.Size(61, 35);
-      this.ScanFeeds.TabIndex = 2;
-      this.ScanFeeds.Text = "Scan";
-      this.ScanFeeds.UseVisualStyleBackColor = true;
+      this.scanFeeds.Location = new System.Drawing.Point(174, 281);
+      this.scanFeeds.Name = "scanFeeds";
+      this.scanFeeds.Size = new System.Drawing.Size(61, 35);
+      this.scanFeeds.TabIndex = 2;
+      this.scanFeeds.Text = "Scan";
+      this.scanFeeds.UseVisualStyleBackColor = true;
       // 
       // label2
       // 
@@ -274,13 +274,13 @@
       this.Controls.Add(this.label7);
       this.Controls.Add(this.label4);
       this.Controls.Add(this.label2);
-      this.Controls.Add(this.ScanFeeds);
-      this.Controls.Add(this.RemoveFeed);
-      this.Controls.Add(this.AddFeed);
+      this.Controls.Add(this.scanFeeds);
+      this.Controls.Add(this.removeFeed);
+      this.Controls.Add(this.addFeed);
       this.Controls.Add(this.label10);
       this.Controls.Add(this.label1);
-      this.Controls.Add(this.PodcastList);
-      this.Controls.Add(this.FeedList);
+      this.Controls.Add(this.podcasts);
+      this.Controls.Add(this.feeds);
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "MainForm";
@@ -292,12 +292,12 @@
 
     #endregion
 
-    private System.Windows.Forms.ListBox FeedList;
+    private System.Windows.Forms.ListBox feeds;
     private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.ListBox PodcastList;
-    private System.Windows.Forms.Button AddFeed;
-    private System.Windows.Forms.Button RemoveFeed;
-    private System.Windows.Forms.Button ScanFeeds;
+    private System.Windows.Forms.ListBox podcasts;
+    private System.Windows.Forms.Button addFeed;
+    private System.Windows.Forms.Button removeFeed;
+    private System.Windows.Forms.Button scanFeeds;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Label label4;
     private System.Windows.Forms.Label label5;
