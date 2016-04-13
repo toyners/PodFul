@@ -8,22 +8,22 @@ open FSharp.Data
 
 module public ChannelFunctions =
 
-    let xn name = XName.Get(name)
+    let private xn name = XName.Get(name)
 
     // This implementation of the dynamic operator ? returns the child element from the parent that matches the name.
-    let (?) (parent : XElement) name : XElement = 
+    let private (?) (parent : XElement) name : XElement = 
         let child = parent.Element(xn name)
         match child with
         | null -> failwith ("Element '" + name + "' not found in '" + parent.Name.LocalName + "'")
         | _ -> child;
 
-    let GetAttributeValue (element: XElement) name : string = 
+    let private GetAttributeValue (element: XElement) name : string = 
         let attribute = element.Attribute(xn name)
         match attribute with 
         | null -> failwith ("Atributr '" + name + "' not found in '" + element.Name.LocalName + "'")
         | _ -> attribute.Value
 
-    let DownloadRSSFeed(url) : Channel = 
+    let public DownloadRSSFeed(url) : Channel = 
         let webClient = new WebClient()
         let data = webClient.DownloadString(Uri(url))
         let document = XDocument.Parse(data)
@@ -45,14 +45,14 @@ module public ChannelFunctions =
                             }] |> List.toArray
         }
 
-    let ReadLineFromFile (reader: StreamReader) : string = 
+    let private ReadLineFromFile (reader: StreamReader) : string = 
         let text = reader.ReadLine()
         match text with
         | null ->   failwith "Raw text is null."
         | "" ->     failwith "Raw text is empty."
         | _ -> text
 
-    let VerifyFields (fields: string[]) : string[] =
+    let private VerifyFields (fields: string[]) : string[] =
         if fields = null then
             failwith "Fields array is null."
         else if fields.Length = 0 then
@@ -62,9 +62,9 @@ module public ChannelFunctions =
         else
             fields
 
-    let SplitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
+    let private SplitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
 
-    let GetPodcastFromFile (reader: StreamReader) = 
+    let private GetPodcastFromFile (reader: StreamReader) = 
         match reader.EndOfStream with
         | true -> None
         | _ ->
@@ -84,7 +84,7 @@ module public ChannelFunctions =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
-    let ReadChannelFromFile(filePath : string) : Channel =
+    let public ReadChannelFromFile(filePath : string) : Channel =
         
         use reader = new StreamReader(filePath)
         let fields =  reader.ReadLine() |> SplitStringUsingCharacter '|' 
@@ -98,7 +98,7 @@ module public ChannelFunctions =
             Podcasts = List.unfold GetPodcastFromFile (reader) |> List.toArray
         }
 
-    let WriteChannelToFile (channel : Channel) (filePath : string) : unit =
+    let public WriteChannelToFile (channel : Channel) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
 
@@ -106,6 +106,3 @@ module public ChannelFunctions =
 
         for podcast in channel.Podcasts do
             writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + podcast.Description)
-
-    
-
