@@ -40,14 +40,14 @@ module public ChannelFunctions =
         else
             fields
 
-    let private SplitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
+    let private splitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
 
-    let private GetPodcastFromFile (reader: StreamReader) = 
+    let private getPodcastFromFile (reader: StreamReader) = 
         match reader.EndOfStream with
         | true -> None
         | _ ->
               // Create fields array using line read from reader.
-              let fields = readLineFromFile reader |> SplitStringUsingCharacter '|' |> verifyFields
+              let fields = readLineFromFile reader |> splitStringUsingCharacter '|' |> verifyFields
 
               // Create the podcast record.
               let podcast = 
@@ -73,7 +73,7 @@ module public ChannelFunctions =
              Description = channel?description.Value
              Website = channel?link.Value
              Directory = null
-             Feed = null
+             Feed = url
              Podcasts = [ for element in document.Descendants(xn "item") do
                             yield {
                                 Title = element?title.Value
@@ -87,7 +87,7 @@ module public ChannelFunctions =
     let public ReadChannelFromFile(filePath : string) : Channel =
         
         use reader = new StreamReader(filePath)
-        let fields =  reader.ReadLine() |> SplitStringUsingCharacter '|' 
+        let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
 
         { 
             Title = fields.[0]
@@ -95,7 +95,7 @@ module public ChannelFunctions =
             Directory = fields.[2]
             Feed = fields.[3]
             Description = fields.[4]
-            Podcasts = List.unfold GetPodcastFromFile (reader) |> List.toArray
+            Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
         }
 
     let public WriteChannelToFile (channel : Channel) (filePath : string) : unit =
