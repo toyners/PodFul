@@ -55,7 +55,7 @@
     <Compile Include="Podcast.fs" />
     <Compile Include="Channel.fs" />
     <Compile Include="ChannelFunctions.fs" />
-    <Compile Include="Download.fs" />
+    <Compile Include="BigFileDownloader.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
   </ItemGroup>
