@@ -17,11 +17,50 @@ module public ChannelFunctions =
         | null -> failwith ("Element '" + name + "' not found in '" + parent.Name.LocalName + "'")
         | _ -> child;
 
-    let private GetAttributeValue (element: XElement) name : string = 
+    let private getAttributeValue (element: XElement) name : string = 
         let attribute = element.Attribute(xn name)
         match attribute with 
         | null -> failwith ("Atributr '" + name + "' not found in '" + element.Name.LocalName + "'")
         | _ -> attribute.Value
+
+    let private readLineFromFile (reader: StreamReader) : string = 
+        let text = reader.ReadLine()
+        match text with
+        | null ->   failwith "Raw text is null."
+        | "" ->     failwith "Raw text is empty."
+        | _ -> text
+
+    let private verifyFields (fields: string[]) : string[] =
+        if fields = null then
+            failwith "Fields array is null."
+        else if fields.Length = 0 then
+            failwith "Fields array is empty."
+        else if fields.Length < 5 then
+            failwith ("Fields array only has " + fields.Length.ToString() + " field(s).")
+        else
+            fields
+
+    let private SplitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
+
+    let private GetPodcastFromFile (reader: StreamReader) = 
+        match reader.EndOfStream with
+        | true -> None
+        | _ ->
+              // Create fields array using line read from reader.
+              let fields = readLineFromFile reader |> SplitStringUsingCharacter '|' |> verifyFields
+
+              // Create the podcast record.
+              let podcast = 
+                {
+                    Title = fields.[0]
+                    PubDate = System.DateTime.Parse(fields.[1])
+                    URL = fields.[2]
+                    FileSize = Int64.Parse(fields.[3])
+                    Description = fields.[4]
+                }
+
+              // Set the threaded state to be the XML reader.
+              Some(podcast, reader)
 
     let public DownloadRSSFeed(url) : Channel = 
         let webClient = new WebClient()
@@ -40,49 +79,10 @@ module public ChannelFunctions =
                                 Title = element?title.Value
                                 Description = element?description.Value
                                 PubDate = element?pubDate.Value |> DateTime.Parse
-                                URL = GetAttributeValue element?enclosure "url"
-                                FileSize = GetAttributeValue element?enclosure "length" |> Int64.Parse
+                                URL = getAttributeValue element?enclosure "url"
+                                FileSize = getAttributeValue element?enclosure "length" |> Int64.Parse
                             }] |> List.toArray
         }
-
-    let private ReadLineFromFile (reader: StreamReader) : string = 
-        let text = reader.ReadLine()
-        match text with
-        | null ->   failwith "Raw text is null."
-        | "" ->     failwith "Raw text is empty."
-        | _ -> text
-
-    let private VerifyFields (fields: string[]) : string[] =
-        if fields = null then
-            failwith "Fields array is null."
-        else if fields.Length = 0 then
-            failwith "Fields array is empty."
-        else if fields.Length < 5 then
-            failwith ("Fields array only has " + fields.Length.ToString() + " field(s).")
-        else
-            fields
-
-    let private SplitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
-
-    let private GetPodcastFromFile (reader: StreamReader) = 
-        match reader.EndOfStream with
-        | true -> None
-        | _ ->
-              // Create fields array using line read from reader.
-              let fields = ReadLineFromFile reader |> SplitStringUsingCharacter '|' |> VerifyFields
-
-              // Create the podcast record.
-              let podcast = 
-                {
-                    Title = fields.[0]
-                    PubDate = System.DateTime.Parse(fields.[1])
-                    URL = fields.[2]
-                    FileSize = Int64.Parse(fields.[3])
-                    Description = fields.[4]
-                }
-
-              // Set the threaded state to be the XML reader.
-              Some(podcast, reader)
 
     let public ReadChannelFromFile(filePath : string) : Channel =
         
