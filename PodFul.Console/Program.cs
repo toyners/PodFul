@@ -12,8 +12,8 @@ namespace PodFul.Console
   {
     static void Main(string[] args)
     {
-      //var url = @"http://open.live.bbc.co.uk/mediaselector/5/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p03pmy3l.mp3";
-      var url = @"http://www.giantbomb.com/podcasts/download/1563/Ep46_-_The_Giant_Beastcast-04-07-2016-4786568344.mp3";
+      var url = @"http://open.live.bbc.co.uk/mediaselector/5/redir/version/2.0/mediaset/audio-nondrm-download/proto/http/vpid/p03pmy3l.mp3";
+      //var url = @"http://www.giantbomb.com/podcasts/download/1563/Ep46_-_The_Giant_Beastcast-04-07-2016-4786568344.mp3";
 
       // DoWebRequest(url)
 
@@ -21,7 +21,7 @@ namespace PodFul.Console
       CancellationToken token = cancellationSource.Token;
       var test = new Test(cancellationSource);
 
-      Task t = new Download().DownloadAsync(url,
+      Task t = new BigFileDownloader().DownloadAsync(url,
         @"C:\Projects\PodFul\test.mp3",
         token,
         test.UpdateProgress);

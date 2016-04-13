@@ -5,7 +5,7 @@ open System.IO
 open System.Net
 open System.Threading
 
-type Download() =
+type BigFileDownloader() =
 
     let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
         async {
