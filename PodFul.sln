@@ -11,7 +11,6 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library.IntegrationT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C5AF10E4-6FA2-4523-AB60-C037275AD7EA}"
 	ProjectSection(SolutionItems) = preProject
-		BuildInstallationPackage.cmd = BuildInstallationPackage.cmd
 		README.md = README.md
 	EndProjectSection
 EndProject
