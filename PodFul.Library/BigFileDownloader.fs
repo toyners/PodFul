@@ -9,25 +9,31 @@ type BigFileDownloader() =
 
     let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
         async {
-            // Downcast the web request object to a HttpWebRequest object so that 
-            // the UserAgent property can be set.
-            let request = WebRequest.Create(Uri(url)) :?> HttpWebRequest
-            request.UserAgent <- "Podful Podcatcher";
+            try
+                // Downcast the web request object to a HttpWebRequest object so that 
+                // the UserAgent property can be set.
+                let request = WebRequest.Create(Uri(url)) :?> HttpWebRequest
+                //request.UserAgent <- "Podful Podcatcher";
 
-            let response = request.GetResponse()
+                let response = request.GetResponse()
 
-            use stream = response.GetResponseStream()
-            use writer = new FileStream(filePath, FileMode.Create, FileAccess.Write)
+                use stream = response.GetResponseStream()
+                use writer = new FileStream(filePath, FileMode.Create, FileAccess.Write)
 
-            let buffer = Array.zeroCreate 8192
-            let rec copyTo () = 
-                let read = stream.Read(buffer, 0, buffer.Length)
-                if read > 0 && not (cancelToken.IsCancellationRequested) then
-                    writer.Write(buffer, 0, read)
-                    updateProgressFn.Invoke read |> ignore
-                    copyTo ()
+                let buffer = Array.zeroCreate 8192
+                let rec copyTo () = 
+                    let read = stream.Read(buffer, 0, buffer.Length)
+                    if read > 0 && not (cancelToken.IsCancellationRequested) then
+                        writer.Write(buffer, 0, read)
+                        updateProgressFn.Invoke read |> ignore
+                        copyTo ()
 
-            copyTo ()
+                copyTo ()
+            with
+            | :? System.Net.WebException as webex ->
+                 use exstream = new StreamReader(webex.Response.GetResponseStream())
+                 let responseText = exstream.ReadToEnd()
+                 failwith responseText
         }
 
     member this.DownloadAsync(url, filePath,  cancelToken, updateProgressFn: Action<int>) = 
