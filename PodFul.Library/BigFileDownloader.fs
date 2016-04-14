@@ -13,7 +13,7 @@ type BigFileDownloader() =
                 // Downcast the web request object to a HttpWebRequest object so that 
                 // the UserAgent property can be set.
                 let request = WebRequest.Create(Uri(url)) :?> HttpWebRequest
-                //request.UserAgent <- "Podful Podcatcher";
+                request.UserAgent <- "Podful Podcatcher";
 
                 let response = request.GetResponse()
 
