@@ -78,14 +78,14 @@ type ChannelFunctions_IntergrationTests() =
     member public this.``Create Channel from RSS url``() =
         let inputPath = workingDirectory + "podcast.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
-        let feed = ChannelFunctions.DownloadRSSFeed inputPath
+        let feed = ChannelFunctions.CreateChannel inputPath "DirectoryPath"
 
         feed |> should not' (equal null)
         feed.Title |> should equal channelTitle
         feed.Description |> should equal channelDescription
         feed.Website |> should equal channelWebsite
-        feed.Directory |> should equal null
-        feed.Feed |> should equal null
+        feed.Directory |> should equal "DirectoryPath"
+        feed.Feed |> should equal inputPath
 
         feed.Podcasts |> should not' (be null)
         feed.Podcasts.Length |> should equal 3

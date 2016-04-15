@@ -62,17 +62,20 @@ module public ChannelFunctions =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
-    let public DownloadRSSFeed(url) : Channel = 
+    let public DownloadRSSFeed(url) : XDocument = 
         let webClient = new WebClient()
         let data = webClient.DownloadString(Uri(url))
-        let document = XDocument.Parse(data)
+        XDocument.Parse(data)
+
+    let public CreateChannel url directoryPath =
+        let document = DownloadRSSFeed url
         let channel = document.Element(xn "rss").Element(xn "channel")
 
         {
              Title = channel?title.Value
              Description = channel?description.Value
              Website = channel?link.Value
-             Directory = null
+             Directory = directoryPath
              Feed = url
              Podcasts = [ for element in document.Descendants(xn "item") do
                             yield {
