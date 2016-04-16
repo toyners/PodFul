@@ -3,20 +3,18 @@ namespace PodFul.Windows
 {
   using System;
   using System.Collections.Generic;
-  using System.ComponentModel;
-  using System.Data;
-  using System.Drawing;
-  using System.Linq;
-  using System.Text;
-  using System.Threading.Tasks;
   using System.Windows.Forms;
   using PodFul.Library;
 
   public partial class MainForm : Form
   {
+    private List<Channel> channels;
+
     public MainForm()
     {
       InitializeComponent();
+
+      this.channels = new List<Channel>();
     }
 
     private void AddFeed_Click(Object sender, EventArgs e)
@@ -27,9 +25,18 @@ namespace PodFul.Windows
         return;
       }
 
-      var url = form.URLText.Text;
-      var feed = ChannelFunctions.DownloadRSSFeed(url);
-      //feed.Directory = form.DirectoryText.Text;
+      var feed = ChannelFunctions.CreateChannel(form.FeedURL.Text, form.FeedDirectory.Text);
+      this.channels.Add(feed);
+    }
+
+    private void removeFeed_Click(Object sender, EventArgs e)
+    {
+
+    }
+
+    private void feeds_SelectedIndexChanged(Object sender, EventArgs e)
+    {
+      int i = 0;
     }
   }
 }

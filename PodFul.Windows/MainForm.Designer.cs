@@ -46,6 +46,7 @@
       this.feeds.Name = "feeds";
       this.feeds.Size = new System.Drawing.Size(223, 251);
       this.feeds.TabIndex = 0;
+      this.feeds.SelectedIndexChanged += new System.EventHandler(this.feeds_SelectedIndexChanged);
       // 
       // label1
       // 
@@ -82,6 +83,7 @@
       this.removeFeed.TabIndex = 2;
       this.removeFeed.Text = "Remove";
       this.removeFeed.UseVisualStyleBackColor = true;
+      this.removeFeed.Click += new System.EventHandler(this.removeFeed_Click);
       // 
       // scanFeeds
       // 

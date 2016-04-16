@@ -29,8 +29,8 @@
     private void InitializeComponent()
     {
       this.label1 = new System.Windows.Forms.Label();
-      this.DirectoryText = new System.Windows.Forms.TextBox();
-      this.URLText = new System.Windows.Forms.TextBox();
+      this.FeedDirectory = new System.Windows.Forms.TextBox();
+      this.FeedURL = new System.Windows.Forms.TextBox();
       this.label2 = new System.Windows.Forms.Label();
       this.addFeed = new System.Windows.Forms.Button();
       this.SuspendLayout();
@@ -44,19 +44,19 @@
       this.label1.TabIndex = 0;
       this.label1.Text = "Directory:";
       // 
-      // DirectoryText
+      // FeedDirectory
       // 
-      this.DirectoryText.Location = new System.Drawing.Point(61, 6);
-      this.DirectoryText.Name = "DirectoryText";
-      this.DirectoryText.Size = new System.Drawing.Size(298, 20);
-      this.DirectoryText.TabIndex = 1;
+      this.FeedDirectory.Location = new System.Drawing.Point(61, 6);
+      this.FeedDirectory.Name = "FeedDirectory";
+      this.FeedDirectory.Size = new System.Drawing.Size(298, 20);
+      this.FeedDirectory.TabIndex = 1;
       // 
-      // URLText
+      // FeedURL
       // 
-      this.URLText.Location = new System.Drawing.Point(61, 32);
-      this.URLText.Name = "URLText";
-      this.URLText.Size = new System.Drawing.Size(298, 20);
-      this.URLText.TabIndex = 3;
+      this.FeedURL.Location = new System.Drawing.Point(61, 32);
+      this.FeedURL.Name = "FeedURL";
+      this.FeedURL.Size = new System.Drawing.Size(298, 20);
+      this.FeedURL.TabIndex = 3;
       // 
       // label2
       // 
@@ -84,9 +84,9 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(368, 100);
       this.Controls.Add(this.addFeed);
-      this.Controls.Add(this.URLText);
+      this.Controls.Add(this.FeedURL);
       this.Controls.Add(this.label2);
-      this.Controls.Add(this.DirectoryText);
+      this.Controls.Add(this.FeedDirectory);
       this.Controls.Add(this.label1);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.MaximizeBox = false;
@@ -104,7 +104,7 @@
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.Button addFeed;
-    internal System.Windows.Forms.TextBox DirectoryText;
-    internal System.Windows.Forms.TextBox URLText;
+    internal System.Windows.Forms.TextBox FeedDirectory;
+    internal System.Windows.Forms.TextBox FeedURL;
   }
 }
