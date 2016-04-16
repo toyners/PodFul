@@ -6,7 +6,7 @@ open System.Net
 open System.Xml.Linq
 open FSharp.Data
 
-module public ChannelFunctions =
+module public FeedFunctions =
 
     let private xn name = XName.Get(name)
 
@@ -62,13 +62,13 @@ module public ChannelFunctions =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
-    let public DownloadRSSFeed(url) : XDocument = 
+    let public DownloadDocument(url) : XDocument = 
         let webClient = new WebClient()
         let data = webClient.DownloadString(Uri(url))
         XDocument.Parse(data)
 
-    let public CreateChannel url directoryPath =
-        let document = DownloadRSSFeed url
+    let public CreateFeed url directoryPath =
+        let document = DownloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
 
         {
@@ -76,7 +76,7 @@ module public ChannelFunctions =
              Description = channel?description.Value
              Website = channel?link.Value
              Directory = directoryPath
-             Feed = url
+             URL = url
              Podcasts = [ for element in document.Descendants(xn "item") do
                             yield {
                                 Title = element?title.Value
@@ -87,7 +87,7 @@ module public ChannelFunctions =
                             }] |> List.toArray
         }
 
-    let public ReadChannelFromFile(filePath : string) : Channel =
+    let public ReadChannelFromFile(filePath : string) : Feed =
         
         use reader = new StreamReader(filePath)
         let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
@@ -96,16 +96,16 @@ module public ChannelFunctions =
             Title = fields.[0]
             Website = fields.[1]
             Directory = fields.[2]
-            Feed = fields.[3]
+            URL = fields.[3]
             Description = fields.[4]
             Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
         }
 
-    let public WriteChannelToFile (channel : Channel) (filePath : string) : unit =
+    let public WriteChannelToFile (feed : Feed) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(channel.Title + "|" + channel.Website + "|" + channel.Directory + "|" + channel.Feed + "|" + channel.Description);
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description);
 
-        for podcast in channel.Podcasts do
+        for podcast in feed.Podcasts do
             writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + podcast.Description)

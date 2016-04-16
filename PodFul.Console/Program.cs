@@ -58,20 +58,20 @@ namespace PodFul.Console
       }
     }
 
-    private static void DisplayChannel(Channel channel)
+    private static void DisplayChannel(Feed feed)
     {
-      Console.WriteLine(channel.Title);
-      Console.WriteLine(channel.Website);
-      Console.WriteLine(channel.Description);
-      Console.WriteLine(channel.Podcasts.Length);
+      Console.WriteLine(feed.Title);
+      Console.WriteLine(feed.Website);
+      Console.WriteLine(feed.Description);
+      Console.WriteLine(feed.Podcasts.Length);
       Console.WriteLine();
 
-      if (channel.Podcasts.Length == 0)
+      if (feed.Podcasts.Length == 0)
       {
         return;
       }
 
-      foreach (var podcastRecord in channel.Podcasts)
+      foreach (var podcastRecord in feed.Podcasts)
       {
         Console.WriteLine(podcastRecord.Title);
         Console.WriteLine(podcastRecord.FileSize);

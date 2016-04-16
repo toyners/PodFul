@@ -37,13 +37,13 @@ type ChannelFunctions_IntergrationTests() =
     let thirdPodcastFileSize = 3L
     let thirdPodcastPubDate = new DateTime(2016, 5, 6, 15, 16, 17)
 
-    member private this.CreateChannelRecord =
+    member private this.CreateFeedRecord =
         {
             Title = channelTitle
             Description = channelDescription
             Website = channelWebsite
             Directory = channelDirectory
-            Feed = channelFeed
+            URL = channelFeed
             Podcasts = 
             [|
                 {
@@ -78,14 +78,14 @@ type ChannelFunctions_IntergrationTests() =
     member public this.``Create Channel from RSS url``() =
         let inputPath = workingDirectory + "podcast.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
-        let feed = ChannelFunctions.CreateChannel inputPath "DirectoryPath"
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
 
         feed |> should not' (equal null)
         feed.Title |> should equal channelTitle
         feed.Description |> should equal channelDescription
         feed.Website |> should equal channelWebsite
         feed.Directory |> should equal "DirectoryPath"
-        feed.Feed |> should equal inputPath
+        feed.URL |> should equal inputPath
 
         feed.Podcasts |> should not' (be null)
         feed.Podcasts.Length |> should equal 3
@@ -110,14 +110,14 @@ type ChannelFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Writing/Reading cycle of Channel record``() = 
-        let testRecord = this.CreateChannelRecord
+        let testRecord = this.CreateFeedRecord
         let outputPath = workingDirectory + "record.txt";
-        ChannelFunctions.WriteChannelToFile testRecord outputPath
+        FeedFunctions.WriteChannelToFile testRecord outputPath
 
         File.Exists(outputPath) |> should be True
 
         let inputPath = outputPath
-        let resultRecord = ChannelFunctions.ReadChannelFromFile(inputPath)
+        let resultRecord = FeedFunctions.ReadChannelFromFile(inputPath)
 
         resultRecord |> should not' (be sameAs testRecord)
 
@@ -125,7 +125,7 @@ type ChannelFunctions_IntergrationTests() =
         resultRecord.Description |> should equal channelDescription
         resultRecord.Website |> should equal channelWebsite
         resultRecord.Directory |> should equal channelDirectory
-        resultRecord.Feed |> should equal channelFeed
+        resultRecord.URL |> should equal channelFeed
 
         resultRecord.Podcasts |> should not' (be null)
         resultRecord.Podcasts.Length |> should equal 3

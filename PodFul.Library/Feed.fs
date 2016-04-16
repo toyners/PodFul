@@ -3,19 +3,19 @@
 open System
 
 [<CustomEquality; CustomComparison>]
-type Channel = 
+type Feed = 
     {
         Title : string;
         Description : string;
         Website : string;
         Directory : string;
-        Feed : string;
+        URL : string;
         Podcasts : Podcast[];
     }
 
     override x.Equals other = 
         match other with
-        | :? Channel as y -> (x.Title = y.Title)
+        | :? Feed as y -> (x.Title = y.Title)
         | _ -> false
 
     override x.GetHashCode() = hash x.Title 
@@ -23,6 +23,6 @@ type Channel =
     interface System.IComparable with
         member x.CompareTo other = 
             match other with
-            | :? Channel as y -> compare x y
-            | _ -> let message = "Cannot compare values that are not of type Channel. Type of other is '" + other.GetType().ToString() + "'"
+            | :? Feed as y -> compare x y
+            | _ -> let message = "Cannot compare values that are not of type Feed. Type of other is '" + other.GetType().ToString() + "'"
                    invalidArg "other" message

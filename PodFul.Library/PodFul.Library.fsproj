@@ -53,8 +53,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Podcast.fs" />
-    <Compile Include="Channel.fs" />
-    <Compile Include="ChannelFunctions.fs" />
+    <Compile Include="Feed.fs" />
+    <Compile Include="FeedFunctions.fs" />
     <Compile Include="BigFileDownloader.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />

@@ -8,13 +8,13 @@ namespace PodFul.Windows
 
   public partial class MainForm : Form
   {
-    private List<Channel> channels;
+    private List<Feed> feeds;
 
     public MainForm()
     {
       InitializeComponent();
 
-      this.channels = new List<Channel>();
+      this.feeds = new List<Feed>();
     }
 
     private void AddFeed_Click(Object sender, EventArgs e)
@@ -25,16 +25,16 @@ namespace PodFul.Windows
         return;
       }
 
-      var feed = ChannelFunctions.CreateChannel(form.FeedURL.Text, form.FeedDirectory.Text);
-      this.channels.Add(feed);
+      var feed = FeedFunctions.CreateFeed(form.FeedURL.Text, form.FeedDirectory.Text);
+      this.feeds.Add(feed);
     }
 
     private void removeFeed_Click(Object sender, EventArgs e)
     {
       var index = this.feedList.SelectedIndex;
-      this.channels.RemoveAt(this.feedList.SelectedIndex);
+      this.feeds.RemoveAt(this.feedList.SelectedIndex);
 
-      if (this.channels.Count == 0)
+      if (this.feeds.Count == 0)
       {
         this.feedList.SelectedIndex = -1;
         return;
