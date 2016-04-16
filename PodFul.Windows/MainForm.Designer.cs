@@ -46,7 +46,7 @@
       this.feedList.Name = "feedList";
       this.feedList.Size = new System.Drawing.Size(223, 251);
       this.feedList.TabIndex = 0;
-      this.feedList.SelectedIndexChanged += new System.EventHandler(this.feeds_SelectedIndexChanged);
+      this.feedList.SelectedIndexChanged += new System.EventHandler(this.feedList_SelectedIndexChanged);
       // 
       // label1
       // 
@@ -93,6 +93,7 @@
       this.scanFeeds.TabIndex = 2;
       this.scanFeeds.Text = "Scan";
       this.scanFeeds.UseVisualStyleBackColor = true;
+      this.scanFeeds.Click += new System.EventHandler(this.scanFeeds_Click);
       // 
       // feedDescription
       // 

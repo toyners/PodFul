@@ -74,9 +74,17 @@ namespace PodFul.Windows
       this.feedList.SelectedIndex -= 1;
     }
 
-    private void feeds_SelectedIndexChanged(Object sender, EventArgs e)
+    private void feedList_SelectedIndexChanged(Object sender, EventArgs e)
     {
       this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
+    }
+
+    private void scanFeeds_Click(Object sender, EventArgs e)
+    {
+      foreach (var feed in this.feeds)
+      {
+        FeedFunctions.DownloadDocument(feed.URL);
+      }
     }
   }
 }
