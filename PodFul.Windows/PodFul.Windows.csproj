@@ -59,6 +59,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScanResultsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScanResultsForm.Designer.cs">
+      <DependentUpon>ScanResultsForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddFeedForm.resx">
       <DependentUpon>AddFeedForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -74,6 +80,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ScanResultsForm.resx">
+      <DependentUpon>ScanResultsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
