@@ -3,18 +3,23 @@ namespace PodFul.Windows
 {
   using System;
   using System.Collections.Generic;
+  using System.IO;
   using System.Windows.Forms;
   using PodFul.Library;
 
   public partial class MainForm : Form
   {
+    private const String feedFileExtension = ".feed";
+
     private List<Feed> feeds;
+    private String feedDirectory;
 
     public MainForm()
     {
       InitializeComponent();
 
-      this.feeds = new List<Feed>();
+      this.feedDirectory = @"C:\Projects\PodFul\Test\";
+      this.feeds = this.CreateFeedList();
     }
 
     private void AddFeed_Click(Object sender, EventArgs e)
@@ -26,7 +31,19 @@ namespace PodFul.Windows
       }
 
       var feed = FeedFunctions.CreateFeed(form.FeedURL.Text, form.FeedDirectory.Text);
+      FeedFunctions.WriteFeedToFile(feed, feedDirectory + this.feeds.Count + feedFileExtension);
       this.feeds.Add(feed);
+    }
+
+    private List<Feed> CreateFeedList()
+    {
+      List<Feed> list = new List<Feed>();
+      foreach (var filePath in Directory.GetFiles(this.feedDirectory, "*" + feedFileExtension, SearchOption.TopDirectoryOnly))
+      {
+        list.Add(FeedFunctions.ReadFeedFromFile(filePath));
+      }
+
+      return list;
     }
 
     private void removeFeed_Click(Object sender, EventArgs e)
