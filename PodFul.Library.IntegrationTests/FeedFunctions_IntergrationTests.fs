@@ -147,3 +147,30 @@ type FeedFunctions_IntergrationTests() =
         resultRecord.Podcasts.[2].URL |> should equal thirdPodcastURL
         resultRecord.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
         resultRecord.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
+
+    [<Test>]
+    member public this.``Create podcast list from RSS url``() =
+        let inputPath = workingDirectory + "podcast.rss";
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
+        let podcasts = FeedFunctions.CreatePodcastList inputPath
+
+        podcasts |> should not' (be null)
+        podcasts.Length |> should equal 3
+
+        podcasts.[0].Title |> should equal firstPodcastTitle
+        podcasts.[0].Description |> should equal firstPodcastDescription
+        podcasts.[0].URL |> should equal firstPodcastURL
+        podcasts.[0].FileSize |> should equal firstPodcastFileSize
+        podcasts.[0].PubDate |> should equal firstPodcastPubDate
+
+        podcasts.[1].Title |> should equal secondPodcastTitle
+        podcasts.[1].Description |> should equal secondPodcastDescription
+        podcasts.[1].URL |> should equal secondPodcastURL
+        podcasts.[1].FileSize |> should equal secondPodcastFileSize
+        podcasts.[1].PubDate |> should equal secondPodcastPubDate
+
+        podcasts.[2].Title |> should equal thirdPodcastTitle
+        podcasts.[2].Description |> should equal thirdPodcastDescription
+        podcasts.[2].URL |> should equal thirdPodcastURL
+        podcasts.[2].FileSize |> should equal thirdPodcastFileSize
+        podcasts.[2].PubDate |> should equal thirdPodcastPubDate

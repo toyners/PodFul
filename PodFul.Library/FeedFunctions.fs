@@ -62,6 +62,17 @@ module public FeedFunctions =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
+    let private createPodcastArrayFromDocument (document: XDocument) =
+        [ for element in document.Descendants(xn "item") do
+            yield {
+                Title = element?title.Value
+                Description = element?description.Value
+                PubDate = element?pubDate.Value |> DateTime.Parse
+                URL = getAttributeValue element?enclosure "url"
+                FileSize = getAttributeValue element?enclosure "length" |> Int64.Parse
+            }
+        ] |> List.toArray
+
     let public DownloadDocument(url) : XDocument = 
         let webClient = new WebClient()
         let data = webClient.DownloadString(Uri(url))
@@ -77,15 +88,13 @@ module public FeedFunctions =
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
-             Podcasts = [ for element in document.Descendants(xn "item") do
-                            yield {
-                                Title = element?title.Value
-                                Description = element?description.Value
-                                PubDate = element?pubDate.Value |> DateTime.Parse
-                                URL = getAttributeValue element?enclosure "url"
-                                FileSize = getAttributeValue element?enclosure "length" |> Int64.Parse
-                            }] |> List.toArray
+             Podcasts = createPodcastArrayFromDocument document
         }
+
+    let public CreatePodcastList url =
+        let document = DownloadDocument url
+        let channel = document.Element(xn "rss").Element(xn "channel")
+        createPodcastArrayFromDocument document
 
     let public ReadFeedFromFile(filePath : string) : Feed =
         
