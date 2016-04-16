@@ -9,15 +9,15 @@ open System
 open System.IO
 open System.Reflection
 
-type ChannelFunctions_IntergrationTests() = 
+type FeedFunctions_IntergrationTests() = 
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\ChannelFunctions_IntergrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\";
 
-    let channelTitle = "Channel Title"
-    let channelDescription = "Channel Description"
-    let channelWebsite = "Channel Website"
-    let channelDirectory = "Channel Directory"
-    let channelFeed = "Channel Feed"
+    let feedTitle = "Feed Title"
+    let feedDescription = "Feed Description"
+    let feedWebsite = "Feed Website"
+    let feedDirectory = "Feed Directory"
+    let feedFeed = "Feed Feed"
 
     let firstPodcastTitle = "Podcast #1 Title"
     let firstPodcastDescription = "Podcast #1 Description"
@@ -39,11 +39,11 @@ type ChannelFunctions_IntergrationTests() =
 
     member private this.CreateFeedRecord =
         {
-            Title = channelTitle
-            Description = channelDescription
-            Website = channelWebsite
-            Directory = channelDirectory
-            URL = channelFeed
+            Title = feedTitle
+            Description = feedDescription
+            Website = feedWebsite
+            Directory = feedDirectory
+            URL = feedFeed
             Podcasts = 
             [|
                 {
@@ -75,15 +75,15 @@ type ChannelFunctions_IntergrationTests() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
 
     [<Test>]
-    member public this.``Create Channel from RSS url``() =
+    member public this.``Create Feed from RSS url``() =
         let inputPath = workingDirectory + "podcast.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
         let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
 
         feed |> should not' (equal null)
-        feed.Title |> should equal channelTitle
-        feed.Description |> should equal channelDescription
-        feed.Website |> should equal channelWebsite
+        feed.Title |> should equal feedTitle
+        feed.Description |> should equal feedDescription
+        feed.Website |> should equal feedWebsite
         feed.Directory |> should equal "DirectoryPath"
         feed.URL |> should equal inputPath
 
@@ -109,23 +109,23 @@ type ChannelFunctions_IntergrationTests() =
         feed.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
 
     [<Test>]
-    member public this.``Writing/Reading cycle of Channel record``() = 
+    member public this.``Writing/Reading cycle of Feed record``() = 
         let testRecord = this.CreateFeedRecord
         let outputPath = workingDirectory + "record.txt";
-        FeedFunctions.WriteChannelToFile testRecord outputPath
+        FeedFunctions.WriteFeedToFile testRecord outputPath
 
         File.Exists(outputPath) |> should be True
 
         let inputPath = outputPath
-        let resultRecord = FeedFunctions.ReadChannelFromFile(inputPath)
+        let resultRecord = FeedFunctions.ReadFeedFromFile(inputPath)
 
         resultRecord |> should not' (be sameAs testRecord)
 
-        resultRecord.Title |> should equal channelTitle
-        resultRecord.Description |> should equal channelDescription
-        resultRecord.Website |> should equal channelWebsite
-        resultRecord.Directory |> should equal channelDirectory
-        resultRecord.URL |> should equal channelFeed
+        resultRecord.Title |> should equal feedTitle
+        resultRecord.Description |> should equal feedDescription
+        resultRecord.Website |> should equal feedWebsite
+        resultRecord.Directory |> should equal feedDirectory
+        resultRecord.URL |> should equal feedFeed
 
         resultRecord.Podcasts |> should not' (be null)
         resultRecord.Podcasts.Length |> should equal 3

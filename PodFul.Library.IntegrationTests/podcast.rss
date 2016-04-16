@@ -10,9 +10,9 @@
   xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 >
   <channel>
-	  <title>Channel Title</title>
-	  <link>Channel Website</link>
-	  <description>Channel Description</description>
+	  <title>Feed Title</title>
+	  <link>Feed Website</link>
+	  <description>Feed Description</description>
 	  <item>
 		  <title>Podcast #1 Title</title>
 		  <pubDate>2 Jan 2014 01:02:03</pubDate>

@@ -52,7 +52,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="ChannelFunctions_IntergrationTests.fs" />
+    <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <EmbeddedResource Include="podcast.rss" />

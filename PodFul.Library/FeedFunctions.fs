@@ -87,7 +87,7 @@ module public FeedFunctions =
                             }] |> List.toArray
         }
 
-    let public ReadChannelFromFile(filePath : string) : Feed =
+    let public ReadFeedFromFile(filePath : string) : Feed =
         
         use reader = new StreamReader(filePath)
         let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
@@ -101,7 +101,7 @@ module public FeedFunctions =
             Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
         }
 
-    let public WriteChannelToFile (feed : Feed) (filePath : string) : unit =
+    let public WriteFeedToFile (feed : Feed) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
 
