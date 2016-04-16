@@ -20,6 +20,7 @@ namespace PodFul.Windows
 
       this.feedDirectory = @"C:\Projects\PodFul\Test\";
       this.feeds = this.CreateFeedList();
+      this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
     }
 
     private void AddFeed_Click(Object sender, EventArgs e)
