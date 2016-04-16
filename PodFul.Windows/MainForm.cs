@@ -31,12 +31,33 @@ namespace PodFul.Windows
 
     private void removeFeed_Click(Object sender, EventArgs e)
     {
+      var index = this.feeds.SelectedIndex;
+      this.channels.RemoveAt(this.feeds.SelectedIndex);
 
+      if (this.channels.Count == 0)
+      {
+        this.feeds.SelectedIndex = -1;
+        return;
+      }
+
+      if (index == 0)
+      {
+        this.feeds.SelectedIndex = 0;
+        return;
+      }
+
+      if (index == this.feeds.Items.Count)
+      {
+        this.feeds.SelectedIndex = this.feeds.Items.Count - 1;
+        return;
+      }
+
+      this.feeds.SelectedIndex -= 1;
     }
 
     private void feeds_SelectedIndexChanged(Object sender, EventArgs e)
     {
-      int i = 0;
+      this.removeFeed.Enabled = (this.feeds.SelectedIndex != -1);
     }
   }
 }
