@@ -15,10 +15,10 @@ type Feed =
 
     override x.Equals other = 
         match other with
-        | :? Feed as y -> (x.Title = y.Title)
+        | :? Feed as y -> (x.URL = y.URL)
         | _ -> false
 
-    override x.GetHashCode() = hash x.Title 
+    override x.GetHashCode() = hash x.URL
 
     interface System.IComparable with
         member x.CompareTo other = 
