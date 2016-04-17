@@ -27,7 +27,7 @@ namespace PodFul.Windows
     private void AddFeed_Click(Object sender, EventArgs e)
     {
       var form = new AddFeedForm();
-      if (form.ShowDialog() == DialogResult.Abort)
+      if (form.ShowDialog() == DialogResult.Cancel)
       {
         return;
       }
