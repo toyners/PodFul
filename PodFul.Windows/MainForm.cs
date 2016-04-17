@@ -86,9 +86,23 @@ namespace PodFul.Windows
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
+      List<Podcast> newPodcasts = new List<Podcast>();
       foreach (var feed in this.feeds)
       {
-        FeedFunctions.DownloadDocument(feed.URL);
+        var podcasts = FeedFunctions.CreatePodcastList(feed.URL);
+
+        Int32 index = 0;
+        while (podcasts[index] != feed.Podcasts[index])
+        {
+          newPodcasts.Add(podcasts[index]);
+          index++;
+        }
+      }
+
+      var form = new ScanResultsForm(newPodcasts);
+      if (form.ShowDialog() == DialogResult.Cancel)
+      {
+        return;
       }
     }
   }
