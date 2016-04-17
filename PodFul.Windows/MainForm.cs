@@ -110,11 +110,17 @@ namespace PodFul.Windows
         var podcasts = FeedFunctions.CreatePodcastList(feed.URL);
 
         Int32 index = 0;
-        while (podcasts[index] != feed.Podcasts[index])
+        while (index < podcasts.Length && index < feed.Podcasts.Length && !podcasts[index].Equals(feed.Podcasts[index]))
         {
           newPodcasts.Add(podcasts[index]);
           index++;
         }
+      }
+
+      if (newPodcasts.Count == 0)
+      {
+        MessageBox.Show("No new podcasts found", "Podful - Scan results", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
       }
 
       var form = new ScanResultsForm(newPodcasts);
