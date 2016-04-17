@@ -19,7 +19,8 @@ namespace PodFul.Windows
       InitializeComponent();
 
       this.feedDirectory = @"C:\Projects\PodFul\Test\";
-      this.feeds = this.CreateFeedList();
+      this.feeds = new List<Feed>();
+      this.CreateFeedList();
       this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
       this.scanFeeds.Enabled = (this.feedList.Items.Count > 0);
     }
@@ -34,20 +35,22 @@ namespace PodFul.Windows
 
       var feed = FeedFunctions.CreateFeed(form.FeedURL.Text, form.FeedDirectory.Text);
       FeedFunctions.WriteFeedToFile(feed, feedDirectory + this.feeds.Count + feedFileExtension);
+      this.AddFeedToList(feed);
+    }
+
+    private void AddFeedToList(Feed feed)
+    {
       this.feeds.Add(feed);
-      var title = feed + " [" + feed.Podcasts.Length + "]";
+      var title = feed.Title + " [" + feed.Podcasts.Length + " podcast" + (feed.Podcasts.Length != 1 ? "s" : String.Empty) + "]";
       this.feedList.Items.Add(title);
     }
 
-    private List<Feed> CreateFeedList()
+    private void CreateFeedList()
     {
-      List<Feed> list = new List<Feed>();
       foreach (var filePath in Directory.GetFiles(this.feedDirectory, "*" + feedFileExtension, SearchOption.TopDirectoryOnly))
       {
-        list.Add(FeedFunctions.ReadFeedFromFile(filePath));
+        AddFeedToList(FeedFunctions.ReadFeedFromFile(filePath));
       }
-
-      return list;
     }
 
     private void removeFeed_Click(Object sender, EventArgs e)
