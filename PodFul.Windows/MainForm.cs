@@ -35,7 +35,8 @@ namespace PodFul.Windows
       var feed = FeedFunctions.CreateFeed(form.FeedURL.Text, form.FeedDirectory.Text);
       FeedFunctions.WriteFeedToFile(feed, feedDirectory + this.feeds.Count + feedFileExtension);
       this.feeds.Add(feed);
-      this.feedList.Items.Add(feed.Title);
+      var title = feed + " [" + feed.Podcasts.Length + "]";
+      this.feedList.Items.Add(title);
     }
 
     private List<Feed> CreateFeedList()

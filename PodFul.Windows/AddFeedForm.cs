@@ -13,6 +13,11 @@ namespace PodFul.Windows
 
     private void addFeed_Click(Object sender, EventArgs e)
     {
+      if (!this.FeedDirectory.Text.EndsWith(@"\"))
+      {
+        this.FeedDirectory.Text += @"\";
+      }
+
       this.Visible = false;
     }
 
