@@ -1,4 +1,4 @@
-﻿namespace PodFul.Library.UnitTests
+﻿namespace PodFul.Library.IntegrationTests
 
 open FsUnit
 open Jabberwocky.Toolkit.Assembly
