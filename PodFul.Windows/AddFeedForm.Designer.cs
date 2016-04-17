@@ -33,6 +33,7 @@
       this.FeedURL = new System.Windows.Forms.TextBox();
       this.label2 = new System.Windows.Forms.Label();
       this.addFeed = new System.Windows.Forms.Button();
+      this.cancel = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // label1
@@ -50,6 +51,7 @@
       this.FeedDirectory.Name = "FeedDirectory";
       this.FeedDirectory.Size = new System.Drawing.Size(298, 20);
       this.FeedDirectory.TabIndex = 1;
+      this.FeedDirectory.TextChanged += new System.EventHandler(this.TextHasChanged);
       // 
       // FeedURL
       // 
@@ -57,6 +59,7 @@
       this.FeedURL.Name = "FeedURL";
       this.FeedURL.Size = new System.Drawing.Size(298, 20);
       this.FeedURL.TabIndex = 3;
+      this.FeedURL.TextChanged += new System.EventHandler(this.TextHasChanged);
       // 
       // label2
       // 
@@ -69,20 +72,35 @@
       // 
       // addFeed
       // 
-      this.addFeed.Location = new System.Drawing.Point(298, 58);
+      this.addFeed.DialogResult = System.Windows.Forms.DialogResult.OK;
+      this.addFeed.Enabled = false;
+      this.addFeed.Location = new System.Drawing.Point(231, 58);
       this.addFeed.Name = "addFeed";
-      this.addFeed.Size = new System.Drawing.Size(61, 35);
+      this.addFeed.Size = new System.Drawing.Size(61, 30);
       this.addFeed.TabIndex = 4;
       this.addFeed.Text = "Add";
       this.addFeed.UseVisualStyleBackColor = true;
       this.addFeed.Click += new System.EventHandler(this.addFeed_Click);
+      // 
+      // cancel
+      // 
+      this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+      this.cancel.Location = new System.Drawing.Point(298, 58);
+      this.cancel.Name = "cancel";
+      this.cancel.Size = new System.Drawing.Size(61, 30);
+      this.cancel.TabIndex = 4;
+      this.cancel.Text = "Cancel";
+      this.cancel.UseVisualStyleBackColor = true;
+      this.cancel.Click += new System.EventHandler(this.addFeed_Click);
       // 
       // AddFeedForm
       // 
       this.AcceptButton = this.addFeed;
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(368, 100);
+      this.CancelButton = this.cancel;
+      this.ClientSize = new System.Drawing.Size(368, 97);
+      this.Controls.Add(this.cancel);
       this.Controls.Add(this.addFeed);
       this.Controls.Add(this.FeedURL);
       this.Controls.Add(this.label2);
@@ -106,5 +124,6 @@
     private System.Windows.Forms.Button addFeed;
     internal System.Windows.Forms.TextBox FeedDirectory;
     internal System.Windows.Forms.TextBox FeedURL;
+    private System.Windows.Forms.Button cancel;
   }
 }

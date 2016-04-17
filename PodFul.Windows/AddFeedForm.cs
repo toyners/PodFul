@@ -15,5 +15,10 @@ namespace PodFul.Windows
     {
       this.Visible = false;
     }
+
+    private void TextHasChanged(Object sender, EventArgs e)
+    {
+      this.addFeed.Enabled = (this.FeedDirectory.Text.Length > 0 && this.FeedURL.Text.Length > 0);
+    }
   }
 }
