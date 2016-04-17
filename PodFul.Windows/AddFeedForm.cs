@@ -2,6 +2,7 @@
 namespace PodFul.Windows
 {
   using System;
+  using System.IO;
   using System.Windows.Forms;
 
   public partial class AddFeedForm : Form
@@ -16,6 +17,18 @@ namespace PodFul.Windows
       if (!this.FeedDirectory.Text.EndsWith(@"\"))
       {
         this.FeedDirectory.Text += @"\";
+      }
+
+      if (!Directory.Exists(this.FeedDirectory.Text))
+      {
+        var message = String.Format("Directory '{0}' does not exist. Create it now?", this.FeedDirectory.Text);
+        if (MessageBox.Show(message, "Missing Directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1) == DialogResult.Cancel)
+        {
+          this.DialogResult = DialogResult.Cancel;
+          return;
+        }
+
+        Directory.CreateDirectory(this.FeedDirectory.Text);
       }
 
       this.Visible = false;
