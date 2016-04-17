@@ -28,38 +28,38 @@
     /// </summary>
     private void InitializeComponent()
     {
-      this.dataGridView1 = new System.Windows.Forms.DataGridView();
-      ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+      this.podcastList = new System.Windows.Forms.DataGridView();
+      ((System.ComponentModel.ISupportInitialize)(this.podcastList)).BeginInit();
       this.SuspendLayout();
       // 
-      // dataGridView1
+      // podcastList
       // 
-      this.dataGridView1.AllowUserToAddRows = false;
-      this.dataGridView1.AllowUserToDeleteRows = false;
-      this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-      this.dataGridView1.Name = "dataGridView1";
-      this.dataGridView1.ReadOnly = true;
-      this.dataGridView1.Size = new System.Drawing.Size(284, 261);
-      this.dataGridView1.TabIndex = 0;
+      this.podcastList.AllowUserToAddRows = false;
+      this.podcastList.AllowUserToDeleteRows = false;
+      this.podcastList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.podcastList.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.podcastList.Location = new System.Drawing.Point(0, 0);
+      this.podcastList.Name = "podcastList";
+      this.podcastList.ReadOnly = true;
+      this.podcastList.Size = new System.Drawing.Size(370, 258);
+      this.podcastList.TabIndex = 0;
       // 
       // ScanResultsForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(284, 261);
-      this.Controls.Add(this.dataGridView1);
+      this.ClientSize = new System.Drawing.Size(370, 258);
+      this.Controls.Add(this.podcastList);
       this.MinimizeBox = false;
       this.Name = "ScanResultsForm";
       this.Text = "Scan Results";
-      ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.podcastList)).EndInit();
       this.ResumeLayout(false);
 
     }
 
     #endregion
 
-    private System.Windows.Forms.DataGridView dataGridView1;
+    private System.Windows.Forms.DataGridView podcastList;
   }
 }

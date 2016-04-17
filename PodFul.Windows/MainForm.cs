@@ -27,13 +27,13 @@ namespace PodFul.Windows
 
     private void AddFeed_Click(Object sender, EventArgs e)
     {
-      var form = new AddFeedForm();
-      if (form.ShowDialog() == DialogResult.Cancel)
+      var addFeedForm = new AddFeedForm();
+      if (addFeedForm.ShowDialog() == DialogResult.Cancel)
       {
         return;
       }
 
-      var feed = FeedFunctions.CreateFeed(form.FeedURL.Text, form.FeedDirectory.Text);
+      var feed = FeedFunctions.CreateFeed(addFeedForm.FeedURL.Text, addFeedForm.FeedDirectory.Text);
       FeedFunctions.WriteFeedToFile(feed, feedDirectory + this.feeds.Count + feedFileExtension);
       this.AddFeedToList(feed);
     }
@@ -43,6 +43,7 @@ namespace PodFul.Windows
       this.feeds.Add(feed);
       var title = feed.Title + " [" + feed.Podcasts.Length + " podcast" + (feed.Podcasts.Length != 1 ? "s" : String.Empty) + "]";
       this.feedList.Items.Add(title);
+      this.feedList.SelectedIndex = this.feedList.Items.Count - 1;
     }
 
     private void CreateFeedList()
@@ -82,6 +83,23 @@ namespace PodFul.Windows
     private void feedList_SelectedIndexChanged(Object sender, EventArgs e)
     {
       this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
+
+      if (this.feedList.SelectedIndex == -1)
+      {
+        return;
+      }
+
+      this.DisplayPodcasts(this.feeds[this.feedList.SelectedIndex].Podcasts);
+    }
+
+    private void DisplayPodcasts(IEnumerable<Podcast> podcasts)
+    {
+      this.podcastList.Items.Clear();
+      foreach (var podcast in podcasts)
+      {
+        var shortDescription = podcast.Description.Substring(0, 47) + "...";
+        this.podcastList.Items.Add(podcast.Title + " - " + shortDescription);
+      }
     }
 
     private void scanFeeds_Click(Object sender, EventArgs e)

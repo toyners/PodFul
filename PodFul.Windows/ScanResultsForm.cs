@@ -7,9 +7,14 @@ namespace PodFul.Windows
 
   public partial class ScanResultsForm : Form
   {
-    public ScanResultsForm(List<Podcast> podcasts)
+    public ScanResultsForm(IEnumerable<Podcast> podcasts)
     {
       InitializeComponent();
+
+      foreach (var podcast in podcasts)
+      {
+        this.podcastList.Rows.Add(podcast.Title, podcast.Description, podcast.FileSize);
+      }
     }
   }
 }
