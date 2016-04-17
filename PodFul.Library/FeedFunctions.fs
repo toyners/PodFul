@@ -110,11 +110,18 @@ module public FeedFunctions =
             Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
         }
 
+    let private replaceLineBreaksWithSpaces (text: string) : string = 
+        let mutable fixedText = text.Replace("\r\n", " ").Replace("\n", " ")
+        while fixedText.IndexOf("  ") <> -1 do 
+            fixedText <- fixedText.Replace("  ", " ")
+
+        fixedText
+
     let public WriteFeedToFile (feed : Feed) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description);
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + replaceLineBreaksWithSpaces feed.Description);
 
         for podcast in feed.Podcasts do
-            writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + podcast.Description)
+            writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + replaceLineBreaksWithSpaces podcast.Description)

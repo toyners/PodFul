@@ -19,11 +19,17 @@ type FeedFunctions_IntergrationTests() =
     let feedDirectory = "Feed Directory"
     let feedFeed = "Feed Feed"
 
+    let feedDescriptionContainingLineBreaks = "This\r\nis\r\n\r\na\nFeed\n\nDescription."
+    let expectedFeedDescription = "This is a Feed Description."
+
     let firstPodcastTitle = "Podcast #1 Title"
     let firstPodcastDescription = "Podcast #1 Description"
     let firstPodcastURL = "Podcast1.mp3"
     let firstPodcastFileSize = 1L
     let firstPodcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
+
+    let podcastDescriptionContainingLineBreaks = "This\r\nis\r\n\r\na\nPodcast\n\nDescription."
+    let expectedPodcastDescription = "This is a Podcast Description."
 
     let secondPodcastTitle = "Podcast #2 Title"
     let secondPodcastDescription = "Podcast #2 Description"
@@ -37,7 +43,7 @@ type FeedFunctions_IntergrationTests() =
     let thirdPodcastFileSize = 3L
     let thirdPodcastPubDate = new DateTime(2016, 5, 6, 15, 16, 17)
 
-    member private this.CreateFeedRecord =
+    member private this.CreateFeed =
         {
             Title = feedTitle
             Description = feedDescription
@@ -67,6 +73,25 @@ type FeedFunctions_IntergrationTests() =
                     FileSize = thirdPodcastFileSize
                     PubDate = thirdPodcastPubDate
                 };            
+            |]
+        }
+
+    member private this.CreateFeedWithTextContainingLineBreaks =
+        {
+            Title = feedTitle
+            Description = feedDescriptionContainingLineBreaks
+            Website = feedWebsite
+            Directory = feedDirectory
+            URL = feedFeed
+            Podcasts = 
+            [|
+                {
+                    Title = firstPodcastTitle
+                    Description = podcastDescriptionContainingLineBreaks
+                    URL = firstPodcastURL
+                    FileSize = firstPodcastFileSize
+                    PubDate = firstPodcastPubDate
+                }
             |]
         }
 
@@ -110,7 +135,7 @@ type FeedFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Writing/Reading cycle of Feed record``() = 
-        let testRecord = this.CreateFeedRecord
+        let testRecord = this.CreateFeed
         let outputPath = workingDirectory + "record.txt";
         FeedFunctions.WriteFeedToFile testRecord outputPath
 
@@ -147,6 +172,34 @@ type FeedFunctions_IntergrationTests() =
         resultRecord.Podcasts.[2].URL |> should equal thirdPodcastURL
         resultRecord.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
         resultRecord.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
+
+    [<Test>]
+    member public this.``Writing/Reading cycle of Feed record with line breaks in Descriptions``() = 
+        let testRecord = this.CreateFeedWithTextContainingLineBreaks 
+        let outputPath = workingDirectory + "record.txt";
+        FeedFunctions.WriteFeedToFile testRecord outputPath
+
+        File.Exists(outputPath) |> should be True
+
+        let inputPath = outputPath
+        let resultRecord = FeedFunctions.ReadFeedFromFile(inputPath)
+
+        resultRecord |> should not' (be sameAs testRecord)
+
+        resultRecord.Title |> should equal feedTitle
+        resultRecord.Description |> should equal expectedFeedDescription
+        resultRecord.Website |> should equal feedWebsite
+        resultRecord.Directory |> should equal feedDirectory
+        resultRecord.URL |> should equal feedFeed
+
+        resultRecord.Podcasts |> should not' (be null)
+        resultRecord.Podcasts.Length |> should equal 1
+
+        resultRecord.Podcasts.[0].Title |> should equal firstPodcastTitle
+        resultRecord.Podcasts.[0].Description |> should equal expectedPodcastDescription
+        resultRecord.Podcasts.[0].URL |> should equal firstPodcastURL
+        resultRecord.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
+        resultRecord.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
 
     [<Test>]
     member public this.``Create podcast list from RSS url``() =
