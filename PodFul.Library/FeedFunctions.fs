@@ -35,7 +35,7 @@ module public FeedFunctions =
             failwith "Fields array is null."
         else if fields.Length = 0 then
             failwith "Fields array is empty."
-        else if fields.Length < 5 then
+        else if fields.Length < 7 then
             failwith ("Fields array only has " + fields.Length.ToString() + " field(s).")
         else
             fields
@@ -53,12 +53,12 @@ module public FeedFunctions =
               let podcast = 
                 {
                     Title = fields.[0]
-                    PubDate = System.DateTime.Parse(fields.[1])
+                    PubDate = DateTime.Parse(fields.[1])
                     URL = fields.[2]
                     FileSize = Int64.Parse(fields.[3])
                     Description = fields.[4]
-                    FirstDownloadDate = DateTime.MinValue
-                    LatestDownloadDate = DateTime.MinValue
+                    FirstDownloadDate = DateTime.Parse(fields.[5])
+                    LatestDownloadDate = DateTime.Parse(fields.[6])
                 }
 
               // Set the threaded state to be the XML reader.
@@ -128,4 +128,10 @@ module public FeedFunctions =
         writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + replaceLineBreaksWithSpaces feed.Description);
 
         for podcast in feed.Podcasts do
-            writer.WriteLine(podcast.Title + "|" + podcast.PubDate.ToString() + "|" + podcast.URL + "|" + podcast.FileSize.ToString() + "|" + replaceLineBreaksWithSpaces podcast.Description)
+            writer.WriteLine(podcast.Title + "|" + 
+                podcast.PubDate.ToString() + "|" + 
+                podcast.URL + "|" + 
+                podcast.FileSize.ToString() + "|" +
+                replaceLineBreaksWithSpaces podcast.Description + "|" +
+                podcast.FirstDownloadDate.ToString() + "|" + 
+                podcast.LatestDownloadDate.ToString() + "|")
