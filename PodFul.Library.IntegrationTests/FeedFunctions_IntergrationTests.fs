@@ -192,6 +192,7 @@ type FeedFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Writing/Reading cycle of Feed record with line breaks in Descriptions``() = 
+        // Arrange
         let testRecord = this.CreateFeedWithTextContainingLineBreaks 
         let outputPath = workingDirectory + "record.txt";
         FeedFunctions.WriteFeedToFile testRecord outputPath
@@ -199,24 +200,16 @@ type FeedFunctions_IntergrationTests() =
         File.Exists(outputPath) |> should be True
 
         let inputPath = outputPath
+
+        // Act
         let resultRecord = FeedFunctions.ReadFeedFromFile(inputPath)
 
+        // Assert
         resultRecord |> should not' (be sameAs testRecord)
-
-        resultRecord.Title |> should equal feedTitle
         resultRecord.Description |> should equal expectedFeedDescription
-        resultRecord.Website |> should equal feedWebsite
-        resultRecord.Directory |> should equal feedDirectory
-        resultRecord.URL |> should equal feedFeed
-
         resultRecord.Podcasts |> should not' (be null)
         resultRecord.Podcasts.Length |> should equal 1
-
-        resultRecord.Podcasts.[0].Title |> should equal firstPodcastTitle
         resultRecord.Podcasts.[0].Description |> should equal expectedPodcastDescription
-        resultRecord.Podcasts.[0].URL |> should equal firstPodcastURL
-        resultRecord.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
-        resultRecord.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
 
     [<Test>]
     member public this.``Create podcast list from RSS url``() =
