@@ -58,6 +58,8 @@ type FeedFunctions_IntergrationTests() =
                     URL = firstPodcastURL
                     FileSize = firstPodcastFileSize
                     PubDate = firstPodcastPubDate
+                    FirstDownloadDate = DateTime.MinValue
+                    LatestDownloadDate = DateTime.MinValue
                 };
                 {
                     Title = secondPodcastTitle
@@ -65,6 +67,8 @@ type FeedFunctions_IntergrationTests() =
                     URL = secondPodcastURL
                     FileSize = secondPodcastFileSize
                     PubDate = secondPodcastPubDate
+                    FirstDownloadDate = DateTime.MinValue
+                    LatestDownloadDate = DateTime.MinValue
                 };
                 {
                     Title = thirdPodcastTitle
@@ -72,6 +76,8 @@ type FeedFunctions_IntergrationTests() =
                     URL = thirdPodcastURL
                     FileSize = thirdPodcastFileSize
                     PubDate = thirdPodcastPubDate
+                    FirstDownloadDate = DateTime.MinValue
+                    LatestDownloadDate = DateTime.MinValue
                 };            
             |]
         }
@@ -91,6 +97,8 @@ type FeedFunctions_IntergrationTests() =
                     URL = firstPodcastURL
                     FileSize = firstPodcastFileSize
                     PubDate = firstPodcastPubDate
+                    FirstDownloadDate = DateTime.MinValue
+                    LatestDownloadDate = DateTime.MinValue
                 }
             |]
         }

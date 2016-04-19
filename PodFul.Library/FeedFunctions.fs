@@ -57,6 +57,8 @@ module public FeedFunctions =
                     URL = fields.[2]
                     FileSize = Int64.Parse(fields.[3])
                     Description = fields.[4]
+                    FirstDownloadDate = DateTime.MinValue
+                    LatestDownloadDate = DateTime.MinValue
                 }
 
               // Set the threaded state to be the XML reader.
@@ -70,6 +72,8 @@ module public FeedFunctions =
                 PubDate = element?pubDate.Value |> DateTime.Parse
                 URL = getAttributeValue element?enclosure "url"
                 FileSize = getAttributeValue element?enclosure "length" |> Int64.Parse
+                FirstDownloadDate = DateTime.MinValue
+                LatestDownloadDate = DateTime.MinValue
             }
         ] |> List.toArray
 

@@ -10,18 +10,46 @@ type Podcast =
         URL : string;
         FileSize : Int64;
         PubDate : DateTime;
+        FirstDownloadDate : DateTime;
+        LatestDownloadDate : DateTime;
     }
 
-    override x.Equals other = 
-        match other with
-        | :? Podcast as y -> (x.URL = y.URL)
-        | _ -> false
+    with
+        static member SetFirstDownloadDate original date =
+            if original.FirstDownloadDate <> DateTime.MinValue then
+                original
+            else
+                {
+                    Title = original.Title
+                    Description = original.Description
+                    URL = original.URL
+                    FileSize = original.FileSize
+                    PubDate = original.PubDate
+                    FirstDownloadDate = date
+                    LatestDownloadDate = date
+                }
 
-    override x.GetHashCode() = hash x.URL
+        static member SetLatestDownloadDate original date =
+            {
+                Title = original.Title
+                Description = original.Description
+                URL = original.URL
+                FileSize = original.FileSize
+                PubDate = original.PubDate
+                FirstDownloadDate = original.FirstDownloadDate
+                LatestDownloadDate = date
+            }
 
-    interface System.IComparable with
-        member x.CompareTo other = 
+        override x.Equals other = 
             match other with
-            | :? Podcast as y -> compare x y
-            | _ -> let message = "Cannot compare values that are not of type Podcast. Type of other is '" + other.GetType().ToString() + "'"
-                   invalidArg "other" message
+            | :? Podcast as y -> (x.URL = y.URL)
+            | _ -> false
+
+        override x.GetHashCode() = hash x.URL
+
+        interface System.IComparable with
+            member x.CompareTo other = 
+                match other with
+                | :? Podcast as y -> compare x y
+                | _ -> let message = "Cannot compare values that are not of type Podcast. Type of other is '" + other.GetType().ToString() + "'"
+                       invalidArg "other" message
