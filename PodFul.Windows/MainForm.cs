@@ -12,6 +12,7 @@ namespace PodFul.Windows
     private const String feedFileExtension = ".feed";
 
     private List<Feed> feeds;
+    private Feed currentFeed;
     private String feedDirectory;
 
     public MainForm()
@@ -86,19 +87,21 @@ namespace PodFul.Windows
 
       if (this.feedList.SelectedIndex == -1)
       {
+        this.feedDescription.Text = String.Empty;
         return;
       }
 
-      this.DisplayPodcasts(this.feeds[this.feedList.SelectedIndex].Podcasts);
+      this.currentFeed = this.feeds[this.feedList.SelectedIndex];
+      this.feedDescription.Text = this.currentFeed.Description;
+      this.DisplayPodcasts();
     }
 
-    private void DisplayPodcasts(IEnumerable<Podcast> podcasts)
+    private void DisplayPodcasts()
     {
       this.podcastList.Items.Clear();
-      foreach (var podcast in podcasts)
+      foreach (var podcast in this.currentFeed.Podcasts)
       {
-        var shortDescription = podcast.Description.Substring(0, 47) + "...";
-        this.podcastList.Items.Add(podcast.Title + " - " + shortDescription);
+        this.podcastList.Items.Add(podcast.Title);
       }
     }
 
@@ -128,6 +131,21 @@ namespace PodFul.Windows
       {
         return;
       }
+    }
+
+    private void podcastList_SelectedIndexChanged(Object sender, EventArgs e)
+    {
+      this.downloadPodcast.Enabled = (this.podcastList.SelectedIndex != -1);
+
+      if (this.podcastList.SelectedIndex == -1)
+      {
+        this.podcastDescription.Text = String.Empty;
+        return;
+      }
+
+      var podcast = this.currentFeed.Podcasts[this.podcastList.SelectedIndex];
+      var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}", podcast.Description, podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), podcast.FileSize);
+      this.podcastDescription.Text = text;
     }
   }
 }
