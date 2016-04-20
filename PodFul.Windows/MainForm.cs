@@ -144,7 +144,12 @@ namespace PodFul.Windows
       }
 
       var podcast = this.currentFeed.Podcasts[this.podcastList.SelectedIndex];
-      var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}", podcast.Description, podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), podcast.FileSize);
+      var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}\r\nDOWNLOAD DATE: {3}", 
+        podcast.Description, 
+        podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), 
+        podcast.FileSize,
+        podcast.LatestDownloadDate != DateTime.MinValue ? podcast.LatestDownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm::ss") : @"n\a");
+
       this.podcastDescription.Text = text;
     }
   }
