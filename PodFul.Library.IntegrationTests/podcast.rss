@@ -25,11 +25,27 @@
 		  <description><![CDATA[Podcast #2 Description]]></description>
       <enclosure url="Podcast2.mp3" length="2" type="audio/mpeg" />
 	  </item>
-	  <item>
-		  <title>Podcast #3 Title</title>
-		  <pubDate>06 May 2016 15:16:17</pubDate>
-		  <description><![CDATA[Podcast #3 Description]]></description>
-      <enclosure url="Podcast3.mp3" length="3" type="audio/mpeg" />
-	  </item>
+    <item>
+      <title>Podcast #3 Title</title>
+      <enclosure url="Podcast3.mp3" />
+    </item>
+    <item>
+      <!-- Missing title -->
+      <enclosure url="Podcast4.mp3" length="4" type="audio/mpeg" />
+    </item>
+    <item>
+      <title>Podcast #5 Title</title>
+      <!-- Missing enclosure tag -->
+    </item>
+    <item>
+      <title>Podcast #6 Title</title>
+      <!-- Bad enclosure: Missing url attribute -->
+      <enclosure length="6" type="audio/mpeg" />
+    </item>
+    <item>
+      <title>Podcast #7 Title</title>
+      <!-- Bad enclosure: Empty url attribute -->
+      <enclosure url="" length="7" type="audio/mpeg" />
+    </item>
 	</channel>
 </rss>

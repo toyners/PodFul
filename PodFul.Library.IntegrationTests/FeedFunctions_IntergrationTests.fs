@@ -38,10 +38,10 @@ type FeedFunctions_IntergrationTests() =
     let secondPodcastPubDate = new DateTime(2015, 3, 4, 10, 11, 12)
 
     let thirdPodcastTitle = "Podcast #3 Title"
-    let thirdPodcastDescription = "Podcast #3 Description"
+    //let thirdPodcastDescription = "Podcast #3 Description"
     let thirdPodcastURL = "Podcast3.mp3"
-    let thirdPodcastFileSize = 3L
-    let thirdPodcastPubDate = new DateTime(2016, 5, 6, 15, 16, 17)
+    //let thirdPodcastFileSize = 3L
+    //let thirdPodcastPubDate = new DateTime(2016, 5, 6, 15, 16, 17)
 
     let firstDownloadDate = new DateTime(2017, 1, 1)
     let latestDownloadDate = new DateTime(2017, 1, 2)
@@ -75,10 +75,10 @@ type FeedFunctions_IntergrationTests() =
                 };
                 {
                     Title = thirdPodcastTitle
-                    Description = thirdPodcastDescription
+                    Description = ""
                     URL = thirdPodcastURL
-                    FileSize = thirdPodcastFileSize
-                    PubDate = thirdPodcastPubDate
+                    FileSize = -1L
+                    PubDate = DateTime.MinValue
                     FirstDownloadDate = firstDownloadDate
                     LatestDownloadDate = latestDownloadDate
                 };            
@@ -139,10 +139,10 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
 
         feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
-        feed.Podcasts.[2].Description |> should equal thirdPodcastDescription
+        feed.Podcasts.[2].Description |> should equal ""
         feed.Podcasts.[2].URL |> should equal thirdPodcastURL
-        feed.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
-        feed.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
+        feed.Podcasts.[2].FileSize |> should equal -1
+        feed.Podcasts.[2].PubDate |> should equal DateTime.MinValue
 
     [<Test>]
     member public this.``Writing/Reading cycle of Feed record``() = 
@@ -183,10 +183,10 @@ type FeedFunctions_IntergrationTests() =
         resultRecord.Podcasts.[1].LatestDownloadDate |> should equal latestDownloadDate
 
         resultRecord.Podcasts.[2].Title |> should equal thirdPodcastTitle
-        resultRecord.Podcasts.[2].Description |> should equal thirdPodcastDescription
+        resultRecord.Podcasts.[2].Description |> should equal ""
         resultRecord.Podcasts.[2].URL |> should equal thirdPodcastURL
-        resultRecord.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
-        resultRecord.Podcasts.[2].PubDate |> should equal thirdPodcastPubDate
+        resultRecord.Podcasts.[2].FileSize |> should equal -1L
+        resultRecord.Podcasts.[2].PubDate |> should equal DateTime.MinValue
         resultRecord.Podcasts.[2].FirstDownloadDate |> should equal firstDownloadDate
         resultRecord.Podcasts.[2].LatestDownloadDate |> should equal latestDownloadDate
 
@@ -233,7 +233,7 @@ type FeedFunctions_IntergrationTests() =
         podcasts.[1].PubDate |> should equal secondPodcastPubDate
 
         podcasts.[2].Title |> should equal thirdPodcastTitle
-        podcasts.[2].Description |> should equal thirdPodcastDescription
+        podcasts.[2].Description |> should equal ""
         podcasts.[2].URL |> should equal thirdPodcastURL
-        podcasts.[2].FileSize |> should equal thirdPodcastFileSize
-        podcasts.[2].PubDate |> should equal thirdPodcastPubDate
+        podcasts.[2].FileSize |> should equal -1L
+        podcasts.[2].PubDate |> should equal DateTime.MinValue

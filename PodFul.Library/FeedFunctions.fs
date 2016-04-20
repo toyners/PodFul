@@ -11,17 +11,28 @@ module public FeedFunctions =
     let private xn name = XName.Get(name)
 
     // This implementation of the dynamic operator ? returns the child element from the parent that matches the name.
-    let private (?) (parent : XElement) name : XElement = 
-        let child = parent.Element(xn name)
-        match child with
-        | null -> failwith ("Element '" + name + "' not found in '" + parent.Name.LocalName + "'")
-        | _ -> child;
+    let private (?) (parent : XElement) name : XElement = parent.Element(xn name)
 
-    let private getAttributeValue (element: XElement) name : string = 
-        let attribute = element.Attribute(xn name)
-        match attribute with 
-        | null -> failwith ("Atributr '" + name + "' not found in '" + element.Name.LocalName + "'")
-        | _ -> attribute.Value
+    let private getFileSizeFromItem (element : XElement) : Int64 =
+        let attribute = element.Attribute(xn "length")
+        if attribute = null || attribute.Value = null || attribute.Value = "" then
+            -1L
+        else
+            attribute.Value |> Int64.Parse
+
+    let private getPubDateFromItem (element : XElement) : DateTime =
+        let pubDateElement = element?pubDate
+        if pubDateElement = null || pubDateElement.Value = "" then
+            DateTime.MinValue
+        else
+            pubDateElement.Value |> DateTime.Parse
+
+    let private getDescriptionFromItem (element : XElement) : string =
+        let descriptionElement = element?description
+        if descriptionElement = null then
+            ""
+        else
+            descriptionElement.Value
 
     let private readLineFromFile (reader: StreamReader) : string = 
         let text = reader.ReadLine()
@@ -65,17 +76,28 @@ module public FeedFunctions =
               Some(podcast, reader)
 
     let private createPodcastArrayFromDocument (document: XDocument) =
-        [ for element in document.Descendants(xn "item") do
-            yield {
-                Title = element?title.Value
-                Description = element?description.Value
-                PubDate = element?pubDate.Value |> DateTime.Parse
-                URL = getAttributeValue element?enclosure "url"
-                FileSize = getAttributeValue element?enclosure "length" |> Int64.Parse
-                FirstDownloadDate = DateTime.MinValue
-                LatestDownloadDate = DateTime.MinValue
-            }
-        ] |> List.toArray
+
+        [for element in document.Descendants(xn "item") do
+            let titleElement = element?title
+            let enclosureElement = element?enclosure
+
+            if titleElement <> null && enclosureElement <> null then
+                let urlAttribute = enclosureElement.Attribute(xn "url")
+                
+                if urlAttribute <> null then
+                    let url = urlAttribute.Value
+
+                    if url <> null && url <> "" then
+                        yield {
+                            Title = titleElement.Value
+                            Description = getDescriptionFromItem element
+                            PubDate = getPubDateFromItem element
+                            URL = url
+                            FileSize = getFileSizeFromItem enclosureElement
+                            FirstDownloadDate = DateTime.MinValue
+                            LatestDownloadDate = DateTime.MinValue
+                        }
+          ] |> List.toArray
 
     let public DownloadDocument(url) : XDocument = 
         let webClient = new WebClient()

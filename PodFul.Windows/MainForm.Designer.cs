@@ -152,7 +152,7 @@
       this.Controls.Add(this.label1);
       this.Controls.Add(this.podcastList);
       this.Controls.Add(this.feedList);
-      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+      this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "MainForm";
