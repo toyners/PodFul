@@ -27,12 +27,23 @@ module public FeedFunctions =
         else
             pubDateElement.Value |> DateTime.Parse
 
+    let private cleanText (text: string) : string = 
+        // Replace line breaks and multiple spaces with single spaces
+        let mutable fixedText = text.Replace("\r\n", " ").Replace("\n", " ")
+        while fixedText.IndexOf("  ") <> -1 do 
+            fixedText <- fixedText.Replace("  ", " ")
+
+        // Replace HTML code for right single quotation mark
+        fixedText <- fixedText.Replace("&#8217;", "'")
+
+        fixedText
+
     let private getDescriptionFromItem (element : XElement) : string =
         let descriptionElement = element?description
         if descriptionElement = null then
             ""
         else
-            descriptionElement.Value
+            cleanText descriptionElement.Value
 
     let private readLineFromFile (reader: StreamReader) : string = 
         let text = reader.ReadLine()
@@ -110,7 +121,7 @@ module public FeedFunctions =
 
         {
              Title = channel?title.Value
-             Description = channel?description.Value
+             Description = cleanText channel?description.Value
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
@@ -136,24 +147,17 @@ module public FeedFunctions =
             Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
         }
 
-    let private replaceLineBreaksWithSpaces (text: string) : string = 
-        let mutable fixedText = text.Replace("\r\n", " ").Replace("\n", " ")
-        while fixedText.IndexOf("  ") <> -1 do 
-            fixedText <- fixedText.Replace("  ", " ")
-
-        fixedText
-
     let public WriteFeedToFile (feed : Feed) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + replaceLineBreaksWithSpaces feed.Description);
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description);
 
         for podcast in feed.Podcasts do
             writer.WriteLine(podcast.Title + "|" + 
                 podcast.PubDate.ToString() + "|" + 
                 podcast.URL + "|" + 
                 podcast.FileSize.ToString() + "|" +
-                replaceLineBreaksWithSpaces podcast.Description + "|" +
+                podcast.Description + "|" +
                 podcast.FirstDownloadDate.ToString() + "|" + 
                 podcast.LatestDownloadDate.ToString() + "|")
