@@ -34,7 +34,17 @@ namespace PodFul.Windows
         return;
       }
 
-      var feed = FeedFunctions.CreateFeed(addFeedForm.FeedURL.Text, addFeedForm.FeedDirectory.Text);
+      Feed feed = null;
+      try
+      {
+        feed = FeedFunctions.CreateFeed(addFeedForm.FeedURL.Text, addFeedForm.FeedDirectory.Text);
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
+        return;
+      }
+
       FeedFunctions.WriteFeedToFile(feed, feedDirectory + this.feeds.Count + feedFileExtension);
       this.AddFeedToList(feed);
     }
