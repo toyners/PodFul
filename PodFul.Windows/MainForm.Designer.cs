@@ -128,13 +128,14 @@
       // 
       // downloadPodcast
       // 
+      this.downloadPodcast.Enabled = false;
       this.downloadPodcast.Location = new System.Drawing.Point(419, 397);
       this.downloadPodcast.Name = "downloadPodcast";
       this.downloadPodcast.Size = new System.Drawing.Size(64, 35);
       this.downloadPodcast.TabIndex = 2;
       this.downloadPodcast.Text = "Download";
       this.downloadPodcast.UseVisualStyleBackColor = true;
-      this.downloadPodcast.Click += new System.EventHandler(this.scanFeeds_Click);
+      this.downloadPodcast.Click += new System.EventHandler(this.downloadPodcast_Click);
       // 
       // MainForm
       // 

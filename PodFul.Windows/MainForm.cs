@@ -84,6 +84,7 @@ namespace PodFul.Windows
     private void feedList_SelectedIndexChanged(Object sender, EventArgs e)
     {
       this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
+      this.downloadPodcast.Enabled = (this.feedList.SelectedIndex != -1);
 
       if (this.feedList.SelectedIndex == -1)
       {
@@ -151,6 +152,17 @@ namespace PodFul.Windows
         podcast.LatestDownloadDate != DateTime.MinValue ? podcast.LatestDownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm::ss") : @"n\a");
 
       this.podcastDescription.Text = text;
+    }
+
+    private void downloadPodcast_Click(Object sender, EventArgs e)
+    {
+      var form = new ScanResultsForm(this.currentFeed.Podcasts);
+
+      if (form.ShowDialog() == DialogResult.Cancel)
+      {
+        return;
+      }
+
     }
   }
 }
