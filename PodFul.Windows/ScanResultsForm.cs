@@ -8,7 +8,7 @@ namespace PodFul.Windows
 
   public partial class ScanResultsForm : Form
   {
-    public ScanResultsForm(IEnumerable<Podcast> podcasts)
+    public ScanResultsForm(String formTitle, IEnumerable<Podcast> podcasts)
     {
       InitializeComponent();
 
@@ -20,6 +20,8 @@ namespace PodFul.Windows
           podcast.FileSize, 
           podcast.LatestDownloadDate != DateTime.MinValue ? podcast.LatestDownloadDate.ToString("ddd, dd-MM-yyyy") : @"n\a");
       }
+
+      this.Text = formTitle;
     }
   }
 }
