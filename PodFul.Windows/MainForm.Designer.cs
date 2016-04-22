@@ -130,6 +130,7 @@
       this.downloadPodcast.TabIndex = 29;
       this.downloadPodcast.Text = "Download";
       this.downloadPodcast.UseVisualStyleBackColor = true;
+      this.downloadPodcast.Click += new System.EventHandler(this.downloadPodcast_Click);
       // 
       // scanFeeds
       // 
@@ -139,6 +140,7 @@
       this.scanFeeds.TabIndex = 30;
       this.scanFeeds.Text = "Scan";
       this.scanFeeds.UseVisualStyleBackColor = true;
+      this.scanFeeds.Click += new System.EventHandler(this.scanFeeds_Click);
       // 
       // removeFeed
       // 
@@ -148,6 +150,7 @@
       this.removeFeed.TabIndex = 31;
       this.removeFeed.Text = "Remove";
       this.removeFeed.UseVisualStyleBackColor = true;
+      this.removeFeed.Click += new System.EventHandler(this.removeFeed_Click);
       // 
       // addFeed
       // 
@@ -157,6 +160,7 @@
       this.addFeed.TabIndex = 32;
       this.addFeed.Text = "Add";
       this.addFeed.UseVisualStyleBackColor = true;
+      this.addFeed.Click += new System.EventHandler(this.AddFeed_Click);
       // 
       // podcastList
       // 
@@ -165,6 +169,7 @@
       this.podcastList.Name = "podcastList";
       this.podcastList.Size = new System.Drawing.Size(234, 264);
       this.podcastList.TabIndex = 25;
+      this.podcastList.SelectedIndexChanged += new System.EventHandler(this.podcastList_SelectedIndexChanged);
       // 
       // feedList
       // 
@@ -173,6 +178,7 @@
       this.feedList.Name = "feedList";
       this.feedList.Size = new System.Drawing.Size(231, 264);
       this.feedList.TabIndex = 26;
+      this.feedList.SelectedIndexChanged += new System.EventHandler(this.feedList_SelectedIndexChanged);
       // 
       // panel2
       // 
