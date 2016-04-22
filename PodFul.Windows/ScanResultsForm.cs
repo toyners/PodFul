@@ -26,6 +26,20 @@ namespace PodFul.Windows
       this.Text = formTitle;
     }
 
+    public List<Int32> SelectedRowIndexes
+    {
+      get
+      {
+        var indexes = new List<Int32>();
+        foreach (DataGridViewRow row in this.podcastList.SelectedRows)
+        {
+          indexes.Add(row.Index);
+        }
+
+        return indexes;
+      }
+    }
+
     private void clearButton_Click(Object sender, EventArgs e)
     {
       this.podcastList.ClearSelection();

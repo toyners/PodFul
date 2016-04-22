@@ -4,6 +4,8 @@ namespace PodFul.Windows
   using System;
   using System.Collections.Generic;
   using System.IO;
+  using System.Threading;
+  using System.Threading.Tasks;
   using System.Windows.Forms;
   using PodFul.Library;
 
@@ -14,6 +16,9 @@ namespace PodFul.Windows
     private List<Feed> feeds;
     private Feed currentFeed;
     private String feedDirectory;
+    private List<Podcast> podcastsToDownload = new List<Podcast>();
+    private CancellationTokenSource cancellationTokenSource  = new CancellationTokenSource();
+    private CancellationToken cancellationToken;
 
     public MainForm()
     {
@@ -174,6 +179,41 @@ namespace PodFul.Windows
       {
         return;
       }
+
+      this.podcastsToDownload.Clear();
+      foreach (Int32 index in form.SelectedRowIndexes)
+      {
+        var podcast = this.currentFeed.Podcasts[index];
+        this.podcastsToDownload.Add(podcast);
+        this.workingList.Items.Add(podcast.Title);
+      }
+
+      this.tabControl.SelectedIndex = 1;
+      this.cancellationToken = this.cancellationTokenSource.Token;
+
+      Task task = Task.Factory.StartNew(() =>
+      {
+
+      }, this.cancellationToken);
+    }
+
+    private void DownloadPodcasts()
+    {
+      BigFileDownloader downloader = new BigFileDownloader();
+      foreach (Podcast podcast in this.podcastsToDownload)
+      {
+        Task task = downloader.DownloadAsync(podcast.URL, "", this.cancellationToken, this.UpdateProgessEventHandler);
+      }
+    }
+
+    private void cancelButton_Click(Object sender, EventArgs e)
+    {
+      this.cancellationTokenSource.Cancel();
+    }
+
+    private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
+    {
+      this.progressBar.Value += bytesWrittenToFile;
     }
   }
 }

@@ -100,6 +100,7 @@
       // startDownload
       // 
       this.startDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.startDownload.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.startDownload.Location = new System.Drawing.Point(653, 267);
       this.startDownload.Name = "startDownload";
       this.startDownload.Size = new System.Drawing.Size(64, 35);
