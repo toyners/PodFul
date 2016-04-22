@@ -29,11 +29,14 @@
     private void InitializeComponent()
     {
       this.podcastList = new System.Windows.Forms.DataGridView();
-      this.startDownload = new System.Windows.Forms.Button();
       this.titleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.descriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.fileSizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.latestDownloadDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.startDownload = new System.Windows.Forms.Button();
+      this.clearButton = new System.Windows.Forms.Button();
+      this.allButton = new System.Windows.Forms.Button();
+      this.cancelButton = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.podcastList)).BeginInit();
       this.SuspendLayout();
       // 
@@ -59,17 +62,7 @@
       this.podcastList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.podcastList.Size = new System.Drawing.Size(723, 258);
       this.podcastList.TabIndex = 0;
-      // 
-      // startDownload
-      // 
-      this.startDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.startDownload.Enabled = false;
-      this.startDownload.Location = new System.Drawing.Point(653, 267);
-      this.startDownload.Name = "startDownload";
-      this.startDownload.Size = new System.Drawing.Size(64, 35);
-      this.startDownload.TabIndex = 3;
-      this.startDownload.Text = "Start";
-      this.startDownload.UseVisualStyleBackColor = true;
+      this.podcastList.SelectionChanged += new System.EventHandler(this.podcastList_SelectionChanged);
       // 
       // titleColumn
       // 
@@ -104,11 +97,57 @@
       this.latestDownloadDateColumn.ReadOnly = true;
       this.latestDownloadDateColumn.Width = 140;
       // 
+      // startDownload
+      // 
+      this.startDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.startDownload.Location = new System.Drawing.Point(653, 267);
+      this.startDownload.Name = "startDownload";
+      this.startDownload.Size = new System.Drawing.Size(64, 35);
+      this.startDownload.TabIndex = 3;
+      this.startDownload.Text = "Start";
+      this.startDownload.UseVisualStyleBackColor = true;
+      // 
+      // clearButton
+      // 
+      this.clearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.clearButton.Location = new System.Drawing.Point(7, 267);
+      this.clearButton.Name = "clearButton";
+      this.clearButton.Size = new System.Drawing.Size(64, 35);
+      this.clearButton.TabIndex = 3;
+      this.clearButton.Text = "Clear";
+      this.clearButton.UseVisualStyleBackColor = true;
+      this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+      // 
+      // allButton
+      // 
+      this.allButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.allButton.Location = new System.Drawing.Point(77, 267);
+      this.allButton.Name = "allButton";
+      this.allButton.Size = new System.Drawing.Size(64, 35);
+      this.allButton.TabIndex = 3;
+      this.allButton.Text = "All";
+      this.allButton.UseVisualStyleBackColor = true;
+      this.allButton.Click += new System.EventHandler(this.allButton_Click);
+      // 
+      // cancelButton
+      // 
+      this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+      this.cancelButton.Location = new System.Drawing.Point(583, 267);
+      this.cancelButton.Name = "cancelButton";
+      this.cancelButton.Size = new System.Drawing.Size(64, 35);
+      this.cancelButton.TabIndex = 5;
+      this.cancelButton.Text = "Cancel";
+      this.cancelButton.UseVisualStyleBackColor = true;
+      // 
       // ScanResultsForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.CancelButton = this.cancelButton;
       this.ClientSize = new System.Drawing.Size(724, 309);
+      this.Controls.Add(this.cancelButton);
+      this.Controls.Add(this.allButton);
+      this.Controls.Add(this.clearButton);
       this.Controls.Add(this.startDownload);
       this.Controls.Add(this.podcastList);
       this.MinimizeBox = false;
@@ -127,5 +166,8 @@
     private System.Windows.Forms.DataGridViewTextBoxColumn descriptionColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn fileSizeColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn latestDownloadDateColumn;
+    private System.Windows.Forms.Button clearButton;
+    private System.Windows.Forms.Button allButton;
+    private System.Windows.Forms.Button cancelButton;
   }
 }

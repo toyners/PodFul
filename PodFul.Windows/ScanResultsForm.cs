@@ -21,7 +21,26 @@ namespace PodFul.Windows
           podcast.LatestDownloadDate != DateTime.MinValue ? podcast.LatestDownloadDate.ToString("ddd, dd-MM-yyyy") : @"n\a");
       }
 
+      this.startDownload.Enabled = (this.podcastList.SelectedRows.Count > 0);
+      
       this.Text = formTitle;
+    }
+
+    private void clearButton_Click(Object sender, EventArgs e)
+    {
+      this.podcastList.ClearSelection();
+      this.startDownload.Enabled = false;
+    }
+
+    private void allButton_Click(Object sender, EventArgs e)
+    {
+      this.podcastList.SelectAll();
+      this.startDownload.Enabled = true;
+    }
+
+    private void podcastList_SelectionChanged(Object sender, EventArgs e)
+    {
+      this.startDownload.Enabled = (this.podcastList.SelectedRows.Count > 0);
     }
   }
 }
