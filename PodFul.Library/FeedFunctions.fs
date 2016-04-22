@@ -20,12 +20,19 @@ module public FeedFunctions =
         else
             attribute.Value |> Int64.Parse
 
+    let private removeTimeZoneAbbreviationsFromDateTimeString (value : string) : string =
+        let mutable length = value.Length;
+        while Char.IsLetter(value.[length - 1]) do
+            length <- length - 1
+        
+        value.Substring(0, length)
+
     let private getPubDateFromItem (element : XElement) : DateTime =
         let pubDateElement = element?pubDate
         if pubDateElement = null || pubDateElement.Value = "" then
             DateTime.MinValue
         else
-            pubDateElement.Value |> DateTime.Parse
+            pubDateElement.Value |> removeTimeZoneAbbreviationsFromDateTimeString |> DateTime.Parse
 
     let private cleanText (text: string) : string = 
         // Replace line breaks and multiple spaces with single spaces
@@ -111,9 +118,19 @@ module public FeedFunctions =
           ] |> List.toArray
 
     let public DownloadDocument(url) : XDocument = 
-        let webClient = new WebClient()
-        let data = webClient.DownloadString(Uri(url))
-        XDocument.Parse(data)
+        try
+            let webClient = new WebClient()
+            webClient.Headers.Add("user-agent", "Podful Podcatcher")
+            let data = webClient.DownloadString(Uri(url))
+            XDocument.Parse(data)
+        with
+        | :? System.Net.WebException as webex ->
+             use streamReader = new StreamReader(webex.Response.GetResponseStream())
+             let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
+             use streamWriter = new StreamWriter(errorLogFilePath)
+             let responseText = streamReader.ReadToEnd()
+             streamWriter.Write(responseText)
+             failwith ("Error log written to '" + errorLogFilePath + "'.")
 
     let public CreateFeed url directoryPath =
         let document = DownloadDocument url
