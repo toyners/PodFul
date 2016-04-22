@@ -167,14 +167,13 @@ namespace PodFul.Windows
     private void downloadPodcast_Click(Object sender, EventArgs e)
     {
       var form = new ScanResultsForm(
-        this.currentFeed.Title + String.Format("[{0} podcast{1}]", this.currentFeed.Podcasts.Length, (this.currentFeed.Podcasts.Length != 1 ? "s" : String.Empty)),
+        this.currentFeed.Title + String.Format(" [{0} podcast{1}]", this.currentFeed.Podcasts.Length, (this.currentFeed.Podcasts.Length != 1 ? "s" : String.Empty)),
         this.currentFeed.Podcasts);
 
       if (form.ShowDialog() == DialogResult.Cancel)
       {
         return;
       }
-
     }
   }
 }
