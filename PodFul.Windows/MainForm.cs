@@ -193,7 +193,7 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-
+        DownloadPodcasts();
       }, this.cancellationToken);
     }
 
@@ -203,6 +203,7 @@ namespace PodFul.Windows
       foreach (Podcast podcast in this.podcastsToDownload)
       {
         Task task = downloader.DownloadAsync(podcast.URL, "", this.cancellationToken, this.UpdateProgessEventHandler);
+        task.Start();
       }
     }
 
