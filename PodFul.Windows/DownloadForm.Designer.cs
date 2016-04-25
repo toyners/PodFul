@@ -110,7 +110,7 @@
       // 
       // clearButton
       // 
-      this.clearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.clearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.clearButton.Location = new System.Drawing.Point(7, 267);
       this.clearButton.Name = "clearButton";
       this.clearButton.Size = new System.Drawing.Size(64, 35);
@@ -121,7 +121,7 @@
       // 
       // allButton
       // 
-      this.allButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.allButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.allButton.Location = new System.Drawing.Point(77, 267);
       this.allButton.Name = "allButton";
       this.allButton.Size = new System.Drawing.Size(64, 35);
@@ -132,6 +132,7 @@
       // 
       // cancelButton
       // 
+      this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
       this.cancelButton.Location = new System.Drawing.Point(583, 267);
       this.cancelButton.Name = "cancelButton";
@@ -140,7 +141,7 @@
       this.cancelButton.Text = "Cancel";
       this.cancelButton.UseVisualStyleBackColor = true;
       // 
-      // ScanResultsForm
+      // DownloadForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -152,7 +153,7 @@
       this.Controls.Add(this.startDownload);
       this.Controls.Add(this.podcastList);
       this.MinimizeBox = false;
-      this.Name = "ScanResultsForm";
+      this.Name = "DownloadForm";
       this.Text = "Scan Results";
       ((System.ComponentModel.ISupportInitialize)(this.podcastList)).EndInit();
       this.ResumeLayout(false);
