@@ -21,6 +21,7 @@ namespace PodFul.Windows
     private CancellationToken cancellationToken;
     private Int64 fileSize;
     private Int64 downloadedSize;
+    private TaskScheduler mainTaskScheduler;
 
     public MainForm()
     {
@@ -192,6 +193,7 @@ namespace PodFul.Windows
 
       this.tabControl.SelectedIndex = 1;
       this.cancellationToken = this.cancellationTokenSource.Token;
+      this.mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -209,12 +211,11 @@ namespace PodFul.Windows
         this.fileSize = podcast.FileSize;
         this.downloadedSize = 0;
         this.progressBar.Value = 0;
-        var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('\\') + 1));
+        var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.UpdateProgessEventHandler);
         downloadTask.Wait();
 
-        this.completedList.Items.Add(this.workingList.Items[0]);
-        this.workingList.Items.RemoveAt(0);
+        this.MovePodcastFromWorkingToCompletedList();
 
         if (downloadTask.IsFaulted)
         {
@@ -235,8 +236,20 @@ namespace PodFul.Windows
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
-      this.downloadedSize += bytesWrittenToFile;
-      this.progressBar.Value = (Int32)(this.downloadedSize / this.fileSize) * 100;
+      new Task(() =>
+      {
+        this.downloadedSize += bytesWrittenToFile;
+        this.progressBar.Value = (Int32)(this.downloadedSize / this.fileSize) * 100;
+      }).Start(this.mainTaskScheduler);
+    }
+
+    private void MovePodcastFromWorkingToCompletedList()
+    {
+      new Task(() =>
+      {
+        this.completedList.Items.Add(this.workingList.Items[0]);
+        this.workingList.Items.RemoveAt(0);
+      }).Start(this.mainTaskScheduler);
     }
   }
 }
