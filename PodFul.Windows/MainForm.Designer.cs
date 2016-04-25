@@ -45,6 +45,11 @@
       this.workingList = new System.Windows.Forms.ListBox();
       this.progressBar = new System.Windows.Forms.ProgressBar();
       this.cancelButton = new System.Windows.Forms.Button();
+      this.label1 = new System.Windows.Forms.Label();
+      this.label2 = new System.Windows.Forms.Label();
+      this.downloadDescription = new System.Windows.Forms.TextBox();
+      this.label3 = new System.Windows.Forms.Label();
+      this.label4 = new System.Windows.Forms.Label();
       this.tabControl.SuspendLayout();
       this.feedsTab.SuspendLayout();
       this.panel1.SuspendLayout();
@@ -77,6 +82,8 @@
       // panel1
       // 
       this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.panel1.Controls.Add(this.label4);
+      this.panel1.Controls.Add(this.label3);
       this.panel1.Controls.Add(this.podcastDescription);
       this.panel1.Controls.Add(this.feedDescription);
       this.panel1.Controls.Add(this.downloadPodcast);
@@ -154,18 +161,18 @@
       // podcastList
       // 
       this.podcastList.FormattingEnabled = true;
-      this.podcastList.Location = new System.Drawing.Point(242, 7);
+      this.podcastList.Location = new System.Drawing.Point(242, 20);
       this.podcastList.Name = "podcastList";
-      this.podcastList.Size = new System.Drawing.Size(234, 264);
+      this.podcastList.Size = new System.Drawing.Size(234, 251);
       this.podcastList.TabIndex = 25;
       this.podcastList.SelectedIndexChanged += new System.EventHandler(this.podcastList_SelectedIndexChanged);
       // 
       // feedList
       // 
       this.feedList.FormattingEnabled = true;
-      this.feedList.Location = new System.Drawing.Point(5, 7);
+      this.feedList.Location = new System.Drawing.Point(5, 20);
       this.feedList.Name = "feedList";
-      this.feedList.Size = new System.Drawing.Size(231, 264);
+      this.feedList.Size = new System.Drawing.Size(231, 251);
       this.feedList.TabIndex = 26;
       this.feedList.SelectedIndexChanged += new System.EventHandler(this.feedList_SelectedIndexChanged);
       // 
@@ -183,6 +190,9 @@
       // panel2
       // 
       this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.panel2.Controls.Add(this.downloadDescription);
+      this.panel2.Controls.Add(this.label2);
+      this.panel2.Controls.Add(this.label1);
       this.panel2.Controls.Add(this.completedList);
       this.panel2.Controls.Add(this.workingList);
       this.panel2.Controls.Add(this.progressBar);
@@ -195,17 +205,17 @@
       // completedList
       // 
       this.completedList.FormattingEnabled = true;
-      this.completedList.Location = new System.Drawing.Point(242, 7);
+      this.completedList.Location = new System.Drawing.Point(242, 20);
       this.completedList.Name = "completedList";
-      this.completedList.Size = new System.Drawing.Size(234, 342);
+      this.completedList.Size = new System.Drawing.Size(234, 277);
       this.completedList.TabIndex = 31;
       // 
       // workingList
       // 
       this.workingList.FormattingEnabled = true;
-      this.workingList.Location = new System.Drawing.Point(5, 7);
+      this.workingList.Location = new System.Drawing.Point(5, 20);
       this.workingList.Name = "workingList";
-      this.workingList.Size = new System.Drawing.Size(231, 342);
+      this.workingList.Size = new System.Drawing.Size(231, 277);
       this.workingList.TabIndex = 32;
       // 
       // progressBar
@@ -227,6 +237,52 @@
       this.cancelButton.UseVisualStyleBackColor = true;
       this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
       // 
+      // label1
+      // 
+      this.label1.AutoSize = true;
+      this.label1.Location = new System.Drawing.Point(4, 4);
+      this.label1.Name = "label1";
+      this.label1.Size = new System.Drawing.Size(66, 13);
+      this.label1.TabIndex = 33;
+      this.label1.Text = "Working List";
+      // 
+      // label2
+      // 
+      this.label2.AutoSize = true;
+      this.label2.Location = new System.Drawing.Point(239, 4);
+      this.label2.Name = "label2";
+      this.label2.Size = new System.Drawing.Size(76, 13);
+      this.label2.TabIndex = 33;
+      this.label2.Text = "Completed List";
+      // 
+      // downloadDescription
+      // 
+      this.downloadDescription.Location = new System.Drawing.Point(5, 303);
+      this.downloadDescription.Multiline = true;
+      this.downloadDescription.Name = "downloadDescription";
+      this.downloadDescription.ReadOnly = true;
+      this.downloadDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+      this.downloadDescription.Size = new System.Drawing.Size(471, 46);
+      this.downloadDescription.TabIndex = 35;
+      // 
+      // label3
+      // 
+      this.label3.AutoSize = true;
+      this.label3.Location = new System.Drawing.Point(3, 4);
+      this.label3.Name = "label3";
+      this.label3.Size = new System.Drawing.Size(36, 13);
+      this.label3.TabIndex = 35;
+      this.label3.Text = "Feeds";
+      // 
+      // label4
+      // 
+      this.label4.AutoSize = true;
+      this.label4.Location = new System.Drawing.Point(239, 4);
+      this.label4.Name = "label4";
+      this.label4.Size = new System.Drawing.Size(51, 13);
+      this.label4.TabIndex = 35;
+      this.label4.Text = "Podcasts";
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,6 +300,7 @@
       this.panel1.PerformLayout();
       this.downloadsTab.ResumeLayout(false);
       this.panel2.ResumeLayout(false);
+      this.panel2.PerformLayout();
       this.ResumeLayout(false);
 
     }
@@ -267,6 +324,11 @@
     private System.Windows.Forms.ListBox completedList;
     private System.Windows.Forms.ListBox workingList;
     private System.Windows.Forms.ProgressBar progressBar;
+    private System.Windows.Forms.Label label4;
+    private System.Windows.Forms.Label label3;
+    private System.Windows.Forms.TextBox downloadDescription;
+    private System.Windows.Forms.Label label2;
+    private System.Windows.Forms.Label label1;
   }
 }
 
