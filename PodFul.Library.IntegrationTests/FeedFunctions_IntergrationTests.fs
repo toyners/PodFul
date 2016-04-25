@@ -87,8 +87,8 @@ type FeedFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Create Feed from RSS url``() =
-        let inputPath = workingDirectory + "podcast.rss";
-        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
+        let inputPath = workingDirectory + "RSSFile.rss";
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath)
         let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
 
         feed |> should not' (equal null)
@@ -190,8 +190,8 @@ type FeedFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Create podcast list from RSS url``() =
-        let inputPath = workingDirectory + "podcast.rss";
-        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("podcast.rss", inputPath)
+        let inputPath = workingDirectory + "RSSFile.rss";
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath)
         let podcasts = FeedFunctions.CreatePodcastList inputPath
 
         podcasts |> should not' (be null)

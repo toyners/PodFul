@@ -56,7 +56,7 @@
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
-    <EmbeddedResource Include="podcast.rss" />
+    <EmbeddedResource Include="RSSFile.rss" />
     <EmbeddedResource Include="RSSFileWithMediaContent.rss" />
     <EmbeddedResource Include="RSSFileLineBreaks.rss" />
   </ItemGroup>
