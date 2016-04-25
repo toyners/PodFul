@@ -147,7 +147,7 @@ namespace PodFul.Windows
       var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}\r\nDOWNLOAD DATE: {3}", 
         podcast.Description, 
         podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), 
-        Miscellaneous.GetReadableFileSize(podcast.FileSize),
+        Miscellaneous.GetReadableFileSize(podcast.FileSize) + " MB",
         podcast.LatestDownloadDate != DateTime.MinValue ? podcast.LatestDownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm::ss") : @"n\a");
 
       this.podcastDescription.Text = text;
