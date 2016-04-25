@@ -6,9 +6,9 @@ namespace PodFul.Windows
   using System.Windows.Forms;
   using PodFul.Library;
 
-  public partial class ScanResultsForm : Form
+  public partial class ScanForm : Form
   {
-    public ScanResultsForm(IEnumerable<Feed> feeds)
+    public ScanForm(IEnumerable<Feed> feeds)
     {
       InitializeComponent();
 

@@ -126,7 +126,7 @@ namespace PodFul.Windows
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
-      var form = new ScanResultsForm(this.feeds);
+      var form = new ScanForm(this.feeds);
       if (form.ShowDialog() == DialogResult.Cancel)
       {
         return;

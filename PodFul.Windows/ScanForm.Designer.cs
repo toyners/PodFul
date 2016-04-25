@@ -1,6 +1,6 @@
 ﻿namespace PodFul.Windows
 {
-  partial class ScanResultsForm
+  partial class ScanForm
   {
     /// <summary>
     /// Required designer variable.
