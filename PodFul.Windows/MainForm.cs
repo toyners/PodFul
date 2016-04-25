@@ -223,7 +223,7 @@ namespace PodFul.Windows
         }
         else if (downloadTask.IsCanceled)
         {
-          // download cancelled.
+          // Downloading cancelled.
           return;
         }
       }
