@@ -39,6 +39,7 @@ type FeedFunctions_IntergrationTests() =
 
     let thirdPodcastTitle = "Podcast #3 Title"
     let thirdPodcastURL = "Podcast3.mp3"
+    let thirdPodcastFileSize = 3L
 
     let firstDownloadDate = new DateTime(2017, 1, 1)
     let latestDownloadDate = new DateTime(2017, 1, 2)
@@ -234,3 +235,31 @@ type FeedFunctions_IntergrationTests() =
         podcasts.[2].URL |> should equal thirdPodcastURL
         podcasts.[2].FileSize |> should equal -1L
         podcasts.[2].PubDate |> should equal DateTime.MinValue
+
+    [<Test>]
+    member public this.``Create RSS Feed that contains media content tags``() =
+        let inputPath = workingDirectory + "RSSFileWithMediaContent.rss";
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileWithMediaContent.rss", inputPath)
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+
+        feed |> should not' (equal null)
+        feed.Title |> should equal feedTitle
+        feed.Description |> should equal feedDescription
+        feed.Website |> should equal feedWebsite
+        feed.Directory |> should equal "DirectoryPath"
+        feed.URL |> should equal inputPath
+
+        feed.Podcasts |> should not' (be null)
+        feed.Podcasts.Length |> should equal 3
+
+        feed.Podcasts.[0].Title |> should equal firstPodcastTitle
+        feed.Podcasts.[0].URL |> should equal firstPodcastURL
+        feed.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
+
+        feed.Podcasts.[1].Title |> should equal secondPodcastTitle
+        feed.Podcasts.[1].URL |> should equal secondPodcastURL
+        feed.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
+
+        feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
+        feed.Podcasts.[2].URL |> should equal thirdPodcastURL
+        feed.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize

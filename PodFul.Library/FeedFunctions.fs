@@ -13,12 +13,9 @@ module public FeedFunctions =
     // This implementation of the dynamic operator ? returns the child element from the parent that matches the name.
     let private (?) (parent : XElement) name : XElement = parent.Element(xn name)
 
-    let private getFileSizeFromItem (element : XElement) : Int64 =
-        let attribute = element.Attribute(xn "length")
-        if attribute = null || attribute.Value = null || attribute.Value = "" then
-            -1L
-        else
-            attribute.Value |> Int64.Parse
+    let private getElementUsingLocalNameAndNamespace (parent : XElement) localName namespaceName = 
+        let name = XName.Get(localName, namespaceName)
+        parent.Element(name)
 
     let private removeTimeZoneAbbreviationsFromDateTimeString (value : string) : string =
         let mutable length = value.Length;
@@ -41,9 +38,7 @@ module public FeedFunctions =
             fixedText <- fixedText.Replace("  ", " ")
 
         // Replace HTML code for right single quotation mark
-        fixedText <- fixedText.Replace("&#8217;", "'")
-
-        fixedText
+        fixedText.Replace("&#8217;", "'")
 
     let private getDescriptionFromItem (element : XElement) : string =
         let descriptionElement = element?description
@@ -93,28 +88,65 @@ module public FeedFunctions =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
+    let private getValueFromAttribute (element : XElement) attributeName : string = 
+        let attribute = element.Attribute(xn attributeName)
+        if attribute = null || attribute.Value = null || attribute.Value = "" then
+            ""
+        else
+            attribute.Value
+
+    let private getURLForItem (enclosureElement : XElement) (contentElement : XElement) =
+        
+        let mutable url = ""
+        if contentElement <> null then
+            url <- getValueFromAttribute contentElement "url"
+        
+        if url = "" && enclosureElement <> null then
+            url <- getValueFromAttribute enclosureElement "url"
+        
+        url
+
+    let private getFilesizeForItem (enclosureElement : XElement) (contentElement : XElement) : Int64 =
+        
+        let mutable size1 = -1L
+        let mutable size2 = -1L
+        if contentElement <> null then
+            let fileSize = getValueFromAttribute contentElement "fileSize"
+            if fileSize <> "" then
+                size1 <- (fileSize |> Int64.Parse)
+        else
+            let length = getValueFromAttribute enclosureElement "length"
+            if length <> "" then
+                size2 <- (length |> Int64.Parse)
+
+        Math.Max(size1, size2)
+
+    let private getTitleForItem (element : XElement) : string =
+        if element = null || element.Value = null || element.Value = "" then
+            ""
+        else
+            element.Value
+
     let private createPodcastArrayFromDocument (document: XDocument) =
 
         [for element in document.Descendants(xn "item") do
             let titleElement = element?title
             let enclosureElement = element?enclosure
+            let contentElement = getElementUsingLocalNameAndNamespace element "content" "http://search.yahoo.com/mrss/"
 
-            if titleElement <> null && enclosureElement <> null then
-                let urlAttribute = enclosureElement.Attribute(xn "url")
-                
-                if urlAttribute <> null then
-                    let url = urlAttribute.Value
+            let title = getTitleForItem titleElement
+            let url = getURLForItem enclosureElement contentElement
 
-                    if url <> null && url <> "" then
-                        yield {
-                            Title = titleElement.Value
-                            Description = getDescriptionFromItem element
-                            PubDate = getPubDateFromItem element
-                            URL = url
-                            FileSize = getFileSizeFromItem enclosureElement
-                            FirstDownloadDate = DateTime.MinValue
-                            LatestDownloadDate = DateTime.MinValue
-                        }
+            if title <> "" && url <> "" then
+                yield {
+                    Title = title
+                    Description = getDescriptionFromItem element
+                    PubDate = getPubDateFromItem element
+                    URL = url
+                    FileSize = getFilesizeForItem enclosureElement contentElement
+                    FirstDownloadDate = DateTime.MinValue
+                    LatestDownloadDate = DateTime.MinValue
+                }
           ] |> List.toArray
 
     let public DownloadDocument(url) : XDocument = 
