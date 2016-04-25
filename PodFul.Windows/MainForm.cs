@@ -144,6 +144,12 @@ namespace PodFul.Windows
         MessageBox.Show("No new podcasts found", "Podful - Scan results", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         return;
       }
+
+      var form = new ScanResultsForm(newPodcasts);
+      if (form.ShowDialog() == DialogResult.Cancel)
+      {
+        return;
+      }
     }
 
     private void podcastList_SelectedIndexChanged(Object sender, EventArgs e)

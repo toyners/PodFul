@@ -66,6 +66,12 @@
     <Compile Include="DownloadForm.Designer.cs">
       <DependentUpon>DownloadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScanResultsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScanResultsForm.Designer.cs">
+      <DependentUpon>ScanResultsForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddFeedForm.resx">
       <DependentUpon>AddFeedForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -83,6 +89,9 @@
     </Compile>
     <EmbeddedResource Include="DownloadForm.resx">
       <DependentUpon>DownloadForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScanResultsForm.resx">
+      <DependentUpon>ScanResultsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
