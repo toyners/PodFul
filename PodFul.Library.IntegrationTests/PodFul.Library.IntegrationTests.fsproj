@@ -58,6 +58,7 @@
     <Content Include="packages.config" />
     <EmbeddedResource Include="podcast.rss" />
     <EmbeddedResource Include="RSSFileWithMediaContent.rss" />
+    <EmbeddedResource Include="RSSFileLineBreaks.rss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

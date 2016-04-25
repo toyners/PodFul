@@ -19,7 +19,6 @@ type FeedFunctions_IntergrationTests() =
     let feedDirectory = "Feed Directory"
     let feedFeed = "Feed Feed"
 
-    let feedDescriptionContainingLineBreaks = "This\r\nis\r\n\r\na\nFeed\n\nDescription."
     let expectedFeedDescription = "This is a Feed Description."
 
     let firstPodcastTitle = "Podcast #1 Title"
@@ -28,7 +27,6 @@ type FeedFunctions_IntergrationTests() =
     let firstPodcastFileSize = 1L
     let firstPodcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
 
-    let podcastDescriptionContainingLineBreaks = "This\r\nis\r\n\r\na\nPodcast\n\nDescription."
     let expectedPodcastDescription = "This is a Podcast Description."
 
     let secondPodcastTitle = "Podcast #2 Title"
@@ -80,27 +78,6 @@ type FeedFunctions_IntergrationTests() =
                     FirstDownloadDate = firstDownloadDate
                     LatestDownloadDate = latestDownloadDate
                 };            
-            |]
-        }
-
-    member private this.CreateFeedWithTextContainingLineBreaks =
-        {
-            Title = feedTitle
-            Description = feedDescriptionContainingLineBreaks
-            Website = feedWebsite
-            Directory = feedDirectory
-            URL = feedFeed
-            Podcasts = 
-            [|
-                {
-                    Title = firstPodcastTitle
-                    Description = podcastDescriptionContainingLineBreaks
-                    URL = firstPodcastURL
-                    FileSize = firstPodcastFileSize
-                    PubDate = firstPodcastPubDate
-                    FirstDownloadDate = DateTime.MinValue
-                    LatestDownloadDate = DateTime.MinValue
-                }
             |]
         }
 
@@ -191,7 +168,9 @@ type FeedFunctions_IntergrationTests() =
     [<Test>]
     member public this.``Writing/Reading cycle of Feed record with line breaks in Descriptions``() = 
         // Arrange
-        let testRecord = this.CreateFeedWithTextContainingLineBreaks 
+        let inputPath = workingDirectory + "RSSFileLineBreaks.rss";
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileLineBreaks.rss", inputPath)
+        let testRecord = FeedFunctions.CreateFeed inputPath "DirectoryPath" 
         let outputPath = workingDirectory + "record.txt";
         FeedFunctions.WriteFeedToFile testRecord outputPath
 
