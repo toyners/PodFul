@@ -6,9 +6,9 @@ namespace PodFul.Windows
   using System.Windows.Forms;
   using PodFul.Library;
 
-  public partial class ScanResultsForm : Form
+  public partial class DownloadForm : Form
   {
-    public ScanResultsForm(String formTitle, IEnumerable<Podcast> podcasts)
+    public DownloadForm(String formTitle, IEnumerable<Podcast> podcasts)
     {
       InitializeComponent();
 

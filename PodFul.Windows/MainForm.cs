@@ -144,12 +144,6 @@ namespace PodFul.Windows
         MessageBox.Show("No new podcasts found", "Podful - Scan results", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         return;
       }
-
-      var form = new ScanResultsForm("Scan Results", newPodcasts);
-      if (form.ShowDialog() == DialogResult.Cancel)
-      {
-        return;
-      }
     }
 
     private void podcastList_SelectedIndexChanged(Object sender, EventArgs e)
@@ -174,7 +168,7 @@ namespace PodFul.Windows
 
     private void downloadPodcast_Click(Object sender, EventArgs e)
     {
-      var form = new ScanResultsForm(
+      var form = new DownloadForm(
         this.currentFeed.Title + String.Format(" [{0} podcast{1}]", this.currentFeed.Podcasts.Length, (this.currentFeed.Podcasts.Length != 1 ? "s" : String.Empty)),
         this.currentFeed.Podcasts);
 
