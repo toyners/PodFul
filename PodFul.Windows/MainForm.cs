@@ -126,26 +126,7 @@ namespace PodFul.Windows
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
-      List<Podcast> newPodcasts = new List<Podcast>();
-      foreach (var feed in this.feeds)
-      {
-        var podcasts = FeedFunctions.CreatePodcastList(feed.URL);
-
-        Int32 index = 0;
-        while (index < podcasts.Length && index < feed.Podcasts.Length && !podcasts[index].Equals(feed.Podcasts[index]))
-        {
-          newPodcasts.Add(podcasts[index]);
-          index++;
-        }
-      }
-
-      if (newPodcasts.Count == 0)
-      {
-        MessageBox.Show("No new podcasts found", "Podful - Scan results", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        return;
-      }
-
-      var form = new ScanResultsForm(newPodcasts);
+      var form = new ScanResultsForm(this.feeds);
       if (form.ShowDialog() == DialogResult.Cancel)
       {
         return;
