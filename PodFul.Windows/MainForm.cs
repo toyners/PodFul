@@ -16,9 +16,11 @@ namespace PodFul.Windows
     private List<Feed> feeds;
     private Feed currentFeed;
     private String feedDirectory;
-    private List<Podcast> podcastsToDownload = new List<Podcast>();
+    private Queue<Podcast> podcastsToDownload = new Queue<Podcast>();
     private CancellationTokenSource cancellationTokenSource  = new CancellationTokenSource();
     private CancellationToken cancellationToken;
+    private Int64 fileSize;
+    private Int64 downloadedSize;
 
     public MainForm()
     {
@@ -184,7 +186,7 @@ namespace PodFul.Windows
       foreach (Int32 index in form.SelectedRowIndexes)
       {
         var podcast = this.currentFeed.Podcasts[index];
-        this.podcastsToDownload.Add(podcast);
+        this.podcastsToDownload.Enqueue(podcast);
         this.workingList.Items.Add(podcast.Title);
       }
 
@@ -193,17 +195,35 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        DownloadPodcasts();
+        DownloadPodcasts(podcastsToDownload);
       }, this.cancellationToken);
     }
 
-    private void DownloadPodcasts()
+    private void DownloadPodcasts(Queue<Podcast> podcasts)
     {
       BigFileDownloader downloader = new BigFileDownloader();
-      foreach (Podcast podcast in this.podcastsToDownload)
+
+      while (podcasts.Count > 0)
       {
-        Task task = downloader.DownloadAsync(podcast.URL, "", this.cancellationToken, this.UpdateProgessEventHandler);
-        task.Start();
+        var podcast = podcasts.Dequeue();
+        this.fileSize = podcast.FileSize;
+        this.downloadedSize = 0;
+        this.progressBar.Value = 0;
+        Task downloadTask = downloader.DownloadAsync(podcast.URL, "", this.cancellationToken, this.UpdateProgessEventHandler);
+        downloadTask.Wait();
+
+        this.completedList.Items.Add(this.workingList.Items[0]);
+        this.workingList.Items.RemoveAt(0);
+
+        if (downloadTask.IsFaulted)
+        {
+          // Exception thrown
+        }
+        else if (downloadTask.IsCanceled)
+        {
+          // download cancelled.
+          return;
+        }
       }
     }
 
@@ -214,7 +234,8 @@ namespace PodFul.Windows
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
-      this.progressBar.Value += bytesWrittenToFile;
+      this.downloadedSize += bytesWrittenToFile;
+      this.progressBar.Value = (Int32)(this.downloadedSize / this.fileSize) * 100;
     }
   }
 }
