@@ -213,6 +213,7 @@
       this.progressBar.Location = new System.Drawing.Point(5, 355);
       this.progressBar.Name = "progressBar";
       this.progressBar.Size = new System.Drawing.Size(471, 31);
+      this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
       this.progressBar.TabIndex = 30;
       // 
       // cancelButton

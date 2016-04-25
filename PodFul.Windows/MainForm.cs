@@ -210,7 +210,9 @@ namespace PodFul.Windows
         var podcast = podcasts.Dequeue();
         this.fileSize = podcast.FileSize;
         this.downloadedSize = 0;
-        this.progressBar.Value = 0;
+
+        this.ResetProgressBar(podcast.FileSize);
+
         var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.UpdateProgessEventHandler);
         downloadTask.Wait();
@@ -227,6 +229,8 @@ namespace PodFul.Windows
           return;
         }
       }
+
+      this.ResetProgressBar();
     }
 
     private void cancelButton_Click(Object sender, EventArgs e)
@@ -236,10 +240,24 @@ namespace PodFul.Windows
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
+      if (this.progressBar.Style == ProgressBarStyle.Marquee)
+      {
+        return;
+      }
+
       new Task(() =>
       {
         this.downloadedSize += bytesWrittenToFile;
-        this.progressBar.Value = (Int32)(this.downloadedSize / this.fileSize) * 100;
+        if (this.downloadedSize > this.fileSize)
+        {
+          this.progressBar.Style = ProgressBarStyle.Marquee;
+          return;
+        }
+
+        this.downloadedSize += bytesWrittenToFile;
+        var value = (Int32)(this.downloadedSize / this.fileSize) * 100;
+
+        this.progressBar.Value = value;
       }).Start(this.mainTaskScheduler);
     }
 
@@ -249,6 +267,28 @@ namespace PodFul.Windows
       {
         this.completedList.Items.Add(this.workingList.Items[0]);
         this.workingList.Items.RemoveAt(0);
+      }).Start(this.mainTaskScheduler);
+    }
+
+    private void ResetProgressBar()
+    {
+      this.ResetProgressBar(-1);
+    }
+
+    private void ResetProgressBar(Int64 expectedFileSize)
+    {
+      new Task(() =>
+      {
+        this.progressBar.Value = 0;
+
+        if (expectedFileSize == 0)
+        {
+          this.progressBar.Style = ProgressBarStyle.Marquee;
+        }
+        else
+        {
+          this.progressBar.Style = ProgressBarStyle.Continuous;
+        }
       }).Start(this.mainTaskScheduler);
     }
   }
