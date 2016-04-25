@@ -154,7 +154,7 @@
       this.Controls.Add(this.podcastList);
       this.MinimizeBox = false;
       this.Name = "DownloadForm";
-      this.Text = "Scan Results";
+      this.Text = "Download Podcasts";
       ((System.ComponentModel.ISupportInitialize)(this.podcastList)).EndInit();
       this.ResumeLayout(false);
 
