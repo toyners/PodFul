@@ -195,11 +195,11 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        DownloadPodcasts(podcastsToDownload);
+        DownloadPodcasts(this.currentFeed.Directory, podcastsToDownload);
       }, this.cancellationToken);
     }
 
-    private void DownloadPodcasts(Queue<Podcast> podcasts)
+    private void DownloadPodcasts(String directoryPath, Queue<Podcast> podcasts)
     {
       BigFileDownloader downloader = new BigFileDownloader();
 
@@ -209,7 +209,8 @@ namespace PodFul.Windows
         this.fileSize = podcast.FileSize;
         this.downloadedSize = 0;
         this.progressBar.Value = 0;
-        Task downloadTask = downloader.DownloadAsync(podcast.URL, "", this.cancellationToken, this.UpdateProgessEventHandler);
+        var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('\\') + 1));
+        Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.UpdateProgessEventHandler);
         downloadTask.Wait();
 
         this.completedList.Items.Add(this.workingList.Items[0]);
