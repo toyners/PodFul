@@ -38,10 +38,7 @@ type FeedFunctions_IntergrationTests() =
     let secondPodcastPubDate = new DateTime(2015, 3, 4, 10, 11, 12)
 
     let thirdPodcastTitle = "Podcast #3 Title"
-    //let thirdPodcastDescription = "Podcast #3 Description"
     let thirdPodcastURL = "Podcast3.mp3"
-    //let thirdPodcastFileSize = 3L
-    //let thirdPodcastPubDate = new DateTime(2016, 5, 6, 15, 16, 17)
 
     let firstDownloadDate = new DateTime(2017, 1, 1)
     let latestDownloadDate = new DateTime(2017, 1, 2)
