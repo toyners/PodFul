@@ -26,7 +26,6 @@ namespace PodFul.Windows
         Dictionary<Feed, List<Podcast>> updatedFeeds = new Dictionary<Feed, List<Podcast>>();
         Dictionary<String, Feed> updatedFeedFilePaths = new Dictionary<String, Feed>();
 
-        String scanReport = null;
         for (Int32 feedIndex = 0; feedIndex < feeds.Count; feedIndex++)
         {
           var feed = feeds[feedIndex];
@@ -57,8 +56,7 @@ namespace PodFul.Windows
             message += "No new podcasts found.";
           }
           else
-          {
-            scanReport += String.Format("\"{0}\": {1} podcast{2} found.\r\n", feed.Title, podcastIndex, (podcastIndex != 1 ? "s" : String.Empty));
+          {            
             message += podcastIndex + " new podcast" + (podcastIndex != 1 ? "s" : String.Empty) + " found.";
 
             updatedFeeds.Add(newFeed, newPodcasts);
@@ -66,11 +64,6 @@ namespace PodFul.Windows
           }
 
           this.PostMessage(message + "\r\n");
-        }
-
-        if (scanReport != null)
-        {
-          this.PostMessage("Scan Report\r\n" + scanReport);
         }
 
         // Update all the feed files
@@ -82,7 +75,23 @@ namespace PodFul.Windows
             return;
           }
 
-          this.UpdateFeed(kv.Key, kv.Value);
+          if (!this.UpdateFeed(kv.Key, kv.Value))
+          {
+            // Updating the feed went wrong so scrap downloading the podcasts otherwise we may be 
+            // out of sync in the future.
+            updatedFeeds.Remove(kv.Value);
+          }
+        }
+
+        // Now download the podcasts
+
+        // Complete the final scan report.
+        String scanReport = null;
+        //scanReport += String.Format("\"{0}\": {1} podcast{2} found.\r\n", feed.Title, podcastIndex, (podcastIndex != 1 ? "s" : String.Empty));
+
+        if (scanReport != null)
+        {
+          this.PostMessage("Scan Report\r\n" + scanReport);
         }
 
       }, cancellationToken);
