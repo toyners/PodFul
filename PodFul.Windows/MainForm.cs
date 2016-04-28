@@ -27,6 +27,7 @@ namespace PodFul.Windows
     };
 
     private List<Feed> feeds;
+    private List<String> feedFilePaths;
     private Feed currentFeed;
     private String feedDirectory;
     private Queue<Podcast> podcastsToDownload = new Queue<Podcast>();
@@ -42,6 +43,8 @@ namespace PodFul.Windows
 
       this.feedDirectory = @"C:\Projects\PodFul\Test\";
       this.feeds = new List<Feed>();
+      this.feedFilePaths = new List<String>();
+
       this.CreateFeedList();
       this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
       this.scanFeeds.Enabled = (this.feedList.Items.Count > 0);
@@ -84,6 +87,7 @@ namespace PodFul.Windows
       foreach (var filePath in Directory.GetFiles(this.feedDirectory, "*" + feedFileExtension, SearchOption.TopDirectoryOnly))
       {
         AddFeedToList(FeedFunctions.ReadFeedFromFile(filePath));
+        this.feedFilePaths.Add(filePath);
       }
     }
 
@@ -140,7 +144,7 @@ namespace PodFul.Windows
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
-      var form = new ScanForm(this.feeds);
+      var form = new ScanForm(this.feeds, this.feedFilePaths);
       if (form.ShowDialog() == DialogResult.Cancel)
       {
         return;

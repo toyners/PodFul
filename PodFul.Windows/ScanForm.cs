@@ -3,6 +3,7 @@ namespace PodFul.Windows
 {
   using System;
   using System.Collections.Generic;
+  using System.IO;
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace PodFul.Windows
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-    public ScanForm(IList<Feed> feeds)
+    public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths)
     {
       InitializeComponent();
       this.Text = "Scanning " + feeds.Count + " feed" + (feeds.Count != 1 ? "s" : String.Empty);
@@ -23,9 +24,13 @@ namespace PodFul.Windows
       Task task = Task.Factory.StartNew(() =>
       {
         Dictionary<Feed, List<Podcast>> updatedFeeds = new Dictionary<Feed, List<Podcast>>();
+        Dictionary<String, Feed> updatedFeedFilePaths = new Dictionary<String, Feed>();
+
         String scanReport = null;
-        foreach (var feed in feeds)
+        for (Int32 feedIndex = 0; feedIndex < feeds.Count; feedIndex++)
         {
+          var feed = feeds[feedIndex];
+
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
             this.PostMessage("\r\nCANCELLED");
@@ -38,24 +43,26 @@ namespace PodFul.Windows
 
           this.PostMessage("Podcast list read.");
 
-          Int32 index = 0;
+          Int32 podcastIndex = 0;
           List<Podcast> newPodcasts = new List<Podcast>();
-          while (index < newFeed.Podcasts.Length && index < feed.Podcasts.Length && !newFeed.Podcasts[index].Equals(feed.Podcasts[index]))
+          while (podcastIndex < newFeed.Podcasts.Length && podcastIndex < feed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(feed.Podcasts[podcastIndex]))
           {
-            newPodcasts.Add(newFeed.Podcasts[index]);
-            index++;
+            newPodcasts.Add(newFeed.Podcasts[podcastIndex]);
+            podcastIndex++;
           }
 
           String message = "Scan completed. ";
-          if (index == 0)
+          if (podcastIndex == 0)
           {
             message += "No new podcasts found.";
           }
           else
           {
-            scanReport += String.Format("\"{0}\": {1} podcast{2} found.\r\n", feed.Title, index, (index != 1 ? "s" : String.Empty));
-            message += index + " new podcast" + (index != 1 ? "s" : String.Empty) + " found.";
+            scanReport += String.Format("\"{0}\": {1} podcast{2} found.\r\n", feed.Title, podcastIndex, (podcastIndex != 1 ? "s" : String.Empty));
+            message += podcastIndex + " new podcast" + (podcastIndex != 1 ? "s" : String.Empty) + " found.";
+
             updatedFeeds.Add(newFeed, newPodcasts);
+            updatedFeedFilePaths.Add(feedFilePaths[feedIndex], newFeed);
           }
 
           this.PostMessage(message + "\r\n");
@@ -65,6 +72,34 @@ namespace PodFul.Windows
         {
           this.PostMessage("Scan Report\r\n" + scanReport);
         }
+
+        // Update all the feed files
+        foreach (KeyValuePair<String, Feed> kv in updatedFeedFilePaths)
+        {
+          var feedFilePath = kv.Key;
+          var updatedFeed = kv.Value;
+
+          this.PostMessage(String.Format("Updating \"{0}\" ...", updatedFeed.Title));
+          Boolean updatedCompleted = false;
+          try
+          {
+            File.Copy(feedFilePath, feedFilePath + ".bak");
+            FeedFunctions.WriteFeedToFile(updatedFeed, feedFilePath);
+            updatedCompleted = true;
+          }
+          catch (Exception exception)
+          {
+            this.PostMessage(String.Format("\r\nEXCEPTION: {0}.\r\nReverted to backup file.", exception.Message));
+            File.Move(feedFilePath + ".bak", feedFilePath);   
+          }
+
+          if (updatedCompleted)
+          {
+            File.Delete(feedFilePath + ".bak");
+            this.PostMessage(" Complete\r\n");
+          }
+        }
+
       }, cancellationToken);
     }
 
