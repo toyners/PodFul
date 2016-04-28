@@ -76,38 +76,77 @@ namespace PodFul.Windows
         // Update all the feed files
         foreach (KeyValuePair<String, Feed> kv in updatedFeedFilePaths)
         {
-          var feedFilePath = kv.Key;
-          var updatedFeed = kv.Value;
-
-          this.PostMessage(String.Format("Updating \"{0}\" ...", updatedFeed.Title));
-          Boolean updatedCompleted = false;
-          try
+          if (this.cancellationTokenSource.IsCancellationRequested)
           {
-            File.Copy(feedFilePath, feedFilePath + ".bak");
-            FeedFunctions.WriteFeedToFile(updatedFeed, feedFilePath);
-            updatedCompleted = true;
-          }
-          catch (Exception exception)
-          {
-            this.PostMessage(String.Format("\r\nEXCEPTION: {0}.\r\nReverted to backup file.", exception.Message));
-            File.Move(feedFilePath + ".bak", feedFilePath);   
+            this.PostMessage("\r\nCANCELLED");
+            return;
           }
 
-          if (updatedCompleted)
-          {
-            File.Delete(feedFilePath + ".bak");
-            this.PostMessage(" Complete\r\n");
-          }
+          this.UpdateFeed(kv.Key, kv.Value);
         }
 
       }, cancellationToken);
     }
 
+    private Boolean UpdateFeed(String feedFilePath, Feed feed)
+    {
+      this.PostMessage(String.Format("Updating \"{0}\" ...", feed.Title), false);
+      Boolean updateSuccessful = false;
+      try
+      {
+        File.Copy(feedFilePath, feedFilePath + ".bak", true);
+        FeedFunctions.WriteFeedToFile(feed, feedFilePath);
+        updateSuccessful = true;
+        this.PostMessage(" Complete");
+      }
+      catch (Exception exception)
+      {        
+        this.PostMessage(String.Format(" FAILED!\r\nEXCEPTION: {0}.", exception.Message), false);
+      }
+
+      if (!updateSuccessful)
+      {
+        try
+        {
+          File.Copy(feedFilePath + ".bak", feedFilePath, true);
+          this.PostMessage("\r\nReverted to the original feed.");  
+        }
+        catch
+        {
+          this.PostMessage("\r\nFAILED to revert to the original feed.");
+        }
+      }
+
+      if (File.Exists(feedFilePath + ".bak"))
+      {
+        try
+        {
+          File.Delete(feedFilePath + ".bak");
+        }
+        catch
+        {
+          // Failing to delete the backup is not a problem. Ignore and carry on.
+        }
+      }
+
+      return updateSuccessful;
+    }
+
     private void PostMessage(String message)
+    {
+      this.PostMessage(message, true);
+    }
+
+    private void PostMessage(String message, Boolean includeLineBreak)
     {
       new Task(() =>
       {
-        this.feedback.Text += message + "\r\n";
+        if (includeLineBreak)
+        {
+          message += "\r\n";
+        }
+
+        this.feedback.Text += message;
       }).Start(this.mainTaskScheduler);
     }
 
