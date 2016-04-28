@@ -7,11 +7,24 @@ namespace PodFul.Windows
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows.Forms;
+  using Jabberwocky.Toolkit.String;
   using PodFul.Library;
 
   public partial class MainForm : Form
   {
     private const String feedFileExtension = ".feed";
+    private Dictionary<String, String> fileNameSubstitutions = new Dictionary<String, String>
+    {
+      { "\\", "_bs_" },
+      { "/", "_fs_" },
+      { ":", "_c_" },
+      { "*", "_a_" },
+      { "?", "_q_" },
+      { "\"", "_qu_" },
+      { "<", "_l_" },
+      { ">", "_g_" },
+      { "|", "_b_" },
+    };
 
     private List<Feed> feeds;
     private Feed currentFeed;
@@ -53,7 +66,8 @@ namespace PodFul.Windows
         return;
       }
 
-      FeedFunctions.WriteFeedToFile(feed, feedDirectory + this.feeds.Count + feedFileExtension);
+      var filePath = feedDirectory + this.feeds.Count + "_" + feed.Title.Substitute(fileNameSubstitutions) + feedFileExtension;
+      FeedFunctions.WriteFeedToFile(feed, filePath);
       this.AddFeedToList(feed);
     }
 
