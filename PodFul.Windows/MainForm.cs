@@ -269,12 +269,7 @@ namespace PodFul.Windows
       }).Start(this.mainTaskScheduler);
     }
 
-    private void ResetProgressBar()
-    {
-      this.ResetProgressBar(-1);
-    }
-
-    private void ResetProgressBar(Int64 expectedFileSize)
+    private void ResetProgressBar(Int64 expectedFileSize = -1)
     {
       new Task(() =>
       {
