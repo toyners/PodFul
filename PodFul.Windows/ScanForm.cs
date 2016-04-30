@@ -94,9 +94,7 @@ namespace PodFul.Windows
           var podcasts = kv.Value;
           var feed = kv.Key;
           scanReport += String.Format("{0}{1} Podcasts downloaded for \"{2}\".\r\n", podcasts.Count, (podcasts.Count != 1 ? "s" : String.Empty),  feed.Title);
-          var directoryPath = feed.Directory;
-          var queue = new Queue<Podcast>(podcasts);
-          if (!DownloadPodcasts(downloader, directoryPath, queue))
+          if (!DownloadPodcasts(downloader, feed.Directory, new Queue<Podcast>(podcasts)))
           {
             this.PostMessage("\r\nCANCELLED");
             return;
