@@ -88,6 +88,7 @@ namespace PodFul.Windows
 
         // Now download the podcasts
         String scanReport = null;
+        BigFileDownloader downloader = new BigFileDownloader();
         foreach (KeyValuePair<Feed, List<Podcast>> kv in updatedFeeds)
         {
           var podcasts = kv.Value;
@@ -95,7 +96,7 @@ namespace PodFul.Windows
           scanReport += String.Format("{0}{1} Podcasts downloaded for \"{2}\".\r\n", podcasts.Count, (podcasts.Count != 1 ? "s" : String.Empty),  feed.Title);
           var directoryPath = feed.Directory;
           var queue = new Queue<Podcast>(podcasts);
-          if (!DownloadPodcasts(directoryPath, queue))
+          if (!DownloadPodcasts(downloader, directoryPath, queue))
           {
             this.PostMessage("\r\nCANCELLED");
             return;
@@ -108,10 +109,8 @@ namespace PodFul.Windows
       }, cancellationToken);
     }
 
-    private Boolean DownloadPodcasts(String directoryPath, Queue<Podcast> podcasts)
+    private Boolean DownloadPodcasts(BigFileDownloader downloader, String directoryPath, Queue<Podcast> podcasts)
     {
-      BigFileDownloader downloader = new BigFileDownloader();
-
       while (podcasts.Count > 0)
       {
         var podcast = podcasts.Dequeue();
