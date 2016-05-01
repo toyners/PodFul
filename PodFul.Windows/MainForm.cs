@@ -181,7 +181,7 @@ namespace PodFul.Windows
         podcast.Description, 
         podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), 
         Miscellaneous.GetReadableFileSize(podcast.FileSize) + " MB",
-        podcast.LatestDownloadDate != DateTime.MinValue ? podcast.LatestDownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm::ss") : @"n\a");
+        podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm::ss") : @"n\a");
 
       this.podcastDescription.Text = text;
     }
@@ -264,7 +264,7 @@ namespace PodFul.Windows
           return false;
         }
 
-        Podcast.SetLatestDownloadDate(podcast, DateTime.Now);
+        Podcast.SetDownloadDate(podcast, DateTime.Now);
         updateFeedToDisk = true;
       }
 

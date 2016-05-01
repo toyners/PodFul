@@ -10,34 +10,18 @@ type Podcast =
         URL : string;
         FileSize : Int64;
         PubDate : DateTime;
-        FirstDownloadDate : DateTime;
-        LatestDownloadDate : DateTime;
+        DownloadDate : DateTime;
     }
 
     with
-        static member SetFirstDownloadDate original date =
-            if original.FirstDownloadDate <> DateTime.MinValue then
-                original
-            else
-                {
-                    Title = original.Title
-                    Description = original.Description
-                    URL = original.URL
-                    FileSize = original.FileSize
-                    PubDate = original.PubDate
-                    FirstDownloadDate = date
-                    LatestDownloadDate = date
-                }
-
-        static member SetLatestDownloadDate original date =
+        static member SetDownloadDate original date =
             {
                 Title = original.Title
                 Description = original.Description
                 URL = original.URL
                 FileSize = original.FileSize
                 PubDate = original.PubDate
-                FirstDownloadDate = original.FirstDownloadDate
-                LatestDownloadDate = date
+                DownloadDate = date
             }
 
         override x.Equals other = 

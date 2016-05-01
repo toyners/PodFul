@@ -39,8 +39,7 @@ type FeedFunctions_IntergrationTests() =
     let thirdPodcastURL = "Podcast3.mp3"
     let thirdPodcastFileSize = 3L
 
-    let firstDownloadDate = new DateTime(2017, 1, 1)
-    let latestDownloadDate = new DateTime(2017, 1, 2)
+    let downloadDate = new DateTime(2017, 1, 2)
 
     member private this.CreateFeed =
         {
@@ -57,8 +56,7 @@ type FeedFunctions_IntergrationTests() =
                     URL = firstPodcastURL
                     FileSize = firstPodcastFileSize
                     PubDate = firstPodcastPubDate
-                    FirstDownloadDate = firstDownloadDate
-                    LatestDownloadDate = latestDownloadDate
+                    DownloadDate = downloadDate
                 };
                 {
                     Title = secondPodcastTitle
@@ -66,8 +64,7 @@ type FeedFunctions_IntergrationTests() =
                     URL = secondPodcastURL
                     FileSize = secondPodcastFileSize
                     PubDate = secondPodcastPubDate
-                    FirstDownloadDate = firstDownloadDate
-                    LatestDownloadDate = latestDownloadDate
+                    DownloadDate = downloadDate
                 };
                 {
                     Title = thirdPodcastTitle
@@ -75,8 +72,7 @@ type FeedFunctions_IntergrationTests() =
                     URL = thirdPodcastURL
                     FileSize = -1L
                     PubDate = DateTime.MinValue
-                    FirstDownloadDate = firstDownloadDate
-                    LatestDownloadDate = latestDownloadDate
+                    DownloadDate = downloadDate
                 };            
             |]
         }
@@ -146,24 +142,21 @@ type FeedFunctions_IntergrationTests() =
         resultRecord.Podcasts.[0].URL |> should equal firstPodcastURL
         resultRecord.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
         resultRecord.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
-        resultRecord.Podcasts.[0].FirstDownloadDate |> should equal firstDownloadDate
-        resultRecord.Podcasts.[0].LatestDownloadDate |> should equal latestDownloadDate
+        resultRecord.Podcasts.[0].DownloadDate |> should equal downloadDate
 
         resultRecord.Podcasts.[1].Title |> should equal secondPodcastTitle
         resultRecord.Podcasts.[1].Description |> should equal secondPodcastDescription
         resultRecord.Podcasts.[1].URL |> should equal secondPodcastURL
         resultRecord.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
         resultRecord.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
-        resultRecord.Podcasts.[1].FirstDownloadDate |> should equal firstDownloadDate
-        resultRecord.Podcasts.[1].LatestDownloadDate |> should equal latestDownloadDate
+        resultRecord.Podcasts.[1].DownloadDate |> should equal downloadDate
 
         resultRecord.Podcasts.[2].Title |> should equal thirdPodcastTitle
         resultRecord.Podcasts.[2].Description |> should equal ""
         resultRecord.Podcasts.[2].URL |> should equal thirdPodcastURL
         resultRecord.Podcasts.[2].FileSize |> should equal -1L
         resultRecord.Podcasts.[2].PubDate |> should equal DateTime.MinValue
-        resultRecord.Podcasts.[2].FirstDownloadDate |> should equal firstDownloadDate
-        resultRecord.Podcasts.[2].LatestDownloadDate |> should equal latestDownloadDate
+        resultRecord.Podcasts.[2].DownloadDate |> should equal downloadDate
 
     [<Test>]
     member public this.``Writing/Reading cycle of Feed record with line breaks in Descriptions``() = 

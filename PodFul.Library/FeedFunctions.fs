@@ -81,8 +81,7 @@ module public FeedFunctions =
                     URL = fields.[2]
                     FileSize = Int64.Parse(fields.[3])
                     Description = fields.[4]
-                    FirstDownloadDate = DateTime.Parse(fields.[5])
-                    LatestDownloadDate = DateTime.Parse(fields.[6])
+                    DownloadDate = DateTime.Parse(fields.[5])
                 }
 
               // Set the threaded state to be the XML reader.
@@ -144,8 +143,7 @@ module public FeedFunctions =
                     PubDate = getPubDateFromItem element
                     URL = url
                     FileSize = getFilesizeForItem enclosureElement contentElement
-                    FirstDownloadDate = DateTime.MinValue
-                    LatestDownloadDate = DateTime.MinValue
+                    DownloadDate = DateTime.MinValue
                 }
           ] |> List.toArray
 
@@ -208,5 +206,4 @@ module public FeedFunctions =
                 podcast.URL + "|" + 
                 podcast.FileSize.ToString() + "|" +
                 podcast.Description + "|" +
-                podcast.FirstDownloadDate.ToString() + "|" + 
-                podcast.LatestDownloadDate.ToString() + "|")
+                podcast.DownloadDate.ToString() + "|")
