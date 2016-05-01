@@ -217,13 +217,18 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        DownloadPodcasts(feed.Directory, podcastsToDownload);
+        if (DownloadPodcasts(feed.Directory, podcastsToDownload))
+        {
+          FeedFunctions.WriteFeedToFile(feed, "");
+        }
+        
       }, this.cancellationToken);
     }
 
-    private void DownloadPodcasts(String directoryPath, Queue<Podcast> podcasts)
+    private Boolean DownloadPodcasts(String directoryPath, Queue<Podcast> podcasts)
     {
       BigFileDownloader downloader = new BigFileDownloader();
+      Boolean updateFeedToDisk = false;
 
       while (podcasts.Count > 0)
       {
@@ -256,11 +261,16 @@ namespace PodFul.Windows
         if (downloadTask.IsCanceled)
         {
           // Downloading cancelled.
-          return;
+          return false;
         }
+
+        Podcast.SetLatestDownloadDate(podcast, DateTime.Now);
+        updateFeedToDisk = true;
       }
 
       this.ResetProgressBar();
+
+      return updateFeedToDisk;
     }
 
     private void cancelButton_Click(Object sender, EventArgs e)
