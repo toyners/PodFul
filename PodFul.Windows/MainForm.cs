@@ -33,8 +33,8 @@ namespace PodFul.Windows
     private Queue<Podcast> podcastsToDownload = new Queue<Podcast>();
     private CancellationTokenSource cancellationTokenSource  = new CancellationTokenSource();
     private CancellationToken cancellationToken;
-    private Int64 fileSize;
-    private Int64 downloadedSize;
+    private Double fileSize;
+    private Double downloadedSize;
     private TaskScheduler mainTaskScheduler;
 
     public MainForm()
@@ -259,12 +259,11 @@ namespace PodFul.Windows
         this.downloadedSize += bytesWrittenToFile;
         if (this.downloadedSize > this.fileSize)
         {
-          this.progressBar.Style = ProgressBarStyle.Marquee;
+          this.progressBar.Value = 100;
           return;
         }
 
-        this.downloadedSize += bytesWrittenToFile;
-        var value = (Int32)(this.downloadedSize / this.fileSize) * 100;
+        var value = (Int32)((this.downloadedSize / this.fileSize) * 100);
 
         this.progressBar.Value = value;
       }).Start(this.mainTaskScheduler);
