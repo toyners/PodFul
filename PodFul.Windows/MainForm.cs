@@ -73,6 +73,8 @@ namespace PodFul.Windows
       FeedFunctions.WriteFeedToFile(feed, filePath);
       this.AddFeedToList(feed);
       this.feedFilePaths.Add(filePath);
+
+      this.DisplayDownloadForm(feed);
     }
 
     private void AddFeedToList(Feed feed)
@@ -187,9 +189,14 @@ namespace PodFul.Windows
 
     private void downloadPodcast_Click(Object sender, EventArgs e)
     {
+      this.DisplayDownloadForm(this.currentFeed);
+    }
+
+    private void DisplayDownloadForm(Feed feed)
+    {
       var form = new DownloadForm(
-        this.currentFeed.Title + String.Format(" [{0} podcast{1}]", this.currentFeed.Podcasts.Length, (this.currentFeed.Podcasts.Length != 1 ? "s" : String.Empty)),
-        this.currentFeed.Podcasts);
+        feed.Title + String.Format(" [{0} podcast{1}]", feed.Podcasts.Length, (feed.Podcasts.Length != 1 ? "s" : String.Empty)),
+        feed.Podcasts);
 
       if (form.ShowDialog() == DialogResult.Cancel)
       {
@@ -199,7 +206,7 @@ namespace PodFul.Windows
       this.podcastsToDownload.Clear();
       foreach (Int32 index in form.SelectedRowIndexes)
       {
-        var podcast = this.currentFeed.Podcasts[index];
+        var podcast = feed.Podcasts[index];
         this.podcastsToDownload.Enqueue(podcast);
         this.workingList.Items.Add(podcast.Title);
       }
@@ -210,7 +217,7 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        DownloadPodcasts(this.currentFeed.Directory, podcastsToDownload);
+        DownloadPodcasts(feed.Directory, podcastsToDownload);
       }, this.cancellationToken);
     }
 
