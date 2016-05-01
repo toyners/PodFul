@@ -72,6 +72,7 @@ namespace PodFul.Windows
       var filePath = feedDirectory + this.feeds.Count + "_" + feed.Title.Substitute(fileNameSubstitutions) + feedFileExtension;
       FeedFunctions.WriteFeedToFile(feed, filePath);
       this.AddFeedToList(feed);
+      this.feedFilePaths.Add(filePath);
     }
 
     private void AddFeedToList(Feed feed)
@@ -94,11 +95,23 @@ namespace PodFul.Windows
     private void removeFeed_Click(Object sender, EventArgs e)
     {
       var index = this.feedList.SelectedIndex;
-      this.feeds.RemoveAt(this.feedList.SelectedIndex);
+
+      try
+      {
+        File.Delete(this.feedFilePaths[index]);
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show("Cannot delete feed file. Exception message is\r\n\r\n" + exception.Message);
+        return;
+      }
+
+      this.feeds.RemoveAt(index);
+      this.feedList.Items.RemoveAt(index);
+      this.feedFilePaths.RemoveAt(index);
 
       if (this.feeds.Count == 0)
       {
-        this.feedList.SelectedIndex = -1;
         return;
       }
 
@@ -114,7 +127,7 @@ namespace PodFul.Windows
         return;
       }
 
-      this.feedList.SelectedIndex -= 1;
+      this.feedList.SelectedIndex = index;
     }
 
     private void feedList_SelectedIndexChanged(Object sender, EventArgs e)
@@ -124,6 +137,7 @@ namespace PodFul.Windows
 
       if (this.feedList.SelectedIndex == -1)
       {
+        this.podcastList.Items.Clear();
         this.feedDescription.Text = String.Empty;
         return;
       }
