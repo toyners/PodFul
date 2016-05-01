@@ -28,77 +28,59 @@ namespace PodFul.Windows
       {
         Dictionary<Feed, List<Podcast>> updatedFeeds = new Dictionary<Feed, List<Podcast>>();
         Dictionary<String, Feed> updatedFeedFilePaths = new Dictionary<String, Feed>();
+        var newPodcasts = new Queue<Podcast>();
+        BigFileDownloader downloader = new BigFileDownloader();
+        String scanReport = null;
 
         for (Int32 feedIndex = 0; feedIndex < feeds.Count; feedIndex++)
         {
-          var feed = feeds[feedIndex];
-
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
             this.PostMessage("\r\nCANCELLED");
             return;
           }
 
+          var feed = feeds[feedIndex];
+          
           this.PostMessage("Scanning \"" + feed.Title + "\".");
 
           var newFeed = FeedFunctions.CreateFeed(feed.URL, String.Empty);
 
-          this.PostMessage("Podcast list read.");
+          this.PostMessage("Comparing podcasts feeds.");
 
           Int32 podcastIndex = 0;
-          List<Podcast> newPodcasts = new List<Podcast>();
+          newPodcasts.Clear();
           while (podcastIndex < newFeed.Podcasts.Length && podcastIndex < feed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(feed.Podcasts[podcastIndex]))
           {
-            newPodcasts.Add(newFeed.Podcasts[podcastIndex]);
+            newPodcasts.Enqueue(newFeed.Podcasts[podcastIndex]);
             podcastIndex++;
           }
 
-          String message = "Scan completed. ";
+          String message = "Comparison completed. ";
           if (podcastIndex == 0)
           {
             message += "No new podcasts found.";
           }
           else
-          {            
-            message += podcastIndex + " new podcast" + (podcastIndex != 1 ? "s" : String.Empty) + " found.";
-
-            updatedFeeds.Add(newFeed, newPodcasts);
-            updatedFeedFilePaths.Add(feedFilePaths[feedIndex], newFeed);
+          {  
+            var feedReport = podcastIndex + " podcast" + (podcastIndex != 1 ? "s" : String.Empty) + " found";
+            message += feedReport + ".";
+            scanReport += feedReport + " for \"" + feed.Title + "\".\r\n";
           }
 
-          this.PostMessage(message + "\r\n");
-        }
+          this.PostMessage(message);
 
-        // Update all the feed files
-        foreach (KeyValuePair<String, Feed> kv in updatedFeedFilePaths)
-        {
-          if (this.cancellationTokenSource.IsCancellationRequested)
+          if (!DownloadPodcasts(downloader, feed.Directory, newPodcasts))
           {
             this.PostMessage("\r\nCANCELLED");
-            return;
+            continue;
           }
 
-          if (!this.UpdateFeed(kv.Key, kv.Value))
-          {
-            // Updating the feed went wrong so scrap downloading the podcasts otherwise we will be 
-            // out of sync in the future.
-            updatedFeeds.Remove(kv.Value);
-          }
-        }
+          this.PostMessage("Updating feed on file.");
+          this.UpdateFeed(feedFilePaths[feedIndex], newFeed);
+          this.PostMessage("Feed updated.");
 
-        // Now download the podcasts
-        String scanReport = null;
-        BigFileDownloader downloader = new BigFileDownloader();
-        foreach (KeyValuePair<Feed, List<Podcast>> kv in updatedFeeds)
-        {
-          var podcasts = kv.Value;
-          var feed = kv.Key;
-          scanReport += String.Format("{0}{1} Podcasts downloaded for \"{2}\".\r\n", podcasts.Count, (podcasts.Count != 1 ? "s" : String.Empty),  feed.Title);
-          if (!DownloadPodcasts(downloader, feed.Directory, new Queue<Podcast>(podcasts)))
-          {
-            this.PostMessage("\r\nCANCELLED");
-            return;
-          }
+          feeds[feedIndex] = newFeed;
         }
 
         // Display the final scan report.
