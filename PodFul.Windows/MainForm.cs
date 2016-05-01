@@ -30,7 +30,6 @@ namespace PodFul.Windows
     private List<String> feedFilePaths;
     private Feed currentFeed;
     private String feedDirectory;
-    private Queue<Podcast> podcastsToDownload = new Queue<Podcast>();
     private CancellationTokenSource cancellationTokenSource  = new CancellationTokenSource();
     private CancellationToken cancellationToken;
     private Double fileSize;
@@ -204,11 +203,11 @@ namespace PodFul.Windows
         return;
       }
 
-      this.podcastsToDownload.Clear();
+      Queue<Podcast> podcasts = new Queue<Podcast>();
       foreach (Int32 index in form.SelectedRowIndexes)
       {
         var podcast = feed.Podcasts[index];
-        this.podcastsToDownload.Enqueue(podcast);
+        podcasts.Enqueue(podcast);
         this.workingList.Items.Add(podcast.Title);
       }
 
@@ -218,7 +217,7 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        if (DownloadPodcasts(feed.Directory, podcastsToDownload))
+        if (DownloadPodcasts(feed.Directory, podcasts))
         {
           FeedFunctions.WriteFeedToFile(feed, feedFilePath);
         }
