@@ -214,15 +214,25 @@ namespace PodFul.Windows
 
         var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.UpdateProgessEventHandler);
-        downloadTask.Wait();
+
+        try
+        {
+          downloadTask.Wait();
+        }
+        catch (AggregateException exception)
+        {
+          Exception e = exception.Flatten();
+          if (e.InnerException != null)
+          {
+            e = e.InnerException;
+          }
+
+          MessageBox.Show(e.Message);
+        }
 
         this.MovePodcastFromWorkingToCompletedList();
 
-        if (downloadTask.IsFaulted)
-        {
-          // Exception thrown
-        }
-        else if (downloadTask.IsCanceled)
+        if (downloadTask.IsCanceled)
         {
           // Downloading cancelled.
           return;
