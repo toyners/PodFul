@@ -1,0 +1,2 @@
+Feed Title|Feed Website|DirectoryPath|C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\RSSFileLineBreaks.rss|This is a Feed Description.
+Podcast #1 Title|1/01/0001 12:00:00 AM|Podcast1.mp3|1|This is a Podcast Description.|1/01/0001 12:00:00 AM|
