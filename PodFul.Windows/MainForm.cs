@@ -203,11 +203,11 @@ namespace PodFul.Windows
         return;
       }
 
-      Queue<Podcast> podcasts = new Queue<Podcast>();
+      var selectedIndexes = new Queue<Int32>();
       foreach (Int32 index in form.SelectedRowIndexes)
       {
         var podcast = feed.Podcasts[index];
-        podcasts.Enqueue(podcast);
+        selectedIndexes.Enqueue(index);
         this.workingList.Items.Add(podcast.Title);
       }
 
@@ -217,7 +217,8 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        if (DownloadPodcasts(feed.Directory, podcasts))
+
+        if (DownloadPodcasts(feed.Directory, feed.Podcasts, selectedIndexes))
         {
           FeedFunctions.WriteFeedToFile(feed, feedFilePath);
         }
@@ -225,14 +226,15 @@ namespace PodFul.Windows
       }, this.cancellationToken);
     }
 
-    private Boolean DownloadPodcasts(String directoryPath, Queue<Podcast> podcasts)
+    private Boolean DownloadPodcasts(String directoryPath, Podcast[] podcasts, Queue<Int32> selectedIndexes)
     {
       BigFileDownloader downloader = new BigFileDownloader();
       Boolean updateFeedToDisk = false;
 
-      while (podcasts.Count > 0)
+      while (selectedIndexes.Count > 0)
       {
-        var podcast = podcasts.Dequeue();
+        var selectedIndex = selectedIndexes.Dequeue();
+        var podcast = podcasts[selectedIndex];
         this.fileSize = podcast.FileSize;
         this.downloadedSize = 0;
 
@@ -264,7 +266,7 @@ namespace PodFul.Windows
           return false;
         }
 
-        Podcast.SetDownloadDate(podcast, DateTime.Now);
+        podcasts[selectedIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
         updateFeedToDisk = true;
       }
 
