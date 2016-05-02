@@ -105,8 +105,6 @@ namespace PodFul.Windows
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.UpdateProgessEventHandler);
         downloadTask.Wait();
 
-        //this.MovePodcastFromWorkingToCompletedList();
-
         if (downloadTask.IsFaulted)
         {
           var exception = downloadTask.Exception.Flatten();
