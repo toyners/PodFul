@@ -28,7 +28,7 @@ namespace PodFul.Windows
       {
         Dictionary<Feed, List<Podcast>> updatedFeeds = new Dictionary<Feed, List<Podcast>>();
         Dictionary<String, Feed> updatedFeedFilePaths = new Dictionary<String, Feed>();
-        var newPodcasts = new Queue<Podcast>();
+        var podcastIndexes = new Queue<Int32>();
         BigFileDownloader downloader = new BigFileDownloader();
         String scanReport = null;
 
@@ -49,10 +49,10 @@ namespace PodFul.Windows
           this.PostMessage("Comparing podcasts feeds.");
 
           Int32 podcastIndex = 0;
-          newPodcasts.Clear();
+          podcastIndexes.Clear();
           while (podcastIndex < newFeed.Podcasts.Length && podcastIndex < feed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(feed.Podcasts[podcastIndex]))
           {
-            newPodcasts.Enqueue(newFeed.Podcasts[podcastIndex]);
+            podcastIndexes.Enqueue(podcastIndex);
             podcastIndex++;
           }
 
@@ -70,7 +70,7 @@ namespace PodFul.Windows
 
           this.PostMessage(message);
 
-          if (!DownloadPodcasts(downloader, feed.Directory, newPodcasts))
+          if (!DownloadPodcasts(downloader, feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
             this.PostMessage("\r\nCANCELLED");
             continue;
@@ -89,11 +89,12 @@ namespace PodFul.Windows
       }, cancellationToken);
     }
 
-    private Boolean DownloadPodcasts(BigFileDownloader downloader, String directoryPath, Queue<Podcast> podcasts)
+    private Boolean DownloadPodcasts(BigFileDownloader downloader, String directoryPath, Podcast[] podcasts, Queue<Int32> podcastIndexes)
     {
-      while (podcasts.Count > 0)
+      while (podcastIndexes.Count > 0)
       {
-        var podcast = podcasts.Dequeue();
+        var index = podcastIndexes.Dequeue();
+        var podcast = podcasts[index];
         this.fileSize = podcast.FileSize;
         this.downloadedSize = 0;
 
@@ -117,6 +118,7 @@ namespace PodFul.Windows
         }
         else
         {
+          podcasts[index] = Podcast.SetDownloadDate(podcast, DateTime.Now);
           this.PostMessage("Complete");
         }
       }
