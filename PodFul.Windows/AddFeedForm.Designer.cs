@@ -34,6 +34,7 @@
       this.label2 = new System.Windows.Forms.Label();
       this.addFeed = new System.Windows.Forms.Button();
       this.cancel = new System.Windows.Forms.Button();
+      this.chooseDirectory = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // label1
@@ -93,13 +94,24 @@
       this.cancel.UseVisualStyleBackColor = true;
       this.cancel.Click += new System.EventHandler(this.addFeed_Click);
       // 
+      // chooseDirectory
+      // 
+      this.chooseDirectory.Location = new System.Drawing.Point(365, 6);
+      this.chooseDirectory.Name = "chooseDirectory";
+      this.chooseDirectory.Size = new System.Drawing.Size(25, 20);
+      this.chooseDirectory.TabIndex = 5;
+      this.chooseDirectory.Text = "...";
+      this.chooseDirectory.UseVisualStyleBackColor = true;
+      this.chooseDirectory.Click += new System.EventHandler(this.chooseDirectory_Click);
+      // 
       // AddFeedForm
       // 
       this.AcceptButton = this.addFeed;
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.cancel;
-      this.ClientSize = new System.Drawing.Size(368, 97);
+      this.ClientSize = new System.Drawing.Size(396, 97);
+      this.Controls.Add(this.chooseDirectory);
       this.Controls.Add(this.cancel);
       this.Controls.Add(this.addFeed);
       this.Controls.Add(this.FeedURL);
@@ -125,5 +137,6 @@
     internal System.Windows.Forms.TextBox FeedDirectory;
     internal System.Windows.Forms.TextBox FeedURL;
     private System.Windows.Forms.Button cancel;
+    private System.Windows.Forms.Button chooseDirectory;
   }
 }

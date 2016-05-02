@@ -38,5 +38,18 @@ namespace PodFul.Windows
     {
       this.addFeed.Enabled = (this.FeedDirectory.Text.Length > 0 && this.FeedURL.Text.Length > 0);
     }
+
+    private void chooseDirectory_Click(Object sender, EventArgs e)
+    {
+      var dialog = new FolderBrowserDialog();
+      dialog.ShowNewFolderButton = true;
+
+      if (dialog.ShowDialog() == DialogResult.Cancel)
+      {
+        return;
+      }
+
+      this.FeedDirectory.Text = dialog.SelectedPath;
+    }
   }
 }
