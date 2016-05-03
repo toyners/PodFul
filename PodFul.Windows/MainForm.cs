@@ -215,64 +215,18 @@ namespace PodFul.Windows
       this.cancellationToken = this.cancellationTokenSource.Token;
       this.mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
+      PodcastDownload podcastDownload = new PodcastDownload(this.cancellationToken, this.UpdateProgessEventHandler);
+      podcastDownload.ResetProgress += this.ResetProgressBar;
+      podcastDownload.DownloadComplete += this.MovePodcastFromWorkingToCompletedList;
+
       Task task = Task.Factory.StartNew(() =>
       {
-
-        if (DownloadPodcasts(feed.Directory, feed.Podcasts, selectedIndexes))
+        if (podcastDownload.Download(feed.Directory, feed.Podcasts, selectedIndexes))
         {
           FeedFunctions.WriteFeedToFile(feed, feedFilePath);
         }
         
       }, this.cancellationToken);
-    }
-
-    private Boolean DownloadPodcasts(String directoryPath, Podcast[] podcasts, Queue<Int32> selectedIndexes)
-    {
-      BigFileDownloader downloader = new BigFileDownloader();
-      Boolean updateFeedToDisk = false;
-
-      while (selectedIndexes.Count > 0)
-      {
-        var selectedIndex = selectedIndexes.Dequeue();
-        var podcast = podcasts[selectedIndex];
-        this.fileSize = podcast.FileSize;
-        this.downloadedSize = 0;
-
-        this.ResetProgressBar(podcast.FileSize);
-
-        var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
-        Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.UpdateProgessEventHandler);
-
-        try
-        {
-          downloadTask.Wait();
-        }
-        catch (AggregateException exception)
-        {
-          Exception e = exception.Flatten();
-          if (e.InnerException != null)
-          {
-            e = e.InnerException;
-          }
-
-          MessageBox.Show(e.Message);
-        }
-
-        this.MovePodcastFromWorkingToCompletedList();
-
-        if (downloadTask.IsCanceled)
-        {
-          // Downloading cancelled.
-          return false;
-        }
-
-        podcasts[selectedIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
-        updateFeedToDisk = true;
-      }
-
-      this.ResetProgressBar();
-
-      return updateFeedToDisk;
     }
 
     private void cancelButton_Click(Object sender, EventArgs e)
@@ -302,7 +256,7 @@ namespace PodFul.Windows
       }).Start(this.mainTaskScheduler);
     }
 
-    private void MovePodcastFromWorkingToCompletedList()
+    private void MovePodcastFromWorkingToCompletedList(Podcast podcast)
     {
       new Task(() =>
       {

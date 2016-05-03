@@ -24,6 +24,11 @@ namespace PodFul.Windows
 
       this.cancellationToken = this.cancellationTokenSource.Token;
 
+      var podcastDownload = new PodcastDownload(this.cancellationToken, this.UpdateProgessEventHandler);
+      podcastDownload.ResetProgress += this.ResetProgressBar;
+      podcastDownload.PostMessageWithLineBreak += this.PostMessage;
+      podcastDownload.DownloadComplete += (podcast) => { this.PostMessage("Complete"); };
+
       Task task = Task.Factory.StartNew(() =>
       {
         Dictionary<Feed, List<Podcast>> updatedFeeds = new Dictionary<Feed, List<Podcast>>();
@@ -70,7 +75,7 @@ namespace PodFul.Windows
 
           this.PostMessage(message);
 
-          if (!DownloadPodcasts(downloader, feed.Directory, newFeed.Podcasts, podcastIndexes))
+          if (!podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
             this.PostMessage("\r\nCANCELLED");
             continue;
@@ -87,45 +92,6 @@ namespace PodFul.Windows
         this.PostMessage("Scan Report\r\n" + scanReport);
 
       }, cancellationToken);
-    }
-
-    private Boolean DownloadPodcasts(BigFileDownloader downloader, String directoryPath, Podcast[] podcasts, Queue<Int32> podcastIndexes)
-    {
-      while (podcastIndexes.Count > 0)
-      {
-        var index = podcastIndexes.Dequeue();
-        var podcast = podcasts[index];
-        this.fileSize = podcast.FileSize;
-        this.downloadedSize = 0;
-
-        this.ResetProgressBar(podcast.FileSize);
-
-        this.PostMessage(String.Format("Downloading \"{0}\" ...", podcast.Title), false);
-
-        var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
-        Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.UpdateProgessEventHandler);
-        downloadTask.Wait();
-
-        if (downloadTask.IsFaulted)
-        {
-          var exception = downloadTask.Exception.Flatten();
-          this.PostMessage(String.Format(" FAILED!\r\nEXCEPTION: {0}.", exception.Message), false);
-        }
-        else if (downloadTask.IsCanceled)
-        {
-          // Downloading cancelled.
-          return false;
-        }
-        else
-        {
-          podcasts[index] = Podcast.SetDownloadDate(podcast, DateTime.Now);
-          this.PostMessage("Complete");
-        }
-      }
-
-      this.ResetProgressBar();
-
-      return true;
     }
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)

@@ -60,14 +60,22 @@ namespace PodFul.Windows
         var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.updateProgress);
 
-        Boolean downloadSuccessful = true;
         try
         {
           downloadTask.Wait();
+
+          if (downloadTask.IsCanceled)
+          {
+            // Downloading cancelled. Regardless of what was previously downloaded we will not
+            // update the feed file.
+            return false;
+          }
+
+          this.DownloadSuccessful?.Invoke(podcast);
+          podcasts[podcastIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
         }
         catch (AggregateException exception)
         {
-          downloadSuccessful = false;
           Exception e = exception.Flatten();
           if (e.InnerException != null)
           {
@@ -78,20 +86,6 @@ namespace PodFul.Windows
         }
 
         this.DownloadComplete?.Invoke(podcast);
-
-        if (downloadTask.IsCanceled)
-        {
-          // Downloading cancelled. Regardless of what was previously downloaded we will not
-          // update the feed file.
-          return false;
-        }
-
-        if (downloadSuccessful && this.DownloadSuccessful != null)
-        {
-          this.DownloadSuccessful(podcast);
-        }
-
-        podcasts[podcastIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
       }
 
       this.ResetProgress?.Invoke(0);
