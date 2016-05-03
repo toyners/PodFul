@@ -12,7 +12,6 @@ namespace PodFul.Windows
   public partial class ScanForm : Form
   {
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-    private CancellationToken cancellationToken;
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
     private Int64 fileSize;
     private Int64 downloadedSize;
@@ -22,12 +21,9 @@ namespace PodFul.Windows
       InitializeComponent();
       this.Text = "Scanning " + feeds.Count + " feed" + (feeds.Count != 1 ? "s" : String.Empty);
 
-      this.cancellationToken = this.cancellationTokenSource.Token;
+      var cancellationToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = new PodcastDownload(this.cancellationToken, this.UpdateProgessEventHandler);
-      podcastDownload.ResetProgress += this.ResetProgressBar;
-      podcastDownload.PostMessageWithLineBreak += this.PostMessage;
-      podcastDownload.DownloadComplete += (podcast) => { this.PostMessage("Complete"); };
+      var podcastDownload = this.InitialisePodcastDownload(cancellationToken);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -92,6 +88,37 @@ namespace PodFul.Windows
         this.PostMessage("Scan Report\r\n" + scanReport);
 
       }, cancellationToken);
+    }
+
+    private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken)
+    {
+      var podcastDownload = new PodcastDownload(cancellationToken, this.UpdateProgessEventHandler);
+      podcastDownload.OnBeforeDownload += (podcast) =>
+      {
+        this.fileSize = podcast.FileSize;
+        this.ResetProgressBar(podcast.FileSize);
+        this.PostMessage(String.Format("Downloading \"{0}\" ...", podcast.Title), false);
+      };
+
+      podcastDownload.OnSuccessfulDownload += (podcast) =>
+      {
+        this.PostMessage("Completed");
+      };
+
+      podcastDownload.OnException += (exception, podcast) =>
+      {
+        Exception e = exception.Flatten();
+        if (e.InnerException != null)
+        {
+          e = e.InnerException;
+        }
+
+        this.PostMessage(e.Message);
+      };
+
+      podcastDownload.OnFinish += () => this.ResetProgressBar(-1);
+
+      return podcastDownload;
     }
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
