@@ -45,6 +45,16 @@ namespace PodFul.Windows
 
     public event DownloadSuccessfulDelegate DownloadSuccessful;
 
+    public event Action<Podcast> OnBeforeDownload;
+
+    public event Action<AggregateException, Podcast> OnException;
+
+    public event Action<Podcast> OnSuccessfulDownload;
+
+    public event Action<Podcast> OnCancelledDownload;
+
+    public event Action OnFinish;
+
     public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes)
     {
       BigFileDownloader downloader = new BigFileDownloader();
@@ -54,8 +64,10 @@ namespace PodFul.Windows
         var podcastIndex = podcastsIndexes.Dequeue();
         var podcast = podcasts[podcastIndex];
 
-        this.ResetProgress?.Invoke(podcast.FileSize);
-        this.PostMessageWithLineBreak?.Invoke(String.Format("Downloading \"{0}\" ...", podcast.Title), false);
+        this.OnBeforeDownload?.Invoke(podcast);
+
+        //this.ResetProgress?.Invoke(podcast.FileSize);
+        //this.PostMessageWithLineBreak?.Invoke(String.Format("Downloading \"{0}\" ...", podcast.Title), false);
 
         var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.updateProgress);
@@ -66,29 +78,33 @@ namespace PodFul.Windows
 
           if (downloadTask.IsCanceled)
           {
+            this.OnCancelledDownload?.Invoke(podcast);
             // Downloading cancelled. Regardless of what was previously downloaded we will not
             // update the feed file.
             return false;
           }
 
-          this.DownloadSuccessful?.Invoke(podcast);
+          this.OnSuccessfulDownload?.Invoke(podcast);
+
           podcasts[podcastIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
         }
         catch (AggregateException exception)
         {
-          Exception e = exception.Flatten();
+          this.OnException?.Invoke(exception, podcast);
+          /*Exception e = exception.Flatten();
           if (e.InnerException != null)
           {
             e = e.InnerException;
           }
 
-          this.PostMessageWithLineBreak?.Invoke(e.Message, false);
+          this.PostMessageWithLineBreak?.Invoke(e.Message, false);*/
         }
 
+        
         this.DownloadComplete?.Invoke(podcast);
       }
 
-      this.ResetProgress?.Invoke(0);
+      this.OnFinish?.Invoke();
       return true;
     }
   }
