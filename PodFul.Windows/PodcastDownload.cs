@@ -4,18 +4,10 @@ namespace PodFul.Windows
   using System;
   using System.Collections.Generic;
   using System.IO;
-  using System.Linq;
-  using System.Text;
   using System.Threading;
   using System.Threading.Tasks;
   using Jabberwocky.Toolkit.Object;
   using Library;
-
-  public delegate void ResetProgressDelegate(Int64 fileSize);
-  public delegate void PostMessageDelegate(String message);
-  public delegate void PostMessageWithLineBreakDelegate(String message, Boolean addLineBreak);
-  public delegate void DownloadCompleteDelegate(Podcast podcast);
-  public delegate void DownloadSuccessfulDelegate(Podcast podcast);
 
   public class PodcastDownload
   {
@@ -34,16 +26,6 @@ namespace PodFul.Windows
       this.cancellationToken = cancellationToken;
       this.updateProgress = updateProgress;
     }
-
-    public event ResetProgressDelegate ResetProgress;
-
-    public static event PostMessageDelegate PostMessage;
-
-    public event PostMessageWithLineBreakDelegate PostMessageWithLineBreak;
-
-    public event DownloadCompleteDelegate DownloadComplete;
-
-    public event DownloadSuccessfulDelegate DownloadSuccessful;
 
     public event Action<Podcast> OnBeforeDownload;
 
@@ -65,9 +47,6 @@ namespace PodFul.Windows
         var podcast = podcasts[podcastIndex];
 
         this.OnBeforeDownload?.Invoke(podcast);
-
-        //this.ResetProgress?.Invoke(podcast.FileSize);
-        //this.PostMessageWithLineBreak?.Invoke(String.Format("Downloading \"{0}\" ...", podcast.Title), false);
 
         var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.updateProgress);
@@ -99,9 +78,6 @@ namespace PodFul.Windows
 
           this.PostMessageWithLineBreak?.Invoke(e.Message, false);*/
         }
-
-        
-        this.DownloadComplete?.Invoke(podcast);
       }
 
       this.OnFinish?.Invoke();
