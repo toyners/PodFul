@@ -215,10 +215,8 @@ namespace PodFul.Windows
       this.cancellationToken = this.cancellationTokenSource.Token;
       this.mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-      PodcastDownload podcastDownload = new PodcastDownload(this.cancellationToken, this.UpdateProgessEventHandler);
-      podcastDownload.ResetProgress += this.ResetProgressBar;
-      podcastDownload.DownloadComplete += this.MovePodcastFromWorkingToCompletedList;
-
+      var podcastDownload = this.InitialisePodcastDownload();
+      
       Task task = Task.Factory.StartNew(() =>
       {
         if (podcastDownload.Download(feed.Directory, feed.Podcasts, selectedIndexes))
@@ -227,6 +225,39 @@ namespace PodFul.Windows
         }
         
       }, this.cancellationToken);
+    }
+
+    private PodcastDownload InitialisePodcastDownload()
+    {
+      var podcastDownload = new PodcastDownload(this.cancellationToken, this.UpdateProgessEventHandler);
+
+      podcastDownload.OnBeforeDownload += (podcast) => { this.ResetProgressBar(podcast.FileSize); };
+      podcastDownload.OnSuccessfulDownload += (podcast) => { this.MovePodcastFromWorkingToCompletedList(); };
+      podcastDownload.OnException += (exception, podcast) =>
+      {
+        Exception e = exception.Flatten();
+        if (e.InnerException != null)
+        {
+          e = e.InnerException;
+        }
+
+        //this.PostMessage(e.Message);
+        this.MovePodcastFromWorkingToCompletedList();
+      };
+
+      podcastDownload.OnCancelledDownload += (podcast) =>
+      {
+        for (Int32 i = 0; i < this.workingList.Items.Count; i++)
+        {
+          this.completedList.Items.Add(this.workingList.Items[i]);
+        }
+
+        this.workingList.Items.Clear();
+      };
+
+      podcastDownload.OnFinish += () => this.ResetProgressBar(-1);
+
+      return podcastDownload;
     }
 
     private void cancelButton_Click(Object sender, EventArgs e)
@@ -256,7 +287,7 @@ namespace PodFul.Windows
       }).Start(this.mainTaskScheduler);
     }
 
-    private void MovePodcastFromWorkingToCompletedList(Podcast podcast)
+    private void MovePodcastFromWorkingToCompletedList()
     {
       new Task(() =>
       {
