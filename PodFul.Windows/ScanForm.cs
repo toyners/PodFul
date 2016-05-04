@@ -27,10 +27,7 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        Dictionary<Feed, List<Podcast>> updatedFeeds = new Dictionary<Feed, List<Podcast>>();
-        Dictionary<String, Feed> updatedFeedFilePaths = new Dictionary<String, Feed>();
         var podcastIndexes = new Queue<Int32>();
-        BigFileDownloader downloader = new BigFileDownloader();
         String scanReport = null;
 
         for (Int32 feedIndex = 0; feedIndex < feeds.Count; feedIndex++)
