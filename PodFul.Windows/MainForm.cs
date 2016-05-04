@@ -181,7 +181,7 @@ namespace PodFul.Windows
         podcast.Description, 
         podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), 
         Miscellaneous.GetReadableFileSize(podcast.FileSize) + " MB",
-        podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm::ss") : @"n\a");
+        podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
 
       this.podcastDescription.Text = text;
     }
