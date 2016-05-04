@@ -155,12 +155,15 @@ module public FeedFunctions =
             XDocument.Parse(data)
         with
         | :? System.Net.WebException as webex ->
-             use streamReader = new StreamReader(webex.Response.GetResponseStream())
-             let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
-             use streamWriter = new StreamWriter(errorLogFilePath)
-             let responseText = streamReader.ReadToEnd()
-             streamWriter.Write(responseText)
-             failwith ("Error log written to '" + errorLogFilePath + "'.")
+             match webex.Response with
+             | null -> failwith webex.Message
+             | _ ->
+                 use streamReader = new StreamReader(webex.Response.GetResponseStream())
+                 let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
+                 use streamWriter = new StreamWriter(errorLogFilePath)
+                 let responseText = streamReader.ReadToEnd()
+                 streamWriter.Write(responseText)
+                 failwith ("Error log written to '" + errorLogFilePath + "'.")
 
     let public CreateFeed url directoryPath =
         let document = DownloadDocument url

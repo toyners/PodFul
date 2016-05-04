@@ -42,7 +42,16 @@ namespace PodFul.Windows
           
           this.PostMessage("Scanning \"" + feed.Title + "\".");
 
-          var newFeed = FeedFunctions.CreateFeed(feed.URL, String.Empty);
+          Feed newFeed = null;
+          try
+          {
+            newFeed = FeedFunctions.CreateFeed(feed.URL, String.Empty);
+          }
+          catch (Exception exception)
+          {
+            MessageBox.Show(exception.Message);
+            continue;
+          }
 
           this.PostMessage("Comparing podcasts feeds.");
 
