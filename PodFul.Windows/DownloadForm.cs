@@ -18,7 +18,7 @@ namespace PodFul.Windows
           podcast.Title, 
           podcast.Description, 
           podcast.FileSize, 
-          podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MM-yyyy") : @"n\a");
+          podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
       }
 
       this.startDownload.Enabled = (this.podcastList.SelectedRows.Count > 0);
