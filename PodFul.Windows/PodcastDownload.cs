@@ -66,17 +66,16 @@ namespace PodFul.Windows
           this.OnSuccessfulDownload?.Invoke(podcast);
 
           podcasts[podcastIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
+
+          var fileLength = new FileInfo(filePath).Length;
+          if (podcast.FileSize != fileLength)
+          {
+            podcasts[podcastIndex] = Podcast.SetFileSize(podcast, fileLength);
+          }
         }
         catch (AggregateException exception)
         {
           this.OnException?.Invoke(exception, podcast);
-          /*Exception e = exception.Flatten();
-          if (e.InnerException != null)
-          {
-            e = e.InnerException;
-          }
-
-          this.PostMessageWithLineBreak?.Invoke(e.Message, false);*/
         }
       }
 
