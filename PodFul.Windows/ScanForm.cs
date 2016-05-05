@@ -53,7 +53,7 @@ namespace PodFul.Windows
             continue;
           }
 
-          this.PostMessage("Comparing podcasts feeds.");
+          this.PostMessage("Comparing podcasts feeds ... ", false);
 
           Int32 podcastIndex = 0;
           podcastIndexes.Clear();
@@ -63,7 +63,7 @@ namespace PodFul.Windows
             podcastIndex++;
           }
 
-          String message = "Comparison completed. ";
+          String message = "Complete - ";
           if (podcastIndex == 0)
           {
             message += "No new podcasts found.";
@@ -83,11 +83,11 @@ namespace PodFul.Windows
             continue;
           }
 
-          this.PostMessage("Updating feed on file.");
           this.UpdateFeed(feedFilePaths[feedIndex], newFeed);
-          this.PostMessage("Feed updated.");
 
           feeds[feedIndex] = newFeed;
+
+          this.PostMessage(String.Empty);
         }
 
         // Display the final scan report.
