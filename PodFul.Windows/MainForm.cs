@@ -30,11 +30,6 @@ namespace PodFul.Windows
     private List<String> feedFilePaths;
     private Feed currentFeed;
     private String feedDirectory;
-    private CancellationTokenSource cancellationTokenSource  = new CancellationTokenSource();
-    private CancellationToken cancellationToken;
-    private Double fileSize;
-    private Double downloadedSize;
-    private TaskScheduler mainTaskScheduler;
 
     public MainForm()
     {
@@ -49,7 +44,7 @@ namespace PodFul.Windows
       this.scanFeeds.Enabled = (this.feedList.Items.Count > 0);
     }
 
-    private void AddFeed_Click(Object sender, EventArgs e)
+    private void addFeed_Click(Object sender, EventArgs e)
     {
       var addFeedForm = new AddFeedForm();
       if (addFeedForm.ShowDialog() == DialogResult.Cancel)
@@ -73,7 +68,7 @@ namespace PodFul.Windows
       this.AddFeedToList(feed);
       this.feedFilePaths.Add(feedFilePath);
 
-      this.DisplayDownloadForm(feed, feedFilePath);
+      this.DownloadPodcasts(feed, feedFilePath);
     }
 
     private void AddFeedToList(Feed feed)
@@ -181,7 +176,7 @@ namespace PodFul.Windows
         podcast.Description, 
         podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), 
         Miscellaneous.GetReadableFileSize(podcast.FileSize) + " MB",
-        podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm::ss") : @"n\a");
+        podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
 
       this.podcastDescription.Text = text;
     }
@@ -189,10 +184,22 @@ namespace PodFul.Windows
     private void downloadPodcast_Click(Object sender, EventArgs e)
     {
       var feedFilePath = this.feedFilePaths[this.feeds.IndexOf(this.currentFeed)];
-      this.DisplayDownloadForm(this.currentFeed, feedFilePath);
+      DownloadPodcasts(this.currentFeed, feedFilePath);
     }
 
-    private void DisplayDownloadForm(Feed feed, String feedFilePath)
+    private void DownloadPodcasts(Feed feed, String feedFilePath)
+    {
+      var selectedList = this.GetSelectedPodcastsFromDownloadForm(feed);
+      if (selectedList == null)
+      {
+        return;
+      }
+
+      var scanForm = new ScanForm(feed, feedFilePath, selectedList);
+      scanForm.ShowDialog();
+    }
+
+    private Queue<Int32> GetSelectedPodcastsFromDownloadForm(Feed feed)
     {
       var form = new DownloadForm(
         feed.Title + String.Format(" [{0} podcast{1}]", feed.Podcasts.Length, (feed.Podcasts.Length != 1 ? "s" : String.Empty)),
@@ -200,117 +207,10 @@ namespace PodFul.Windows
 
       if (form.ShowDialog() == DialogResult.Cancel)
       {
-        return;
+        return null;
       }
 
-      var selectedIndexes = new Queue<Int32>();
-      foreach (Int32 index in form.SelectedRowIndexes)
-      {
-        var podcast = feed.Podcasts[index];
-        selectedIndexes.Enqueue(index);
-        this.workingList.Items.Add(podcast.Title);
-      }
-
-      this.tabControl.SelectedIndex = 1;
-      this.cancellationToken = this.cancellationTokenSource.Token;
-      this.mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-
-      var podcastDownload = this.InitialisePodcastDownload();
-      
-      Task task = Task.Factory.StartNew(() =>
-      {
-        if (podcastDownload.Download(feed.Directory, feed.Podcasts, selectedIndexes))
-        {
-          FeedFunctions.WriteFeedToFile(feed, feedFilePath);
-        }
-        
-      }, this.cancellationToken);
-    }
-
-    private PodcastDownload InitialisePodcastDownload()
-    {
-      var podcastDownload = new PodcastDownload(this.cancellationToken, this.UpdateProgessEventHandler);
-
-      podcastDownload.OnBeforeDownload += (podcast) => { this.ResetProgressBar(podcast.FileSize); };
-      podcastDownload.OnSuccessfulDownload += (podcast) => { this.MovePodcastFromWorkingToCompletedList(); };
-      podcastDownload.OnException += (exception, podcast) =>
-      {
-        Exception e = exception.Flatten();
-        if (e.InnerException != null)
-        {
-          e = e.InnerException;
-        }
-
-        //this.PostMessage(e.Message);
-        this.MovePodcastFromWorkingToCompletedList();
-      };
-
-      podcastDownload.OnCancelledDownload += (podcast) =>
-      {
-        for (Int32 i = 0; i < this.workingList.Items.Count; i++)
-        {
-          this.completedList.Items.Add(this.workingList.Items[i]);
-        }
-
-        this.workingList.Items.Clear();
-      };
-
-      podcastDownload.OnFinish += () => this.ResetProgressBar(-1);
-
-      return podcastDownload;
-    }
-
-    private void cancelButton_Click(Object sender, EventArgs e)
-    {
-      this.cancellationTokenSource.Cancel();
-    }
-
-    private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
-    {
-      if (this.progressBar.Style == ProgressBarStyle.Marquee)
-      {
-        return;
-      }
-
-      new Task(() =>
-      {
-        this.downloadedSize += bytesWrittenToFile;
-        if (this.downloadedSize > this.fileSize)
-        {
-          this.progressBar.Value = 100;
-          return;
-        }
-
-        var value = (Int32)((this.downloadedSize / this.fileSize) * 100);
-
-        this.progressBar.Value = value;
-      }).Start(this.mainTaskScheduler);
-    }
-
-    private void MovePodcastFromWorkingToCompletedList()
-    {
-      new Task(() =>
-      {
-        this.completedList.Items.Add(this.workingList.Items[0]);
-        this.workingList.Items.RemoveAt(0);
-      }).Start(this.mainTaskScheduler);
-    }
-
-    private void ResetProgressBar(Int64 expectedFileSize = -1)
-    {
-      new Task(() =>
-      {
-        this.progressBar.Value = 0;
-
-        if (expectedFileSize == 0)
-        {
-          this.progressBar.Style = ProgressBarStyle.Marquee;
-        }
-        else
-        {
-          this.progressBar.Style = ProgressBarStyle.Continuous;
-        }
-      }).Start(this.mainTaskScheduler);
+      return new Queue<Int32>(form.SelectedRowIndexes);
     }
   }
 }

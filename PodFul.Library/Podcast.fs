@@ -24,6 +24,16 @@ type Podcast =
                 DownloadDate = date
             }
 
+        static member SetFileSize original size =
+            {
+                Title = original.Title
+                Description = original.Description
+                URL = original.URL
+                FileSize = size
+                PubDate = original.PubDate
+                DownloadDate = original.DownloadDate
+            }
+
         override x.Equals other = 
             match other with
             | :? Podcast as y -> (x.URL = y.URL)

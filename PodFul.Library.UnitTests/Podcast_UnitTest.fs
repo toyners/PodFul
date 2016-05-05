@@ -76,3 +76,25 @@ type Podcast_UnitTest() =
         podcast2.FileSize |> should equal podcast1.FileSize
         podcast2.PubDate |> should equal podcast1.PubDate
         podcast2.DownloadDate |> should equal DateTime.MaxValue
+
+    [<Test>]
+    member public this.``Setting file size returns new record with file size set``() =
+        let podcast1 =
+            {
+                Title = "title"
+                Description = "description"
+                URL = "url1"
+                FileSize = 1L
+                PubDate = new DateTime(2016, 12, 31)
+                DownloadDate = DateTime.MinValue
+            }
+
+        let podcast2 = Podcast.SetFileSize podcast1 2L
+
+        podcast2 |> should not' (be sameAs podcast1)
+        podcast2.Title |> should equal podcast1.Title
+        podcast2.Description |> should equal podcast1.Description
+        podcast2.URL |> should equal podcast1.URL
+        podcast2.FileSize |> should equal 2L
+        podcast2.PubDate |> should equal podcast1.PubDate
+        podcast2.DownloadDate |> should equal podcast1.DownloadDate

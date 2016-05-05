@@ -4,18 +4,10 @@ namespace PodFul.Windows
   using System;
   using System.Collections.Generic;
   using System.IO;
-  using System.Linq;
-  using System.Text;
   using System.Threading;
   using System.Threading.Tasks;
   using Jabberwocky.Toolkit.Object;
   using Library;
-
-  /*public delegate void ResetProgressDelegate(Int64 fileSize);
-  public delegate void PostMessageDelegate(String message);
-  public delegate void PostMessageWithLineBreakDelegate(String message, Boolean addLineBreak);
-  public delegate void DownloadCompleteDelegate(Podcast podcast);
-  public delegate void DownloadSuccessfulDelegate(Podcast podcast);*/
 
   public class PodcastDownload
   {
@@ -28,7 +20,7 @@ namespace PodFul.Windows
       cancellationToken.VerifyThatObjectIsNotNull("Parameter 'cancellationToken' is null.");
       if (updateProgress == null)
       {
-        throw new Exception("Parameter 'úpdateProgress' is null.");
+        throw new Exception("Parameter 'updateProgress' is null.");
       }
 
       this.cancellationToken = cancellationToken;
@@ -74,6 +66,12 @@ namespace PodFul.Windows
           this.OnSuccessfulDownload?.Invoke(podcast);
 
           podcasts[podcastIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
+
+          var fileLength = new FileInfo(filePath).Length;
+          if (podcast.FileSize != fileLength)
+          {
+            podcasts[podcastIndex] = Podcast.SetFileSize(podcast, fileLength);
+          }
         }
         catch (AggregateException exception)
         {

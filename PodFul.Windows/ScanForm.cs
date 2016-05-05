@@ -15,7 +15,7 @@ namespace PodFul.Windows
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
     private Int64 fileSize;
     private Int64 downloadedSize;
-
+    
     public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths)
     {
       InitializeComponent();
@@ -27,10 +27,7 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
-        Dictionary<Feed, List<Podcast>> updatedFeeds = new Dictionary<Feed, List<Podcast>>();
-        Dictionary<String, Feed> updatedFeedFilePaths = new Dictionary<String, Feed>();
         var podcastIndexes = new Queue<Int32>();
-        BigFileDownloader downloader = new BigFileDownloader();
         String scanReport = null;
 
         for (Int32 feedIndex = 0; feedIndex < feeds.Count; feedIndex++)
@@ -45,7 +42,16 @@ namespace PodFul.Windows
           
           this.PostMessage("Scanning \"" + feed.Title + "\".");
 
-          var newFeed = FeedFunctions.CreateFeed(feed.URL, String.Empty);
+          Feed newFeed = null;
+          try
+          {
+            newFeed = FeedFunctions.CreateFeed(feed.URL, String.Empty);
+          }
+          catch (Exception exception)
+          {
+            MessageBox.Show(exception.Message);
+            continue;
+          }
 
           this.PostMessage("Comparing podcasts feeds.");
 
@@ -90,12 +96,29 @@ namespace PodFul.Windows
       }, cancellationToken);
     }
 
+    public ScanForm(Feed feed, String feedFilePath, Queue<Int32> queue)
+    {
+      var cancellationToken = this.cancellationTokenSource.Token;
+
+      var podcastDownload = this.InitialisePodcastDownload(cancellationToken);
+
+      Task task = Task.Factory.StartNew(() =>
+      {
+        if (podcastDownload.Download(feed.Directory, feed.Podcasts, queue))
+        {
+          FeedFunctions.WriteFeedToFile(feed, feedFilePath);
+        }
+
+      }, cancellationToken);
+    }
+
     private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken)
     {
       var podcastDownload = new PodcastDownload(cancellationToken, this.UpdateProgessEventHandler);
       podcastDownload.OnBeforeDownload += (podcast) =>
       {
         this.fileSize = podcast.FileSize;
+        this.downloadedSize = 0;
         this.ResetProgressBar(podcast.FileSize);
         this.PostMessage(String.Format("Downloading \"{0}\" ...", podcast.Title), false);
       };
@@ -137,7 +160,6 @@ namespace PodFul.Windows
           return;
         }
 
-        this.downloadedSize += bytesWrittenToFile;
         var value = (Int32)(this.downloadedSize / this.fileSize) * 100;
 
         this.progressBar.Value = value;
