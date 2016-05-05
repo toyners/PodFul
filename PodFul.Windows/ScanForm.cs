@@ -160,7 +160,6 @@ namespace PodFul.Windows
           return;
         }
 
-        this.downloadedSize += bytesWrittenToFile;
         var value = (Int32)(this.downloadedSize / this.fileSize) * 100;
 
         this.progressBar.Value = value;

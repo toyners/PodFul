@@ -20,7 +20,7 @@ namespace PodFul.Windows
       cancellationToken.VerifyThatObjectIsNotNull("Parameter 'cancellationToken' is null.");
       if (updateProgress == null)
       {
-        throw new Exception("Parameter 'úpdateProgress' is null.");
+        throw new Exception("Parameter 'updateProgress' is null.");
       }
 
       this.cancellationToken = cancellationToken;
