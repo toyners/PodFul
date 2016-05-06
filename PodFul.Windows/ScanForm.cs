@@ -120,7 +120,7 @@ namespace PodFul.Windows
         this.fileSize = podcast.FileSize;
         this.downloadedSize = 0;
         this.ResetProgressBar(podcast.FileSize);
-        this.PostMessage(String.Format("Downloading \"{0}\" ...", podcast.Title), false);
+        this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 
       podcastDownload.OnSuccessfulDownload += (podcast) =>
