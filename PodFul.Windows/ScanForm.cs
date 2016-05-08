@@ -57,7 +57,8 @@ namespace PodFul.Windows
 
           Int32 podcastIndex = 0;
           podcastIndexes.Clear();
-          while (podcastIndex < newFeed.Podcasts.Length && podcastIndex < feed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(feed.Podcasts[podcastIndex]))
+          var firstPodcast = feed.Podcasts[0];
+          while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
           {
             podcastIndexes.Enqueue(podcastIndex);
             podcastIndex++;
