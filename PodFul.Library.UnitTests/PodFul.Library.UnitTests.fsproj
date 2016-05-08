@@ -52,6 +52,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Feed_UnitTests.fs" />
     <Compile Include="Podcast_UnitTest.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />

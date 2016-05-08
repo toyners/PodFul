@@ -13,16 +13,27 @@ type Feed =
         Podcasts : Podcast[];
     }
 
-    override x.Equals other = 
-        match other with
-        | :? Feed as y -> (x.URL = y.URL)
-        | _ -> false
+    with
+        static member SetDirectory original directory =
+            {
+                Title = original.Title
+                Description = original.Description
+                Website = original.Website
+                Directory = directory
+                URL = original.URL
+                Podcasts = original.Podcasts
+            }
 
-    override x.GetHashCode() = hash x.URL
-
-    interface System.IComparable with
-        member x.CompareTo other = 
+        override x.Equals other = 
             match other with
-            | :? Feed as y -> compare x y
-            | _ -> let message = "Cannot compare values that are not of type Feed. Type of other is '" + other.GetType().ToString() + "'"
-                   invalidArg "other" message
+            | :? Feed as y -> (x.URL = y.URL)
+            | _ -> false
+
+        override x.GetHashCode() = hash x.URL
+
+        interface System.IComparable with
+            member x.CompareTo other = 
+                match other with
+                | :? Feed as y -> compare x y
+                | _ -> let message = "Cannot compare values that are not of type Feed. Type of other is '" + other.GetType().ToString() + "'"
+                       invalidArg "other" message

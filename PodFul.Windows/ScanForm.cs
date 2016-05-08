@@ -53,7 +53,7 @@ namespace PodFul.Windows
             continue;
           }
 
-          this.PostMessage("Comparing podcasts feeds ... ", false);
+          this.PostMessage("Comparing podcasts ... ", false);
 
           Int32 podcastIndex = 0;
           podcastIndexes.Clear();
