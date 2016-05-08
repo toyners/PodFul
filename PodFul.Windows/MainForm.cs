@@ -35,7 +35,7 @@ namespace PodFul.Windows
     {
       InitializeComponent();
 
-      this.feedDirectory = @"C:\Projects\PodFul\Test\";
+      this.feedDirectory = @"C:\Users\toyne\AppData\Local\PodFul\";
       this.feeds = new List<Feed>();
       this.feedFilePaths = new List<String>();
 

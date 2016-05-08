@@ -15,6 +15,7 @@ namespace PodFul.Windows
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
     private Int64 fileSize;
     private Int64 downloadedSize;
+    private Int64 percentageStepSize;
     
     public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths)
     {
@@ -106,6 +107,9 @@ namespace PodFul.Windows
 
     public ScanForm(Feed feed, String feedFilePath, Queue<Int32> queue)
     {
+      InitializeComponent();
+      this.Text = "Downloading " + queue.Count + " podcast" + (queue.Count != 1 ? "s" : String.Empty);
+
       var cancellationToken = this.cancellationTokenSource.Token;
 
       var podcastDownload = this.InitialisePodcastDownload(cancellationToken);
@@ -126,6 +130,7 @@ namespace PodFul.Windows
       podcastDownload.OnBeforeDownload += (podcast) =>
       {
         this.fileSize = podcast.FileSize;
+        this.percentageStepSize = this.fileSize / 100;
         this.downloadedSize = 0;
         this.ResetProgressBar(podcast.FileSize);
         this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
@@ -164,13 +169,15 @@ namespace PodFul.Windows
         this.downloadedSize += bytesWrittenToFile;
         if (this.downloadedSize > this.fileSize)
         {
-          this.progressBar.Style = ProgressBarStyle.Marquee;
+          this.progressBar.Value = 100;
           return;
         }
 
-        var value = (Int32)(this.downloadedSize / this.fileSize) * 100;
-
-        this.progressBar.Value = value;
+        Int64 steps = this.downloadedSize / this.percentageStepSize;
+        if (steps > this.progressBar.Value)
+        {
+          this.progressBar.Value = (Int32)steps;
+        }
       }).Start(this.mainTaskScheduler);
     }
 
