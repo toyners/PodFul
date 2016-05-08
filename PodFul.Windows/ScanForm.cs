@@ -45,7 +45,7 @@ namespace PodFul.Windows
           Feed newFeed = null;
           try
           {
-            newFeed = FeedFunctions.CreateFeed(feed.URL, String.Empty);
+            newFeed = FeedFunctions.CreateFeed(feed.URL, feed.Directory);
           }
           catch (Exception exception)
           {
