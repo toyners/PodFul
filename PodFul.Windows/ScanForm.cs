@@ -28,6 +28,7 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
+        this.SetStateOfCancelButton(true);
         var podcastIndexes = new Queue<Int32>();
         String scanReport = null;
 
@@ -100,7 +101,7 @@ namespace PodFul.Windows
 
         this.PostMessage("Scan Report\r\n" + scanReport);
 
-        this.DisableCancelButton();
+        this.SetStateOfCancelButton(false);
 
       }, cancellationToken);
     }
@@ -116,11 +117,13 @@ namespace PodFul.Windows
 
       Task task = Task.Factory.StartNew(() =>
       {
+        this.SetStateOfCancelButton(true);
         if (podcastDownload.Download(feed.Directory, feed.Podcasts, queue))
         {
           FeedFunctions.WriteFeedToFile(feed, feedFilePath);
         }
 
+        this.SetStateOfCancelButton(false);
       }, cancellationToken);
     }
 
@@ -181,11 +184,11 @@ namespace PodFul.Windows
       }).Start(this.mainTaskScheduler);
     }
 
-    private void DisableCancelButton()
+    private void SetStateOfCancelButton(Boolean state)
     {
       new Task(() =>
       {
-        this.cancelButton.Enabled = false;
+        this.cancelButton.Enabled = state;
       }).Start(this.mainTaskScheduler);
     }
 
