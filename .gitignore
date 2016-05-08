@@ -213,3 +213,6 @@ ModelManifest.xml
 
 # The build installation package command script
 BuildInstallationPackage.cmd
+
+# Left over Test folder
+Test/
