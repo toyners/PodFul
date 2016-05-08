@@ -54,13 +54,13 @@
       this.feedback.Multiline = true;
       this.feedback.Name = "feedback";
       this.feedback.ReadOnly = true;
+      this.feedback.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
       this.feedback.Size = new System.Drawing.Size(465, 251);
       this.feedback.TabIndex = 8;
       // 
       // progressBar
       // 
-      this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+      this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.progressBar.Location = new System.Drawing.Point(10, 267);
       this.progressBar.Name = "progressBar";
