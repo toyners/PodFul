@@ -241,6 +241,8 @@ namespace PodFul.Windows
         }
 
         this.feedback.Text += message;
+        this.feedback.SelectionStart = this.feedback.Text.Length;
+        this.feedback.ScrollToCaret();
       }).Start(this.mainTaskScheduler);
     }
 
