@@ -65,13 +65,15 @@ namespace PodFul.Windows
 
           this.OnSuccessfulDownload?.Invoke(podcast);
 
-          podcasts[podcastIndex] = Podcast.SetDownloadDate(podcast, DateTime.Now);
+          podcast = Podcast.SetDownloadDate(podcast, DateTime.Now);
 
           var fileLength = new FileInfo(filePath).Length;
           if (podcast.FileSize != fileLength)
           {
-            podcasts[podcastIndex] = Podcast.SetFileSize(podcast, fileLength);
+            podcast = Podcast.SetFileSize(podcast, fileLength);
           }
+
+          podcasts[podcastIndex] = podcast;
         }
         catch (AggregateException exception)
         {
