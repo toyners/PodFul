@@ -14,16 +14,6 @@ type Feed =
     }
 
     with
-        static member SetDirectory original directory =
-            {
-                Title = original.Title
-                Description = original.Description
-                Website = original.Website
-                Directory = directory
-                URL = original.URL
-                Podcasts = original.Podcasts
-            }
-
         override x.Equals other = 
             match other with
             | :? Feed as y -> (x.URL = y.URL)
