@@ -99,6 +99,8 @@ namespace PodFul.Windows
 
         this.PostMessage("Scan Report\r\n" + scanReport);
 
+        this.DisableCancelButton();
+
       }, cancellationToken);
     }
 
@@ -169,6 +171,14 @@ namespace PodFul.Windows
         var value = (Int32)(this.downloadedSize / this.fileSize) * 100;
 
         this.progressBar.Value = value;
+      }).Start(this.mainTaskScheduler);
+    }
+
+    private void DisableCancelButton()
+    {
+      new Task(() =>
+      {
+        this.cancelButton.Enabled = false;
       }).Start(this.mainTaskScheduler);
     }
 
