@@ -1,0 +1,4 @@
+Channel Title|Channel Website|Channel Directory|Channel Feed|Channel Description
+Podcast #1 Title|2/01/2014 01:02:03|Podcast1.mp3|1|Podcast #1 Description
+Podcast #2 Title|4/03/2015 10:11:12|Podcast2.mp3|2|Podcast #2 Description
+Podcast #3 Title|6/05/2016 15:16:17|Podcast3.mp3|3|Podcast #3 Description
