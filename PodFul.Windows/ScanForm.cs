@@ -92,6 +92,11 @@ namespace PodFul.Windows
         }
 
         // Display the final scan report.
+        if (scanReport == null)
+        {
+          scanReport = "Nothing to report.";
+        }
+
         this.PostMessage("Scan Report\r\n" + scanReport);
 
       }, cancellationToken);
