@@ -36,6 +36,10 @@ namespace PodFul.Windows
           indexes.Add(row.Index);
         }
 
+        // Sort the indexes into descending order. Podcasts will be downloaded
+        // in Chronological order.
+        indexes.Sort((x, y) => { return y - x; });
+
         return indexes;
       }
     }
