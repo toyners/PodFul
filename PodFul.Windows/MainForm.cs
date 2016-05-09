@@ -63,12 +63,45 @@ namespace PodFul.Windows
         return;
       }
 
+      this.SyncWithExistingFiles(feed);
+
       var feedFilePath = feedDirectory + this.feeds.Count + "_" + feed.Title.Substitute(fileNameSubstitutions) + feedFileExtension;
       FeedFunctions.WriteFeedToFile(feed, feedFilePath);
       this.AddFeedToList(feed);
       this.feedFilePaths.Add(feedFilePath);
 
       this.DownloadPodcasts(feed, feedFilePath);
+    }
+
+    private void SyncWithExistingFiles(Feed feed)
+    {
+      var fileCount = Directory.GetFiles(feed.Directory, "*.mp3").Length;
+
+      if (fileCount == 0)
+      {
+        return;
+      }
+
+      if (MessageBox.Show(String.Format("{0} mp3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
+      {
+        return;
+      }
+
+      for (Int32 podcastIndex = 0; podcastIndex < feed.Podcasts.Length; podcastIndex++)
+      {
+        var podcast = feed.Podcasts[podcastIndex];
+        var fileName = podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1);
+        var fileInfo = new FileInfo(feed.Directory + fileName);
+
+        if (!fileInfo.Exists)
+        {
+          continue;
+        }
+
+        podcast = Podcast.SetDownloadDate(podcast, fileInfo.CreationTime);
+        podcast = Podcast.SetFileSize(podcast, fileInfo.Length);
+        feed.Podcasts[podcastIndex] = podcast;
+      }
     }
 
     private void AddFeedToList(Feed feed)
