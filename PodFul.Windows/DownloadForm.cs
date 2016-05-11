@@ -47,13 +47,11 @@ namespace PodFul.Windows
     private void clearButton_Click(Object sender, EventArgs e)
     {
       this.podcastList.ClearSelection();
-      this.startDownload.Enabled = false;
     }
 
     private void allButton_Click(Object sender, EventArgs e)
     {
       this.podcastList.SelectAll();
-      this.startDownload.Enabled = true;
     }
 
     private void podcastList_SelectionChanged(Object sender, EventArgs e)
