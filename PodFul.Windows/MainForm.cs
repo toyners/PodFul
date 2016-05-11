@@ -187,7 +187,7 @@ namespace PodFul.Windows
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
-      var form = new ScanForm(this.feeds, this.feedFilePaths);
+      var form = new ScanForm(this.feeds, this.feedFilePaths, this.addToWinamp.Checked);
       if (form.ShowDialog() == DialogResult.Cancel)
       {
         return;
@@ -228,7 +228,7 @@ namespace PodFul.Windows
         return;
       }
 
-      var scanForm = new ScanForm(feed, feedFilePath, selectedList);
+      var scanForm = new ScanForm(feed, feedFilePath, selectedList, this.addToWinamp.Checked);
       scanForm.ShowDialog();
     }
 

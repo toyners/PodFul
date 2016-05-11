@@ -31,7 +31,7 @@ namespace PodFul.Windows
 
     public event Action<AggregateException, Podcast> OnException;
 
-    public event Action<Podcast> OnSuccessfulDownload;
+    public event Action<Podcast, String> OnSuccessfulDownload;
 
     public event Action<Podcast> OnCancelledDownload;
 
@@ -63,7 +63,7 @@ namespace PodFul.Windows
             return false;
           }
 
-          this.OnSuccessfulDownload?.Invoke(podcast);
+          this.OnSuccessfulDownload?.Invoke(podcast, filePath);
 
           podcast = Podcast.SetDownloadDate(podcast, DateTime.Now);
 

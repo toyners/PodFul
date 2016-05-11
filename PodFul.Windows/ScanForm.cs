@@ -3,6 +3,7 @@ namespace PodFul.Windows
 {
   using System;
   using System.Collections.Generic;
+  using System.Diagnostics;
   using System.IO;
   using System.Threading;
   using System.Threading.Tasks;
@@ -17,14 +18,14 @@ namespace PodFul.Windows
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
     
-    public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths)
+    public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths, Boolean addToWinAmp)
     {
       InitializeComponent();
       this.Text = "Scanning " + feeds.Count + " feed" + (feeds.Count != 1 ? "s" : String.Empty);
 
       var cancellationToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = this.InitialisePodcastDownload(cancellationToken);
+      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -106,14 +107,14 @@ namespace PodFul.Windows
       }, cancellationToken);
     }
 
-    public ScanForm(Feed feed, String feedFilePath, Queue<Int32> queue)
+    public ScanForm(Feed feed, String feedFilePath, Queue<Int32> queue, Boolean addToWinAmp)
     {
       InitializeComponent();
       this.Text = "Downloading " + queue.Count + " podcast" + (queue.Count != 1 ? "s" : String.Empty);
 
       var cancellationToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = this.InitialisePodcastDownload(cancellationToken);
+      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -127,7 +128,7 @@ namespace PodFul.Windows
       }, cancellationToken);
     }
 
-    private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken)
+    private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken, Boolean addToWinAmp)
     {
       var podcastDownload = new PodcastDownload(cancellationToken, this.UpdateProgessEventHandler);
       podcastDownload.OnBeforeDownload += (podcast) =>
@@ -139,10 +140,22 @@ namespace PodFul.Windows
         this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 
-      podcastDownload.OnSuccessfulDownload += (podcast) =>
+      if (addToWinAmp)
       {
-        this.PostMessage("Completed");
-      };
+        podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+        {
+          this.PostMessage("Completed");
+          Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
+          this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
+        };
+      }
+      else
+      {
+        podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+        {
+          this.PostMessage("Completed");
+        };
+      }
 
       podcastDownload.OnException += (exception, podcast) =>
       {

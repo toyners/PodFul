@@ -38,6 +38,7 @@
       this.addFeed = new System.Windows.Forms.Button();
       this.podcastList = new System.Windows.Forms.ListBox();
       this.feedList = new System.Windows.Forms.ListBox();
+      this.addToWinamp = new System.Windows.Forms.CheckBox();
       this.SuspendLayout();
       // 
       // label4
@@ -137,11 +138,24 @@
       this.feedList.TabIndex = 37;
       this.feedList.SelectedIndexChanged += new System.EventHandler(this.feedList_SelectedIndexChanged);
       // 
+      // addToWinamp
+      // 
+      this.addToWinamp.AutoSize = true;
+      this.addToWinamp.Checked = true;
+      this.addToWinamp.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.addToWinamp.Location = new System.Drawing.Point(247, 434);
+      this.addToWinamp.Name = "addToWinamp";
+      this.addToWinamp.Size = new System.Drawing.Size(142, 17);
+      this.addToWinamp.TabIndex = 46;
+      this.addToWinamp.Text = "Add Podcast to WinAmp";
+      this.addToWinamp.UseVisualStyleBackColor = true;
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(490, 459);
+      this.Controls.Add(this.addToWinamp);
       this.Controls.Add(this.label4);
       this.Controls.Add(this.label3);
       this.Controls.Add(this.podcastDescription);
@@ -174,6 +188,7 @@
     private System.Windows.Forms.Button addFeed;
     private System.Windows.Forms.ListBox podcastList;
     private System.Windows.Forms.ListBox feedList;
+    private System.Windows.Forms.CheckBox addToWinamp;
   }
 }
 
