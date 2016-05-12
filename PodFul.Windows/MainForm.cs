@@ -63,7 +63,12 @@ namespace PodFul.Windows
         return;
       }
 
-      this.SyncWithExistingFiles(feed);
+      var fileCount = this.GetCountOfExistingMediaFilesForFeed(feed);
+      if (fileCount > 0 &&
+        MessageBox.Show(String.Format("{0} mp3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+      {
+        this.SyncWithExistingFiles(feed);
+      }
 
       var feedFilePath = feedDirectory + this.feeds.Count + "_" + feed.Title.Substitute(fileNameSubstitutions) + feedFileExtension;
       FeedFunctions.WriteFeedToFile(feed, feedFilePath);
@@ -73,20 +78,13 @@ namespace PodFul.Windows
       this.DownloadPodcasts(feed, feedFilePath);
     }
 
+    private Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
+    {
+      return Directory.GetFiles(feed.Directory, "*.mp3").Length;
+    }
+
     private void SyncWithExistingFiles(Feed feed)
     {
-      var fileCount = Directory.GetFiles(feed.Directory, "*.mp3").Length;
-
-      if (fileCount == 0)
-      {
-        return;
-      }
-
-      if (MessageBox.Show(String.Format("{0} mp3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
-      {
-        return;
-      }
-
       for (Int32 podcastIndex = 0; podcastIndex < feed.Podcasts.Length; podcastIndex++)
       {
         var podcast = feed.Podcasts[podcastIndex];
@@ -205,9 +203,9 @@ namespace PodFul.Windows
       }
 
       var podcast = this.currentFeed.Podcasts[this.podcastList.SelectedIndex];
-      var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}\r\nDOWNLOAD DATE: {3}", 
-        podcast.Description, 
-        podcast.PubDate.ToString("ddd, dd-MMM-yyyy"), 
+      var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}\r\nDOWNLOAD DATE: {3}",
+        podcast.Description,
+        podcast.PubDate.ToString("ddd, dd-MMM-yyyy"),
         Miscellaneous.GetReadableFileSize(podcast.FileSize) + " MB",
         podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
 
@@ -244,6 +242,18 @@ namespace PodFul.Windows
       }
 
       return new Queue<Int32>(form.SelectedRowIndexes);
+    }
+
+    private void syncPodcasts_Click(Object sender, EventArgs e)
+    {
+      var fileCount = this.GetCountOfExistingMediaFilesForFeed(this.currentFeed);
+      if (fileCount == 0)
+      {
+        MessageBox.Show(String.Format("No mp3 files found in '{0}'.", this.currentFeed.Directory), "No existing files found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+      }
+
+      this.SyncWithExistingFiles(this.currentFeed);
     }
   }
 }

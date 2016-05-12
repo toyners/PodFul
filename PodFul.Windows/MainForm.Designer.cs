@@ -39,6 +39,7 @@
       this.podcastList = new System.Windows.Forms.ListBox();
       this.feedList = new System.Windows.Forms.ListBox();
       this.addToWinamp = new System.Windows.Forms.CheckBox();
+      this.syncPodcasts = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // label4
@@ -92,7 +93,7 @@
       // 
       // scanFeeds
       // 
-      this.scanFeeds.Location = new System.Drawing.Point(180, 416);
+      this.scanFeeds.Location = new System.Drawing.Point(350, 416);
       this.scanFeeds.Name = "scanFeeds";
       this.scanFeeds.Size = new System.Drawing.Size(61, 35);
       this.scanFeeds.TabIndex = 39;
@@ -143,18 +144,29 @@
       this.addToWinamp.AutoSize = true;
       this.addToWinamp.Checked = true;
       this.addToWinamp.CheckState = System.Windows.Forms.CheckState.Checked;
-      this.addToWinamp.Location = new System.Drawing.Point(247, 434);
+      this.addToWinamp.Location = new System.Drawing.Point(249, 434);
       this.addToWinamp.Name = "addToWinamp";
-      this.addToWinamp.Size = new System.Drawing.Size(142, 17);
+      this.addToWinamp.Size = new System.Drawing.Size(100, 17);
       this.addToWinamp.TabIndex = 46;
-      this.addToWinamp.Text = "Add Podcast to WinAmp";
+      this.addToWinamp.Text = "Add to WinAmp";
       this.addToWinamp.UseVisualStyleBackColor = true;
+      // 
+      // syncPodcasts
+      // 
+      this.syncPodcasts.Location = new System.Drawing.Point(142, 416);
+      this.syncPodcasts.Name = "syncPodcasts";
+      this.syncPodcasts.Size = new System.Drawing.Size(61, 35);
+      this.syncPodcasts.TabIndex = 47;
+      this.syncPodcasts.Text = "Sync";
+      this.syncPodcasts.UseVisualStyleBackColor = true;
+      this.syncPodcasts.Click += new System.EventHandler(this.syncPodcasts_Click);
       // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(490, 459);
+      this.Controls.Add(this.syncPodcasts);
       this.Controls.Add(this.addToWinamp);
       this.Controls.Add(this.label4);
       this.Controls.Add(this.label3);
@@ -189,6 +201,7 @@
     private System.Windows.Forms.ListBox podcastList;
     private System.Windows.Forms.ListBox feedList;
     private System.Windows.Forms.CheckBox addToWinamp;
+    private System.Windows.Forms.Button syncPodcasts;
   }
 }
 
