@@ -17,7 +17,7 @@ namespace PodFul.Windows
     private Int64 fileSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
-    
+
     public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths, Boolean addToWinAmp)
     {
       InitializeComponent();
@@ -42,7 +42,7 @@ namespace PodFul.Windows
           }
 
           var feed = feeds[feedIndex];
-          
+
           this.PostMessage("Scanning \"" + feed.Title + "\".");
 
           Feed newFeed = null;
@@ -73,11 +73,13 @@ namespace PodFul.Windows
             message += "No new podcasts found.";
           }
           else
-          {  
+          {
             var feedReport = podcastIndex + " podcast" + (podcastIndex != 1 ? "s" : String.Empty) + " found";
             message += feedReport + ".";
             scanReport += feedReport + " for \"" + feed.Title + "\".\r\n";
           }
+
+          newFeed = this.SynchroniseFeed(newFeed, podcastIndex, feed);
 
           this.PostMessage(message);
 
@@ -105,6 +107,29 @@ namespace PodFul.Windows
         this.SetStateOfCancelButton(false);
 
       }, cancellationToken);
+    }
+
+    private Feed SynchroniseFeed(Feed newFeed, Int32 podcastIndex, Feed oldFeed)
+    {
+      Int32 i = 0;
+      while (podcastIndex < newFeed.Podcasts.Length && i < oldFeed.Podcasts.Length)
+      {
+        if (!oldFeed.Podcasts[i].Equals(newFeed.Podcasts[podcastIndex]))
+        {
+          throw new Exception("Podcasts not equal");
+        }
+
+        newFeed.Podcasts[podcastIndex] = oldFeed.Podcasts[i];
+        i++;
+        podcastIndex++;
+      }
+
+      if (i != oldFeed.Podcasts.Length || podcastIndex != newFeed.Podcasts.Length)
+      {
+        throw new Exception("Should not get here");
+      }
+
+      return newFeed;
     }
 
     public ScanForm(Feed feed, String feedFilePath, Queue<Int32> queue, Boolean addToWinAmp)
@@ -217,7 +242,7 @@ namespace PodFul.Windows
         this.PostMessage(" Complete");
       }
       catch (Exception exception)
-      {        
+      {
         this.PostMessage(String.Format(" FAILED!\r\nEXCEPTION: {0}.", exception.Message), false);
       }
 
@@ -226,7 +251,7 @@ namespace PodFul.Windows
         try
         {
           File.Copy(feedFilePath + ".bak", feedFilePath, true);
-          this.PostMessage("\r\nReverted to the original feed.");  
+          this.PostMessage("\r\nReverted to the original feed.");
         }
         catch
         {
