@@ -83,8 +83,9 @@ namespace PodFul.Windows
       return Directory.GetFiles(feed.Directory, "*.mp3").Length;
     }
 
-    private void SyncWithExistingFiles(Feed feed)
+    private Int32 SyncWithExistingFiles(Feed feed)
     {
+      var syncCount = 0;
       for (Int32 podcastIndex = 0; podcastIndex < feed.Podcasts.Length; podcastIndex++)
       {
         var podcast = feed.Podcasts[podcastIndex];
@@ -99,7 +100,10 @@ namespace PodFul.Windows
         podcast = Podcast.SetDownloadDate(podcast, fileInfo.CreationTime);
         podcast = Podcast.SetFileSize(podcast, fileInfo.Length);
         feed.Podcasts[podcastIndex] = podcast;
+        syncCount++;
       }
+
+      return syncCount;
     }
 
     private void AddFeedToList(Feed feed)
@@ -253,7 +257,15 @@ namespace PodFul.Windows
         return;
       }
 
-      this.SyncWithExistingFiles(this.currentFeed);
+      var syncCount = this.SyncWithExistingFiles(this.currentFeed);
+
+      MessageBox.Show(String.Format("{0} podcast(s) synced.", syncCount), "Files Synced");
+
+      if (syncCount > 0)
+      {
+        var feedFilePath = this.feedFilePaths[this.feeds.IndexOf(this.currentFeed)];
+        FeedFunctions.WriteFeedToFile(this.currentFeed, feedFilePath);
+      }
     }
   }
 }
