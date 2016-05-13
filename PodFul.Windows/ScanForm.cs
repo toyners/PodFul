@@ -124,11 +124,6 @@ namespace PodFul.Windows
         podcastIndex++;
       }
 
-      if (i != oldFeed.Podcasts.Length || podcastIndex != newFeed.Podcasts.Length)
-      {
-        throw new Exception("Should not get here");
-      }
-
       return newFeed;
     }
 
