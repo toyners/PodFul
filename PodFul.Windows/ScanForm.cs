@@ -167,6 +167,7 @@ namespace PodFul.Windows
           this.PostMessage("Completed");
           Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
           this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
+          this.PostMessage(String.Empty); //Blank line to break up text flow
         };
       }
       else
