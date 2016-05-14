@@ -3,9 +3,8 @@ namespace PodFul.Windows
 {
   using System;
   using System.Collections.Generic;
+  using System.Configuration;
   using System.IO;
-  using System.Threading;
-  using System.Threading.Tasks;
   using System.Windows.Forms;
   using Jabberwocky.Toolkit.String;
   using PodFul.Library;
@@ -34,8 +33,8 @@ namespace PodFul.Windows
     public MainForm()
     {
       InitializeComponent();
-
-      this.feedDirectory = @"C:\Users\toyne\AppData\Local\PodFul\";
+      
+      this.feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
       this.feeds = new List<Feed>();
       this.feedFilePaths = new List<String>();
 
