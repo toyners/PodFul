@@ -214,11 +214,15 @@ ModelManifest.xml
 # The build installation package command script
 BuildInstallationPackage.cmd
 
-# Left over Test folder
+# Left over folders for Test and Output
 Test/
+Output/
 
 # Test directories
 PodFul.Library.IntegrationTests/FeedFunctions_IntergrationTests/
 PodFul.Library.IntegrationTests/Feed_IntergrationTests/
 PodFul.Library.IntegrationTests/ChannelFunctions_IntergrationTests/
 PodFul.Library.IntegrationTests/DownloadFunctions_IntergrationTests/
+
+# Installation setup inno script for PodFul
+InstallationSetup.iss
