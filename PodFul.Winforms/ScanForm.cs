@@ -25,7 +25,7 @@ namespace PodFul.Winforms
 
       var cancellationToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp);
+      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp, true);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -134,7 +134,7 @@ namespace PodFul.Winforms
 
       var cancellationToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp);
+      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp, false);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -148,7 +148,7 @@ namespace PodFul.Winforms
       }, cancellationToken);
     }
 
-    private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken, Boolean addToWinAmp)
+    private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken, Boolean addToWinAmp, Boolean isScanning)
     {
       var podcastDownload = new PodcastDownload(cancellationToken, this.UpdateProgessEventHandler);
       podcastDownload.OnBeforeDownload += (podcast) =>
@@ -162,13 +162,25 @@ namespace PodFul.Winforms
 
       if (addToWinAmp)
       {
-        podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+        if (isScanning)
         {
-          this.PostMessage("Completed");
-          Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
-          this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
-          this.PostMessage(String.Empty); //Blank line to break up text flow
-        };
+          podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+          {
+            this.PostMessage("Completed");
+            Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
+            this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
+          };
+        }
+        else
+        {
+          podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+          {
+            this.PostMessage("Completed");
+            Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
+            this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
+            this.PostMessage(String.Empty); //Blank line to break up text flow
+          };
+        }
       }
       else
       {
