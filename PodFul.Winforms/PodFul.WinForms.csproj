@@ -7,8 +7,8 @@
     <ProjectGuid>{4B101383-E4AD-4910-B23E-5D586E373D86}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PodFul.Windows</RootNamespace>
-    <AssemblyName>PodFul.Windows</AssemblyName>
+    <RootNamespace>PodFul.Winforms</RootNamespace>
+    <AssemblyName>PodFul</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -92,6 +92,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="DownloadForm.resx">
       <DependentUpon>DownloadForm.cs</DependentUpon>

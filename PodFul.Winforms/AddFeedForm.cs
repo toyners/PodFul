@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.Windows
+namespace PodFul.Winforms
 {
   using System;
   using System.IO;

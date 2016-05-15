@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.Windows", "PodFul.Windows\PodFul.Windows.csproj", "{4B101383-E4AD-4910-B23E-5D586E373D86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.WinForms", "PodFul.WinForms\PodFul.WinForms.csproj", "{4B101383-E4AD-4910-B23E-5D586E373D86}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library.UnitTests", "PodFul.Library.UnitTests\PodFul.Library.UnitTests.fsproj", "{12AFDD92-5BAF-465F-8DB3-07D5D5E9C9C7}"
 EndProject

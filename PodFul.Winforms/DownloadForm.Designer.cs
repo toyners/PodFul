@@ -1,4 +1,4 @@
-﻿namespace PodFul.Windows
+﻿namespace PodFul.Winforms
 {
   partial class DownloadForm
   {
