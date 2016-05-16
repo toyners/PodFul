@@ -52,7 +52,10 @@ namespace PodFul.Winforms
           }
           catch (Exception exception)
           {
+            var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}", feed.Title, exception.Message);
+            scanReport += exceptionReport;
             MessageBox.Show(exception.Message);
+            this.PostMessage(exceptionReport);
             continue;
           }
 
