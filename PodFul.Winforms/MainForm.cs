@@ -5,6 +5,7 @@ namespace PodFul.Winforms
   using System.Collections.Generic;
   using System.Configuration;
   using System.IO;
+  using System.Reflection;
   using System.Windows.Forms;
   using Jabberwocky.Toolkit.String;
   using PodFul.Library;
@@ -33,6 +34,8 @@ namespace PodFul.Winforms
     public MainForm()
     {
       InitializeComponent();
+
+      this.Text = "PodFul - v" + Assembly.GetAssembly(this.GetType()).GetName().Version;
       
       this.feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
       this.feeds = new List<Feed>();
