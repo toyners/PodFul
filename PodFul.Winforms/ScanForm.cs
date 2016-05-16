@@ -11,7 +11,7 @@ namespace PodFul.Winforms
   using PodFul.Library;
 
   public partial class ScanForm : Form
-  {
+  { 
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
     private Int64 fileSize;
@@ -116,7 +116,7 @@ namespace PodFul.Winforms
       {
         if (!oldFeed.Podcasts[i].Equals(newFeed.Podcasts[podcastIndex]))
         {
-          throw new Exception("Podcasts not equal");
+          break;
         }
 
         newFeed.Podcasts[podcastIndex] = oldFeed.Podcasts[i];
