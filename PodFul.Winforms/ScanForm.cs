@@ -99,10 +99,12 @@ namespace PodFul.Winforms
         // Display the final scan report.
         if (scanReport == null)
         {
-          scanReport = "Nothing to report.";
+          this.PostMessage("Nothing to report.");
         }
-
-        this.PostMessage("Scan Report\r\n" + scanReport);
+        else
+        {
+          this.PostMessage("Scan Report\r\n" + scanReport);
+        }
 
         this.SetStateOfCancelButton(false);
 
