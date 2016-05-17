@@ -31,21 +31,24 @@ module public FeedFunctions =
         else
             pubDateElement.Value |> removeTimeZoneAbbreviationsFromDateTimeString |> DateTime.Parse
 
-    let private cleanText (text: string) : string = 
+    let public CleanText (text: string) : string = 
         // Replace line breaks and multiple spaces with single spaces
         let mutable fixedText = text.Replace("\r\n", " ").Replace("\n", " ")
         while fixedText.IndexOf("  ") <> -1 do 
             fixedText <- fixedText.Replace("  ", " ")
 
         // Replace HTML code for right single quotation mark
-        fixedText.Replace("&#8217;", "'")
+        fixedText <- fixedText.Replace("&#8217;", "'")
+        fixedText <- fixedText.Replace("<p>", "").Replace("</p>", "").Replace("<P>", "").Replace("</P>", "");
+
+        fixedText
 
     let private getDescriptionFromItem (element : XElement) : string =
         let descriptionElement = element?description
         if descriptionElement = null then
             ""
         else
-            cleanText descriptionElement.Value
+            CleanText descriptionElement.Value
 
     let private readLineFromFile (reader: StreamReader) : string = 
         let text = reader.ReadLine()
@@ -171,7 +174,7 @@ module public FeedFunctions =
 
         {
              Title = channel?title.Value
-             Description = cleanText channel?description.Value
+             Description = CleanText channel?description.Value
              Website = channel?link.Value
              Directory = directoryPath
              URL = url

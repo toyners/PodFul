@@ -23,7 +23,7 @@ namespace PodFul.Winforms
       { "\"", "_qu_" },
       { "<", "_l_" },
       { ">", "_g_" },
-      { "|", "_b_" },
+      { "|", "_b_" }
     };
 
     private List<Feed> feeds;

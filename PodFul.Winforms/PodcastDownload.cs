@@ -11,9 +11,9 @@ namespace PodFul.Winforms
 
   public class PodcastDownload
   {
-    private CancellationToken cancellationToken;
+    private readonly CancellationToken cancellationToken;
 
-    private Action<Int32> updateProgress;
+    private readonly Action<Int32> updateProgress;
 
     public PodcastDownload(CancellationToken cancellationToken, Action<Int32> updateProgress)
     {
@@ -39,7 +39,7 @@ namespace PodFul.Winforms
 
     public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes)
     {
-      BigFileDownloader downloader = new BigFileDownloader();
+      var downloader = new BigFileDownloader();
 
       while (podcastsIndexes.Count > 0)
       {

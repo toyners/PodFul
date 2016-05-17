@@ -102,7 +102,7 @@ namespace PodFul.Console
 
   public class Test
   {
-    private CancellationTokenSource cancellationSource;
+    private readonly CancellationTokenSource cancellationSource;
     private Int32 count = 5;
 
     public Test(CancellationTokenSource cancellationSource)

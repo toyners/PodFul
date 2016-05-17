@@ -14,7 +14,7 @@ namespace PodFul.Winforms
 
     private void addFeed_Click(Object sender, EventArgs e)
     {
-      if (!this.FeedDirectory.Text.EndsWith(@"\"))
+      if (!this.FeedDirectory.Text.EndsWith(@"\", StringComparison.Ordinal))
       {
         this.FeedDirectory.Text += @"\";
       }
