@@ -26,7 +26,7 @@ module public FeedFunctions =
 
     let private getPubDateFromItem (element : XElement) : DateTime =
         let pubDateElement = element?pubDate
-        if pubDateElement = null || pubDateElement.Value = "" then
+        if pubDateElement = null || pubDateElement.Value = String.Empty then
             DateTime.MinValue
         else
             pubDateElement.Value |> removeTimeZoneAbbreviationsFromDateTimeString |> DateTime.Parse
@@ -39,14 +39,17 @@ module public FeedFunctions =
 
         // Replace HTML code for right single quotation mark
         fixedText <- fixedText.Replace("&#8217;", "'")
-        fixedText <- fixedText.Replace("<p>", "").Replace("</p>", "").Replace("<P>", "").Replace("</P>", "");
+        fixedText <- fixedText.Replace("<p>", String.Empty)
+            .Replace("</p>", String.Empty)
+            .Replace("<P>", String.Empty)
+            .Replace("</P>", String.Empty);
 
         fixedText
 
     let private getDescriptionFromItem (element : XElement) : string =
         let descriptionElement = element?description
         if descriptionElement = null then
-            ""
+            String.Empty
         else
             CleanText descriptionElement.Value
 
@@ -92,18 +95,18 @@ module public FeedFunctions =
 
     let private getValueFromAttribute (element : XElement) attributeName : string = 
         let attribute = element.Attribute(xn attributeName)
-        if attribute = null || attribute.Value = null || attribute.Value = "" then
-            ""
+        if attribute = null || attribute.Value = null || attribute.Value = String.Empty then
+            String.Empty
         else
             attribute.Value
 
     let private getURLForItem (enclosureElement : XElement) (contentElement : XElement) =
         
-        let mutable url = ""
+        let mutable url = String.Empty
         if contentElement <> null then
             url <- getValueFromAttribute contentElement "url"
         
-        if url = "" && enclosureElement <> null then
+        if url = String.Empty && enclosureElement <> null then
             url <- getValueFromAttribute enclosureElement "url"
         
         url
@@ -114,18 +117,18 @@ module public FeedFunctions =
         let mutable size2 = -1L
         if contentElement <> null then
             let fileSize = getValueFromAttribute contentElement "fileSize"
-            if fileSize <> "" then
+            if fileSize <> String.Empty then
                 size1 <- (fileSize |> Int64.Parse)
         else
             let length = getValueFromAttribute enclosureElement "length"
-            if length <> "" then
+            if length <> String.Empty then
                 size2 <- (length |> Int64.Parse)
 
         Math.Max(size1, size2)
 
     let private getTitleForItem (element : XElement) : string =
-        if element = null || element.Value = null || element.Value = "" then
-            ""
+        if element = null || element.Value = null || element.Value = String.Empty then
+            String.Empty
         else
             element.Value
 
@@ -139,7 +142,7 @@ module public FeedFunctions =
             let title = getTitleForItem titleElement
             let url = getURLForItem enclosureElement contentElement
 
-            if title <> "" && url <> "" then
+            if title <> String.Empty && url <> String.Empty then
                 yield {
                     Title = title
                     Description = getDescriptionFromItem element
