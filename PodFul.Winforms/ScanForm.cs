@@ -21,6 +21,7 @@ namespace PodFul.Winforms
     public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths, Boolean addToWinAmp)
     {
       InitializeComponent();
+
       this.Text = "Scanning " + feeds.Count + " feed" + (feeds.Count != 1 ? "s" : String.Empty);
 
       var cancellationToken = this.cancellationTokenSource.Token;
@@ -35,6 +36,8 @@ namespace PodFul.Winforms
 
         for (Int32 feedIndex = 0; feedIndex < feeds.Count; feedIndex++)
         {
+          DisplayTitleForScanning(feedIndex + 1, feeds.Count);
+
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
             this.PostMessage("\r\nCANCELLED");
@@ -114,24 +117,6 @@ namespace PodFul.Winforms
       }, cancellationToken);
     }
 
-    private Feed SynchroniseFeed(Feed newFeed, Int32 podcastIndex, Feed oldFeed)
-    {
-      Int32 i = 0;
-      while (podcastIndex < newFeed.Podcasts.Length && i < oldFeed.Podcasts.Length)
-      {
-        if (!oldFeed.Podcasts[i].Equals(newFeed.Podcasts[podcastIndex]))
-        {
-          break;
-        }
-
-        newFeed.Podcasts[podcastIndex] = oldFeed.Podcasts[i];
-        i++;
-        podcastIndex++;
-      }
-
-      return newFeed;
-    }
-
     public ScanForm(Feed feed, String feedFilePath, Queue<Int32> queue, Boolean addToWinAmp)
     {
       InitializeComponent();
@@ -151,6 +136,15 @@ namespace PodFul.Winforms
 
         this.SetStateOfCancelButton(false);
       }, cancellationToken);
+    }
+
+    private void DisplayTitleForScanning(Int32 number, Int32 count)
+    {
+      new Task(() =>
+      {
+        this.Text = "Scanning " + number + " of " + count + " feed" + (count != 1 ? "s" : String.Empty);
+
+      }).Start(this.mainTaskScheduler);
     }
 
     private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken, Boolean addToWinAmp, Boolean isScanning)
@@ -209,6 +203,24 @@ namespace PodFul.Winforms
       podcastDownload.OnFinish += () => this.ResetProgressBar(-1);
 
       return podcastDownload;
+    }
+
+    private Feed SynchroniseFeed(Feed newFeed, Int32 podcastIndex, Feed oldFeed)
+    {
+      Int32 i = 0;
+      while (podcastIndex < newFeed.Podcasts.Length && i < oldFeed.Podcasts.Length)
+      {
+        if (!oldFeed.Podcasts[i].Equals(newFeed.Podcasts[podcastIndex]))
+        {
+          break;
+        }
+
+        newFeed.Podcasts[podcastIndex] = oldFeed.Podcasts[i];
+        i++;
+        podcastIndex++;
+      }
+
+      return newFeed;
     }
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
