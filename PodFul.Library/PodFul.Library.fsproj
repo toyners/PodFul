@@ -57,6 +57,7 @@
     <Compile Include="Feed.fs" />
     <Compile Include="IFeedStorage.fs" />
     <Compile Include="FeedFunctions.fs" />
+    <Compile Include="FeedFileStorage.fs" />
     <Compile Include="BigFileDownloader.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
