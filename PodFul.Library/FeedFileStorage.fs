@@ -3,27 +3,58 @@
 open System
 open System.Collections.Generic
 open System.IO
+open System.Linq
+open Jabberwocky.Toolkit.String
 
 type FeedFileStorage(directoryPath : String) = 
 
+    let directoryPath = directoryPath
+    let feedFileExtension = ".feed"
     let mutable isopen = false
-    let feeds = new Dictionary<Feed, String>()
     let mutable feedKeys = [||]
+    let feeds = new Dictionary<Feed, String>()
+
+    member private this.fileNameSubstitutions = Dictionary<String, String>(dict
+                                                    [
+                                                        ( "\\", "_bs_" );
+                                                        ( "/", "_fs_" );
+                                                        ( ":", "_c_" );
+                                                        ( "*", "_a_" );
+                                                        ( "?", "_q_" );
+                                                        ( "\"", "_qu_" );
+                                                        ( "<", "_l_" );
+                                                        ( ">", "_g_" );
+                                                        ( "|", "_b_" )
+                                                    ])
+
+    member private this.writeFeedToFile (feed : Feed) (filePath : string) : unit =
+        
+        use writer = new StreamWriter(filePath)
+
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description);
+
+        for podcast in feed.Podcasts do
+            writer.WriteLine(podcast.Title + "|" + 
+                podcast.PubDate.ToString() + "|" + 
+                podcast.URL + "|" + 
+                podcast.FileSize.ToString() + "|" +
+                podcast.Description + "|" +
+                podcast.DownloadDate.ToString() + "|")
 
     interface IFeedStorage with
 
         member this.Feeds with get() = 
                             match isopen with
                             | true -> feedKeys
-                            | _ -> failwith "FileFeedStorage is not open"
+                            | _ -> null
 
         member this.IsOpen with get() = isopen
 
         member this.Add (feed : Feed) =
-            let filePath = ""
-            FeedFunctions.WriteFeedToFile feed filePath
+            let filePath = directoryPath + feeds.Count.ToString() + "_" + feed.Title.Substitute(this.fileNameSubstitutions) + feedFileExtension;
+            this.writeFeedToFile feed filePath
             feeds.Add(feed, filePath)
-            feeds.Keys.CopyTo(feedKeys, feeds.Keys.Count)
+            feedKeys <- Enumerable.ToArray(feeds.Keys)
 
         member this.Close() =
             feeds.Clear()
