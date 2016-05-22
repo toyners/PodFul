@@ -11,14 +11,14 @@ namespace PodFul.Winforms
   using PodFul.Library;
 
   public partial class ProcessingForm : Form
-  { 
+  {
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
     private Int64 fileSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
 
-    public ProcessingForm(IFeedStorage feedStorage, Boolean addToWinAmp)
+    public ProcessingForm(IFeedStorage feedStorage, Queue<Int32> feedIndexes, Boolean addToWinAmp)
     {
       InitializeComponent();
 
@@ -36,8 +36,10 @@ namespace PodFul.Winforms
         var podcastIndexes = new Queue<Int32>();
         String scanReport = null;
 
-        for (Int32 feedIndex = 0; feedIndex < feeds.Length; feedIndex++)
+        while (feedIndexes.Count > 0)
         {
+          Int32 feedIndex = feedIndexes.Dequeue();
+
           DisplayTitleForScanning(feedIndex + 1, feeds.Length);
 
           if (this.cancellationTokenSource.IsCancellationRequested)

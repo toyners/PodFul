@@ -157,7 +157,13 @@ namespace PodFul.Winforms
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
-      var form = new ProcessingForm(this.feedStorage, this.addToWinamp.Checked);
+      var selectedList = this.GetSelectedFeedsForScanning();
+      if (selectedList == null)
+      {
+        return;
+      }
+
+      var form = new ProcessingForm(this.feedStorage, selectedList, this.addToWinamp.Checked);
       form.ShowDialog();
     }
 
@@ -203,6 +209,20 @@ namespace PodFul.Winforms
       var form = new DownloadForm(
         feed.Title + String.Format(" [{0} podcast{1}]", feed.Podcasts.Length, (feed.Podcasts.Length != 1 ? "s" : String.Empty)),
         feed.Podcasts);
+
+      if (form.ShowDialog() == DialogResult.Cancel)
+      {
+        return null;
+      }
+
+      return new Queue<Int32>(form.SelectedRowIndexes);
+    }
+
+    private Queue<Int32> GetSelectedFeedsForScanning()
+    {
+      var form = new DownloadForm(
+        String.Format("{0} feed{1}", this.feedStorage.Feeds.Length, (this.feedStorage.Feeds.Length != 1 ? "s" : String.Empty)),
+        this.feedStorage);
 
       if (form.ShowDialog() == DialogResult.Cancel)
       {

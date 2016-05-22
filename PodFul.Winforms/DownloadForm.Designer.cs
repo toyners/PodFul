@@ -28,40 +28,40 @@
     /// </summary>
     private void InitializeComponent()
     {
-      this.podcastList = new System.Windows.Forms.DataGridView();
+      this.list = new System.Windows.Forms.DataGridView();
       this.titleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.descriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.fileSizeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.latestDownloadDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.startDownload = new System.Windows.Forms.Button();
+      this.start = new System.Windows.Forms.Button();
       this.clearButton = new System.Windows.Forms.Button();
       this.allButton = new System.Windows.Forms.Button();
-      ((System.ComponentModel.ISupportInitialize)(this.podcastList)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.list)).BeginInit();
       this.SuspendLayout();
       // 
-      // podcastList
+      // list
       // 
-      this.podcastList.AllowUserToAddRows = false;
-      this.podcastList.AllowUserToDeleteRows = false;
-      this.podcastList.AllowUserToResizeRows = false;
-      this.podcastList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+      this.list.AllowUserToAddRows = false;
+      this.list.AllowUserToDeleteRows = false;
+      this.list.AllowUserToResizeRows = false;
+      this.list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.podcastList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.podcastList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+      this.list.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.list.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.titleColumn,
             this.descriptionColumn,
             this.fileSizeColumn,
             this.latestDownloadDateColumn});
-      this.podcastList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-      this.podcastList.Location = new System.Drawing.Point(0, 0);
-      this.podcastList.Name = "podcastList";
-      this.podcastList.ReadOnly = true;
-      this.podcastList.RowHeadersVisible = false;
-      this.podcastList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-      this.podcastList.Size = new System.Drawing.Size(723, 258);
-      this.podcastList.TabIndex = 0;
-      this.podcastList.SelectionChanged += new System.EventHandler(this.podcastList_SelectionChanged);
+      this.list.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+      this.list.Location = new System.Drawing.Point(0, 0);
+      this.list.Name = "list";
+      this.list.ReadOnly = true;
+      this.list.RowHeadersVisible = false;
+      this.list.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+      this.list.Size = new System.Drawing.Size(723, 258);
+      this.list.TabIndex = 0;
+      this.list.SelectionChanged += new System.EventHandler(this.podcastList_SelectionChanged);
       // 
       // titleColumn
       // 
@@ -96,16 +96,16 @@
       this.latestDownloadDateColumn.ReadOnly = true;
       this.latestDownloadDateColumn.Width = 140;
       // 
-      // startDownload
+      // start
       // 
-      this.startDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.startDownload.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.startDownload.Location = new System.Drawing.Point(653, 267);
-      this.startDownload.Name = "startDownload";
-      this.startDownload.Size = new System.Drawing.Size(64, 35);
-      this.startDownload.TabIndex = 3;
-      this.startDownload.Text = "Start";
-      this.startDownload.UseVisualStyleBackColor = true;
+      this.start.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.start.DialogResult = System.Windows.Forms.DialogResult.OK;
+      this.start.Location = new System.Drawing.Point(653, 267);
+      this.start.Name = "start";
+      this.start.Size = new System.Drawing.Size(64, 35);
+      this.start.TabIndex = 3;
+      this.start.Text = "Start";
+      this.start.UseVisualStyleBackColor = true;
       // 
       // clearButton
       // 
@@ -136,20 +136,20 @@
       this.ClientSize = new System.Drawing.Size(724, 309);
       this.Controls.Add(this.allButton);
       this.Controls.Add(this.clearButton);
-      this.Controls.Add(this.startDownload);
-      this.Controls.Add(this.podcastList);
+      this.Controls.Add(this.start);
+      this.Controls.Add(this.list);
       this.MinimizeBox = false;
       this.Name = "DownloadForm";
       this.Text = "Download Podcasts";
-      ((System.ComponentModel.ISupportInitialize)(this.podcastList)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.list)).EndInit();
       this.ResumeLayout(false);
 
     }
 
     #endregion
 
-    private System.Windows.Forms.DataGridView podcastList;
-    private System.Windows.Forms.Button startDownload;
+    private System.Windows.Forms.DataGridView list;
+    private System.Windows.Forms.Button start;
     private System.Windows.Forms.DataGridViewTextBoxColumn titleColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn descriptionColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn fileSizeColumn;

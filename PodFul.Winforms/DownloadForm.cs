@@ -8,22 +8,38 @@ namespace PodFul.Winforms
 
   public partial class DownloadForm : Form
   {
-    public DownloadForm(String formTitle, IEnumerable<Podcast> podcasts)
+    public DownloadForm(String title, IEnumerable<Podcast> podcasts)
     {
       InitializeComponent();
 
       foreach (var podcast in podcasts)
       {
-        this.podcastList.Rows.Add(
+        this.list.Rows.Add(
           podcast.Title, 
           podcast.Description, 
           podcast.FileSize, 
           podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
       }
 
-      this.startDownload.Enabled = (this.podcastList.SelectedRows.Count > 0);
-      
-      this.Text = formTitle;
+      this.start.Enabled = (this.list.SelectedRows.Count > 0);
+      this.Text = title;
+    }
+
+    public DownloadForm(String title, IFeedStorage feedStorage)
+    {
+      InitializeComponent();
+
+      foreach (var feed in feedStorage.Feeds)
+      {
+        this.list.Rows.Add(
+          feed.Title,
+          feed.Description,
+          feed.Podcasts.Length,
+          String.Empty);
+      }
+
+      this.start.Enabled = (this.list.SelectedRows.Count > 0);
+      this.Text = title;
     }
 
     public List<Int32> SelectedRowIndexes
@@ -31,7 +47,7 @@ namespace PodFul.Winforms
       get
       {
         var indexes = new List<Int32>();
-        foreach (DataGridViewRow row in this.podcastList.SelectedRows)
+        foreach (DataGridViewRow row in this.list.SelectedRows)
         {
           indexes.Add(row.Index);
         }
@@ -46,17 +62,17 @@ namespace PodFul.Winforms
 
     private void clearButton_Click(Object sender, EventArgs e)
     {
-      this.podcastList.ClearSelection();
+      this.list.ClearSelection();
     }
 
     private void allButton_Click(Object sender, EventArgs e)
     {
-      this.podcastList.SelectAll();
+      this.list.SelectAll();
     }
 
     private void podcastList_SelectionChanged(Object sender, EventArgs e)
     {
-      this.startDownload.Enabled = (this.podcastList.SelectedRows.Count > 0);
+      this.start.Enabled = (this.list.SelectedRows.Count > 0);
     }
   }
 }
