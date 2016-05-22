@@ -18,11 +18,13 @@ namespace PodFul.Winforms
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
 
-    public ScanForm(IList<Feed> feeds, IList<String> feedFilePaths, Boolean addToWinAmp)
+    public ScanForm(IFeedStorage feedStorage, Boolean addToWinAmp)
     {
       InitializeComponent();
 
-      this.Text = "Scanning " + feeds.Count + " feed" + (feeds.Count != 1 ? "s" : String.Empty);
+      Feed[] feeds = feedStorage.Feeds;
+
+      this.Text = "Scanning " + feeds.Length + " feed" + (feeds.Length != 1 ? "s" : String.Empty);
 
       var cancellationToken = this.cancellationTokenSource.Token;
 
@@ -34,9 +36,9 @@ namespace PodFul.Winforms
         var podcastIndexes = new Queue<Int32>();
         String scanReport = null;
 
-        for (Int32 feedIndex = 0; feedIndex < feeds.Count; feedIndex++)
+        for (Int32 feedIndex = 0; feedIndex < feeds.Length; feedIndex++)
         {
-          DisplayTitleForScanning(feedIndex + 1, feeds.Count);
+          DisplayTitleForScanning(feedIndex + 1, feeds.Length);
 
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
@@ -95,7 +97,8 @@ namespace PodFul.Winforms
             continue;
           }
 
-          this.UpdateFeed(feedFilePaths[feedIndex], newFeed);
+          this.PostMessage(String.Format("Updating \"{0}\" ...", feed.Title), false);
+          feedStorage.Update(newFeed);
 
           feeds[feedIndex] = newFeed;
 
@@ -117,7 +120,7 @@ namespace PodFul.Winforms
       }, cancellationToken);
     }
 
-    public ScanForm(Feed feed, String feedFilePath, Queue<Int32> queue, Boolean addToWinAmp)
+    public ScanForm(IFeedStorage feedStorage, Feed feed, Queue<Int32> queue, Boolean addToWinAmp)
     {
       InitializeComponent();
       this.Text = "Downloading " + queue.Count + " podcast" + (queue.Count != 1 ? "s" : String.Empty);
@@ -131,7 +134,7 @@ namespace PodFul.Winforms
         this.SetStateOfCancelButton(true);
         if (podcastDownload.Download(feed.Directory, feed.Podcasts, queue))
         {
-          FeedFunctions.WriteFeedToFile(feed, feedFilePath);
+          feedStorage.Update(feed);
         }
 
         this.SetStateOfCancelButton(false);

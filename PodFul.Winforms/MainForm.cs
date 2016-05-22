@@ -7,27 +7,11 @@ namespace PodFul.Winforms
   using System.IO;
   using System.Reflection;
   using System.Windows.Forms;
-  using Jabberwocky.Toolkit.String;
   using PodFul.Library;
 
   public partial class MainForm : Form
   {
-    private const String feedFileExtension = ".feed";
-    private Dictionary<String, String> fileNameSubstitutions = new Dictionary<String, String>
-    {
-      { "\\", "_bs_" },
-      { "/", "_fs_" },
-      { ":", "_c_" },
-      { "*", "_a_" },
-      { "?", "_q_" },
-      { "\"", "_qu_" },
-      { "<", "_l_" },
-      { ">", "_g_" },
-      { "|", "_b_" }
-    };
-
-    private List<Feed> feeds;
-    private List<String> feedFilePaths;
+    private IFeedStorage feedStorage;
     private Feed currentFeed;
     private String feedDirectory;
 
@@ -35,13 +19,18 @@ namespace PodFul.Winforms
     {
       InitializeComponent();
 
-      this.Text = "PodFul - v" + Assembly.GetAssembly(this.GetType()).GetName().Version;
+      this.Text = String.Format("PodFul - v{0} (v{1})",
+        Assembly.GetExecutingAssembly().GetName().Version,
+        Assembly.GetAssembly(typeof(IFeedStorage)).GetName().Version);
       
       this.feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
-      this.feeds = new List<Feed>();
-      this.feedFilePaths = new List<String>();
+      this.feedStorage = new FeedFileStorage(this.feedDirectory);
+      this.feedStorage.Open();
+      foreach (var feed in this.feedStorage.Feeds)
+      {
+        AddFeedToList(feed);
+      }
 
-      this.CreateFeedList();
       this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
       this.scanFeeds.Enabled = (this.feedList.Items.Count > 0);
     }
@@ -72,12 +61,10 @@ namespace PodFul.Winforms
         this.SyncWithExistingFiles(feed);
       }
 
-      var feedFilePath = feedDirectory + this.feeds.Count + "_" + feed.Title.Substitute(fileNameSubstitutions) + feedFileExtension;
-      FeedFunctions.WriteFeedToFile(feed, feedFilePath);
+      this.feedStorage.Add(feed);
       this.AddFeedToList(feed);
-      this.feedFilePaths.Add(feedFilePath);
 
-      this.DownloadPodcasts(feed, feedFilePath);
+      this.DownloadPodcasts(feed);
     }
 
     private Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
@@ -110,40 +97,19 @@ namespace PodFul.Winforms
 
     private void AddFeedToList(Feed feed)
     {
-      this.feeds.Add(feed);
       var title = feed.Title + " [" + feed.Podcasts.Length + " podcast" + (feed.Podcasts.Length != 1 ? "s" : String.Empty) + "]";
       this.feedList.Items.Add(title);
       this.feedList.SelectedIndex = this.feedList.Items.Count - 1;
-    }
-
-    private void CreateFeedList()
-    {
-      foreach (var filePath in Directory.GetFiles(this.feedDirectory, "*" + feedFileExtension, SearchOption.TopDirectoryOnly))
-      {
-        AddFeedToList(FeedFunctions.ReadFeedFromFile(filePath));
-        this.feedFilePaths.Add(filePath);
-      }
     }
 
     private void removeFeed_Click(Object sender, EventArgs e)
     {
       var index = this.feedList.SelectedIndex;
 
-      try
-      {
-        File.Delete(this.feedFilePaths[index]);
-      }
-      catch (Exception exception)
-      {
-        MessageBox.Show("Cannot delete feed file. Exception message is\r\n\r\n" + exception.Message);
-        return;
-      }
-
-      this.feeds.RemoveAt(index);
+      this.feedStorage.Remove(this.currentFeed);
       this.feedList.Items.RemoveAt(index);
-      this.feedFilePaths.RemoveAt(index);
 
-      if (this.feeds.Count == 0)
+      if (this.feedStorage.Feeds.Length == 0)
       {
         return;
       }
@@ -175,7 +141,7 @@ namespace PodFul.Winforms
         return;
       }
 
-      this.currentFeed = this.feeds[this.feedList.SelectedIndex];
+      this.currentFeed = this.feedStorage.Feeds[this.feedList.SelectedIndex];
       this.feedDescription.Text = this.currentFeed.Description;
       this.DisplayPodcasts();
     }
@@ -191,11 +157,8 @@ namespace PodFul.Winforms
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
-      var form = new ScanForm(this.feeds, this.feedFilePaths, this.addToWinamp.Checked);
-      if (form.ShowDialog() == DialogResult.Cancel)
-      {
-        return;
-      }
+      var form = new ScanForm(this.feedStorage, this.addToWinamp.Checked);
+      form.ShowDialog();
     }
 
     private void podcastList_SelectedIndexChanged(Object sender, EventArgs e)
@@ -220,11 +183,10 @@ namespace PodFul.Winforms
 
     private void downloadPodcast_Click(Object sender, EventArgs e)
     {
-      var feedFilePath = this.feedFilePaths[this.feeds.IndexOf(this.currentFeed)];
-      DownloadPodcasts(this.currentFeed, feedFilePath);
+      DownloadPodcasts(this.currentFeed);
     }
 
-    private void DownloadPodcasts(Feed feed, String feedFilePath)
+    private void DownloadPodcasts(Feed feed)
     {
       var selectedList = this.GetSelectedPodcastsFromDownloadForm(feed);
       if (selectedList == null)
@@ -232,7 +194,7 @@ namespace PodFul.Winforms
         return;
       }
 
-      var scanForm = new ScanForm(feed, feedFilePath, selectedList, this.addToWinamp.Checked);
+      var scanForm = new ScanForm(this.feedStorage, feed, selectedList, this.addToWinamp.Checked);
       scanForm.ShowDialog();
     }
 
@@ -265,8 +227,7 @@ namespace PodFul.Winforms
 
       if (syncCount > 0)
       {
-        var feedFilePath = this.feedFilePaths[this.feeds.IndexOf(this.currentFeed)];
-        FeedFunctions.WriteFeedToFile(this.currentFeed, feedFilePath);
+        this.feedStorage.Update(this.currentFeed);
       }
     }
   }
