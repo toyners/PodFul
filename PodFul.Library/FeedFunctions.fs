@@ -143,8 +143,3 @@ module public FeedFunctions =
              URL = url
              Podcasts = createPodcastArrayFromDocument document
         }
-
-    let public CreatePodcastList url =
-        let document = DownloadDocument url
-        let channel = document.Element(xn "rss").Element(xn "channel")
-        createPodcastArrayFromDocument document
