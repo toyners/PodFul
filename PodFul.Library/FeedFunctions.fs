@@ -53,46 +53,6 @@ module public FeedFunctions =
         else
             CleanText descriptionElement.Value
 
-    let private readLineFromFile (reader: StreamReader) : string = 
-        let text = reader.ReadLine()
-        match text with
-        | null ->   failwith "Raw text is null."
-        | "" ->     failwith "Raw text is empty."
-        | _ -> text
-
-    let private verifyFields (fields: string[]) : string[] =
-        if fields = null then
-            failwith "Fields array is null."
-        else if fields.Length = 0 then
-            failwith "Fields array is empty."
-        else if fields.Length < 7 then
-            failwith ("Fields array only has " + fields.Length.ToString() + " field(s).")
-        else
-            fields
-
-    let private splitStringUsingCharacter (delimiter: Char) (text : string) : string[] = text.Split(delimiter)
-
-    let private getPodcastFromFile (reader: StreamReader) = 
-        match reader.EndOfStream with
-        | true -> None
-        | _ ->
-              // Create fields array using line read from reader.
-              let fields = readLineFromFile reader |> splitStringUsingCharacter '|' |> verifyFields
-
-              // Create the podcast record.
-              let podcast = 
-                {
-                    Title = fields.[0]
-                    PubDate = DateTime.Parse(fields.[1])
-                    URL = fields.[2]
-                    FileSize = Int64.Parse(fields.[3])
-                    Description = fields.[4]
-                    DownloadDate = DateTime.Parse(fields.[5])
-                }
-
-              // Set the threaded state to be the XML reader.
-              Some(podcast, reader)
-
     let private getValueFromAttribute (element : XElement) attributeName : string = 
         let attribute = element.Attribute(xn attributeName)
         if attribute = null || attribute.Value = null || attribute.Value = String.Empty then
@@ -188,20 +148,6 @@ module public FeedFunctions =
         let document = DownloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
         createPodcastArrayFromDocument document
-
-    let public ReadFeedFromFile(filePath : string) : Feed =
-        
-        use reader = new StreamReader(filePath)
-        let fields =  reader.ReadLine() |> splitStringUsingCharacter '|' 
-
-        { 
-            Title = fields.[0]
-            Website = fields.[1]
-            Directory = fields.[2]
-            URL = fields.[3]
-            Description = fields.[4]
-            Podcasts = List.unfold getPodcastFromFile (reader) |> List.toArray
-        }
 
     let public WriteFeedToFile (feed : Feed) (filePath : string) : unit =
         

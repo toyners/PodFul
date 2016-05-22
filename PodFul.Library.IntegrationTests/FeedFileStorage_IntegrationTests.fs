@@ -17,21 +17,11 @@ type FeedFileStorage_IntergrationTests() =
     let feedDirectory = "Feed Directory"
     let feedFeed = "Feed Feed"
 
-    let firstPodcastTitle = "Podcast #1 Title"
-    let firstPodcastDescription = "Podcast #1 Description"
-    let firstPodcastURL = "Podcast1.mp3"
-    let firstPodcastFileSize = 1L
-    let firstPodcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
-
-    let secondPodcastTitle = "Podcast #2 Title"
-    let secondPodcastDescription = "Podcast #2 Description"
-    let secondPodcastURL = "Podcast2.mp3"
-    let secondPodcastFileSize = 2L
-    let secondPodcastPubDate = new DateTime(2015, 3, 4, 10, 11, 12)
-
-    let thirdPodcastTitle = "Podcast #3 Title"
-    let thirdPodcastDescription = "Podcast #3 Description"
-    let thirdPodcastURL = "Podcast3.mp3"
+    let podcastTitle = "Podcast #1 Title"
+    let podcastDescription = "Podcast #1 Description"
+    let podcastURL = "Podcast1.mp3"
+    let podcastFileSize = 1L
+    let podcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
 
     let downloadDate = new DateTime(2017, 1, 2)
 
@@ -45,29 +35,13 @@ type FeedFileStorage_IntergrationTests() =
             Podcasts = 
             [|
                 {
-                    Title = firstPodcastTitle
-                    Description = firstPodcastDescription
-                    URL = firstPodcastURL
-                    FileSize = firstPodcastFileSize
-                    PubDate = firstPodcastPubDate
+                    Title = podcastTitle
+                    Description = podcastDescription
+                    URL = podcastURL
+                    FileSize = podcastFileSize
+                    PubDate = podcastPubDate
                     DownloadDate = downloadDate
-                };
-                {
-                    Title = secondPodcastTitle
-                    Description = secondPodcastDescription
-                    URL = secondPodcastURL
-                    FileSize = secondPodcastFileSize
-                    PubDate = secondPodcastPubDate
-                    DownloadDate = downloadDate
-                };
-                {
-                    Title = thirdPodcastTitle
-                    Description = thirdPodcastDescription
-                    URL = thirdPodcastURL
-                    FileSize = -1L
-                    PubDate = DateTime.MinValue
-                    DownloadDate = downloadDate
-                };            
+                };           
             |]
         }
 
@@ -209,3 +183,44 @@ type FeedFileStorage_IntergrationTests() =
 
         feedStorage.Feeds.Length |> should equal 1
         feedStorage.Feeds.[0].Podcasts.Length |> should equal 0
+
+    [<Test>]
+    member public this.``Closing the feed storage removes all feeds from memory``() =
+
+        let feed = this.CreateFeed
+        let mutable originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        originalFeedStorage.Open()
+        originalFeedStorage.Add(feed)
+        originalFeedStorage.Close()
+
+        originalFeedStorage.Feeds |> should equal null
+
+    [<Test>]
+    member public this.``Writing/Reading cycle of Feed``() =
+
+        let feed = this.CreateFeed
+        let mutable originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        originalFeedStorage.Open()
+        originalFeedStorage.Add(feed)
+        originalFeedStorage.Close()
+
+        let mutable nextFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        nextFeedStorage.Open()
+
+        let actualFeed = nextFeedStorage.Feeds.[0]
+        actualFeed |> should equal feed
+        actualFeed.Title |> should equal feed.Title
+        actualFeed.Description |> should equal feed.Description
+        actualFeed.Website |> should equal feed.Website
+        actualFeed.Directory |> should equal feed.Directory
+        actualFeed.URL |> should equal feed.URL
+
+        let actualPodcast = actualFeed.Podcasts.[0]
+        actualFeed.Podcasts.Length |> should equal feed.Podcasts.Length
+        actualPodcast |> should equal feed.Podcasts.[0]
+        actualPodcast.Title |> should equal feed.Podcasts.[0].Title
+        actualPodcast.Description |> should equal feed.Podcasts.[0].Description
+        actualPodcast.URL |> should equal feed.Podcasts.[0].URL
+        actualPodcast.FileSize |> should equal feed.Podcasts.[0].FileSize
+        actualPodcast.PubDate |> should equal feed.Podcasts.[0].PubDate
+        actualPodcast.DownloadDate |> should equal feed.Podcasts.[0].DownloadDate

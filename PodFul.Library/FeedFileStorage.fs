@@ -27,6 +27,60 @@ type FeedFileStorage(directoryPath : String) =
                                                         ( "|", "_b_" )
                                                     ])
 
+    member private this.readLineFromFile (reader: StreamReader) : string = 
+        let text = reader.ReadLine()
+        match text with
+        | null ->   failwith "Raw text is null."
+        | "" ->     failwith "Raw text is empty."
+        | _ -> text
+
+    member private this.splitStringUsingDelimiter (text : string) : string[] = text.Split('|')
+
+    member private this.verifyFields (fields: string[]) : string[] =
+        if fields = null then
+            failwith "Fields array is null."
+        else if fields.Length = 0 then
+            failwith "Fields array is empty."
+        else if fields.Length < 7 then
+            failwith ("Fields array only has " + fields.Length.ToString() + " field(s).")
+        else
+            fields
+
+    member private this.getPodcastFromFile (reader: StreamReader) = 
+        match reader.EndOfStream with
+        | true -> None
+        | _ ->
+              // Create fields array using line read from reader.
+              let fields = this.readLineFromFile reader |> this.splitStringUsingDelimiter |> this.verifyFields
+
+              // Create the podcast record.
+              let podcast = 
+                {
+                    Title = fields.[0]
+                    PubDate = DateTime.Parse(fields.[1])
+                    URL = fields.[2]
+                    FileSize = Int64.Parse(fields.[3])
+                    Description = fields.[4]
+                    DownloadDate = DateTime.Parse(fields.[5])
+                }
+
+              // Set the threaded state to be the XML reader.
+              Some(podcast, reader)
+
+    member private this.readFeedFromFile (filePath : String) : Feed =
+        
+        use reader = new StreamReader(filePath)
+        let fields =  this.readLineFromFile reader |> this.splitStringUsingDelimiter
+
+        { 
+            Title = fields.[0]
+            Website = fields.[1]
+            Directory = fields.[2]
+            URL = fields.[3]
+            Description = fields.[4]
+            Podcasts = List.unfold this.getPodcastFromFile (reader) |> List.toArray
+        }
+
     member private this.writeFeedToFile (feed : Feed) (filePath : string) : unit =
         
         use writer = new StreamWriter(filePath)
@@ -69,7 +123,7 @@ type FeedFileStorage(directoryPath : String) =
             
             feeds <-
                 [|for filePath in Directory.GetFiles(directoryPath, "*" + feedFileExtension, SearchOption.TopDirectoryOnly) do
-                    let feed = FeedFunctions.ReadFeedFromFile filePath
+                    let feed = this.readFeedFromFile filePath
                     feedPaths.Add(feed, filePath)
                     yield feed
                 |]
