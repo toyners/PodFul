@@ -194,8 +194,8 @@ namespace PodFul.Winforms
         return;
       }
 
-      var scanForm = new ProcessingForm(this.feedStorage, feed, selectedList, this.addToWinamp.Checked);
-      scanForm.ShowDialog();
+      var form = new ProcessingForm(this.feedStorage, feed, selectedList, this.addToWinamp.Checked);
+      form.ShowDialog();
     }
 
     private Queue<Int32> GetSelectedPodcastsFromDownloadForm(Feed feed)
