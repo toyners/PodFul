@@ -113,7 +113,7 @@ module public FeedFunctions =
                 }
           ] |> List.toArray
 
-    let public DownloadDocument(url) : XDocument = 
+    let private downloadDocument(url) : XDocument = 
         try
             let webClient = new WebClient()
             webClient.Headers.Add("user-agent", "Podful Podcatcher")
@@ -132,7 +132,7 @@ module public FeedFunctions =
                  failwith ("Error log written to '" + errorLogFilePath + "'.")
 
     let public CreateFeed url directoryPath =
-        let document = DownloadDocument url
+        let document = downloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
 
         {
