@@ -51,6 +51,10 @@ type FeedFileStorage(directoryPath : String) =
         member this.IsOpen with get() = isopen
 
         member this.Add (feed : Feed) =
+            
+            if feeds.ContainsKey(feed) then
+                failwith "Feed already in storage."
+
             let filePath = directoryPath + feeds.Count.ToString() + "_" + feed.Title.Substitute(this.fileNameSubstitutions) + feedFileExtension;
             this.writeFeedToFile feed filePath
             feeds.Add(feed, filePath)
@@ -67,10 +71,14 @@ type FeedFileStorage(directoryPath : String) =
             isopen <- true
 
         member this.Remove (feed : Feed) = 
+            if  feeds.ContainsKey(feed) = false then
+                failwith "Feed cannot be removed because it cannot be found in storage."
+
             let filePath = feeds.[feed]
             File.Delete(filePath)
             feeds.Remove(feed) |> ignore
-            
+            feedKeys <- Enumerable.ToArray(feeds.Keys)
+
         member this.Update (feed : Feed) =
             let filePath = feeds.[feed]
             FeedFunctions.WriteFeedToFile feed filePath |> ignore

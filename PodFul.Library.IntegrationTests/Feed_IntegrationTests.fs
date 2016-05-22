@@ -16,7 +16,7 @@ type Feed_IntergrationTests() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
 
     [<Test>]
-    member public this.``Two different feed records are equal because of same feed.``() =
+    member public this.``Two different feed records are equal because of same feed URL.``() =
         let inputPath = workingDirectory + "RSSFile.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath)
 
@@ -26,7 +26,7 @@ type Feed_IntergrationTests() =
         feed1 = feed2 |> should equal true
 
     [<Test>]
-    member public this.``Two different feed records are not equal because of different feeds.``() =
+    member public this.``Two different feed records are not equal because of different feed URLs.``() =
         let inputPath1 = workingDirectory + "podcast1.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath1)
 

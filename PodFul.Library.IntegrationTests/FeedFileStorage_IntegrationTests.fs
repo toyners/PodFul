@@ -1,13 +1,11 @@
 ﻿namespace PodFul.Library.IntegrationTests
 
 open FsUnit
-//open Jabberwocky.Toolkit.Assembly
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
 open System
 open System.IO
-//open System.Reflection
 
 type FeedFileStorage_IntergrationTests() = 
 
@@ -107,17 +105,38 @@ type FeedFileStorage_IntergrationTests() =
         feedStorage.Feeds.[0] |> should equal feed 
 
     [<Test>]
-    member public this.``Adding the same feed does not add it to the feed storage``() = 
+    member public this.``Adding the same feed throws meaningful exception``() = 
 
         let feed = this.CreateFeed
         let feedStorage = FeedFileStorage(workingDirectory).Storage()
 
         feedStorage.Open()
         feedStorage.Add(feed)
-        feedStorage.Add(feed)
 
-        feedStorage.Feeds.Length |> should equal 1
-        feedStorage.Feeds.[0] |> should equal feed 
+        (fun() -> feedStorage.Add(feed) |> ignore)
+        |> should (throwWithMessage "Feed already in storage.") typeof<System.Exception>
 
     [<Test>]
-    member public this.``Removing a feed removes  ``() = ignore
+    member public this.``Removing a feed removes it from the feed storage ``() =
+    
+        let feed = this.CreateFeed
+        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+
+        feedStorage.Open()
+        feedStorage.Add(feed)
+        feedStorage.Remove(feed)
+
+        feedStorage.Feeds.Length |> should equal 0
+
+    [<Test>]
+    member public this.``Removing the same feed throws meaningful exception``() =
+    
+        let feed = this.CreateFeed
+        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+
+        feedStorage.Open()
+        feedStorage.Add(feed)
+        feedStorage.Remove(feed)
+
+        (fun() -> feedStorage.Remove(feed) |> ignore)
+        |> should (throwWithMessage "Feed cannot be removed because it cannot be found in storage.") typeof<System.Exception>
