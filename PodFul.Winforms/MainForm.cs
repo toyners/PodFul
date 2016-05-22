@@ -13,7 +13,6 @@ namespace PodFul.Winforms
   {
     private IFeedStorage feedStorage;
     private Feed currentFeed;
-    private String feedDirectory;
 
     public MainForm()
     {
@@ -21,8 +20,8 @@ namespace PodFul.Winforms
 
       this.DisplayTitle();
 
-      this.feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
-      this.feedStorage = new FeedFileStorage(this.feedDirectory);
+      var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
+      this.feedStorage = new FeedFileStorage(feedDirectory);
       this.feedStorage.Open();
       foreach (var feed in this.feedStorage.Feeds)
       {
