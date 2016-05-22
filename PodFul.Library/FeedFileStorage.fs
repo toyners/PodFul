@@ -147,11 +147,16 @@ type FeedFileStorage(directoryPath : String) =
         member this.Update (feed : Feed) =
             let filePath = feedPaths.[feed]
             let oldFilePath = filePath + ".old"
+
+            // Move the current file to be the old file. Delete any existing old file. 
+            if File.Exists(oldFilePath) then
+                File.Delete(oldFilePath)
             File.Move(filePath, oldFilePath)
+
             this.writeFeedToFile feed filePath |> ignore
 
+            // Update the feed object in the array
             let equalsFeed f = (f = feed)
-
             let index = Array.findIndex equalsFeed feeds
             Array.set feeds index feed
             
