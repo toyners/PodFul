@@ -148,17 +148,3 @@ module public FeedFunctions =
         let document = DownloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
         createPodcastArrayFromDocument document
-
-    let public WriteFeedToFile (feed : Feed) (filePath : string) : unit =
-        
-        use writer = new StreamWriter(filePath)
-
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description);
-
-        for podcast in feed.Podcasts do
-            writer.WriteLine(podcast.Title + "|" + 
-                podcast.PubDate.ToString() + "|" + 
-                podcast.URL + "|" + 
-                podcast.FileSize.ToString() + "|" +
-                podcast.Description + "|" +
-                podcast.DownloadDate.ToString() + "|")

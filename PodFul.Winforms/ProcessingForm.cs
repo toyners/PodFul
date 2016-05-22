@@ -261,50 +261,6 @@ namespace PodFul.Winforms
       }).Start(this.mainTaskScheduler);
     }
 
-    private Boolean UpdateFeed(String feedFilePath, Feed feed)
-    {
-      this.PostMessage(String.Format("Updating \"{0}\" ...", feed.Title), false);
-      Boolean updateSuccessful = false;
-      try
-      {
-        File.Copy(feedFilePath, feedFilePath + ".bak", true);
-        FeedFunctions.WriteFeedToFile(feed, feedFilePath);
-        updateSuccessful = true;
-        this.PostMessage(" Complete");
-      }
-      catch (Exception exception)
-      {
-        this.PostMessage(String.Format(" FAILED!\r\nEXCEPTION: {0}.", exception.Message), false);
-      }
-
-      if (!updateSuccessful)
-      {
-        try
-        {
-          File.Copy(feedFilePath + ".bak", feedFilePath, true);
-          this.PostMessage("\r\nReverted to the original feed.");
-        }
-        catch
-        {
-          this.PostMessage("\r\nFAILED to revert to the original feed.");
-        }
-      }
-
-      if (File.Exists(feedFilePath + ".bak"))
-      {
-        try
-        {
-          File.Delete(feedFilePath + ".bak");
-        }
-        catch
-        {
-          // Failing to delete the backup is not a problem. Ignore and carry on.
-        }
-      }
-
-      return updateSuccessful;
-    }
-
     private void PostMessage(String message)
     {
       this.PostMessage(message, true);
