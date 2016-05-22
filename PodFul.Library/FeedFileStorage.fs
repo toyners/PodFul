@@ -11,8 +11,8 @@ type FeedFileStorage(directoryPath : String) =
     let directoryPath = directoryPath
     let feedFileExtension = ".feed"
     let mutable isopen = false
-    let mutable feedKeys = [||]
-    let feeds = new Dictionary<Feed, String>()
+    let mutable feeds = Array.empty
+    let mutable feedPaths = new Dictionary<Feed, String>()
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
                                                     [
@@ -43,45 +43,63 @@ type FeedFileStorage(directoryPath : String) =
 
     interface IFeedStorage with
 
-        member this.Feeds with get() = 
+        member this.Feeds with get() =
                             match isopen with
-                            | true -> feedKeys
+                            | true -> feeds
                             | _ -> null
 
         member this.IsOpen with get() = isopen
 
         member this.Add (feed : Feed) =
             
-            if feeds.ContainsKey(feed) then
+            if feeds.Contains(feed) then
                 failwith "Feed already in storage."
 
-            let filePath = directoryPath + feeds.Count.ToString() + "_" + feed.Title.Substitute(this.fileNameSubstitutions) + feedFileExtension;
+            let filePath = directoryPath + feeds.Length.ToString() + "_" + feed.Title.Substitute(this.fileNameSubstitutions) + feedFileExtension;
             this.writeFeedToFile feed filePath
-            feeds.Add(feed, filePath)
-            feedKeys <- Enumerable.ToArray(feeds.Keys)
-
+            feeds <- Array.append feeds [|feed|]
+            feedPaths.Add(feed, filePath)
+                
         member this.Close() =
-            feeds.Clear()
+            feeds <- Array.empty
+            feedPaths.Clear()
             isopen <- false
 
         member this.Open () = 
-            let filePaths = Directory.GetFiles(directoryPath, "*.txt", SearchOption.TopDirectoryOnly)
-            for filePath in filePaths do
-                feeds.Add(FeedFunctions.ReadFeedFromFile(filePath), filePath)
+            
+            feeds <-
+                [|for filePath in Directory.GetFiles(directoryPath, "*" + feedFileExtension, SearchOption.TopDirectoryOnly) do
+                    let feed = FeedFunctions.ReadFeedFromFile filePath
+                    feedPaths.Add(feed, filePath)
+                    yield feed
+                |]
+
             isopen <- true
 
         member this.Remove (feed : Feed) = 
-            if  feeds.ContainsKey(feed) = false then
+
+            let feedInStorage f = (f = feed)
+            let feedIsInStorage = Array.exists feedInStorage feeds
+            if feedIsInStorage <> true then
                 failwith "Feed cannot be removed because it cannot be found in storage."
 
-            let filePath = feeds.[feed]
+            let filePath = feedPaths.[feed]
             File.Delete(filePath)
-            feeds.Remove(feed) |> ignore
-            feedKeys <- Enumerable.ToArray(feeds.Keys)
+
+            let allOtherFeeds f = (f <> feed)
+            feeds <- Array.filter allOtherFeeds feeds
+            feedPaths.Remove(feed) |> ignore
 
         member this.Update (feed : Feed) =
-            let filePath = feeds.[feed]
-            FeedFunctions.WriteFeedToFile feed filePath |> ignore
+            let filePath = feedPaths.[feed]
+            let oldFilePath = filePath + ".old"
+            File.Move(filePath, oldFilePath)
+            this.writeFeedToFile feed filePath |> ignore
+
+            let equalsFeed f = (f = feed)
+
+            let index = Array.findIndex equalsFeed feeds
+            Array.set feeds index feed
             
     member public this.Storage () =
             this :> IFeedStorage

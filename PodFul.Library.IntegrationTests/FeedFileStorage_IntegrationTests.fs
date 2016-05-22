@@ -30,6 +30,7 @@ type FeedFileStorage_IntergrationTests() =
     let secondPodcastPubDate = new DateTime(2015, 3, 4, 10, 11, 12)
 
     let thirdPodcastTitle = "Podcast #3 Title"
+    let thirdPodcastDescription = "Podcast #3 Description"
     let thirdPodcastURL = "Podcast3.mp3"
 
     let downloadDate = new DateTime(2017, 1, 2)
@@ -61,13 +62,23 @@ type FeedFileStorage_IntergrationTests() =
                 };
                 {
                     Title = thirdPodcastTitle
-                    Description = ""
+                    Description = thirdPodcastDescription
                     URL = thirdPodcastURL
                     FileSize = -1L
                     PubDate = DateTime.MinValue
                     DownloadDate = downloadDate
                 };            
             |]
+        }
+
+    member private this.UpdateFeed (feed : Feed) : Feed =
+        {
+            Title = feed.Title
+            Description = feed.Description
+            Website = feed.Website
+            Directory = feed.Directory
+            URL = feed.URL
+            Podcasts = [||]
         }
 
     [<SetUp>]
@@ -90,7 +101,7 @@ type FeedFileStorage_IntergrationTests() =
         feedStorage.Add(feed)
 
         Directory.GetFiles(workingDirectory, "*").Length |> should equal 1
-        Directory.GetFiles(workingDirectory, "*" + feed.Title + "*").Length |> should equal 1
+        Directory.GetFiles(workingDirectory, "0_" + feed.Title + ".feed").Length |> should equal 1
 
     [<Test>]
     member public this.``Adding a feed adds it to the feed storage``() = 
@@ -117,7 +128,7 @@ type FeedFileStorage_IntergrationTests() =
         |> should (throwWithMessage "Feed already in storage.") typeof<System.Exception>
 
     [<Test>]
-    member public this.``Removing a feed removes it from the feed storage ``() =
+    member public this.``Removing a feed removes it from the feed storage``() =
     
         let feed = this.CreateFeed
         let feedStorage = FeedFileStorage(workingDirectory).Storage()
@@ -127,6 +138,19 @@ type FeedFileStorage_IntergrationTests() =
         feedStorage.Remove(feed)
 
         feedStorage.Feeds.Length |> should equal 0
+
+    [<Test>]
+    member public this.``Removing a feed removes file from the directory``() =
+    
+        let feed = this.CreateFeed
+        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+
+        feedStorage.Open()
+        feedStorage.Add(feed)
+        feedStorage.Remove(feed)
+
+        Directory.GetFiles(workingDirectory, "*").Length |> should equal 0
+        Directory.GetFiles(workingDirectory, "0_" + feed.Title + ".feed").Length |> should equal 0
 
     [<Test>]
     member public this.``Removing the same feed throws meaningful exception``() =
@@ -140,3 +164,48 @@ type FeedFileStorage_IntergrationTests() =
 
         (fun() -> feedStorage.Remove(feed) |> ignore)
         |> should (throwWithMessage "Feed cannot be removed because it cannot be found in storage.") typeof<System.Exception>
+
+    [<Test>]
+    member public this.``Updating the feed updates the file in the directory``() =
+
+        let originalFeed = this.CreateFeed
+        let updatedFeed = this.UpdateFeed originalFeed
+        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        feedStorage.Open()
+        feedStorage.Add(originalFeed)
+
+        let filePath = Directory.GetFiles(workingDirectory, "0_" + originalFeed.Title + ".feed").[0]
+        let fileInfo = new FileInfo(filePath)
+        let addedDateTime = fileInfo.LastWriteTime
+
+        feedStorage.Update(updatedFeed)
+        let fileInfo = new FileInfo(filePath)
+        let updatedDateTime = fileInfo.LastWriteTime
+
+        updatedDateTime |> should be (greaterThan addedDateTime)
+
+    [<Test>]
+    member public this.``Updating the feed creates old feed file in the directory``() =
+
+        let originalFeed = this.CreateFeed
+        let updatedFeed = this.UpdateFeed originalFeed
+        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        feedStorage.Open()
+        feedStorage.Add(originalFeed)
+        feedStorage.Update(updatedFeed)
+
+        Directory.GetFiles(workingDirectory, "*").Length |> should equal 2
+        Directory.GetFiles(workingDirectory, "0_" + originalFeed.Title + ".feed.old").Length |> should equal 1
+
+    [<Test>]
+    member public this.``Updating the feed updates the feed in storage``() =
+
+        let originalFeed = this.CreateFeed
+        let updatedFeed = this.UpdateFeed originalFeed
+        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        feedStorage.Open()
+        feedStorage.Add(originalFeed)
+        feedStorage.Update(updatedFeed)
+
+        feedStorage.Feeds.Length |> should equal 1
+        feedStorage.Feeds.[0].Podcasts.Length |> should equal 0
