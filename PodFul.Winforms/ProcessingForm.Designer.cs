@@ -1,6 +1,6 @@
 ﻿namespace PodFul.Winforms
 {
-  partial class ScanForm
+  partial class ProcessingForm
   {
     /// <summary>
     /// Required designer variable.

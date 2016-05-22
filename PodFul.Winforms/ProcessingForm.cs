@@ -10,7 +10,7 @@ namespace PodFul.Winforms
   using System.Windows.Forms;
   using PodFul.Library;
 
-  public partial class ScanForm : Form
+  public partial class ProcessingForm : Form
   { 
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -18,7 +18,7 @@ namespace PodFul.Winforms
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
 
-    public ScanForm(IFeedStorage feedStorage, Boolean addToWinAmp)
+    public ProcessingForm(IFeedStorage feedStorage, Boolean addToWinAmp)
     {
       InitializeComponent();
 
@@ -120,7 +120,7 @@ namespace PodFul.Winforms
       }, cancellationToken);
     }
 
-    public ScanForm(IFeedStorage feedStorage, Feed feed, Queue<Int32> queue, Boolean addToWinAmp)
+    public ProcessingForm(IFeedStorage feedStorage, Feed feed, Queue<Int32> queue, Boolean addToWinAmp)
     {
       InitializeComponent();
       this.Text = "Downloading " + queue.Count + " podcast" + (queue.Count != 1 ? "s" : String.Empty);

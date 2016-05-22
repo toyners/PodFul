@@ -157,7 +157,7 @@ namespace PodFul.Winforms
 
     private void scanFeeds_Click(Object sender, EventArgs e)
     {
-      var form = new ScanForm(this.feedStorage, this.addToWinamp.Checked);
+      var form = new ProcessingForm(this.feedStorage, this.addToWinamp.Checked);
       form.ShowDialog();
     }
 
@@ -194,7 +194,7 @@ namespace PodFul.Winforms
         return;
       }
 
-      var scanForm = new ScanForm(this.feedStorage, feed, selectedList, this.addToWinamp.Checked);
+      var scanForm = new ProcessingForm(this.feedStorage, feed, selectedList, this.addToWinamp.Checked);
       scanForm.ShowDialog();
     }
 
