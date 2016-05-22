@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
       this.label4 = new System.Windows.Forms.Label();
       this.label3 = new System.Windows.Forms.Label();
       this.podcastDescription = new System.Windows.Forms.TextBox();
@@ -179,6 +180,7 @@
       this.Controls.Add(this.podcastList);
       this.Controls.Add(this.feedList);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "MainForm";

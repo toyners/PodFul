@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProcessingForm));
       this.cancelButton = new System.Windows.Forms.Button();
       this.feedback = new System.Windows.Forms.TextBox();
       this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -68,7 +69,7 @@
       this.progressBar.Size = new System.Drawing.Size(465, 37);
       this.progressBar.TabIndex = 9;
       // 
-      // ScanForm
+      // ProcessingForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -77,8 +78,9 @@
       this.Controls.Add(this.progressBar);
       this.Controls.Add(this.feedback);
       this.Controls.Add(this.cancelButton);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MinimizeBox = false;
-      this.Name = "ScanForm";
+      this.Name = "ProcessingForm";
       this.Text = "ScanResultsForm";
       this.ResumeLayout(false);
       this.PerformLayout();

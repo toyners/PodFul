@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddFeedForm));
       this.label1 = new System.Windows.Forms.Label();
       this.FeedDirectory = new System.Windows.Forms.TextBox();
       this.FeedURL = new System.Windows.Forms.TextBox();
@@ -119,6 +120,7 @@
       this.Controls.Add(this.FeedDirectory);
       this.Controls.Add(this.label1);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "AddFeedForm";

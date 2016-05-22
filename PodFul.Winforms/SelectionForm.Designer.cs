@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectionForm));
       this.list = new System.Windows.Forms.DataGridView();
       this.titleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.descriptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -129,7 +130,7 @@
       this.allButton.UseVisualStyleBackColor = true;
       this.allButton.Click += new System.EventHandler(this.allButton_Click);
       // 
-      // DownloadForm
+      // SelectionForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -138,8 +139,9 @@
       this.Controls.Add(this.clearButton);
       this.Controls.Add(this.start);
       this.Controls.Add(this.list);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MinimizeBox = false;
-      this.Name = "DownloadForm";
+      this.Name = "SelectionForm";
       this.Text = "Download Podcasts";
       ((System.ComponentModel.ISupportInitialize)(this.list)).EndInit();
       this.ResumeLayout(false);

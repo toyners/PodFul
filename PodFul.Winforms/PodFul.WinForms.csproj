@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>baggage_cart_box_tE4_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Jabberwocky.Toolkit, Version=1.0.6.2, Culture=neutral, PublicKeyToken=8994d5f40ad2f5fb, processorArchitecture=MSIL">
@@ -119,6 +122,9 @@
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
       <Name>PodFul.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="baggage_cart_box_tE4_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
