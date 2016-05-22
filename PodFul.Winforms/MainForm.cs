@@ -37,11 +37,13 @@ namespace PodFul.Winforms
     {
       var guiVersion = Assembly.GetExecutingAssembly().GetName().Version;
       var libraryVersion = Assembly.GetAssembly(typeof(IFeedStorage)).GetName().Version;
-      this.Text = String.Format("PodFul - v{0}.{1} (v{2}.{3})",
+      this.Text = String.Format("PodFul - v{0}.{1}.{2} (v{3}.{4}.{5})",
         guiVersion.Major,
         guiVersion.Minor,
+        guiVersion.Build,
         libraryVersion.Major,
-        libraryVersion.Minor);
+        libraryVersion.Minor,
+        libraryVersion.Build);
     }
 
     private void addFeed_Click(Object sender, EventArgs e)
