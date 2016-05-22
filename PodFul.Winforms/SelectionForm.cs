@@ -29,6 +29,9 @@ namespace PodFul.Winforms
     {
       InitializeComponent();
 
+      list.Columns["fileSizeColumn"].HeaderText = "Count";
+      list.Columns["latestDownloadDateColumn"].Visible = false;
+
       foreach (var feed in feedStorage.Feeds)
       {
         this.list.Rows.Add(
