@@ -24,7 +24,8 @@ namespace PodFul.Winforms
 
       Feed[] feeds = feedStorage.Feeds;
 
-      this.Text = "Scanning " + feeds.Length + " feed" + (feeds.Length != 1 ? "s" : String.Empty);
+      var feedTotal = feedIndexes.Count;
+      this.Text = "Scanning " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
 
       var cancellationToken = this.cancellationTokenSource.Token;
 
@@ -40,7 +41,7 @@ namespace PodFul.Winforms
         {
           Int32 feedIndex = feedIndexes.Dequeue();
 
-          DisplayTitleForScanning(feedIndex + 1, feeds.Length);
+          DisplayTitleForScanning(feedTotal - feedIndexes.Count, feedTotal);
 
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
@@ -90,19 +91,19 @@ namespace PodFul.Winforms
           }
 
           newFeed = this.SynchroniseFeed(newFeed, podcastIndex, feed);
-
           this.PostMessage(message);
+
+          this.PostMessage(String.Format("Updating \"{0}\" ... ", feed.Title), false);
+          feedStorage.Update(newFeed);
+          this.PostMessage("Completed.");
+
+          feeds[feedIndex] = newFeed;
 
           if (!podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
             this.PostMessage("\r\nCANCELLED");
-            continue;
+            return;
           }
-
-          this.PostMessage(String.Format("Updating \"{0}\" ...", feed.Title), false);
-          feedStorage.Update(newFeed);
-
-          feeds[feedIndex] = newFeed;
 
           this.PostMessage(String.Empty);
         }
@@ -170,7 +171,7 @@ namespace PodFul.Winforms
         {
           podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
           {
-            this.PostMessage("Completed");
+            this.PostMessage("Completed.");
             Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
             this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
           };
@@ -179,7 +180,7 @@ namespace PodFul.Winforms
         {
           podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
           {
-            this.PostMessage("Completed");
+            this.PostMessage("Completed.");
             Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
             this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
             this.PostMessage(String.Empty); //Blank line to break up text flow
@@ -190,7 +191,7 @@ namespace PodFul.Winforms
       {
         podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
         {
-          this.PostMessage("Completed");
+          this.PostMessage("Completed.");
         };
       }
 

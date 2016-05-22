@@ -58,8 +58,6 @@ namespace PodFul.Winforms
           if (downloadTask.IsCanceled)
           {
             this.OnCancelledDownload?.Invoke(podcast);
-            // Downloading cancelled. Regardless of what was previously downloaded we will not
-            // update the feed file.
             return false;
           }
 

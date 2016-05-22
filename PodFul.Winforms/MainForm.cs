@@ -19,10 +19,8 @@ namespace PodFul.Winforms
     {
       InitializeComponent();
 
-      this.Text = String.Format("PodFul - v{0} (v{1})",
-        Assembly.GetExecutingAssembly().GetName().Version,
-        Assembly.GetAssembly(typeof(IFeedStorage)).GetName().Version);
-      
+      this.DisplayTitle();
+
       this.feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
       this.feedStorage = new FeedFileStorage(this.feedDirectory);
       this.feedStorage.Open();
@@ -33,6 +31,17 @@ namespace PodFul.Winforms
 
       this.removeFeed.Enabled = (this.feedList.SelectedIndex != -1);
       this.scanFeeds.Enabled = (this.feedList.Items.Count > 0);
+    }
+
+    private void DisplayTitle()
+    {
+      var guiVersion = Assembly.GetExecutingAssembly().GetName().Version;
+      var libraryVersion = Assembly.GetAssembly(typeof(IFeedStorage)).GetName().Version;
+      this.Text = String.Format("PodFul - v{0}.{1} (v{2}.{3})",
+        guiVersion.Major,
+        guiVersion.Minor,
+        libraryVersion.Major,
+        libraryVersion.Minor);
     }
 
     private void addFeed_Click(Object sender, EventArgs e)
