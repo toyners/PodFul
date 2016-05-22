@@ -6,9 +6,9 @@ namespace PodFul.Winforms
   using System.Windows.Forms;
   using PodFul.Library;
 
-  public partial class DownloadForm : Form
+  public partial class SelectionForm : Form
   {
-    public DownloadForm(String title, IEnumerable<Podcast> podcasts)
+    public SelectionForm(String title, IEnumerable<Podcast> podcasts)
     {
       InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace PodFul.Winforms
       this.Text = title;
     }
 
-    public DownloadForm(String title, IFeedStorage feedStorage)
+    public SelectionForm(String title, IFeedStorage feedStorage)
     {
       InitializeComponent();
 

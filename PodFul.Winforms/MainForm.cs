@@ -206,7 +206,7 @@ namespace PodFul.Winforms
 
     private Queue<Int32> GetSelectedPodcastsFromDownloadForm(Feed feed)
     {
-      var form = new DownloadForm(
+      var form = new SelectionForm(
         feed.Title + String.Format(" [{0} podcast{1}]", feed.Podcasts.Length, (feed.Podcasts.Length != 1 ? "s" : String.Empty)),
         feed.Podcasts);
 
@@ -220,7 +220,7 @@ namespace PodFul.Winforms
 
     private Queue<Int32> GetSelectedFeedsForScanning()
     {
-      var form = new DownloadForm(
+      var form = new SelectionForm(
         String.Format("{0} feed{1}", this.feedStorage.Feeds.Length, (this.feedStorage.Feeds.Length != 1 ? "s" : String.Empty)),
         this.feedStorage);
 

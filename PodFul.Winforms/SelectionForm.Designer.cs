@@ -1,6 +1,6 @@
 ﻿namespace PodFul.Winforms
 {
-  partial class DownloadForm
+  partial class SelectionForm
   {
     /// <summary>
     /// Required designer variable.
