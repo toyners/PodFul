@@ -113,7 +113,7 @@ module public FeedFunctions =
                 }
           ] |> List.toArray
 
-    let public DownloadDocument(url) : XDocument = 
+    let private downloadDocument(url) : XDocument = 
         try
             let webClient = new WebClient()
             webClient.Headers.Add("user-agent", "Podful Podcatcher")
@@ -132,7 +132,7 @@ module public FeedFunctions =
                  failwith ("Error log written to '" + errorLogFilePath + "'.")
 
     let public CreateFeed url directoryPath =
-        let document = DownloadDocument url
+        let document = downloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
 
         {
@@ -143,22 +143,3 @@ module public FeedFunctions =
              URL = url
              Podcasts = createPodcastArrayFromDocument document
         }
-
-    let public CreatePodcastList url =
-        let document = DownloadDocument url
-        let channel = document.Element(xn "rss").Element(xn "channel")
-        createPodcastArrayFromDocument document
-
-    let public WriteFeedToFile (feed : Feed) (filePath : string) : unit =
-        
-        use writer = new StreamWriter(filePath)
-
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description);
-
-        for podcast in feed.Podcasts do
-            writer.WriteLine(podcast.Title + "|" + 
-                podcast.PubDate.ToString() + "|" + 
-                podcast.URL + "|" + 
-                podcast.FileSize.ToString() + "|" +
-                podcast.Description + "|" +
-                podcast.DownloadDate.ToString() + "|")
