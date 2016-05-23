@@ -223,6 +223,7 @@ PodFul.Library.IntegrationTests/FeedFunctions_IntergrationTests/
 PodFul.Library.IntegrationTests/Feed_IntergrationTests/
 PodFul.Library.IntegrationTests/ChannelFunctions_IntergrationTests/
 PodFul.Library.IntegrationTests/DownloadFunctions_IntergrationTests/
+PodFul.Library.IntegrationTests/FeedFileStorage_IntergrationTests/
 
 # Installation setup inno script for PodFul
 InstallationSetup.iss
