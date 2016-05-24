@@ -77,6 +77,21 @@ namespace PodFul.Winforms
             podcastIndex++;
           }
 
+          if (podcastIndexes.Count > 5)
+          {
+            var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip this feed (feed will not be updated).\r\nCancel to stop scanning.", podcastIndexes.Count);
+            var dialogResult = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButtons.YesNoCancel);
+            if (dialogResult == DialogResult.Cancel)
+            {
+              return;
+            }
+
+            if (dialogResult == DialogResult.No)
+            {
+              continue;
+            }
+          }
+
           String message = "Complete - ";
           if (podcastIndex == 0)
           {
