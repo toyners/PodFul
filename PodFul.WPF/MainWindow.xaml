@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="500">
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
