@@ -52,5 +52,30 @@ namespace PodFul.WPF
         libraryVersion.Minor,
         libraryVersion.Build);
     }
+
+    private void addButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void removeButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void syncButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void scanButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void downloadButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }

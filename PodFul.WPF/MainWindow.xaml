@@ -9,7 +9,7 @@
   <Grid Margin="10">
 
     <Grid.RowDefinitions>
-      <RowDefinition Height="5*" />
+      <RowDefinition Height="8*" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
@@ -47,18 +47,23 @@
       <TextBlock Grid.Row="2" Grid.Column="2">Bottom Right</TextBlock>
     </Grid>
 
-    <StackPanel Grid.Row="2">
-      <StackPanel.Resources>
-        <Style TargetType="Button">
-        </Style>
-      </StackPanel.Resources>
+    <Border BorderBrush="Black" BorderThickness="1,1,1,1" Grid.Row="2">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <StackPanel.Resources>
+          <Style TargetType="Button">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+          </Style>
+        </StackPanel.Resources>
 
-      <Button Margin="5">Add</Button>
-      <Button Margin="5">Remove</Button>
-      <Button>Sync</Button>
-      <CheckBox>Add to WinAmp</CheckBox>
-      <Button>Scan</Button>
-      <Button>Download</Button>
-    </StackPanel>
+        <Button Click="addButton_Click">Add</Button>
+        <Button Click="removeButton_Click">Remove</Button>
+        <Button Click="syncButton_Click">Sync</Button>
+        <CheckBox  VerticalContentAlignment="Center" Margin="5">Add to WinAmp</CheckBox>
+        <Button Click="scanButton_Click">Scan</Button>
+        <Button Click="downloadButton_Click">Download</Button>
+      </StackPanel>
+    </Border>
   </Grid>
 </Window>
