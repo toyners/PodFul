@@ -40,11 +40,25 @@
         </ListBox.ItemTemplate>
       </ListBox>
 
+      <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" Grid.Column="2">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid Margin="0, 2">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <!--<Image Source="{Binding Image}" /> -->
+              <TextBlock Text="{Binding Title}"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
       <TextBlock Grid.Row="2">Bottom Left</TextBlock>
 
-      <TextBlock Grid.Column="2">Top Right</TextBlock>
-
       <TextBlock Grid.Row="2" Grid.Column="2">Bottom Right</TextBlock>
+      
     </Grid>
 
     <Border BorderBrush="Black" BorderThickness="1,1,1,1" Grid.Row="2">
