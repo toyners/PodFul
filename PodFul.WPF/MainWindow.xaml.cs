@@ -38,6 +38,13 @@ namespace PodFul.WPF
       this.feedStorage.Open();
       
       FeedList.ItemsSource = this.feedStorage.Feeds;
+
+      if (this.feedStorage.Feeds.Length > 0)
+      {
+        this.currentFeed = this.feedStorage.Feeds[0];
+
+        PodcastList.ItemsSource = this.currentFeed.Podcasts;
+      }
     }
 
     private void DisplayTitle()
