@@ -84,5 +84,23 @@ namespace PodFul.WPF
     {
 
     }
+
+    private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
+    {
+      var index = (sender as ListBox).SelectedIndex;
+      if (index == -1)
+      {
+        return;
+      }
+
+      var feed = this.feedStorage.Feeds[index];
+      if (feed == this.currentFeed)
+      {
+        return;
+      }
+
+      this.currentFeed = feed;
+      this.FeedDescription.Text = feed.Description;
+    }
   }
 }

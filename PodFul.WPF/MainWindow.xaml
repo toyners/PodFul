@@ -25,7 +25,8 @@
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
-      <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" BorderBrush="Black" BorderThickness="1,1,1,1" Margin="0,0,5,2.5">
+      <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" BorderBrush="Black" BorderThickness="1,1,1,1" Margin="0,0,5,2.5" 
+               SelectionChanged="FeedList_SelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate>
             <Grid Margin="0, 2">
@@ -56,8 +57,7 @@
       </ListBox>
 
       <Border Margin="0,2.5,5,5" BorderBrush="Black" BorderThickness="1,1,1,1" Grid.Row="2">
-        <TextBlock Name="FeedDescription">Bottom Left
-        </TextBlock>
+        <TextBlock Name="FeedDescription" TextWrapping="Wrap"/>
       </Border>
 
       <Border Margin="5,2.5,0,5" BorderBrush="Black" BorderThickness="1,1,1,1" Grid.Column="2" Grid.Row="2">
