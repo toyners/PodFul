@@ -67,7 +67,29 @@ namespace PodFul.WPF
 
     private void removeButton_Click(Object sender, RoutedEventArgs e)
     {
+      var index = this.FeedList.SelectedIndex;
 
+      this.feedStorage.Remove(this.currentFeed);
+      this.FeedList.Items.RemoveAt(index);
+
+      if (this.feedStorage.Feeds.Length == 0)
+      {
+        return;
+      }
+
+      if (index == 0)
+      {
+        this.FeedList.SelectedIndex = 0;
+        return;
+      }
+
+      if (index == this.FeedList.Items.Count)
+      {
+        this.FeedList.SelectedIndex = this.FeedList.Items.Count - 1;
+        return;
+      }
+
+      this.FeedList.SelectedIndex = index;
     }
 
     private void syncButton_Click(Object sender, RoutedEventArgs e)
