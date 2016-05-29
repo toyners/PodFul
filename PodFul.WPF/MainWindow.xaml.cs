@@ -70,6 +70,7 @@ namespace PodFul.WPF
       }
 
       // Create the feed and add to storage.
+      var addFeed = addFeedWindow.DialogResult;
 
     }
 
