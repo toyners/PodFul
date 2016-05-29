@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Add Feed" Height="150.898" Width="600" ResizeMode="NoResize">
+        Title="Add Feed" Height="150" Width="600" ResizeMode="NoResize" Icon="baggage_cart_box_tE4_icon.ico">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="*" />
+      <RowDefinition Height="0.9*" />
     </Grid.RowDefinitions>
 
     <Grid VerticalAlignment="Center">
@@ -33,12 +33,12 @@
 
       <Label Margin="5">Directory Path:</Label>
       <TextBox Name="DirectoryPath" Margin="5" Grid.Column="1" Height="21" />
-      <Button Padding="5" Margin="5" Grid.Column="2" Height="24" VerticalAlignment="Center">...</Button>
+      <Button Padding="3" Margin="5" Grid.Column="2" Height="21" VerticalAlignment="Center">...</Button>
     </Grid>
 
     <StackPanel Grid.Row="2" Orientation="Horizontal"  HorizontalAlignment="Right">
-      <Button Padding="5" Margin="7" IsDefault="True">OK</Button>
-      <Button Padding="5" Margin="7" IsCancel="True">Cancel</Button>
+      <Button Padding="3" Margin="5" IsDefault="True" Width="60" Click="okButton_Click">OK</Button>
+      <Button Padding="3" Margin="5" IsCancel="True" Width="60">Cancel</Button>
     </StackPanel>
   </Grid>
 </Window>
