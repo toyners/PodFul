@@ -5,28 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Add Feed" Height="200" Width="600">
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
+        Title="Add Feed" Height="150.898" Width="600" ResizeMode="NoResize">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-        <Label>URL:</Label>
-        <TextBox></TextBox>
-      </StackPanel>
+    <Grid VerticalAlignment="Center">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1.3*" />
+        <ColumnDefinition Width="6*" />
+        <ColumnDefinition Width="0.5*" />
+      </Grid.ColumnDefinitions>
 
-      <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <Label>Directory Path:</Label>
-        <TextBox></TextBox>
-        <Button>...</Button>
-      </StackPanel>
-
-      <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-        <Button Margin="2,2,2,2">OK</Button>
-        <Button>Cancel</Button>
-      </StackPanel>
+      <Label Margin="5" Height="28">URL:</Label>
+      <TextBox Grid.Column="1" Name="URL" Margin="5" Height="21"/>
     </Grid>
+
+    <Grid VerticalAlignment="Center" Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1.3*" />
+        <ColumnDefinition Width="6*" />
+        <ColumnDefinition Width="0.5*" />
+      </Grid.ColumnDefinitions>
+
+      <Label Margin="5">Directory Path:</Label>
+      <TextBox Name="DirectoryPath" Margin="5" Grid.Column="1" Height="21" />
+      <Button Padding="5" Margin="5" Grid.Column="2" Height="24" VerticalAlignment="Center">...</Button>
+    </Grid>
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal"  HorizontalAlignment="Right">
+      <Button Padding="5" Margin="7" IsDefault="True">OK</Button>
+      <Button Padding="5" Margin="7" IsCancel="True">Cancel</Button>
+    </StackPanel>
+  </Grid>
 </Window>

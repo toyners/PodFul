@@ -62,6 +62,14 @@ namespace PodFul.WPF
 
     private void addButton_Click(Object sender, RoutedEventArgs e)
     {
+      var addFeedWindow = new AddFeedWindow();
+      var dialogResult = addFeedWindow.ShowDialog();
+      if (!dialogResult.HasValue || !dialogResult.Value)
+      {
+        return;
+      }
+
+      // Create the feed and add to storage.
 
     }
 
