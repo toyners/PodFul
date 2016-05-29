@@ -21,7 +21,7 @@
       </Grid.ColumnDefinitions>
 
       <Label Margin="5" Height="28">URL:</Label>
-      <TextBox Grid.Column="1" Name="URL" Margin="5" Height="21"/>
+      <TextBox Grid.Column="1" Name="URL" Margin="5" Height="21" TextChanged="textChanged"/>
     </Grid>
 
     <Grid VerticalAlignment="Center" Grid.Row="1">
@@ -32,12 +32,12 @@
       </Grid.ColumnDefinitions>
 
       <Label Margin="5">Directory Path:</Label>
-      <TextBox Name="DirectoryPath" Margin="5" Grid.Column="1" Height="21" />
+      <TextBox Name="DirectoryPath" Margin="5" Grid.Column="1" Height="21" TextChanged="textChanged" />
       <Button Padding="3" Margin="5" Grid.Column="2" Height="21" VerticalAlignment="Center">...</Button>
     </Grid>
 
     <StackPanel Grid.Row="2" Orientation="Horizontal"  HorizontalAlignment="Right">
-      <Button Padding="3" Margin="5" IsDefault="True" Width="60" Click="okButton_Click">OK</Button>
+      <Button Name="OkButton" Padding="3" Margin="5" IsDefault="True" Width="60" IsEnabled="False" Click="okButton_Click">OK</Button>
       <Button Padding="3" Margin="5" IsCancel="True" Width="60">Cancel</Button>
     </StackPanel>
   </Grid>
