@@ -108,12 +108,18 @@ namespace PodFul.WPF
 
     private void scanButton_Click(Object sender, RoutedEventArgs e)
     {
+      var selectionWindow = new SelectionWindow();
+      var startScanning = selectionWindow.ShowDialog();
 
+      if (startScanning == null || !startScanning.Value)
+      {
+        return;
+      }
     }
 
     private void downloadButton_Click(Object sender, RoutedEventArgs e)
     {
-
+  
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
