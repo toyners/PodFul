@@ -86,7 +86,7 @@ namespace PodFul.Winforms
             {
               var feedReport = podcastIndex + " podcasts found";
               this.PostMessage(feedReport + ".");
-              scanReport += feedReport + " for \"" + feed.Title + "\".\r\n";
+              scanReport += feedReport + " for \"" + feed.Title + "\".\r\nCANCELLED";
               break;
             }
 
