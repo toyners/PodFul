@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,22 +26,24 @@ namespace PodFul.WPF
       All,
     }
 
-    public SelectionWindow()
+    public SelectionWindow(String title)
     {
       InitializeComponent();
+
+      this.Title = title;
     }
 
-    private void clear_Click(Object sender, RoutedEventArgs e)
+    private void clearButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.None);
     }
 
-    private void all_Click(Object sender, RoutedEventArgs e)
+    private void allButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.All);
     }
 
-    private void Window_Closing(Object sender, System.ComponentModel.CancelEventArgs e)
+    private void Window_Closing(Object sender, CancelEventArgs e)
     {
       this.DialogResult = false;
     }
@@ -54,6 +57,11 @@ namespace PodFul.WPF
       }
 
       this.ItemGrid.UnselectAll();
+    }
+
+    private void itemGrid_Selected(Object sender, RoutedEventArgs e)
+    {
+      this.startButton.IsEnabled = this.ItemGrid.SelectedItems.Count > 0;
     }
   }
 }
