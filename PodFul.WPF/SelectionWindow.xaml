@@ -16,12 +16,12 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel Orientation="Horizontal" Height="50">
-          <Button Margin="5" Padding="5" Width="60" Click="clear_Click">Clear</Button>
-          <Button Margin="5" Padding="5" Width="60" Click="all_Click">All</Button>
+          <Button Margin="0,5,5,0" Padding="5" Width="60" Click="clear_Click">Clear</Button>
+          <Button Margin="0,5,5,0" Padding="5" Width="60" Click="all_Click">All</Button>
         </StackPanel>
         
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-          <Button Margin="5" Padding="5" Width="60" IsDefault="True">Start</Button>
+          <Button Margin="5,5,0,0" Padding="5" Width="60" IsDefault="True">Start</Button>
         </StackPanel>
       </Grid>
       
