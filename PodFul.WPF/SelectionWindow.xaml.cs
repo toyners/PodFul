@@ -19,9 +19,41 @@ namespace PodFul.WPF
   /// </summary>
   public partial class SelectionWindow : Window
   {
+    private enum SelectRowsType
+    {
+      None,
+      All,
+    }
+
     public SelectionWindow()
     {
       InitializeComponent();
+    }
+
+    private void clear_Click(Object sender, RoutedEventArgs e)
+    {
+      this.SelectRows(SelectRowsType.None);
+    }
+
+    private void all_Click(Object sender, RoutedEventArgs e)
+    {
+      this.SelectRows(SelectRowsType.All);
+    }
+
+    private void Window_Closing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      this.DialogResult = false;
+    }
+
+    private void SelectRows(SelectRowsType selectRowsType)
+    {
+      if (selectRowsType == SelectRowsType.All)
+      {
+        this.ItemGrid.SelectAll();
+        return;
+      }
+
+      this.ItemGrid.UnselectAll();
     }
   }
 }
