@@ -77,9 +77,10 @@ namespace PodFul.Winforms
             podcastIndex++;
           }
 
+          Boolean downloadPodcasts = true;
           if (podcastIndexes.Count > 5)
           {
-            var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip this feed (feed will not be updated).\r\nCancel to stop scanning.", podcastIndexes.Count);
+            var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed willstill be updated).\r\nCancel to stop scanning.", podcastIndexes.Count);
             var dialogResult = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButtons.YesNoCancel);
             if (dialogResult == DialogResult.Cancel)
             {
@@ -88,7 +89,7 @@ namespace PodFul.Winforms
 
             if (dialogResult == DialogResult.No)
             {
-              continue;
+              downloadPodcasts = false;
             }
           }
 
@@ -99,9 +100,11 @@ namespace PodFul.Winforms
           }
           else
           {
-            var feedReport = podcastIndex + " podcast" + (podcastIndex != 1 ? "s" : String.Empty) + " found";
-            message += feedReport + ".";
-            scanReport += feedReport + " for \"" + feed.Title + "\".\r\n";
+            var feedReport = podcastIndex + " podcast" +
+              (podcastIndex != 1 ? "s" : String.Empty) + " found";
+            var downloadingReport = (downloadPodcasts ? String.Empty : " (Downloading skipped)");
+            message += feedReport + downloadingReport + ".";
+            scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
           }
 
           newFeed = this.SynchroniseFeed(newFeed, podcastIndex, feed);
@@ -113,7 +116,7 @@ namespace PodFul.Winforms
 
           feeds[feedIndex] = newFeed;
 
-          if (!podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
+          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
             this.PostMessage("\r\nCANCELLED");
             return;
