@@ -84,7 +84,10 @@ namespace PodFul.Winforms
             var dialogResult = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButtons.YesNoCancel);
             if (dialogResult == DialogResult.Cancel)
             {
-              return;
+              var feedReport = podcastIndex + " podcasts found";
+              this.PostMessage(feedReport + ".");
+              scanReport += feedReport + " for \"" + feed.Title + "\".\r\n";
+              break;
             }
 
             if (dialogResult == DialogResult.No)
