@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="ProcessingWindow" Height="300" Width="300">
-    <Grid>
-        
-    </Grid>
+        Title="ProcessingWindow" Height="300" Width="300" Icon="baggage_cart_box_tE4_icon.ico">
+  <Grid>
+    <DockPanel>
+      <Grid DockPanel.Dock="Bottom">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ProgressBar Height="28"></ProgressBar>
+        <Button Grid.Row="1">Cancel</Button>
+
+      </Grid>
+      <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <TextBlock>Text</TextBlock>
+      </ScrollViewer>
+    </DockPanel>
+  </Grid>
 </Window>
