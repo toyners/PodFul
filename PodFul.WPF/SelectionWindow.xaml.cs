@@ -27,14 +27,14 @@ namespace PodFul.WPF
       All,
     }
 
-    public SelectionWindow(String title, IEnumerable<Feed> items) : this(title)
+    public SelectionWindow(String title, IEnumerable<Feed> feeds) : this(title)
     {
-      this.ItemGrid.ItemsSource = items;
+      this.ItemGrid.ItemsSource = feeds;
     }
 
-    public SelectionWindow(String title, IEnumerable<Podcast> items) : this(title)
+    public SelectionWindow(String title, IEnumerable<Podcast> podcasts) : this(title)
     {
-      this.ItemGrid.ItemsSource = items;
+      this.ItemGrid.ItemsSource = podcasts;
     }
 
     private SelectionWindow(String title)
