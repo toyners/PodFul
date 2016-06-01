@@ -120,7 +120,14 @@ namespace PodFul.WPF
 
     private void downloadButton_Click(Object sender, RoutedEventArgs e)
     {
-  
+      var title = String.Format("{0} podcast{1}", this.currentFeed.Podcasts.Length, (this.currentFeed.Podcasts.Length != 1 ? "s" : String.Empty));
+      var selectionWindow = new SelectionWindow(title, this.currentFeed.Podcasts);
+      var startDownloading = selectionWindow.ShowDialog();
+
+      if (startDownloading == null || !startDownloading.Value)
+      {
+        return;
+      }
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)

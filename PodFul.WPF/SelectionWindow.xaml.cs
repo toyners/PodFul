@@ -32,6 +32,11 @@ namespace PodFul.WPF
       this.ItemGrid.ItemsSource = items;
     }
 
+    public SelectionWindow(String title, IEnumerable<Podcast> items) : this(title)
+    {
+      this.ItemGrid.ItemsSource = items;
+    }
+
     private SelectionWindow(String title)
     {
       InitializeComponent();
