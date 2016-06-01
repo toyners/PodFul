@@ -116,6 +116,11 @@ namespace PodFul.WPF
       {
         return;
       }
+
+      var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
+
+      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes);
+      processingWindow.ShowDialog();
     }
 
     private void downloadButton_Click(Object sender, RoutedEventArgs e)
@@ -128,6 +133,16 @@ namespace PodFul.WPF
       {
         return;
       }
+
+      var selectedIndexes = selectionWindow.SelectedIndexes;
+
+      // Sort the indexes into descending order. Podcasts will be downloaded
+      // in Chronological order.
+      selectedIndexes.Sort((x, y) => { return y - x; });
+      var podcastIndexes = new Queue<Int32>(selectedIndexes);
+
+      var processingWindow = new ProcessingWindow(this.feedStorage, this.currentFeed, podcastIndexes);
+      processingWindow.ShowDialog();
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
