@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PodFul.Library;
 
 namespace PodFul.WPF
 {
@@ -26,7 +27,12 @@ namespace PodFul.WPF
       All,
     }
 
-    public SelectionWindow(String title)
+    public SelectionWindow(String title, IEnumerable<Feed> items) : this(title)
+    {
+      this.ItemGrid.ItemsSource = items;
+    }
+
+    private SelectionWindow(String title)
     {
       InitializeComponent();
 
