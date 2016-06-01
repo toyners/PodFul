@@ -33,12 +33,12 @@ namespace PodFul.WPF
       this.Title = title;
     }
 
-    private void clearButton_Click(Object sender, RoutedEventArgs e)
+    private void ClearButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.None);
     }
 
-    private void allButton_Click(Object sender, RoutedEventArgs e)
+    private void AllButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.All);
     }
@@ -58,10 +58,10 @@ namespace PodFul.WPF
 
       this.ItemGrid.UnselectAll();
     }
-
-    private void itemGrid_Selected(Object sender, RoutedEventArgs e)
+    
+    private void ItemGrid_SelectionChanged(Object sender, SelectionChangedEventArgs e)
     {
-      this.startButton.IsEnabled = this.ItemGrid.SelectedItems.Count > 0;
+      this.startButton.IsEnabled = e.AddedItems.Count > 0;
     }
   }
 }
