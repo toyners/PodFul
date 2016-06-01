@@ -143,6 +143,7 @@
       this.MinimizeBox = false;
       this.Name = "SelectionForm";
       this.Text = "Download Podcasts";
+      this.Shown += new System.EventHandler(this.SelectionForm_Shown);
       ((System.ComponentModel.ISupportInitialize)(this.list)).EndInit();
       this.ResumeLayout(false);
 

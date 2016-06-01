@@ -8,6 +8,8 @@ namespace PodFul.Winforms
 
   public partial class SelectionForm : Form
   {
+    private Boolean selectingFeeds;
+
     public SelectionForm(String title, IEnumerable<Podcast> podcasts)
     {
       InitializeComponent();
@@ -41,8 +43,8 @@ namespace PodFul.Winforms
           String.Empty);
       }
 
-      this.start.Enabled = (this.list.SelectedRows.Count > 0);
       this.Text = title;
+      this.selectingFeeds = true;
     }
 
     public List<Int32> SelectedRowIndexes
@@ -76,6 +78,14 @@ namespace PodFul.Winforms
     private void podcastList_SelectionChanged(Object sender, EventArgs e)
     {
       this.start.Enabled = (this.list.SelectedRows.Count > 0);
+    }
+
+    private void SelectionForm_Shown(Object sender, EventArgs e)
+    {
+      if (this.selectingFeeds)
+      {
+        this.list.SelectAll();
+      }
     }
   }
 }

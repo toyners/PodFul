@@ -80,13 +80,13 @@ namespace PodFul.Winforms
           Boolean downloadPodcasts = true;
           if (podcastIndexes.Count > 5)
           {
-            var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed willstill be updated).\r\nCancel to stop scanning.", podcastIndexes.Count);
+            var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning.", podcastIndexes.Count);
             var dialogResult = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButtons.YesNoCancel);
             if (dialogResult == DialogResult.Cancel)
             {
               var feedReport = podcastIndex + " podcasts found";
-              this.PostMessage(feedReport + ".");
-              scanReport += feedReport + " for \"" + feed.Title + "\".\r\nCANCELLED";
+              this.PostMessage(feedReport + " (Scan cancelled).\r\n");
+              scanReport += feedReport + " for \"" + feed.Title + "\" (Scan cancelled).";
               break;
             }
 
