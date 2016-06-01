@@ -44,6 +44,20 @@ namespace PodFul.WPF
       this.Title = title;
     }
 
+    public List<Int32> SelectedIndexes
+    {
+      get
+      {
+        var indexes = new List<Int32>();
+        foreach (var row in this.ItemGrid.SelectedItems)
+        {
+          indexes.Add(this.ItemGrid.SelectedItems.IndexOf(row));
+        }
+
+        return indexes;
+      }
+    }
+
     private void ClearButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.None);
