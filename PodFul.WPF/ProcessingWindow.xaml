@@ -19,7 +19,7 @@
 
       <Border BorderBrush="Black" BorderThickness="1,1,1,1">
         <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="5">
-          <TextBlock Name="Text" TextWrapping="Wrap">Text</TextBlock>
+          <TextBlock Name="Feedback" TextWrapping="Wrap">Text</TextBlock>
         </ScrollViewer>
       </Border>
     </DockPanel>

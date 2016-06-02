@@ -118,8 +118,8 @@ namespace PodFul.WPF
       }
 
       var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
-
-      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes);
+      var addToWinAmp = (this.AddToWinAmp.IsChecked.HasValue && this.AddToWinAmp.IsChecked.Value);
+      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes, addToWinAmp);
       processingWindow.ShowDialog();
     }
 
@@ -140,8 +140,8 @@ namespace PodFul.WPF
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
       var podcastIndexes = new Queue<Int32>(selectedIndexes);
-
-      var processingWindow = new ProcessingWindow(this.feedStorage, this.currentFeed, podcastIndexes);
+      var addToWinAmp = (this.AddToWinAmp.IsChecked.HasValue && this.AddToWinAmp.IsChecked.Value);
+      var processingWindow = new ProcessingWindow(this.feedStorage, this.currentFeed, podcastIndexes, addToWinAmp);
       processingWindow.ShowDialog();
     }
 

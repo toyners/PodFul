@@ -81,7 +81,7 @@
         <Button Click="addButton_Click">Add</Button>
         <Button Click="removeButton_Click">Remove</Button>
         <Button Click="syncButton_Click">Sync</Button>
-        <CheckBox  VerticalContentAlignment="Center" Margin="5">Add to WinAmp</CheckBox>
+        <CheckBox Name="AddToWinAmp" VerticalContentAlignment="Center" Margin="5">Add to WinAmp</CheckBox>
         <Button Click="scanButton_Click">Scan</Button>
         <Button Click="downloadButton_Click">Download</Button>
       </StackPanel>
