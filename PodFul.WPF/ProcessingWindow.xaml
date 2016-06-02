@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="ProcessingWindow" Height="300" Width="300" Icon="baggage_cart_box_tE4_icon.ico">
+        Title="ProcessingWindow" Height="300" Width="600"
+        MinHeight="150" MinWidth="150"
+        Icon="baggage_cart_box_tE4_icon.ico">
   <Grid>
     <DockPanel>
       <Grid DockPanel.Dock="Bottom">
