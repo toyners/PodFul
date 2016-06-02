@@ -10,19 +10,18 @@
         Icon="baggage_cart_box_tE4_icon.ico">
   <Grid>
     <DockPanel>
-      <Grid DockPanel.Dock="Bottom">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+      <Button Name="Cancel" DockPanel.Dock="Bottom" Margin="5" Width="60" 
+              Height="50" HorizontalAlignment="Right" Click="Cancel_Click">
+              Cancel
+      </Button>
 
-        <ProgressBar Height="28"></ProgressBar>
-        <Button Grid.Row="1">Cancel</Button>
+      <ProgressBar Name="Progress" Margin="5" Height="50" DockPanel.Dock="Bottom"></ProgressBar>
 
-      </Grid>
-      <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <TextBlock>Text</TextBlock>
-      </ScrollViewer>
+      <Border BorderBrush="Black" BorderThickness="1,1,1,1">
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="5">
+          <TextBlock Name="Text">Text</TextBlock>
+        </ScrollViewer>
+      </Border>
     </DockPanel>
   </Grid>
 </Window>

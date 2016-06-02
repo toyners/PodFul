@@ -29,5 +29,10 @@ namespace PodFul.WPF
     {
       InitializeComponent();
     }
+
+    private void Cancel_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }
