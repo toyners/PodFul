@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="500" Icon="baggage_cart_box_tE4_icon.ico">
+        Title="MainWindow" Height="600" Width="800" Icon="baggage_cart_box_tE4_icon.ico">
   <Grid Margin="10">
 
     <Grid.RowDefinitions>
@@ -25,44 +25,54 @@
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
-      <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" BorderBrush="Black" BorderThickness="1,1,1,1" 
-               Margin="0,0,5,2.5" SelectionChanged="FeedList_SelectionChanged">
-        <ListBox.ItemTemplate>
-          <DataTemplate>
-            <Grid Margin="0, 2">
-              <Grid.ColumnDefinitions>
-                <!--<ColumnDefinition Width="100" /> -->
-                <ColumnDefinition Width="*" />
-              </Grid.ColumnDefinitions>
-              <!--<Image Source="{Binding Image}" /> -->
-              <TextBlock Text="{Binding Title}" />
-            </Grid>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
+      <Border Margin="0,0,5,2.5" BorderBrush="Black" BorderThickness="1,1,1,1">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+          <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Grid Margin="0, 2">
+                  <Grid.ColumnDefinitions>
+                    <!--<ColumnDefinition Width="100" /> -->
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <!--<Image Source="{Binding Image}" /> -->
+                  <TextBlock Text="{Binding Title}" />
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </ScrollViewer>
+      </Border>
 
-      <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" BorderBrush="Black" BorderThickness="1,1,1,1" 
-               Grid.Column="2" Margin="5,0,0,2.5" SelectionChanged="PodcastList_SelectionChanged">
-        <ListBox.ItemTemplate>
-          <DataTemplate>
-            <Grid Margin="0, 2">
-              <Grid.ColumnDefinitions>
-                <!--<ColumnDefinition Width="100"/>-->
-                <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
-              <!--<Image Source="{Binding Image}" /> -->
-              <TextBlock Text="{Binding Title}"/>
-            </Grid>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
+      <Border Margin="5,0,0,2.5" BorderBrush="Black" BorderThickness="1,1,1,1" Grid.Column="2">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+          <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" SelectionChanged="PodcastList_SelectionChanged">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Grid Margin="0, 2">
+                  <Grid.ColumnDefinitions>
+                    <!--<ColumnDefinition Width="100"/>-->
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <!--<Image Source="{Binding Image}" /> -->
+                  <TextBlock Text="{Binding Title}"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </ScrollViewer>
+      </Border>
 
       <Border Margin="0,2.5,5,5" BorderBrush="Black" BorderThickness="1,1,1,1" Grid.Row="2">
-        <TextBlock Name="FeedDescription" TextWrapping="Wrap"/>
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+          <TextBlock Name="FeedDescription" TextWrapping="Wrap"/>
+        </ScrollViewer>
       </Border>
 
       <Border Margin="5,2.5,0,5" BorderBrush="Black" BorderThickness="1,1,1,1" Grid.Column="2" Grid.Row="2">
-        <TextBlock Name="PodcastDescription" TextWrapping="Wrap"/>
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+          <TextBlock Name="PodcastDescription" TextWrapping="Wrap"/>
+        </ScrollViewer>
       </Border>
     </Grid>
 
