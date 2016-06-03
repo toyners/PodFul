@@ -42,7 +42,7 @@
       </ListBox>
 
       <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" BorderBrush="Black" BorderThickness="1,1,1,1" 
-               Grid.Column="2" Margin="5,0,0,2.5">
+               Grid.Column="2" Margin="5,0,0,2.5" SelectionChanged="PodcastList_SelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate>
             <Grid Margin="0, 2">
