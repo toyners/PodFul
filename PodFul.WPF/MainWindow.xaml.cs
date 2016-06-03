@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.Collections.Generic;
   using System.Configuration;
+  using System.IO;
   using System.Linq;
   using System.Reflection;
   using System.Text;
@@ -70,8 +71,35 @@ namespace PodFul.WPF
       }
 
       // Create the feed and add to storage.
-      var addFeed = addFeedWindow.DialogResult;
+      Feed feed = null;
+      try
+      {
+        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory);
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
+        return;
+      }
 
+      var fileCount = GetCountOfExistingMediaFilesForFeed(feed);
+      if (fileCount > 0 &&
+        MessageBox.Show(String.Format("{0} mp3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+      {
+        this.SyncWithExistingFiles(feed);
+      }
+
+      this.feedStorage.Add(feed);
+      this.FeedList.SelectedItem = feed;
+      //this.currentFeed = feed;
+      //this.AddFeedToList(feed);
+
+      this.DownloadPodcasts();
+    }
+
+    private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
+    {
+      return Directory.GetFiles(feed.Directory, "*.mp3").Length;
     }
 
     private void removeButton_Click(Object sender, RoutedEventArgs e)
@@ -106,6 +134,29 @@ namespace PodFul.WPF
 
     }
 
+    private Int32 SyncWithExistingFiles(Feed feed)
+    {
+      var syncCount = 0;
+      for (Int32 podcastIndex = 0; podcastIndex < feed.Podcasts.Length; podcastIndex++)
+      {
+        var podcast = feed.Podcasts[podcastIndex];
+        var fileName = podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1);
+        var fileInfo = new FileInfo(feed.Directory + fileName);
+
+        if (!fileInfo.Exists)
+        {
+          continue;
+        }
+
+        podcast = Podcast.SetDownloadDate(podcast, fileInfo.CreationTime);
+        podcast = Podcast.SetFileSize(podcast, fileInfo.Length);
+        feed.Podcasts[podcastIndex] = podcast;
+        syncCount++;
+      }
+
+      return syncCount;
+    }
+
     private void scanButton_Click(Object sender, RoutedEventArgs e)
     {
       var title = String.Format("{0} feed{1}", this.feedStorage.Feeds.Length, (this.feedStorage.Feeds.Length != 1 ? "s" : String.Empty));
@@ -124,6 +175,11 @@ namespace PodFul.WPF
     }
 
     private void downloadButton_Click(Object sender, RoutedEventArgs e)
+    {
+      this.DownloadPodcasts();
+    }
+
+    private void DownloadPodcasts()
     {
       var title = String.Format("{0} podcast{1}", this.currentFeed.Podcasts.Length, (this.currentFeed.Podcasts.Length != 1 ? "s" : String.Empty));
       var selectionWindow = new SelectionWindow(title, this.currentFeed.Podcasts);

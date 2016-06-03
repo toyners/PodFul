@@ -26,6 +26,10 @@ namespace PodFul.WPF
       InitializeComponent();
     }
 
+    public String FeedDirectory { get { return this.DirectoryPath.Text; } }
+
+    public String FeedURL { get { return this.URL.Text; } }
+
     private void okButton_Click(Object sender, RoutedEventArgs e)
     {
       var directoryPath = this.DirectoryPath.Text;
