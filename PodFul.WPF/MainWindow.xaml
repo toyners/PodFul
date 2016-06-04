@@ -83,34 +83,24 @@
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-          <StackPanel.Resources>
-            <Style TargetType="Button">
-              <Setter Property="Padding" Value="10"/>
-              <Setter Property="Margin" Value="5"/>
-              <Setter Property="VerticalContentAlignment" Value="Center"/>
-            </Style>
-          </StackPanel.Resources>
+        <Grid.Resources>
+          <Style TargetType="Button">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+          </Style>
+        </Grid.Resources>
 
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
           <Button>Add</Button>
           <Button>Remove</Button>
           <Button>Sync</Button>
-
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
-          <StackPanel.Resources>
-            <Style TargetType="Button">
-              <Setter Property="Padding" Value="10"/>
-              <Setter Property="Margin" Value="5"/>
-              <Setter Property="VerticalContentAlignment" Value="Center"/>
-            </Style>
-          </StackPanel.Resources>
-
           <CheckBox Name="AddToWinAmp" VerticalContentAlignment="Center" Margin="5">Add to WinAmp</CheckBox>
           <Button>Scan</Button>
           <Button>Download</Button>
-
         </StackPanel>
       </Grid>
     </Border>
