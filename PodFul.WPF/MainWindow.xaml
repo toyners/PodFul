@@ -92,15 +92,15 @@
         </Grid.Resources>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-          <Button>Add</Button>
-          <Button>Remove</Button>
-          <Button>Sync</Button>
+          <Button Click="addButton_Click">Add</Button>
+          <Button Click="removeButton_Click">Remove</Button>
+          <Button Click="syncButton_Click">Sync</Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <CheckBox Name="AddToWinAmp" VerticalContentAlignment="Center" Margin="5">Add to WinAmp</CheckBox>
-          <Button>Scan</Button>
-          <Button>Download</Button>
+          <Button Click="downloadButton_Click">Download</Button>
+          <Button Click="scanButton_Click">Scan</Button>
         </StackPanel>
       </Grid>
     </Border>
