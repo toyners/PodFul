@@ -208,6 +208,7 @@ namespace PodFul.WPF
 
       this.currentFeed = feed;
       this.FeedDescription.Text = feed.Description;
+      this.PodcastList.ItemsSource = feed.Podcasts;
     }
 
     private void PodcastList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
