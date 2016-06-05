@@ -3,7 +3,6 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
-  using System.ComponentModel;
   using System.Windows;
   using System.Windows.Controls;
   using PodFul.Library;
@@ -19,6 +18,7 @@ namespace PodFul.WPF
       All,
     }
 
+    #region Construction
     public SelectionWindow(String title, IEnumerable<Feed> feeds) : this(title)
     {
       this.ItemGrid.ItemsSource = feeds;
@@ -35,7 +35,9 @@ namespace PodFul.WPF
 
       this.Title = title;
     }
+    #endregion
 
+    #region Properties
     public List<Int32> SelectedIndexes
     {
       get
@@ -49,7 +51,9 @@ namespace PodFul.WPF
         return indexes;
       }
     }
+    #endregion
 
+    #region Methods
     private void ClearButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.None);
@@ -80,5 +84,6 @@ namespace PodFul.WPF
     {
       this.DialogResult = true;
     }
+    #endregion
   }
 }

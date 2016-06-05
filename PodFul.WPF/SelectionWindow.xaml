@@ -23,7 +23,10 @@
         </StackPanel>
         
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-          <Button Name="startButton" Margin="5,5,0,0" Padding="5" Width="60" IsDefault="True" Click="startButton_Click">Start</Button>
+          <Button Name="startButton" Margin="5,5,0,0" Padding="5" 
+                  Width="60" IsDefault="True" Click="startButton_Click" IsEnabled="False">
+                  Start
+          </Button>
         </StackPanel>
       </Grid>
       
