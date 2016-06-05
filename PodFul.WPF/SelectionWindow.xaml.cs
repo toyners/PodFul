@@ -22,6 +22,7 @@ namespace PodFul.WPF
     public SelectionWindow(String title, IEnumerable<Feed> feeds) : this(title)
     {
       this.ItemGrid.ItemsSource = feeds;
+      this.ItemGrid.SelectAll();
     }
 
     public SelectionWindow(String title, IEnumerable<Podcast> podcasts) : this(title)
