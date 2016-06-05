@@ -5,23 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="ProcessingWindow" Height="300" Width="600"
+        Title="ProcessingWindow" Height="600" Width="800"
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
-  <Grid>
-    <DockPanel>
-      <Button Name="Cancel" DockPanel.Dock="Bottom" Margin="5" Width="60" 
-              Height="50" HorizontalAlignment="Right" Click="Cancel_Click">
-              Cancel
+  <DockPanel Margin="5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+      <Button Name="Cancel" Margin="5" Width="60" 
+            Height="50" HorizontalAlignment="Right" Click="Cancel_Click">
+        Cancel
       </Button>
+    </Border>
 
-      <ProgressBar Name="Progress" Margin="5" Height="50" DockPanel.Dock="Bottom"></ProgressBar>
-
-      <Border BorderBrush="Black" BorderThickness="1,1,1,1">
-        <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="5">
-          <TextBlock Name="Feedback" TextWrapping="Wrap" />
-        </ScrollViewer>
-      </Border>
-    </DockPanel>
-  </Grid>
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,0,5">
+      <ProgressBar Name="Progress" Margin="5" Height="50" />
+    </Border>
+    
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
+      <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="5">
+        <TextBlock Name="Feedback" TextWrapping="Wrap" />
+      </ScrollViewer>
+    </Border>
+  </DockPanel>
 </Window>

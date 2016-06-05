@@ -8,28 +8,30 @@
         Title="SelectionWindow" Height="300" Width="600" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
-  <Grid>
-    <DockPanel>
-      <Grid DockPanel.Dock="Bottom">
+  <DockPanel Margin="5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+      <Grid>
 
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <StackPanel Orientation="Horizontal" Height="50">
-          <Button Margin="0,5,5,0" Padding="5" Width="60" Click="ClearButton_Click">Clear</Button>
-          <Button Margin="0,5,5,0" Padding="5" Width="60" Click="AllButton_Click">All</Button>
+          <Button Margin="5" Padding="5" Width="60" Click="ClearButton_Click">Clear</Button>
+          <Button Margin="5" Padding="5" Width="60" Click="AllButton_Click">All</Button>
         </StackPanel>
-        
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-          <Button Name="startButton" Margin="5,5,0,0" Padding="5" 
+          <Button Name="startButton" Margin="5" Padding="5" 
                   Width="60" IsDefault="True" Click="startButton_Click" IsEnabled="False">
-                  Start
+            Start
           </Button>
         </StackPanel>
       </Grid>
-      
+    </Border>
+
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
       <DataGrid Name="ItemGrid" IsReadOnly="true" AutoGenerateColumns="False" CanUserAddRows="False" 
                 CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" 
                 CanUserSortColumns="False" SelectionChanged="ItemGrid_SelectionChanged">
@@ -40,6 +42,6 @@
           <DataGridTextColumn Header="Download Date" Binding="{Binding DownloadDate}"/>
         </DataGrid.Columns>
       </DataGrid>
-    </DockPanel>
-  </Grid>
+    </Border>
+  </DockPanel>
 </Window>
