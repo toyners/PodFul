@@ -43,7 +43,7 @@ namespace PodFul.WPF
         var indexes = new List<Int32>();
         foreach (var row in this.ItemGrid.SelectedItems)
         {
-          indexes.Add(this.ItemGrid.SelectedItems.IndexOf(row));
+          indexes.Add(this.ItemGrid.Items.IndexOf(row));
         }
 
         return indexes;
@@ -60,11 +60,6 @@ namespace PodFul.WPF
       this.SelectRows(SelectRowsType.All);
     }
 
-    private void Window_Closing(Object sender, CancelEventArgs e)
-    {
-      this.DialogResult = false;
-    }
-
     private void SelectRows(SelectRowsType selectRowsType)
     {
       if (selectRowsType == SelectRowsType.All)
@@ -79,6 +74,11 @@ namespace PodFul.WPF
     private void ItemGrid_SelectionChanged(Object sender, SelectionChangedEventArgs e)
     {
       this.startButton.IsEnabled = e.AddedItems.Count > 0;
+    }
+
+    private void startButton_Click(Object sender, RoutedEventArgs e)
+    {
+      this.DialogResult = true;
     }
   }
 }

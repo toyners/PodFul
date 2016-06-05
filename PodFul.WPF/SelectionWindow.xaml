@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="SelectionWindow" Height="300" Width="600" 
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico" Closing="Window_Closing">
+        Icon="baggage_cart_box_tE4_icon.ico">
   <Grid>
     <DockPanel>
       <Grid DockPanel.Dock="Bottom">
@@ -23,7 +23,7 @@
         </StackPanel>
         
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-          <Button Name="startButton" Margin="5,5,0,0" Padding="5" Width="60" IsDefault="True">Start</Button>
+          <Button Name="startButton" Margin="5,5,0,0" Padding="5" Width="60" IsDefault="True" Click="startButton_Click">Start</Button>
         </StackPanel>
       </Grid>
       
