@@ -32,7 +32,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
-          <CheckBox Name="AddToWinAmp" VerticalContentAlignment="Center" Margin="5">Add to WinAmp</CheckBox>
+          <CheckBox Name="AddToWinAmp" VerticalContentAlignment="Center" Margin="5" IsChecked="True">Add to WinAmp</CheckBox>
           <Button Click="downloadButton_Click">Download</Button>
           <Button Click="scanButton_Click">Scan</Button>
         </StackPanel>
