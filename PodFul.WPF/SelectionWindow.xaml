@@ -34,7 +34,8 @@
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
       <DataGrid Name="ItemGrid" IsReadOnly="true" AutoGenerateColumns="False" CanUserAddRows="False" 
                 CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" 
-                CanUserSortColumns="False" SelectionChanged="ItemGrid_SelectionChanged">
+                CanUserSortColumns="False" SelectionChanged="ItemGrid_SelectionChanged"
+                HorizontalGridLinesBrush="Gray" VerticalGridLinesBrush="Gray">
         <DataGrid.Columns>
           <DataGridTextColumn Header="Title" Binding="{Binding Title}"/>
           <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>

@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" Icon="baggage_cart_box_tE4_icon.ico">
+        Title="MainWindow" Height="600" Width="800" 
+        MinHeight="150" MinWidth="150"
+        Icon="baggage_cart_box_tE4_icon.ico">
   <DockPanel Margin="5">
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
