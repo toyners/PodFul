@@ -17,6 +17,7 @@ type Podcast_UnitTest() =
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
                 DownloadDate = DateTime.MaxValue
+                ImageFileName = "image1"
             }
 
         let podcast2 =
@@ -27,6 +28,7 @@ type Podcast_UnitTest() =
                 FileSize = 2L
                 PubDate = new DateTime(2016, 12, 30)
                 DownloadDate = DateTime.MinValue
+                ImageFileName = "image2"
             }
 
         podcast1 = podcast2 |> should equal true
@@ -41,6 +43,7 @@ type Podcast_UnitTest() =
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
                 DownloadDate = DateTime.MaxValue
+                ImageFileName = "image"
             }
 
         let podcast2 =
@@ -51,6 +54,7 @@ type Podcast_UnitTest() =
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
                 DownloadDate = DateTime.MaxValue
+                ImageFileName = "image"
             }
 
         podcast1 = podcast2 |> should equal false
@@ -65,6 +69,7 @@ type Podcast_UnitTest() =
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
                 DownloadDate = DateTime.MinValue
+                ImageFileName = "image"
             }
 
         let podcast2 = Podcast.SetDownloadDate podcast1 DateTime.MaxValue
@@ -87,6 +92,7 @@ type Podcast_UnitTest() =
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
                 DownloadDate = DateTime.MinValue
+                ImageFileName = "image"
             }
 
         let podcast2 = Podcast.SetFileSize podcast1 2L

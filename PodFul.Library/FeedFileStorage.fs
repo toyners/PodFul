@@ -62,6 +62,7 @@ type FeedFileStorage(directoryPath : String) =
                     FileSize = Int64.Parse(fields.[3])
                     Description = fields.[4]
                     DownloadDate = DateTime.Parse(fields.[5])
+                    ImageFileName = ""
                 }
 
               // Set the threaded state to be the XML reader.
@@ -78,6 +79,7 @@ type FeedFileStorage(directoryPath : String) =
             Directory = fields.[2]
             URL = fields.[3]
             Description = fields.[4]
+            ImageFileName = ""
             Podcasts = List.unfold this.getPodcastFromFile (reader) |> List.toArray
         }
 

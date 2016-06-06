@@ -10,6 +10,7 @@ type Feed =
         Website : string;
         Directory : string;
         URL : string;
+        ImageFileName : string;
         Podcasts : Podcast[];
     }
 

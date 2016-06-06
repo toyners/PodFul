@@ -11,6 +11,7 @@ type Podcast =
         FileSize : Int64;
         PubDate : DateTime;
         DownloadDate : DateTime;
+        ImageFileName : string;
     }
 
     with
@@ -22,6 +23,7 @@ type Podcast =
                 FileSize = original.FileSize
                 PubDate = original.PubDate
                 DownloadDate = date
+                ImageFileName = original.ImageFileName
             }
 
         static member SetFileSize original size =
@@ -32,6 +34,7 @@ type Podcast =
                 FileSize = size
                 PubDate = original.PubDate
                 DownloadDate = original.DownloadDate
+                ImageFileName = original.ImageFileName
             }
 
         override x.Equals other = 

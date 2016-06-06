@@ -110,6 +110,7 @@ module public FeedFunctions =
                     URL = url
                     FileSize = getFilesizeForItem enclosureElement contentElement
                     DownloadDate = DateTime.MinValue
+                    ImageFileName = ""
                 }
           ] |> List.toArray
 
@@ -141,5 +142,6 @@ module public FeedFunctions =
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
+             ImageFileName = ""
              Podcasts = createPodcastArrayFromDocument document
         }

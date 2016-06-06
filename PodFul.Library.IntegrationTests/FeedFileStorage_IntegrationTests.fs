@@ -16,12 +16,14 @@ type FeedFileStorage_IntergrationTests() =
     let feedWebsite = "Feed Website"
     let feedDirectory = "Feed Directory"
     let feedFeed = "Feed Feed"
+    let feedImageFileName = "Feed Image"
 
     let podcastTitle = "Podcast #1 Title"
     let podcastDescription = "Podcast #1 Description"
     let podcastURL = "Podcast1.mp3"
     let podcastFileSize = 1L
     let podcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
+    let podcastImageFileName = "Podcast #1 Image"
 
     let downloadDate = new DateTime(2017, 1, 2)
 
@@ -32,6 +34,7 @@ type FeedFileStorage_IntergrationTests() =
             Website = feedWebsite
             Directory = feedDirectory
             URL = feedFeed
+            ImageFileName = feedImageFileName
             Podcasts = 
             [|
                 {
@@ -41,6 +44,7 @@ type FeedFileStorage_IntergrationTests() =
                     FileSize = podcastFileSize
                     PubDate = podcastPubDate
                     DownloadDate = downloadDate
+                    ImageFileName = podcastImageFileName
                 };           
             |]
         }
@@ -52,6 +56,7 @@ type FeedFileStorage_IntergrationTests() =
             Website = feed.Website
             Directory = feed.Directory
             URL = feed.URL
+            ImageFileName = feedImageFileName
             Podcasts = [||]
         }
 
