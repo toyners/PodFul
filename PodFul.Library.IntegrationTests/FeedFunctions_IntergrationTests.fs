@@ -41,42 +41,6 @@ type FeedFunctions_IntergrationTests() =
 
     let downloadDate = new DateTime(2017, 1, 2)
 
-    member private this.CreateFeed =
-        {
-            Title = feedTitle
-            Description = feedDescription
-            Website = feedWebsite
-            Directory = feedDirectory
-            URL = feedFeed
-            Podcasts = 
-            [|
-                {
-                    Title = firstPodcastTitle
-                    Description = firstPodcastDescription
-                    URL = firstPodcastURL
-                    FileSize = firstPodcastFileSize
-                    PubDate = firstPodcastPubDate
-                    DownloadDate = downloadDate
-                };
-                {
-                    Title = secondPodcastTitle
-                    Description = secondPodcastDescription
-                    URL = secondPodcastURL
-                    FileSize = secondPodcastFileSize
-                    PubDate = secondPodcastPubDate
-                    DownloadDate = downloadDate
-                };
-                {
-                    Title = thirdPodcastTitle
-                    Description = ""
-                    URL = thirdPodcastURL
-                    FileSize = -1L
-                    PubDate = DateTime.MinValue
-                    DownloadDate = downloadDate
-                };            
-            |]
-        }
-
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
