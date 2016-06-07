@@ -152,7 +152,6 @@ module public FeedFunctions =
     let public CreateFeed url directoryPath =
         let document = downloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
-        let imageFileName = getImageForChannel channel
 
         {
              Title = channel?title.Value
@@ -160,6 +159,6 @@ module public FeedFunctions =
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
-             ImageFileName = imageFileName
+             ImageFileName = getImageForChannel channel
              Podcasts = createPodcastArrayFromDocument document
         }
