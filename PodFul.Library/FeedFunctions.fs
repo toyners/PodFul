@@ -92,6 +92,23 @@ module public FeedFunctions =
         else
             element.Value
 
+    let private getImageForChannel (channel : XElement) : string =
+        match channel with
+        | null -> String.Empty
+        | _ ->
+            let image = channel.Element(xn "image")
+            match image with
+            | null -> String.Empty
+            | _ -> 
+                let url = image.Element(xn "url")
+                match url with
+                | null -> String.Empty
+                | _ ->
+                    if url.Value = null || url.Value = String.Empty then
+                        String.Empty
+                    else
+                        url.Value
+
     let private createPodcastArrayFromDocument (document: XDocument) =
 
         [for element in document.Descendants(xn "item") do
@@ -135,6 +152,7 @@ module public FeedFunctions =
     let public CreateFeed url directoryPath =
         let document = downloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
+        let imageFileName = getImageForChannel channel
 
         {
              Title = channel?title.Value
@@ -142,6 +160,6 @@ module public FeedFunctions =
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
-             ImageFileName = ""
+             ImageFileName = imageFileName
              Podcasts = createPodcastArrayFromDocument document
         }

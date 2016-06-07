@@ -30,12 +30,10 @@ type FeedFunctions_IntergrationTests() =
     let secondPodcastURL = "Podcast2.mp3"
     let secondPodcastFileSize = 2L
     let secondPodcastPubDate = new DateTime(2015, 3, 4, 10, 11, 12)
-    let secondPodcastImageFileName = "Podcast #2 Image"
 
     let thirdPodcastTitle = "Podcast #3 Title"
     let thirdPodcastURL = "Podcast3.mp3"
     let thirdPodcastFileSize = 3L
-    let thirdPodcastImageFileName = "Podcast #3 Image"
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
@@ -70,14 +68,14 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[1].URL |> should equal secondPodcastURL
         feed.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
         feed.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
-        feed.Podcasts.[1].ImageFileName |> should equal secondPodcastImageFileName
+        feed.Podcasts.[1].ImageFileName |> should equal String.Empty
 
         feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
         feed.Podcasts.[2].Description |> should equal ""
         feed.Podcasts.[2].URL |> should equal thirdPodcastURL
         feed.Podcasts.[2].FileSize |> should equal -1
         feed.Podcasts.[2].PubDate |> should equal DateTime.MinValue
-        feed.Podcasts.[2].ImageFileName |> should equal thirdPodcastImageFileName
+        feed.Podcasts.[2].ImageFileName |> should equal String.Empty
 
     [<Test>]
     member public this.``Create RSS Feed that contains media content tags``() =
@@ -106,3 +104,17 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
         feed.Podcasts.[2].URL |> should equal thirdPodcastURL
         feed.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
+
+    [<Test>]
+    [<TestCase("RSSFile with Missing Image.rss")>]
+    [<TestCase("RSSFile with Empty Image 1.rss")>]
+    [<TestCase("RSSFile with Empty Image 2.rss")>]
+    [<TestCase("RSSFile with Empty URL 1.rss")>]
+    [<TestCase("RSSFile with Empty URL 2.rss")>]
+    member public this.``Create feed from RSS file with no feed image data``(feedFileName : string) =
+        //let feedFileName = 
+        let inputPath = workingDirectory + feedFileName;
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+
+        feed.ImageFileName |> should equal String.Empty
