@@ -109,6 +109,12 @@ module public FeedFunctions =
                     else
                         url.Value
 
+    let private getImageForItem (item : XElement) : string =
+        let imageElement = getElementUsingLocalNameAndNamespace item "image" "http://www.itunes.com/dtds/podcast-1.0.dtd"
+        match imageElement with
+        | null -> String.Empty
+        | _ -> getValueFromAttribute imageElement "href"
+
     let private createPodcastArrayFromDocument (document: XDocument) =
 
         [for element in document.Descendants(xn "item") do
@@ -127,7 +133,7 @@ module public FeedFunctions =
                     URL = url
                     FileSize = getFilesizeForItem enclosureElement contentElement
                     DownloadDate = DateTime.MinValue
-                    ImageFileName = ""
+                    ImageFileName = getImageForItem element
                 }
           ] |> List.toArray
 

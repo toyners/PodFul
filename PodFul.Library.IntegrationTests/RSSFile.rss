@@ -28,6 +28,7 @@
 		  <pubDate>04 Mar 2015 10:11:12</pubDate>
 		  <description><![CDATA[Podcast #2 Description]]></description>
       <enclosure url="Podcast2.mp3" length="2" type="audio/mpeg" />
+      <itunes:image />
 	  </item>
     <item>
       <title>Podcast #3 Title</title>
