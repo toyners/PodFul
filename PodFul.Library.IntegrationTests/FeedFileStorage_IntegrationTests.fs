@@ -34,6 +34,10 @@ type FeedFileStorage_IntergrationTests() =
             Website = feedWebsite
             Directory = feedDirectory
             URL = feedFeed
+            Image = {
+                        FileLocation = ""
+                        IsLocal = false
+            }
             ImageFileName = feedImageFileName
             Podcasts = 
             [|
@@ -56,6 +60,10 @@ type FeedFileStorage_IntergrationTests() =
             Website = feed.Website
             Directory = feed.Directory
             URL = feed.URL
+            Image = {
+                    FileLocation = ""
+                    IsLocal = false
+            }
             ImageFileName = feedImageFileName
             Podcasts = [||]
         }

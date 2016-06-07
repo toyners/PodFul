@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Miscellaneous.fs" />
+    <Compile Include="Image.fs" />
     <Compile Include="Podcast.fs" />
     <Compile Include="Feed.fs" />
     <Compile Include="IFeedStorage.fs" />

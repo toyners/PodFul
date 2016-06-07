@@ -165,6 +165,10 @@ module public FeedFunctions =
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
+             Image = {
+                        FileLocation = ""
+                        IsLocal = false
+                     }
              ImageFileName = getImageForChannel channel
              Podcasts = createPodcastArrayFromDocument document
         }
