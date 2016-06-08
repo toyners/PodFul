@@ -17,7 +17,8 @@ namespace PodFul.WPF
   {
     private IFeedStorage feedStorage;
     private Feed currentFeed;
-     
+    private String imageDirectory;
+
     public MainWindow()
     {
       InitializeComponent();
@@ -27,6 +28,8 @@ namespace PodFul.WPF
       var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
       this.feedStorage = new FeedFileStorage(feedDirectory);
       this.feedStorage.Open();
+
+      this.imageDirectory = Path.Combine(feedDirectory, "Images");
       
       FeedList.ItemsSource = this.feedStorage.Feeds;
       FeedList.SelectedIndex = 0;
@@ -64,7 +67,7 @@ namespace PodFul.WPF
       Feed feed = null;
       try
       {
-        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory);
+        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageDirectory);
       }
       catch (Exception exception)
       {

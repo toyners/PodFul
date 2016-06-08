@@ -3,6 +3,7 @@
 open System
 open System.IO
 open System.Net
+open System.Threading
 open System.Xml.Linq
 open FSharp.Data
 
@@ -155,9 +156,21 @@ module public FeedFunctions =
                  streamWriter.Write(responseText)
                  failwith ("Error log written to '" + errorLogFilePath + "'.")
 
-    let public CreateFeed url directoryPath =
+    let private DownloadImageFile (imageFileURL : string) (imageFileName : string) : unit =
+        let fileDownloader = new BigFileDownloader()
+        fileDownloader.DownloadAsync(imageFileURL, imageFileName, CancellationToken.None, null) |> ignore
+
+    let public CreateFeed url directoryPath imageDirectory =
         let document = downloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
+
+        let mutable imageFileName = String.Empty
+        if imageDirectory <> null && imageDirectory <> String.Empty && Directory.Exists(imageDirectory) then
+            let imageFileURL = getImageForChannel channel
+            let imageFileName = Path.Combine(imageDirectory, imageFileURL)
+         
+            if File.Exists(imageFileName) = false then
+                DownloadImageFile imageFileURL imageFileName
 
         {
              Title = channel?title.Value
@@ -165,10 +178,6 @@ module public FeedFunctions =
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
-             Image = {
-                        FileLocation = ""
-                        IsLocal = false
-                     }
-             ImageFileName = getImageForChannel channel
+             ImageFileName = imageFileName
              Podcasts = createPodcastArrayFromDocument document
         }

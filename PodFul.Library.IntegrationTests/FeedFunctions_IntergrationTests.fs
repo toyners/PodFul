@@ -43,7 +43,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create Feed from RSS url``() =
         let inputPath = workingDirectory + "RSSFile.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" String.Empty
 
         feed |> should not' (equal null)
         feed.Title |> should equal feedTitle
@@ -81,7 +81,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create RSS Feed that contains media content tags``() =
         let inputPath = workingDirectory + "RSSFileWithMediaContent.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileWithMediaContent.rss", inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" String.Empty
 
         feed |> should not' (equal null)
         feed.Title |> should equal feedTitle
@@ -115,6 +115,6 @@ type FeedFunctions_IntergrationTests() =
         //let feedFileName = 
         let inputPath = workingDirectory + feedFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" String.Empty
 
         feed.ImageFileName |> should equal String.Empty

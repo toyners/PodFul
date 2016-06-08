@@ -6,6 +6,7 @@ open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
 open System.Reflection
+open System
 
 type Feed_IntergrationTests() = 
 
@@ -20,8 +21,8 @@ type Feed_IntergrationTests() =
         let inputPath = workingDirectory + "RSSFile.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath)
 
-        let feed1 = FeedFunctions.CreateFeed inputPath "DirectoryPath1"
-        let feed2 = FeedFunctions.CreateFeed inputPath "DirectoryPath2"
+        let feed1 = FeedFunctions.CreateFeed inputPath "DirectoryPath1" String.Empty
+        let feed2 = FeedFunctions.CreateFeed inputPath "DirectoryPath2" String.Empty
 
         feed1 = feed2 |> should equal true
 
@@ -33,7 +34,7 @@ type Feed_IntergrationTests() =
         let inputPath2 = workingDirectory + "podcast2.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath2)
 
-        let feed1 = FeedFunctions.CreateFeed inputPath1 "DirectoryPath1"
-        let feed2 = FeedFunctions.CreateFeed inputPath2 "DirectoryPath2"
+        let feed1 = FeedFunctions.CreateFeed inputPath1 "DirectoryPath1" String.Empty
+        let feed2 = FeedFunctions.CreateFeed inputPath2 "DirectoryPath2" String.Empty
 
         feed1 = feed2 |> should equal false

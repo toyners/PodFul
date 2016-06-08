@@ -79,10 +79,6 @@ type FeedFileStorage(directoryPath : String) =
             Directory = fields.[2]
             URL = fields.[3]
             Description = fields.[4]
-            Image = { 
-                        FileLocation = "" 
-                        IsLocal = false
-                    }
             ImageFileName = ""
             Podcasts = List.unfold this.getPodcastFromFile (reader) |> List.toArray
         }
