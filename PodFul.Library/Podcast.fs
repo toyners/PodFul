@@ -37,6 +37,17 @@ type Podcast =
                 ImageFileName = original.ImageFileName
             }
 
+        static member SetImageFileName original (imageFileName : string) = 
+            {
+                Title = original.Title
+                Description = original.Description
+                URL = original.URL
+                FileSize = original.FileSize
+                PubDate = original.PubDate
+                DownloadDate = original.DownloadDate
+                ImageFileName = imageFileName
+            }
+
         override x.Equals other = 
             match other with
             | :? Podcast as y -> (x.URL = y.URL)

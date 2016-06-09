@@ -9,6 +9,11 @@ namespace PodFul.Winforms
   using System.Windows.Forms;
   using PodFul.Library;
 
+  public interface ImageResolver
+  {
+    String GetName(String imageFileName);
+  }
+
   public partial class ProcessingForm : Form
   {
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -119,7 +124,7 @@ namespace PodFul.Winforms
 
           feeds[feedIndex] = newFeed;
 
-          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
+          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes, null))
           {
             this.PostMessage("\r\nCANCELLED");
             return;
@@ -155,7 +160,7 @@ namespace PodFul.Winforms
       Task task = Task.Factory.StartNew(() =>
       {
         this.SetStateOfCancelButton(true);
-        if (podcastDownload.Download(feed.Directory, feed.Podcasts, queue))
+        if (podcastDownload.Download(feed.Directory, feed.Podcasts, queue, null))
         {
           feedStorage.Update(feed);
         }

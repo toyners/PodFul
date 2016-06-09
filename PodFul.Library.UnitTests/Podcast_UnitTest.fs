@@ -104,3 +104,27 @@ type Podcast_UnitTest() =
         podcast2.FileSize |> should equal 2L
         podcast2.PubDate |> should equal podcast1.PubDate
         podcast2.DownloadDate |> should equal podcast1.DownloadDate
+
+    [<Test>]
+    member public this.``Setting file image file name returns new record with image file name set``() =
+        let podcast1 =
+            {
+                Title = "title"
+                Description = "description"
+                URL = "url1"
+                FileSize = 1L
+                PubDate = new DateTime(2016, 12, 31)
+                DownloadDate = DateTime.MinValue
+                ImageFileName = ""
+            }
+
+        let podcast2 = Podcast.SetImageFileName podcast1 "image"
+
+        podcast2 |> should not' (be sameAs podcast1)
+        podcast2.Title |> should equal podcast1.Title
+        podcast2.Description |> should equal podcast1.Description
+        podcast2.URL |> should equal podcast1.URL
+        podcast2.FileSize |> should equal podcast1.FileSize
+        podcast2.PubDate |> should equal podcast1.PubDate
+        podcast2.DownloadDate |> should equal podcast1.DownloadDate
+        podcast2.ImageFileName |> should equal "image"

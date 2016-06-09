@@ -37,7 +37,7 @@ namespace PodFul.Winforms
 
     public event Action OnFinish;
 
-    public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes)
+    public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes, ImageResolver imageResolver)
     {
       var downloader = new BigFileDownloader();
 
@@ -69,6 +69,12 @@ namespace PodFul.Winforms
           if (podcast.FileSize != fileLength)
           {
             podcast = Podcast.SetFileSize(podcast, fileLength);
+          }
+
+          var imageName = imageResolver.GetName(podcast.ImageFileName);
+          if (imageName != podcast.ImageFileName)
+          {
+            podcast = Podcast.SetImageFileName(podcast, imageName);
           }
 
           podcasts[podcastIndex] = podcast;
