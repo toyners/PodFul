@@ -160,17 +160,10 @@ module public FeedFunctions =
         let fileDownloader = new BigFileDownloader()
         fileDownloader.DownloadAsync(imageFileURL, imageFileName, CancellationToken.None, null) |> ignore
 
-    let public CreateFeed url directoryPath imageDirectory =
+    let public CreateFeed url directoryPath =
         let document = downloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")
-
-        let mutable imageFileName = String.Empty
-        if imageDirectory <> null && imageDirectory <> String.Empty && Directory.Exists(imageDirectory) then
-            let imageFileURL = getImageForChannel channel
-            let imageFileName = Path.Combine(imageDirectory, imageFileURL)
-         
-            if File.Exists(imageFileName) = false then
-                DownloadImageFile imageFileURL imageFileName
+        let imageFileURL = getImageForChannel channel
 
         {
              Title = channel?title.Value
@@ -178,6 +171,6 @@ module public FeedFunctions =
              Website = channel?link.Value
              Directory = directoryPath
              URL = url
-             ImageFileName = imageFileName
+             ImageFileName = imageFileURL
              Podcasts = createPodcastArrayFromDocument document
         }

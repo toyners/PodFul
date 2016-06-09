@@ -59,7 +59,7 @@ namespace PodFul.WPF
           Feed newFeed = null;
           try
           {
-            newFeed = FeedFunctions.CreateFeed(feed.URL, feed.Directory, String.Empty);
+            newFeed = FeedFunctions.CreateFeed(feed.URL, feed.Directory);
           }
           catch (Exception exception)
           {

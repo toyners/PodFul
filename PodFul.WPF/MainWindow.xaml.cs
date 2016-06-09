@@ -67,7 +67,7 @@ namespace PodFul.WPF
       Feed feed = null;
       try
       {
-        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageDirectory);
+        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory);
       }
       catch (Exception exception)
       {
