@@ -37,7 +37,7 @@ namespace PodFul.Winforms
 
     public event Action OnFinish;
 
-    public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes, ImageResolver imageResolver)
+    public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes, IImageResolver imageResolver)
     {
       var downloader = new BigFileDownloader();
 

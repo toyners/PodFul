@@ -62,6 +62,7 @@
     <Compile Include="FeedFileStorage.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
+    <Compile Include="IImageResolver.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">

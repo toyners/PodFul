@@ -9,11 +9,6 @@ namespace PodFul.Winforms
   using System.Windows.Forms;
   using PodFul.Library;
 
-  public interface ImageResolver
-  {
-    String GetName(String imageFileName);
-  }
-
   public partial class ProcessingForm : Form
   {
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
