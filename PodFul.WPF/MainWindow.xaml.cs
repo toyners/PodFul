@@ -16,8 +16,8 @@ namespace PodFul.WPF
   public partial class MainWindow : Window
   {
     private IFeedStorage feedStorage;
+    private IImageResolver imageResolver;
     private Feed currentFeed;
-    private String imageDirectory;
 
     public MainWindow()
     {
@@ -29,8 +29,9 @@ namespace PodFul.WPF
       this.feedStorage = new FeedFileStorage(feedDirectory);
       this.feedStorage.Open();
 
-      this.imageDirectory = Path.Combine(feedDirectory, "Images");
-      
+      var imageDirectory = Path.Combine(feedDirectory, "Images");
+      this.imageResolver = new ImageResolver(imageDirectory); 
+
       FeedList.ItemsSource = this.feedStorage.Feeds;
       FeedList.SelectedIndex = 0;
       if (this.feedStorage.Feeds.Length > 0)
