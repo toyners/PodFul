@@ -15,6 +15,18 @@ type Feed =
     }
 
     with
+
+        static member SetImageFileName original (imageFileName : string) = 
+            {
+                Title = original.Title
+                Description = original.Description
+                Website = original.Website
+                Directory = original.Directory
+                URL = original.URL
+                ImageFileName = imageFileName
+                Podcasts = original.Podcasts
+            }
+
         override x.Equals other = 
             match other with
             | :? Feed as y -> (x.URL = y.URL)

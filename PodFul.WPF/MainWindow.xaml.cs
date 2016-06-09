@@ -83,6 +83,9 @@ namespace PodFul.WPF
         this.SyncWithExistingFiles(feed);
       }
 
+      var resolvedName = this.imageResolver.GetName(feed.ImageFileName);
+      feed = Feed.SetImageFileName(feed, resolvedName);
+
       this.feedStorage.Add(feed);
       this.FeedList.SelectedItem = feed;
       //this.currentFeed = feed;
