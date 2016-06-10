@@ -88,8 +88,6 @@ namespace PodFul.WPF
 
       this.feedStorage.Add(feed);
       this.FeedList.SelectedItem = feed;
-      //this.currentFeed = feed;
-      //this.AddFeedToList(feed);
 
       this.DownloadPodcasts();
     }
