@@ -21,7 +21,7 @@ namespace PodFul.WPF
     private Int64 percentageStepSize;
     private Boolean fileSizeNotKnown;
 
-    public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, Boolean addToWinAmp)
+    public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, Boolean addToWinAmp, IImageResolver imageResolver)
     {
       InitializeComponent();
 
@@ -68,6 +68,10 @@ namespace PodFul.WPF
             this.PostMessage(exceptionReport);
             continue;
           }
+
+          // Resolve the feed image.
+          var imageFileName = imageResolver.GetName(newFeed.ImageFileName);
+          newFeed = Feed.SetImageFileName(newFeed, imageFileName);
 
           this.PostMessage("Comparing podcasts ... ", false);
 

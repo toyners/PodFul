@@ -167,7 +167,7 @@ namespace PodFul.WPF
 
       var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
       var addToWinAmp = (this.AddToWinAmp.IsChecked.HasValue && this.AddToWinAmp.IsChecked.Value);
-      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes, addToWinAmp);
+      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes, addToWinAmp, this.imageResolver);
       processingWindow.ShowDialog();
     }
 

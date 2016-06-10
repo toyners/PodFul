@@ -78,7 +78,7 @@ namespace PodFul.WPF
     
     private void ItemGrid_SelectionChanged(Object sender, SelectionChangedEventArgs e)
     {
-      this.startButton.IsEnabled = e.AddedItems.Count > 0;
+      this.startButton.IsEnabled = (sender as DataGrid).SelectedItems.Count > 0;
     }
 
     private void startButton_Click(Object sender, RoutedEventArgs e)

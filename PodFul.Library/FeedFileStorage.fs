@@ -79,7 +79,10 @@ type FeedFileStorage(directoryPath : String) =
             Directory = fields.[2]
             URL = fields.[3]
             Description = fields.[4]
-            ImageFileName = ""
+            ImageFileName = match fields.Length with
+                            | 6 -> fields.[5]
+                            | 5 -> String.Empty
+                            | _ -> failwith (sprintf "Feed data has incorrect number of fields. Expected 6 or 5 found %i" fields.Length)
             Podcasts = List.unfold this.getPodcastFromFile (reader) |> List.toArray
         }
 
@@ -87,7 +90,7 @@ type FeedFileStorage(directoryPath : String) =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description);
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName);
 
         for podcast in feed.Podcasts do
             writer.WriteLine(podcast.Title + "|" + 
