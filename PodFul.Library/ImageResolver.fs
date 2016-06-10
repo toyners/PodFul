@@ -26,11 +26,14 @@ type ImageResolver(imageDirectoryPath : string) =
         
         member this.GetName (imageFileName : string) : string = 
 
-            let cleanImageFileName = imageFileName.Substitute(this.fileNameSubstitutions);
-            let imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
+            match String.IsNullOrEmpty(imageFileName) with
+            | true -> String.Empty
+            | _ ->
+                let cleanImageFileName = imageFileName.Substitute(this.fileNameSubstitutions);
+                let imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
 
-            if File.Exists(imageFilePath) = false then
-                let imageDownloader = new BigFileDownloader()
-                imageDownloader.Download(imageFileName, imageFilePath) |> ignore              
+                if File.Exists(imageFilePath) = false then
+                    let imageDownloader = new BigFileDownloader()
+                    imageDownloader.Download(imageFileName, imageFilePath) |> ignore              
 
-            imageFilePath
+                imageFilePath

@@ -72,13 +72,20 @@
           <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged">
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <Grid Margin="0, 2">
+                <Grid Margin="0,2">
                   <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
                   <Image Source="{Binding ImageFileName}" />
-                  <TextBlock Text="{Binding Title}" />
+                  <StackPanel Grid.Column="1" Margin="2,0">
+                    <TextBlock>
+                      <TextBlock.Inlines>
+                        <Run FontWeight="Bold" Text="{Binding Title, Mode=OneWay}" />
+                      </TextBlock.Inlines>
+                    </TextBlock>
+                    <TextBlock Text="{Binding Description}" />
+                  </StackPanel>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
