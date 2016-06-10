@@ -35,6 +35,8 @@ namespace PodFul.WPF
       InitializeComponent();
 
       this.Title = title;
+
+      this.ItemGrid.Focus();
     }
     #endregion
 

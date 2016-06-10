@@ -34,14 +34,14 @@ namespace PodFul.WPF
       this.imageResolver = new ImageResolver(imageDirectory);
       DirectoryOperations.EnsureDirectoryExists(imageDirectory);
 
-      FeedList.ItemsSource = this.feedStorage.Feeds;
-      FeedList.SelectedIndex = 0;
+      this.FeedList.ItemsSource = this.feedStorage.Feeds;
+      this.FeedList.SelectedIndex = 0;
       if (this.feedStorage.Feeds.Length > 0)
       {
         this.currentFeed = this.feedStorage.Feeds[0];
-
-        PodcastList.ItemsSource = this.currentFeed.Podcasts;
       }
+
+      this.FeedList.Focus();
     }
 
     private void DisplayTitle()
@@ -203,7 +203,6 @@ namespace PodFul.WPF
       var index = (sender as ListBox).SelectedIndex;
       if (index == -1)
       {
-        this.FeedDescription.Text = String.Empty;
         return;
       }
 
@@ -214,27 +213,6 @@ namespace PodFul.WPF
       }
 
       this.currentFeed = feed;
-      this.FeedDescription.Text = feed.Description;
-      this.PodcastList.ItemsSource = feed.Podcasts;
-    }
-
-    private void PodcastList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
-    {
-      var index = (sender as ListBox).SelectedIndex;
-      if (index == -1)
-      {
-        this.PodcastDescription.Text = String.Empty;
-        return;
-      }
-
-      var podcast = this.currentFeed.Podcasts[index];
-      var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}\r\nDOWNLOAD DATE: {3}",
-        podcast.Description,
-        podcast.PubDate.ToString("ddd, dd-MMM-yyyy"),
-        Miscellaneous.GetReadableFileSize(podcast.FileSize) + " MB",
-        podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
-
-      this.PodcastDescription.Text = text;
     }
   }
 }

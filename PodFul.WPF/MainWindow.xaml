@@ -39,35 +39,12 @@
       </Grid>
     </Border>
 
-    <Grid DockPanel.Dock="Bottom">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition />
-        <ColumnDefinition />
-      </Grid.ColumnDefinitions>
-
-      <Grid.RowDefinitions>
-        <RowDefinition Height="100" />
-      </Grid.RowDefinitions>
-      <Border Margin="0,2.5,5,5" BorderBrush="Black" BorderThickness="1" Grid.Row="2">
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
-          <TextBlock Name="FeedDescription" TextWrapping="Wrap"/>
-        </ScrollViewer>
-      </Border>
-
-      <Border Margin="5,2.5,0,5" BorderBrush="Black" BorderThickness="1" Grid.Column="2" Grid.Row="2">
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
-          <TextBlock Name="PodcastDescription" TextWrapping="Wrap"/>
-        </ScrollViewer>
-      </Border>
-    </Grid>
-
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
-      <Border Margin="0,0,5,2.5" BorderBrush="Black" BorderThickness="1">
+      <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
           <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged">
             <ListBox.ItemTemplate>
@@ -86,25 +63,6 @@
                     </TextBlock>
                     <TextBlock Text="{Binding Description}" />
                   </StackPanel>
-                </Grid>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-        </ScrollViewer>
-      </Border>
-
-      <Border Margin="5,0,0,2.5" BorderBrush="Black" BorderThickness="1" Grid.Column="2">
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
-          <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" SelectionChanged="PodcastList_SelectionChanged">
-            <ListBox.ItemTemplate>
-              <DataTemplate>
-                <Grid Margin="0, 2">
-                  <Grid.ColumnDefinitions>
-                    <!--<ColumnDefinition Width="100"/>-->
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
-                  <!--<Image Source="{Binding Image}" /> -->
-                  <TextBlock Text="{Binding Title}"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
