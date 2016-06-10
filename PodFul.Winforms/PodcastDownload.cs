@@ -39,7 +39,7 @@ namespace PodFul.Winforms
 
     public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes, IImageResolver imageResolver)
     {
-      var downloader = new BigFileDownloader();
+      var downloader = new FileDownloader();
 
       while (podcastsIndexes.Count > 0)
       {

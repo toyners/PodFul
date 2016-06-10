@@ -57,7 +57,7 @@
     <Compile Include="Podcast.fs" />
     <Compile Include="Feed.fs" />
     <Compile Include="IFeedStorage.fs" />
-    <Compile Include="BigFileDownloader.fs" />
+    <Compile Include="FileDownloader.fs" />
     <Compile Include="FeedFunctions.fs" />
     <Compile Include="FeedFileStorage.fs" />
     <None Include="Script.fsx" />

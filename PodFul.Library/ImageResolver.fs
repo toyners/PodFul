@@ -33,7 +33,7 @@ type ImageResolver(imageDirectoryPath : string) =
                 let imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
 
                 if File.Exists(imageFilePath) = false then
-                    let imageDownloader = new BigFileDownloader()
+                    let imageDownloader = new FileDownloader()
                     imageDownloader.Download(imageFileName, imageFilePath) |> ignore              
 
                 imageFilePath

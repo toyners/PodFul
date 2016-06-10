@@ -6,7 +6,7 @@ namespace PodFul.WPF
   using System.IO;
   using System.Threading;
   using System.Threading.Tasks;
-  //using Jabberwocky.Toolkit.Object;
+  using Jabberwocky.Toolkit.Object;
   using Library;
 
   public class PodcastDownload
@@ -17,11 +17,11 @@ namespace PodFul.WPF
 
     public PodcastDownload(CancellationToken cancellationToken, Action<Int32> updateProgress)
     {
-      /*cancellationToken.VerifyThatObjectIsNotNull("Parameter 'cancellationToken' is null.");
+      cancellationToken.VerifyThatObjectIsNotNull("Parameter 'cancellationToken' is null.");
       if (updateProgress == null)
       {
         throw new Exception("Parameter 'updateProgress' is null.");
-      }*/
+      }
 
       this.cancellationToken = cancellationToken;
       this.updateProgress = updateProgress;
@@ -39,7 +39,7 @@ namespace PodFul.WPF
 
     public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes)
     {
-      var downloader = new BigFileDownloader();
+      var downloader = new FileDownloader();
 
       while (podcastsIndexes.Count > 0)
       {

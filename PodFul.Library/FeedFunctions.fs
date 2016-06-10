@@ -156,10 +156,6 @@ module public FeedFunctions =
                  streamWriter.Write(responseText)
                  failwith ("Error log written to '" + errorLogFilePath + "'.")
 
-    let private DownloadImageFile (imageFileURL : string) (imageFileName : string) : unit =
-        let fileDownloader = new BigFileDownloader()
-        fileDownloader.DownloadAsync(imageFileURL, imageFileName, CancellationToken.None, null) |> ignore
-
     let public CreateFeed url directoryPath =
         let document = downloadDocument url
         let channel = document.Element(xn "rss").Element(xn "channel")

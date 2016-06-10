@@ -23,7 +23,7 @@ namespace PodFul.Console
       CancellationToken token = cancellationSource.Token;
       var test = new Test(cancellationSource);
 
-      Task t = new BigFileDownloader().DownloadAsync(url,
+      Task t = new FileDownloader().DownloadAsync(url,
         @"C:\Projects\PodFul\test.mp3",
         token,
         test.UpdateProgress);
