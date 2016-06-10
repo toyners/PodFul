@@ -8,6 +8,7 @@ namespace PodFul.WPF
   using System.Reflection;
   using System.Windows;
   using System.Windows.Controls;
+  using Jabberwocky.Toolkit.IO;
   using PodFul.Library;
 
   /// <summary>
@@ -30,7 +31,8 @@ namespace PodFul.WPF
       this.feedStorage.Open();
 
       var imageDirectory = Path.Combine(feedDirectory, "Images");
-      this.imageResolver = new ImageResolver(imageDirectory); 
+      this.imageResolver = new ImageResolver(imageDirectory);
+      DirectoryOperations.EnsureDirectoryExists(imageDirectory);
 
       FeedList.ItemsSource = this.feedStorage.Feeds;
       FeedList.SelectedIndex = 0;
