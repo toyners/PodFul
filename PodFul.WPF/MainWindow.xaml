@@ -74,10 +74,10 @@
               <DataTemplate>
                 <Grid Margin="0, 2">
                   <Grid.ColumnDefinitions>
-                    <!--<ColumnDefinition Width="100" /> -->
+                    <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
-                  <!--<Image Source="{Binding Image}" /> -->
+                  <Image Source="{Binding ImageFileName}" />
                   <TextBlock Text="{Binding Title}" />
                 </Grid>
               </DataTemplate>
