@@ -260,8 +260,7 @@ namespace PodFul.WPF
         }
 
         this.Feedback.Text += message;
-        //this.Text.SelectionStart = this.feedback.Text.Length;
-        //this.Text.ScrollToCaret();
+        this.FeedbackScroller.ScrollToBottom();
       }).Start(this.mainTaskScheduler);
     }
 

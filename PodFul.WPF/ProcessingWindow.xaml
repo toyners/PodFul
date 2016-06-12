@@ -21,7 +21,7 @@
     </Border>
     
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
-      <ScrollViewer VerticalScrollBarVisibility="Visible" Margin="5">
+      <ScrollViewer Name="FeedbackScroller" VerticalScrollBarVisibility="Visible" Margin="5">
         <TextBlock Name="Feedback" TextWrapping="Wrap" />
       </ScrollViewer>
     </Border>
