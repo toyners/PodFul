@@ -193,7 +193,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Closing the feed storage removes all feeds from memory``() =
 
         let feed = this.CreateFeed
-        let mutable originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        let originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
         originalFeedStorage.Open()
         originalFeedStorage.Add(feed)
         originalFeedStorage.Close()
@@ -204,12 +204,12 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Writing/Reading cycle of Feed``() =
 
         let feed = this.CreateFeed
-        let mutable originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        let originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
         originalFeedStorage.Open()
         originalFeedStorage.Add(feed)
         originalFeedStorage.Close()
 
-        let mutable nextFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        let nextFeedStorage = FeedFileStorage(workingDirectory).Storage()
         nextFeedStorage.Open()
 
         let actualFeed = nextFeedStorage.Feeds.[0]
