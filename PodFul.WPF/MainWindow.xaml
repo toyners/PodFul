@@ -8,6 +8,9 @@
         Title="MainWindow" Height="600" Width="800" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
+  <Window.Resources>
+    <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
+  </Window.Resources>
   <DockPanel Margin="5">
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
@@ -62,13 +65,8 @@
                           <Run FontWeight="Bold" Text="{Binding Title, Mode=OneWay}" />
                         </TextBlock.Inlines>
                       </TextBlock>
-                      <TextBlock Margin="5,0,0,0">
-                        <TextBlock.Text>
-                          <MultiBinding StringFormat="Last Updated: {0}">
-                            <Binding Path="CreationDateTime" />
-                          </MultiBinding>
-                        </TextBlock.Text>
-                      </TextBlock>
+                      <TextBlock Margin="5,0,0,0" Text="{Binding Path=CreationDateTime, Converter={StaticResource CreationDateTimeConverter}}" />
+                      
                       <TextBlock Margin="5,0,0,0">
                         <TextBlock.Text>
                           <MultiBinding StringFormat="Podcasts: {0}">
