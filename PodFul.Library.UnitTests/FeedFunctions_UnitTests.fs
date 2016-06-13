@@ -1,8 +1,6 @@
 ﻿namespace PodFul.Library.UnitTests
 
 open FsUnit
-//open Jabberwocky.Toolkit.Assembly
-//open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
 open System

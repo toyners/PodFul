@@ -112,7 +112,6 @@ type FeedFunctions_IntergrationTests() =
     [<TestCase("RSSFile with Empty URL 1.rss")>]
     [<TestCase("RSSFile with Empty URL 2.rss")>]
     member public this.``Create feed from RSS file with no feed image data``(feedFileName : string) =
-        //let feedFileName = 
         let inputPath = workingDirectory + feedFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
         let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
