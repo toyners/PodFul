@@ -1,5 +1,6 @@
 ﻿namespace PodFul.Library.UnitTests
 
+open System
 open FsUnit
 open NUnit.Framework
 open PodFul.Library
@@ -17,6 +18,7 @@ type Feed_UnitTest() =
                 URL = "url"
                 ImageFileName = ""
                 Podcasts = null
+                CreationDateTime = new DateTime(2016, 2, 3)
             }
 
         let feed2 = Feed.SetImageFileName feed1 "imagefilename"
@@ -29,4 +31,5 @@ type Feed_UnitTest() =
         feed2.URL |> should equal feed1.URL
         feed2.ImageFileName |> should equal "imagefilename"
         feed2.Podcasts |> should equal feed1.Podcasts
+        feed2.CreationDateTime |> should equal feed1.CreationDateTime
         

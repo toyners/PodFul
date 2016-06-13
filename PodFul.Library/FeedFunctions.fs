@@ -169,4 +169,5 @@ module public FeedFunctions =
              URL = url
              ImageFileName = imageFileURL
              Podcasts = createPodcastArrayFromDocument document
+             CreationDateTime = DateTime.Now
         }

@@ -25,8 +25,6 @@ type FeedFileStorage_IntergrationTests() =
     let podcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
     let podcastImageFileName = "Podcast #1 Image"
 
-    let downloadDate = new DateTime(2017, 1, 2)
-
     member private this.CreateFeed =
         {
             Title = feedTitle
@@ -35,6 +33,7 @@ type FeedFileStorage_IntergrationTests() =
             Directory = feedDirectory
             URL = feedFeed
             ImageFileName = feedImageFileName
+            CreationDateTime = new DateTime(2016, 2, 3)
             Podcasts = 
             [|
                 {
@@ -43,7 +42,7 @@ type FeedFileStorage_IntergrationTests() =
                     URL = podcastURL
                     FileSize = podcastFileSize
                     PubDate = podcastPubDate
-                    DownloadDate = downloadDate
+                    DownloadDate = new DateTime(2017, 1, 2)
                     ImageFileName = podcastImageFileName
                 };           
             |]
@@ -56,8 +55,9 @@ type FeedFileStorage_IntergrationTests() =
             Website = feed.Website
             Directory = feed.Directory
             URL = feed.URL
-            ImageFileName = feedImageFileName
+            ImageFileName = feed.ImageFileName
             Podcasts = [||]
+            CreationDateTime = feed.CreationDateTime
         }
 
     [<SetUp>]
@@ -219,6 +219,7 @@ type FeedFileStorage_IntergrationTests() =
         actualFeed.Website |> should equal feed.Website
         actualFeed.Directory |> should equal feed.Directory
         actualFeed.URL |> should equal feed.URL
+        actualFeed.CreationDateTime |> should equal feed.CreationDateTime
 
         let actualPodcast = actualFeed.Podcasts.[0]
         actualFeed.Podcasts.Length |> should equal feed.Podcasts.Length

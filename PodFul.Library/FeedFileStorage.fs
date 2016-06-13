@@ -68,6 +68,18 @@ type FeedFileStorage(directoryPath : String) =
               // Set the threaded state to be the XML reader.
               Some(podcast, reader)
 
+    member private this.getImageFileName (fields : string[]) : string =
+        if fields.Length > 5 then
+            fields.[5]
+        else
+            String.Empty
+
+    member private this.getCreationDateTime (fields : string[]) : DateTime =
+        if fields.Length > 6 then
+            DateTime.Parse(fields.[6])
+        else
+            DateTime.MinValue
+
     member private this.readFeedFromFile (filePath : String) : Feed =
         
         use reader = new StreamReader(filePath)
@@ -79,10 +91,8 @@ type FeedFileStorage(directoryPath : String) =
             Directory = fields.[2]
             URL = fields.[3]
             Description = fields.[4]
-            ImageFileName = match fields.Length with
-                            | 6 -> fields.[5]
-                            | 5 -> String.Empty
-                            | _ -> failwith (sprintf "Feed data has incorrect number of fields. Expected 6 or 5 found %i" fields.Length)
+            ImageFileName = this.getImageFileName fields
+            CreationDateTime = this.getCreationDateTime fields
             Podcasts = List.unfold this.getPodcastFromFile (reader) |> List.toArray
         }
 
@@ -90,7 +100,7 @@ type FeedFileStorage(directoryPath : String) =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName);
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName + "|" + feed.CreationDateTime.ToString());
 
         for podcast in feed.Podcasts do
             writer.WriteLine(podcast.Title + "|" + 

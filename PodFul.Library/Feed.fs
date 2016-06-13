@@ -12,6 +12,7 @@ type Feed =
         URL : string;
         ImageFileName : string;
         Podcasts : Podcast[];
+        CreationDateTime : DateTime
     }
 
     with
@@ -25,6 +26,7 @@ type Feed =
                 URL = original.URL
                 ImageFileName = imageFileName
                 Podcasts = original.Podcasts
+                CreationDateTime = original.CreationDateTime
             }
 
         override x.Equals other = 

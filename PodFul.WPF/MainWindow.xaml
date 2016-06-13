@@ -64,6 +64,13 @@
                       </TextBlock>
                       <TextBlock Margin="5,0,0,0">
                         <TextBlock.Text>
+                          <MultiBinding StringFormat="Last Updated: {0}">
+                            <Binding Path="CreationDateTime" />
+                          </MultiBinding>
+                        </TextBlock.Text>
+                      </TextBlock>
+                      <TextBlock Margin="5,0,0,0">
+                        <TextBlock.Text>
                           <MultiBinding StringFormat="Podcasts: {0}">
                             <Binding Path="Podcasts.Length" />
                           </MultiBinding>
