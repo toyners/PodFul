@@ -17,7 +17,10 @@
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,0,5">
-      <ProgressBar Name="Progress" Margin="5" Height="50" />
+      <Grid>
+        <ProgressBar Name="Progress" Margin="5" Height="50" />
+        <TextBlock Name="ProgressSize" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      </Grid>
     </Border>
     
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">

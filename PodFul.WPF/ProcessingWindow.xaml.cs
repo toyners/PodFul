@@ -20,6 +20,7 @@ namespace PodFul.WPF
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
     private Boolean fileSizeNotKnown;
+    private String progressSizeLabel;
 
     public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, Boolean addToWinAmp, IImageResolver imageResolver)
     {
@@ -266,10 +267,24 @@ namespace PodFul.WPF
 
     private void ResetProgressBar(Int64 expectedFileSize = -1)
     {
+      this.fileSizeNotKnown = (expectedFileSize == 0);
+      String progressSize;
+      if (expectedFileSize > 0)
+      {
+        var total = (Double)(expectedFileSize / 1048576);
+        this.progressSizeLabel = " / " + total.ToString("0.00") + "Mb";
+        progressSize = "0.00" + this.progressSizeLabel; 
+      }
+      else
+      {
+        this.progressSizeLabel = "Mb";
+        progressSize = "0.00" + this.progressSizeLabel;
+      }
+
       new Task(() =>
       {
         this.Progress.Value = 0;
-        this.fileSizeNotKnown = (expectedFileSize == 0);
+        this.ProgressSize.Text = progressSize;
         this.Progress.IsIndeterminate = this.fileSizeNotKnown;
       }).Start(this.mainTaskScheduler);
     }
@@ -302,14 +317,21 @@ namespace PodFul.WPF
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
+      this.downloadedSize += bytesWrittenToFile;
+      var downloadedSizeInMb = (Double)(this.downloadedSize / 1048576);
+
       if (this.fileSizeNotKnown)
       {
+        new Task(() =>
+        {
+          this.ProgressSize.Text = downloadedSizeInMb + this.progressSizeLabel;
+        }).Start(this.mainTaskScheduler);
+
         return;
       }
 
       new Task(() =>
       {
-        this.downloadedSize += bytesWrittenToFile;
         if (this.downloadedSize > this.fileSize)
         {
           this.Progress.Value = 100;
@@ -321,6 +343,9 @@ namespace PodFul.WPF
         {
           this.Progress.Value = (Int32)steps;
         }
+
+        this.ProgressSize.Text = downloadedSizeInMb + this.progressSizeLabel;
+
       }).Start(this.mainTaskScheduler);
     }
   }
