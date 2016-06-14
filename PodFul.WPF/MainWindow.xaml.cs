@@ -154,6 +154,13 @@ namespace PodFul.WPF
       return syncCount;
     }
 
+    private void SettingsButton_Click(Object sender, RoutedEventArgs e)
+    {
+      var settingsWindow = new SettingsWindow();
+
+      settingsWindow.ShowDialog();  
+    }
+
     private void scanButton_Click(Object sender, RoutedEventArgs e)
     {
       var title = String.Format("{0} feed{1}", this.feedStorage.Feeds.Length, (this.feedStorage.Feeds.Length != 1 ? "s" : String.Empty));
