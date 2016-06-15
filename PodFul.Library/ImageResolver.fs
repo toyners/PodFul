@@ -34,6 +34,6 @@ type ImageResolver(imageDirectoryPath : string) =
 
                 if File.Exists(imageFilePath) = false then
                     let imageDownloader = new FileDownloader()
-                    imageDownloader.Download(imageFileName, imageFilePath) |> ignore              
+                    imageDownloader.Download(imageFileName, imageFilePath, System.Threading.CancellationToken.None, null) |> ignore              
 
                 imageFilePath

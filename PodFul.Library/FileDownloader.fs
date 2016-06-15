@@ -40,5 +40,5 @@ type FileDownloader() =
             download url filePath cancelToken updateProgressFn
         } |> Async.StartAsTask
 
-    member this.Download(url, filePath) =
-        download url filePath CancellationToken.None null
+    member this.Download(url, filePath, cancelToken, updateProgressFn: Action<int>) =
+        download url filePath cancelToken updateProgressFn
