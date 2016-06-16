@@ -344,7 +344,7 @@ namespace PodFul.WPF
           this.Progress.Value = (Int32)steps;
         }
 
-        this.ProgressSize.Text = downloadedSizeInMb + this.progressSizeLabel;
+        this.ProgressSize.Text = downloadedSizeInMb.ToString("0.00") + this.progressSizeLabel;
 
       }).Start(this.mainTaskScheduler);
     }
