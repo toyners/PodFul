@@ -271,7 +271,7 @@ namespace PodFul.WPF
       String progressSize;
       if (expectedFileSize > 0)
       {
-        var total = (Double)(expectedFileSize / 1048576);
+        var total = expectedFileSize / 1048576.0;
         this.progressSizeLabel = " / " + total.ToString("0.00") + "Mb";
         progressSize = "0.00" + this.progressSizeLabel; 
       }
@@ -318,13 +318,13 @@ namespace PodFul.WPF
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
       this.downloadedSize += bytesWrittenToFile;
-      var downloadedSizeInMb = (Double)(this.downloadedSize / 1048576);
+      var downloadedSizeInMb = this.downloadedSize / 1048576.0;
 
       if (this.fileSizeNotKnown)
       {
         new Task(() =>
         {
-          this.ProgressSize.Text = downloadedSizeInMb + this.progressSizeLabel;
+          this.ProgressSize.Text = downloadedSizeInMb.ToString("0.00") + this.progressSizeLabel;
         }).Start(this.mainTaskScheduler);
 
         return;
