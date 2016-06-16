@@ -7,29 +7,33 @@ open System.Net
 open System.Threading
 
 type PodcastDownloader(
-                        onBeforeDownload, 
+                        onBeforeDownload : Action<Podcast>, 
                         onSuccessfulDownload : Action<Podcast, String>, 
                         onException : Action<Podcast, Exception>, 
-                        onCancelledDownload, 
-                        cancellationToken, 
-                        updateProgress) =
+                        onCancelledDownload : Action<Podcast>, 
+                        onUpdateProgress : Action<int>) =
 
     let onBeforeDownload = onBeforeDownload
     let onSuccessfulDownload = onSuccessfulDownload
-    let updateProgress = updateProgress
-    let cancellationToken = cancellationToken
     let onException = onException
     let onCancelledDownload = onCancelledDownload 
+    let onUpdateProgress = onUpdateProgress
 
-    let invoke (fn : Action<Podcast>) podcast =
-        if fn <> null then
-            fn.Invoke podcast
+    let beforeDownload podcast = 
+        if onBeforeDownload <> null then
+            onBeforeDownload.Invoke podcast
 
-        ignore
+    let handleCancel podcast =
+        if onCancelledDownload <> null then
+            onCancelledDownload.Invoke podcast
+
+        podcast
 
     let handleException podcast ex = 
         if onException <> null then
             onException.Invoke(podcast, ex)
+
+        podcast
 
     let getSizeOfDownloadedFile filePath = (new FileInfo(filePath)).Length
 
@@ -49,26 +53,24 @@ type PodcastDownloader(
     let combine x y =
         Path.Combine(x, y)
 
-    let download directoryPath podcast (cancelToken: CancellationToken) (updateProgressFn: Action<int>) : bool = 
+    let download directoryPath podcast (cancelToken: CancellationToken) : Podcast = 
 
-        invoke onBeforeDownload podcast |> ignore
+        beforeDownload podcast
 
         let filePath = podcast.URL.LastIndexOf('/') + 1 |> podcast.URL.Substring |> combine directoryPath
 
-        let result =
-            try
-                let downloader = new FileDownloader()
-                downloader.Download(podcast.URL, filePath, cancelToken, updateProgressFn)
+        try
+            let downloader = new FileDownloader()
+            downloader.Download(podcast.URL, filePath, cancelToken, onUpdateProgress)
 
-                match cancelToken.IsCancellationRequested with
-                    | true -> 
-                        invoke onCancelledDownload podcast |> ignore
-                        false
-                    | _ ->
-                        handleSuccess podcast filePath |> ignore
-                        true
+            match cancelToken.IsCancellationRequested with
+                | true -> 
+                    handleCancel podcast
+                | _ ->
+                    handleSuccess podcast filePath
                 
-            with 
-                | ex -> handleException podcast ex |> ignore; false
+        with 
+            | ex -> handleException podcast ex
        
-        result
+    member this.Download(directoryPath, podcast, cancelToken) =
+        download directoryPath podcast cancelToken
