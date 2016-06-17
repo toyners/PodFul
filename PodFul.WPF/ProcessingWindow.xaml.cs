@@ -31,9 +31,9 @@ namespace PodFul.WPF
       var feedTotal = feedIndexes.Count;
       this.Title = "Scanning " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
 
-      var cancellationToken = this.cancellationTokenSource.Token;
+      var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp, true);
+      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, true);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -127,10 +127,18 @@ namespace PodFul.WPF
 
           feeds[feedIndex] = newFeed;
 
-          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
+          if (downloadPodcasts)
           {
-            this.PostMessage("\r\nCANCELLED");
-            return;
+            while (podcastIndexes.Count > 0)
+            {
+              var index = podcastIndexes.Dequeue();
+              var podcast = newFeed.Podcasts[index];
+              podcastDownloader.Download(feed.Directory, podcast, cancelToken);
+              newFeed.Podcasts[index] = podcast;
+            }
+
+            //this.PostMessage("\r\nCANCELLED");
+            //return;
           }
 
           this.PostMessage(String.Empty);
@@ -148,7 +156,7 @@ namespace PodFul.WPF
 
         this.SetStateOfCancelButton(false);
 
-      }, cancellationToken);
+      }, cancelToken);
     }
 
     public ProcessingWindow(IFeedStorage feedStorage, Feed feed, Queue<Int32> podcastIndexes, Boolean addToWinAmp)
@@ -157,20 +165,27 @@ namespace PodFul.WPF
 
       this.Title = "Downloading " + podcastIndexes.Count + " podcast" + (podcastIndexes.Count != 1 ? "s" : String.Empty);
 
-      var cancellationToken = this.cancellationTokenSource.Token;
+      var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = this.InitialisePodcastDownload(cancellationToken, addToWinAmp, false);
+      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, false);
 
       Task task = Task.Factory.StartNew(() =>
       {
         this.SetStateOfCancelButton(true);
-        if (podcastDownload.Download(feed.Directory, feed.Podcasts, podcastIndexes))
+
+        while (podcastIndexes.Count > 0)
         {
-          feedStorage.Update(feed);
+          var podcastIndex = podcastIndexes.Dequeue();
+          var podcast = feed.Podcasts[podcastIndex];
+          podcast = podcastDownloader.Download(feed.Directory, podcast, cancelToken);
+
+          feed.Podcasts[podcastIndex] = podcast;
         }
 
+        feedStorage.Update(feed);
+
         this.SetStateOfCancelButton(false);
-      }, cancellationToken);
+      }, cancelToken);
     }
 
     private void Cancel_Click(Object sender, RoutedEventArgs e)
@@ -188,10 +203,9 @@ namespace PodFul.WPF
     }
 
 
-    private PodcastDownload InitialisePodcastDownload(CancellationToken cancellationToken, Boolean addToWinAmp, Boolean isScanning)
+    private PodcastDownloader InitialisePodcastDownloader(Boolean addToWinAmp, Boolean isScanning)
     {
-      var podcastDownload = new PodcastDownload(cancellationToken, this.UpdateProgessEventHandler);
-      podcastDownload.OnBeforeDownload += (podcast) =>
+      Action<Podcast> onBeforeDownload = (podcast) =>
       {
         this.fileSize = podcast.FileSize;
         this.percentageStepSize = this.fileSize / 100;
@@ -200,11 +214,12 @@ namespace PodFul.WPF
         this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 
+      Action<Podcast, String> onSuccessfulDownload;
       if (addToWinAmp)
       {
         if (isScanning)
         {
-          podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+          onSuccessfulDownload = (podcast, filePath) =>
           {
             this.PostMessage("Completed.");
             Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
@@ -213,7 +228,7 @@ namespace PodFul.WPF
         }
         else
         {
-          podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+          onSuccessfulDownload = (podcast, filePath) =>
           {
             this.PostMessage("Completed.");
             Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
@@ -224,15 +239,20 @@ namespace PodFul.WPF
       }
       else
       {
-        podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
+        onSuccessfulDownload = (podcast, filePath) =>
         {
           this.PostMessage("Completed.");
         };
       }
 
-      podcastDownload.OnException += (exception, podcast) =>
+      Action<Podcast, Exception> onException = (podcast, exception) =>
       {
-        Exception e = exception.Flatten();
+        Exception e = exception;
+        if (exception is AggregateException)
+        {
+          e = ((AggregateException)exception).Flatten();
+        }
+
         if (e.InnerException != null)
         {
           e = e.InnerException;
@@ -241,9 +261,16 @@ namespace PodFul.WPF
         this.PostMessage(e.Message);
       };
 
-      podcastDownload.OnFinish += () => this.ResetProgressBar(-1);
+      //podcastDownloader.OnFinish += () => this.ResetProgressBar(-1);
 
-      return podcastDownload;
+      var podcastDownloader = new PodcastDownloader(
+        onBeforeDownload,
+        onSuccessfulDownload,
+        onException,
+        null,
+        this.UpdateProgessEventHandler);
+
+      return podcastDownloader;
     }
 
     private void PostMessage(String message)
@@ -273,7 +300,7 @@ namespace PodFul.WPF
       {
         var total = expectedFileSize / 1048576.0;
         this.progressSizeLabel = " / " + total.ToString("0.00") + "Mb";
-        progressSize = "0.00" + this.progressSizeLabel; 
+        progressSize = "0.00" + this.progressSizeLabel;
       }
       else
       {
