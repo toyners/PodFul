@@ -26,7 +26,8 @@ namespace PodFul.WPF
 
     private void addButton_Click(Object sender, RoutedEventArgs e)
     {
-
+      var addDeliveryPointWindow = new AddDeliveryPointWindow();
+      addDeliveryPointWindow.ShowDialog();
     }
 
     private void editButton_Click(Object sender, RoutedEventArgs e)

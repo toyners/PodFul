@@ -66,6 +66,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddDeliveryPointWindow.xaml.cs">
+      <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CreationDateTimeConverter.cs" />
     <Compile Include="PodcastDownload.cs" />
     <Compile Include="ProcessingWindow.xaml.cs">
@@ -77,6 +80,10 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddDeliveryPointWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddFeedWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
