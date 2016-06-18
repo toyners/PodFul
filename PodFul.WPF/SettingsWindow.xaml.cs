@@ -23,5 +23,20 @@ namespace PodFul.WPF
     {
       InitializeComponent();
     }
+
+    private void addButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void editButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void removeButton_Click(Object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }

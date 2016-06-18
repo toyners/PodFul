@@ -5,18 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="300"
+        Title="Settings" Height="300" Width="600"
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
   <DockPanel Margin="5">
+
+    <DockPanel.Resources>
+      <Style TargetType="Button">
+        <Setter Property="Padding" Value="2.5"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Width" Value="70" />
+        <Setter Property="Height" Value="25" />
+      </Style>
+    </DockPanel.Resources>
+
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button Margin="5" Width="60" Height="50"
-              HorizontalAlignment="Right">
-        Close
-      </Button>
+      <Button HorizontalAlignment="Right">Close</Button>
     </Border>
 
-    <ListBox Name="FilePathList" HorizontalContentAlignment="Stretch" BorderBrush="Black" BorderThickness="1,1,1,1" Margin="0,0,0,5">
-    </ListBox>
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right" Margin="2.5,0,0,5">
+      <StackPanel >
+        <Button Click="addButton_Click">Add</Button>
+        <Button Click="editButton_Click">Edit</Button>
+        <Button Click="removeButton_Click">Remove</Button>
+      </StackPanel>
+    </Border>
+
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5">
+      <DockPanel>
+        <TextBlock DockPanel.Dock="Top">Delivery points:</TextBlock>
+        <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch"  />
+      </DockPanel>
+    </Border>
   </DockPanel>
 </Window>
