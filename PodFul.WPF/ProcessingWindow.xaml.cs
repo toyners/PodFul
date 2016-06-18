@@ -22,7 +22,7 @@ namespace PodFul.WPF
     private Boolean fileSizeNotKnown;
     private String progressSizeLabel;
 
-    public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, Boolean addToWinAmp, IImageResolver imageResolver, IFileDeliverer fileDeliverer)
+    public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer)
     {
       InitializeComponent();
 
@@ -33,7 +33,7 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, true, fileDeliverer);
+      var podcastDownloader = this.InitialisePodcastDownloader(true, fileDeliverer);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -159,7 +159,7 @@ namespace PodFul.WPF
       }, cancelToken);
     }
 
-    public ProcessingWindow(IFeedStorage feedStorage, Feed feed, Queue<Int32> podcastIndexes, Boolean addToWinAmp, IFileDeliverer fileDeliverer)
+    public ProcessingWindow(IFeedStorage feedStorage, Feed feed, Queue<Int32> podcastIndexes, IFileDeliverer fileDeliverer)
     {
       InitializeComponent();
 
@@ -167,7 +167,7 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, false, fileDeliverer);
+      var podcastDownloader = this.InitialisePodcastDownloader(false, fileDeliverer);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -203,7 +203,7 @@ namespace PodFul.WPF
     }
 
 
-    private PodcastDownloader InitialisePodcastDownloader(Boolean addToWinAmp, Boolean isScanning, IFileDeliverer fileDeliverer)
+    private PodcastDownloader InitialisePodcastDownloader(Boolean isScanning, IFileDeliverer fileDeliverer)
     {
       Action<Podcast> onBeforeDownload = (podcast) =>
       {
@@ -215,34 +215,20 @@ namespace PodFul.WPF
       };
 
       Action<Podcast, String> onSuccessfulDownload;
-      if (addToWinAmp)
+      if (isScanning)
       {
-        if (isScanning)
+        onSuccessfulDownload = (podcast, filePath) =>
         {
-          onSuccessfulDownload = (podcast, filePath) =>
-          {
-            this.PostMessage("Completed.");
-            fileDeliverer.Deliver(filePath);
-            Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
-            this.PostMessage(String.Format("Added \"{0}\" to WinAmp.", podcast.Title));
-          };
-        }
-        else
-        {
-          onSuccessfulDownload = (podcast, filePath) =>
-          {
-            this.PostMessage("Completed.");
-            Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
-            this.PostMessage(String.Format("\"{0}\" added to WinAmp", podcast.Title));
-            this.PostMessage(String.Empty); //Blank line to break up text flow
-          };
-        }
+          this.PostMessage("Completed.");
+          fileDeliverer.Deliver(podcast, filePath);
+        };
       }
       else
       {
         onSuccessfulDownload = (podcast, filePath) =>
         {
           this.PostMessage("Completed.");
+          this.PostMessage(String.Empty); //Blank line to break up text flow
         };
       }
 

@@ -65,7 +65,6 @@
     <Compile Include="IImageResolver.fs" />
     <Compile Include="ImageResolver.fs" />
     <Compile Include="PodcastDownloader.fs" />
-    <Compile Include="IFileDeliveryPoint.fs" />
     <Compile Include="IFileDeliverer.fs" />
     <Compile Include="FileDeliverer.fs" />
     <Compile Include="LocationDeliveryPoint.fs" />

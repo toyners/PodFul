@@ -4,4 +4,4 @@ open System
 
 type IFileDeliverer =
 
-    abstract member Deliver : string -> unit
+    abstract member Deliver : Podcast -> string -> unit

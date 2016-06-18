@@ -2,11 +2,11 @@
 
 open System
 
-type FileDeliverer(deliveryPoints : Action<string>[]) =
+type FileDeliverer(deliveryPoints : Action<Podcast, string>[]) =
 
     let deliveryPoints = deliveryPoints
 
     interface IFileDeliverer with
-        member this.Deliver filePath =
+        member this.Deliver podcast filePath =
             for deliveryPoint in deliveryPoints do
-                deliveryPoint.Invoke(filePath)
+                deliveryPoint.Invoke(podcast, filePath)
