@@ -33,7 +33,7 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownloader = this.InitialisePodcastDownloader(true, fileDeliverer);
+      var podcastDownload = this.InitialisePodcastDownload(true, cancelToken, fileDeliverer);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -127,18 +127,10 @@ namespace PodFul.WPF
 
           feeds[feedIndex] = newFeed;
 
-          if (downloadPodcasts)
+          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
-            while (podcastIndexes.Count > 0)
-            {
-              var index = podcastIndexes.Dequeue();
-              var podcast = newFeed.Podcasts[index];
-              podcastDownloader.Download(feed.Directory, podcast, cancelToken);
-              newFeed.Podcasts[index] = podcast;
-            }
-
-            //this.PostMessage("\r\nCANCELLED");
-            //return;
+            this.PostMessage("\r\nCANCELLED");
+            return;
           }
 
           this.PostMessage(String.Empty);
@@ -167,22 +159,15 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownloader = this.InitialisePodcastDownloader(false, fileDeliverer);
+      var podcastDownload = this.InitialisePodcastDownload(false, cancelToken, fileDeliverer);
 
       Task task = Task.Factory.StartNew(() =>
       {
         this.SetStateOfCancelButton(true);
-
-        while (podcastIndexes.Count > 0)
+        if (podcastDownload.Download(feed.Directory, feed.Podcasts, podcastIndexes))
         {
-          var podcastIndex = podcastIndexes.Dequeue();
-          var podcast = feed.Podcasts[podcastIndex];
-          podcast = podcastDownloader.Download(feed.Directory, podcast, cancelToken);
-
-          feed.Podcasts[podcastIndex] = podcast;
+          feedStorage.Update(feed);
         }
-
-        feedStorage.Update(feed);
 
         this.SetStateOfCancelButton(false);
       }, cancelToken);
@@ -203,9 +188,11 @@ namespace PodFul.WPF
     }
 
 
-    private PodcastDownloader InitialisePodcastDownloader(Boolean isScanning, IFileDeliverer fileDeliverer)
+    private PodcastDownload InitialisePodcastDownload(Boolean isScanning, CancellationToken cancelToken, IFileDeliverer fileDeliverer)
     {
-      Action<Podcast> onBeforeDownload = (podcast) =>
+      var podcastDownload = new PodcastDownload(cancelToken, this.UpdateProgessEventHandler);
+
+      podcastDownload.OnBeforeDownload += (podcast) =>
       {
         this.fileSize = podcast.FileSize;
         this.percentageStepSize = this.fileSize / 100;
@@ -214,10 +201,9 @@ namespace PodFul.WPF
         this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 
-      Action<Podcast, String> onSuccessfulDownload;
       if (isScanning)
       {
-        onSuccessfulDownload = (podcast, filePath) =>
+        podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
         {
           this.PostMessage("Completed.");
           fileDeliverer.Deliver(podcast, filePath);
@@ -225,14 +211,14 @@ namespace PodFul.WPF
       }
       else
       {
-        onSuccessfulDownload = (podcast, filePath) =>
+        podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
         {
           this.PostMessage("Completed.");
           this.PostMessage(String.Empty); //Blank line to break up text flow
         };
       }
 
-      Action<Podcast, Exception> onException = (podcast, exception) =>
+      podcastDownload.OnException += (podcast, exception) =>
       {
         Exception e = exception;
         if (exception is AggregateException)
@@ -248,16 +234,9 @@ namespace PodFul.WPF
         this.PostMessage(e.Message);
       };
 
-      //podcastDownloader.OnFinish += () => this.ResetProgressBar(-1);
+      podcastDownload.OnFinish += () => this.ResetProgressBar(-1);
 
-      var podcastDownloader = new PodcastDownloader(
-        onBeforeDownload,
-        onSuccessfulDownload,
-        onException,
-        null,
-        this.UpdateProgessEventHandler);
-
-      return podcastDownloader;
+      return podcastDownload;
     }
 
     private void PostMessage(String message)

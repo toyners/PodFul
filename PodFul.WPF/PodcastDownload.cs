@@ -29,7 +29,7 @@ namespace PodFul.WPF
 
     public event Action<Podcast> OnBeforeDownload;
 
-    public event Action<AggregateException, Podcast> OnException;
+    public event Action<Podcast, Exception> OnException;
 
     public event Action<Podcast, String> OnSuccessfulDownload;
 
@@ -75,7 +75,7 @@ namespace PodFul.WPF
         }
         catch (AggregateException exception)
         {
-          this.OnException?.Invoke(exception, podcast);
+          this.OnException?.Invoke(podcast, exception);
         }
       }
 
