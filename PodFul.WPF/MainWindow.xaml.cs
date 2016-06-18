@@ -18,6 +18,7 @@ namespace PodFul.WPF
   {
     private IFeedStorage feedStorage;
     private IImageResolver imageResolver;
+    private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
 
     public MainWindow()
@@ -42,6 +43,18 @@ namespace PodFul.WPF
       }
 
       this.FeedList.Focus();
+
+      this.fileDeliverer = new FileDeliverer(
+        new Action<String>[] {
+          (filePath) => {
+              System.Diagnostics.Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
+          },
+          (filePath) => {
+            String destinationPath = null;
+            File.Copy(filePath, destinationPath);
+          }
+        }
+      );
     }
 
     private void DisplayTitle()
@@ -174,7 +187,7 @@ namespace PodFul.WPF
 
       var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
       var addToWinAmp = (this.AddToWinAmp.IsChecked.HasValue && this.AddToWinAmp.IsChecked.Value);
-      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes, addToWinAmp, this.imageResolver);
+      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes, addToWinAmp, this.imageResolver, this.fileDeliverer);
       processingWindow.ShowDialog();
     }
 
@@ -201,7 +214,7 @@ namespace PodFul.WPF
       selectedIndexes.Sort((x, y) => { return y - x; });
       var podcastIndexes = new Queue<Int32>(selectedIndexes);
       var addToWinAmp = (this.AddToWinAmp.IsChecked.HasValue && this.AddToWinAmp.IsChecked.Value);
-      var processingWindow = new ProcessingWindow(this.feedStorage, this.currentFeed, podcastIndexes, addToWinAmp);
+      var processingWindow = new ProcessingWindow(this.feedStorage, this.currentFeed, podcastIndexes, addToWinAmp, this.fileDeliverer);
       processingWindow.ShowDialog();
     }
 

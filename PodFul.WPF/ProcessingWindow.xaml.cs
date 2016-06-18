@@ -22,7 +22,7 @@ namespace PodFul.WPF
     private Boolean fileSizeNotKnown;
     private String progressSizeLabel;
 
-    public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, Boolean addToWinAmp, IImageResolver imageResolver)
+    public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, Boolean addToWinAmp, IImageResolver imageResolver, IFileDeliverer fileDeliverer)
     {
       InitializeComponent();
 
@@ -33,7 +33,7 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, true);
+      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, true, fileDeliverer);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -159,7 +159,7 @@ namespace PodFul.WPF
       }, cancelToken);
     }
 
-    public ProcessingWindow(IFeedStorage feedStorage, Feed feed, Queue<Int32> podcastIndexes, Boolean addToWinAmp)
+    public ProcessingWindow(IFeedStorage feedStorage, Feed feed, Queue<Int32> podcastIndexes, Boolean addToWinAmp, IFileDeliverer fileDeliverer)
     {
       InitializeComponent();
 
@@ -167,7 +167,7 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, false);
+      var podcastDownloader = this.InitialisePodcastDownloader(addToWinAmp, false, fileDeliverer);
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -203,7 +203,7 @@ namespace PodFul.WPF
     }
 
 
-    private PodcastDownloader InitialisePodcastDownloader(Boolean addToWinAmp, Boolean isScanning)
+    private PodcastDownloader InitialisePodcastDownloader(Boolean addToWinAmp, Boolean isScanning, IFileDeliverer fileDeliverer)
     {
       Action<Podcast> onBeforeDownload = (podcast) =>
       {
@@ -222,6 +222,7 @@ namespace PodFul.WPF
           onSuccessfulDownload = (podcast, filePath) =>
           {
             this.PostMessage("Completed.");
+            fileDeliverer.Deliver(filePath);
             Process.Start(@"C:\Program Files (x86)\Winamp\winamp.exe", String.Format("/ADD \"{0}\"", filePath));
             this.PostMessage(String.Format("Added \"{0}\" to WinAmp.", podcast.Title));
           };

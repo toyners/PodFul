@@ -57,7 +57,7 @@ type PodcastDownloader(
 
         beforeDownload podcast
 
-        let filePath = podcast.URL.LastIndexOf('/') + 1 |> podcast.URL.Substring |> combine directoryPath
+        let filePath = Miscellaneous.SwapDirectoryInFilePath directoryPath podcast.URL
 
         try
             let downloader = new FileDownloader()
@@ -70,7 +70,7 @@ type PodcastDownloader(
                     handleSuccess podcast filePath
                 
         with 
-            | ex -> handleException podcast ex
+            ex -> handleException podcast ex
        
     member this.Download(directoryPath, podcast, cancelToken) =
         download directoryPath podcast cancelToken
