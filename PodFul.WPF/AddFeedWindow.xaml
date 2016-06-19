@@ -37,8 +37,18 @@
     </Grid>
 
     <StackPanel Grid.Row="2" Orientation="Horizontal"  HorizontalAlignment="Right">
-      <Button Name="OkButton" Padding="3" Margin="5" IsDefault="True" Width="60" IsEnabled="False" Click="okButton_Click">OK</Button>
-      <Button Padding="3" Margin="5" IsCancel="True" Width="60">Cancel</Button>
+      <StackPanel.Resources>
+        <Style TargetType="Button">
+          <Setter Property="Padding" Value="2.5"/>
+          <Setter Property="Margin" Value="5"/>
+          <Setter Property="VerticalContentAlignment" Value="Center"/>
+          <Setter Property="Width" Value="70" />
+          <Setter Property="Height" Value="25" />
+        </Style>
+      </StackPanel.Resources>
+      
+      <Button Name="OkButton" IsDefault="True" IsEnabled="False" Click="okButton_Click">OK</Button>
+      <Button IsCancel="True">Cancel</Button>
     </StackPanel>
   </Grid>
 </Window>
