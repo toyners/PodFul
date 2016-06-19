@@ -21,21 +21,23 @@
     </DockPanel.Resources>
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button HorizontalAlignment="Right">Close</Button>
+      <Button HorizontalAlignment="Right" IsDefault="True">Close</Button>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right" Margin="2.5,0,0,5">
       <StackPanel >
-        <Button Click="addButton_Click">Add</Button>
-        <Button Click="editButton_Click">Edit</Button>
-        <Button Click="removeButton_Click">Remove</Button>
+        <Button Click="addButton_Click" IsEnabled="False">Add</Button>
+        <Button Click="editButton_Click" IsEnabled="False">Edit</Button>
+        <Button Click="removeButton_Click" IsEnabled="False">Remove</Button>
       </StackPanel>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5">
       <DockPanel>
         <TextBlock DockPanel.Dock="Top">Delivery points:</TextBlock>
-        <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch"  />
+        <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch" >
+          <ListBoxItem IsEnabled="false">Winamp: "C:\Program Files (x86)\Winamp\winamp.exe"</ListBoxItem>
+        </ListBox>
       </DockPanel>
     </Border>
   </DockPanel>

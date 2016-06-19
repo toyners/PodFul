@@ -1,29 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
+﻿
 namespace PodFul.WPF
 {
+  using System;
+  using System.Windows;
+
   /// <summary>
   /// Interaction logic for SettingsWindow.xaml
   /// </summary>
   public partial class SettingsWindow : Window
   {
+    #region Construction
     public SettingsWindow()
     {
       InitializeComponent();
     }
+    #endregion
 
+    #region Properties
+    public DeliveryPointSetup[] GetDeliveryPointSetups
+    {
+      get
+      {
+        var winampDeliveryPoint = new WinampDeliveryPointSetup(@"C:\Program Files (x86)\Winamp\winamp.exe");
+        return new[] { winampDeliveryPoint };
+      }
+    }
+    #endregion
+
+    #region Methods
     private void addButton_Click(Object sender, RoutedEventArgs e)
     {
       var addDeliveryPointWindow = new AddDeliveryPointWindow();
@@ -39,5 +43,19 @@ namespace PodFul.WPF
     {
 
     }
+    #endregion
+  }
+
+  public abstract class DeliveryPointSetup
+  { }
+
+  public class WinampDeliveryPointSetup : DeliveryPointSetup
+  {
+    public WinampDeliveryPointSetup(String winampExePath)
+    {
+      this.WinampExePath = winampExePath;
+    }
+
+    public String WinampExePath { get; private set; }
   }
 }
