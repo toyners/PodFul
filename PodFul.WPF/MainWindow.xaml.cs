@@ -44,7 +44,9 @@ namespace PodFul.WPF
 
       this.FeedList.Focus();
 
-      this.fileDeliverer = new FileDeliverer(null);
+      ILog logger = null;
+      var settings = new Settings();
+      this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(logger));
     }
 
     private void DisplayTitle()

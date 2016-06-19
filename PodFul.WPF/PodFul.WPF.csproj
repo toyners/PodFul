@@ -70,6 +70,7 @@
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreationDateTimeConverter.cs" />
+    <Compile Include="ILog.cs" />
     <Compile Include="PodcastDownload.cs" />
     <Compile Include="ProcessingWindow.xaml.cs">
       <DependentUpon>ProcessingWindow.xaml</DependentUpon>
@@ -77,6 +78,7 @@
     <Compile Include="SelectionWindow.xaml.cs">
       <DependentUpon>SelectionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
