@@ -3,7 +3,6 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
-  using System.Diagnostics;
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
@@ -22,7 +21,17 @@ namespace PodFul.WPF
     private Boolean fileSizeNotKnown;
     private String progressSizeLabel;
 
-    public ProcessingWindow(IFeedStorage feedStorage, Queue<Int32> feedIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer)
+    private IFeedStorage feedStorage;
+    private Queue<Int32> feedIndexes;
+    private IImageResolver imageResolver;
+    private IFileDeliverer fileDeliverer;
+    private ILog log;
+
+    public ProcessingWindow(
+      IFeedStorage feedStorage, 
+      Queue<Int32> feedIndexes, 
+      IImageResolver imageResolver, 
+      IFileDeliverer fileDeliverer)
     {
       InitializeComponent();
 
@@ -340,6 +349,11 @@ namespace PodFul.WPF
         this.ProgressSize.Text = downloadedSizeInMb.ToString("0.00") + this.progressSizeLabel;
 
       }).Start(this.mainTaskScheduler);
+    }
+
+    private void Window_Initialized(Object sender, EventArgs e)
+    {
+
     }
   }
 }
