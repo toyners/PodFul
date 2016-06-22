@@ -13,6 +13,10 @@ type FeedFunctions_IntergrationTests() =
 
     let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\";
 
+    let rssFileName = "RSSFile.rss"
+    let initialRSSFileName = "Initial RSSFile.rss"
+    let finalRSSFileName = "Final RSSFile.rss"
+
     let feedTitle = "Feed Title"
     let feedDescription = "Feed Description"
     let feedWebsite = "Feed Website"
@@ -41,8 +45,8 @@ type FeedFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Create Feed from RSS url``() =
-        let inputPath = workingDirectory + "RSSFile.rss";
-        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath)
+        let inputPath = workingDirectory + rssFileName;
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
         let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
 
         feed |> should not' (equal null)
@@ -117,3 +121,15 @@ type FeedFunctions_IntergrationTests() =
         let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
 
         feed.ImageFileName |> should equal String.Empty
+
+    [<Test>]
+    member public this.``Update feed from RSS file``() =
+        let initialInputPath = workingDirectory + initialRSSFileName
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
+        let finalFeed = FeedFunctions.UpdateFeed initialFeed
+
+        finalFeed |> should not' (equal initialFeed)

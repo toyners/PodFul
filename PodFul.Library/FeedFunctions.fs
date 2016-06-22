@@ -156,8 +156,10 @@ module public FeedFunctions =
                  streamWriter.Write(responseText)
                  failwith ("Error log written to '" + errorLogFilePath + "'.")
 
-    let public CreateFeed url directoryPath =
-        let document = downloadDocument url
+    let private mergeFeeds oldFeed newFeed : Feed =
+        newFeed
+
+    let private createFeedRecord url directoryPath (document : XDocument) : Feed =
         let channel = document.Element(xn "rss").Element(xn "channel")
         let imageFileURL = getImageForChannel channel
 
@@ -171,3 +173,9 @@ module public FeedFunctions =
              Podcasts = createPodcastArrayFromDocument document
              CreationDateTime = DateTime.Now
         }
+
+    let public CreateFeed url directoryPath =
+        downloadDocument url |> createFeedRecord url directoryPath
+
+    let public UpdateFeed (feed : Feed) : Feed = 
+        downloadDocument feed.URL |> createFeedRecord feed.URL feed.Directory |> mergeFeeds feed 
