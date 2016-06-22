@@ -20,6 +20,7 @@ namespace PodFul.WPF
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
+    private ILogger logger;
 
     public MainWindow()
     {
@@ -44,7 +45,7 @@ namespace PodFul.WPF
 
       this.FeedList.Focus();
 
-      ILog logger = null;
+      this.logger = null;
       var settings = new Settings();
       this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(logger));
     }
@@ -178,7 +179,16 @@ namespace PodFul.WPF
       }
 
       var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
-      var processingWindow = new ProcessingWindow(this.feedStorage, feedIndexes, this.imageResolver, this.fileDeliverer);
+      var guiLogger = new GUILogger(this.logger);
+      var feedScanner = new FeedScanner(this.feedStorage, feedIndexes, this.imageResolver, this.fileDeliverer, guiLogger);
+      var processingWindow = new ProcessingWindow(feedScanner);
+
+      guiLogger.PostMessage = processingWindow.PostMessage;
+      feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
+      feedScanner.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
+      feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
+      feedScanner.SetProgressEvent = processingWindow.SetProgressEventHandler;
+
       processingWindow.ShowDialog();
     }
 

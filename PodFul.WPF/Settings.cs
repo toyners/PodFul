@@ -6,7 +6,7 @@ namespace PodFul.WPF
 
   public class Settings
   {
-    public Action<Podcast, String>[] CreateDeliveryPoints(ILog log)
+    public Action<Podcast, String>[] CreateDeliveryPoints(ILogger log)
     {
       return new Action<Podcast, String>[]
       {

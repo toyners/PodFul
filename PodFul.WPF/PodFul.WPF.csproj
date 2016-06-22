@@ -70,7 +70,11 @@
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreationDateTimeConverter.cs" />
-    <Compile Include="ILog.cs" />
+    <Compile Include="FeedScanner.cs" />
+    <Compile Include="GUILogger.cs" />
+    <Compile Include="IFeedProcessor.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="PodcastDownload.cs" />
     <Compile Include="ProcessingWindow.xaml.cs">
       <DependentUpon>ProcessingWindow.xaml</DependentUpon>

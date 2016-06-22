@@ -20,144 +20,13 @@ namespace PodFul.WPF
     private Int64 percentageStepSize;
     private Boolean fileSizeNotKnown;
     private String progressSizeLabel;
-
-    private IFeedStorage feedStorage;
-    private Queue<Int32> feedIndexes;
-    private IImageResolver imageResolver;
-    private IFileDeliverer fileDeliverer;
-    private ILog log;
-
-    public ProcessingWindow(
-      IFeedStorage feedStorage, 
-      Queue<Int32> feedIndexes, 
-      IImageResolver imageResolver, 
-      IFileDeliverer fileDeliverer)
+    private IFeedProcessor feedProcessor;
+   
+    public ProcessingWindow(IFeedProcessor feedProcessor)
     {
       InitializeComponent();
 
-      Feed[] feeds = feedStorage.Feeds;
-
-      var feedTotal = feedIndexes.Count;
-      this.Title = "Scanning " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
-
-      var cancelToken = this.cancellationTokenSource.Token;
-
-      var podcastDownload = this.InitialisePodcastDownload(true, cancelToken, fileDeliverer);
-
-      Task task = Task.Factory.StartNew(() =>
-      {
-        this.SetStateOfCancelButton(true);
-        var podcastIndexes = new Queue<Int32>();
-        String scanReport = null;
-
-        while (feedIndexes.Count > 0)
-        {
-          Int32 feedIndex = feedIndexes.Dequeue();
-
-          DisplayTitleForScanning(feedTotal - feedIndexes.Count, feedTotal);
-
-          if (this.cancellationTokenSource.IsCancellationRequested)
-          {
-            this.PostMessage("\r\nCANCELLED");
-            return;
-          }
-
-          var feed = feeds[feedIndex];
-
-          this.PostMessage("Scanning \"" + feed.Title + "\".");
-
-          Feed newFeed = null;
-          try
-          {
-            newFeed = FeedFunctions.CreateFeed(feed.URL, feed.Directory);
-          }
-          catch (Exception exception)
-          {
-            var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
-            scanReport += exceptionReport;
-            this.PostMessage(exceptionReport);
-            continue;
-          }
-
-          // Resolve the feed image.
-          var imageFileName = imageResolver.GetName(newFeed.ImageFileName);
-          newFeed = Feed.SetImageFileName(newFeed, imageFileName);
-
-          this.PostMessage("Comparing podcasts ... ", false);
-
-          Int32 podcastIndex = 0;
-          podcastIndexes.Clear();
-          var firstPodcast = feed.Podcasts[0];
-          while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
-          {
-            podcastIndexes.Enqueue(podcastIndex);
-            podcastIndex++;
-          }
-
-          Boolean downloadPodcasts = true;
-          if (podcastIndexes.Count > 5)
-          {
-            var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning.", podcastIndexes.Count);
-            var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
-            if (continuingDownloading == MessageBoxResult.Cancel)
-            {
-              var feedReport = podcastIndex + " podcasts found";
-              this.PostMessage(feedReport + " (Scan cancelled).\r\n");
-              scanReport += feedReport + " for \"" + feed.Title + "\" (Scan cancelled).";
-              break;
-            }
-
-            if (continuingDownloading == MessageBoxResult.No)
-            {
-              downloadPodcasts = false;
-            }
-          }
-
-          String message = "Complete - ";
-          if (podcastIndex == 0)
-          {
-            message += "No new podcasts found.";
-          }
-          else
-          {
-            var feedReport = podcastIndex + " podcast" +
-              (podcastIndex != 1 ? "s" : String.Empty) + " found";
-            var downloadingReport = (downloadPodcasts ? String.Empty : " (Downloading skipped)");
-            message += feedReport + downloadingReport + ".";
-            scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
-          }
-
-          newFeed = this.SynchroniseFeed(newFeed, podcastIndex, feed);
-          this.PostMessage(message);
-
-          this.PostMessage(String.Format("Updating \"{0}\" ... ", feed.Title), false);
-          feedStorage.Update(newFeed);
-          this.PostMessage("Completed.");
-
-          feeds[feedIndex] = newFeed;
-
-          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
-          {
-            this.PostMessage("\r\nCANCELLED");
-            return;
-          }
-
-          this.PostMessage(String.Empty);
-        }
-
-        // Display the final scan report.
-        if (scanReport == null)
-        {
-          this.PostMessage("Nothing to report.");
-        }
-        else
-        {
-          this.PostMessage("Scan Report\r\n" + scanReport);
-        }
-
-        this.SetStateOfCancelButton(false);
-
-      }, cancelToken);
+      this.feedProcessor = feedProcessor;
     }
 
     public ProcessingWindow(IFeedStorage feedStorage, Feed feed, Queue<Int32> podcastIndexes, IFileDeliverer fileDeliverer)
@@ -172,30 +41,29 @@ namespace PodFul.WPF
 
       Task task = Task.Factory.StartNew(() =>
       {
-        this.SetStateOfCancelButton(true);
+        this.SetCancelButtonStateEventHandler(true);
         if (podcastDownload.Download(feed.Directory, feed.Podcasts, podcastIndexes))
         {
           feedStorage.Update(feed);
         }
 
-        this.SetStateOfCancelButton(false);
+        this.SetCancelButtonStateEventHandler(false);
       }, cancelToken);
     }
 
     private void Cancel_Click(Object sender, RoutedEventArgs e)
     {
-      this.cancellationTokenSource.Cancel();
+      this.feedProcessor.Cancel();
     }
 
-    private void DisplayTitleForScanning(Int32 number, Int32 count)
+    public void SetWindowTitleEventHandler(String title)
     {
       new Task(() =>
       {
-        this.Title = "Scanning " + number + " of " + count + " feed" + (count != 1 ? "s" : String.Empty);
+        this.Title = title;
 
       }).Start(this.mainTaskScheduler);
     }
-
 
     private PodcastDownload InitialisePodcastDownload(Boolean isScanning, CancellationToken cancelToken, IFileDeliverer fileDeliverer)
     {
@@ -207,7 +75,7 @@ namespace PodFul.WPF
         this.percentageStepSize = this.fileSize / 100;
         this.downloadedSize = 0;
         this.ResetProgressBar(podcast.FileSize);
-        this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
+        //this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 
       if (isScanning)
@@ -247,23 +115,43 @@ namespace PodFul.WPF
 
       return podcastDownload;
     }
-
-    private void PostMessage(String message)
-    {
-      this.PostMessage(message, true);
-    }
-
-    private void PostMessage(String message, Boolean includeLineBreak)
+    
+    public void PostMessage(String message)
     {
       new Task(() =>
       {
-        if (includeLineBreak)
-        {
-          message += "\r\n";
-        }
-
         this.Feedback.Text += message;
         this.FeedbackScroller.ScrollToBottom();
+      }).Start(this.mainTaskScheduler);
+    }
+
+    public void InitialiseProgressEventHandler(String text, Boolean isIndeterminate)
+    {
+      new Task(() =>
+      {
+        this.Progress.Value = 0;
+        this.ProgressSize.Text = text;
+        this.Progress.IsIndeterminate = isIndeterminate;
+      }).Start(this.mainTaskScheduler);
+    }
+
+    public void SetProgressEventHandler(String text, Int32 value)
+    {
+      if (this.Progress.IsIndeterminate)
+      {
+        new Task(() =>
+        {
+          this.ProgressSize.Text = text;
+        }).Start(this.mainTaskScheduler);
+
+        return;
+      }
+
+      new Task(() =>
+      {
+        this.Progress.Value = value;
+        this.ProgressSize.Text = text;
+
       }).Start(this.mainTaskScheduler);
     }
 
@@ -291,7 +179,7 @@ namespace PodFul.WPF
       }).Start(this.mainTaskScheduler);
     }
 
-    private void SetStateOfCancelButton(Boolean state)
+    public void SetCancelButtonStateEventHandler(Boolean state)
     {
       new Task(() =>
       {
@@ -353,7 +241,7 @@ namespace PodFul.WPF
 
     private void Window_Initialized(Object sender, EventArgs e)
     {
-
+      this.feedProcessor.Process();
     }
   }
 }
