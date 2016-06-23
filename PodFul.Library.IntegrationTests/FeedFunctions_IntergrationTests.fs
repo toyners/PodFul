@@ -125,11 +125,19 @@ type FeedFunctions_IntergrationTests() =
     [<Test>]
     member public this.``Update feed from RSS file``() =
         let initialInputPath = workingDirectory + initialRSSFileName
+        let firstDateTime = DateTime.Now
+        let secondDateTime = DateTime.Now + new TimeSpan(1, 0, 0)
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
         let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+        let firstPodcast = Podcast.SetDownloadDate initialFeed.Podcasts.[0] firstDateTime
+        let secondPodcast = Podcast.SetDownloadDate initialFeed.Podcasts.[1] secondDateTime
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
         let finalFeed = FeedFunctions.UpdateFeed initialFeed
 
-        finalFeed |> should not' (equal initialFeed)
+        finalFeed |> should equal initialFeed
+        finalFeed.Podcasts.Length |> should equal 3
+
+        finalFeed.Podcasts.[1].DownloadDate |> should equal firstDateTime
+        finalFeed.Podcasts.[2].DownloadDate |> should equal secondDateTime
