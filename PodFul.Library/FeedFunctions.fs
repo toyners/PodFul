@@ -156,7 +156,18 @@ module public FeedFunctions =
                  streamWriter.Write(responseText)
                  failwith ("Error log written to '" + errorLogFilePath + "'.")
 
-    let private mergeFeeds oldFeed newFeed : Feed =
+    let private mergeFeeds (oldFeed : Feed) (newFeed : Feed) : Feed =
+
+        let mutable index = oldFeed.Podcasts.Length - 1
+        while index >= 0 do
+            let oldPodcast = oldFeed.Podcasts.[index]
+            let newPodcast = newFeed.Podcasts.[index]
+            if oldPodcast = newPodcast then
+                newFeed.Podcasts.[index] <- Podcast.SetDownloadDate newPodcast oldPodcast.DownloadDate
+                newFeed.Podcasts.[index] <- Podcast.SetFileSize newPodcast oldPodcast.FileSize
+                newFeed.Podcasts.[index] <- Podcast.SetImageFileName newPodcast oldPodcast.ImageFileName
+
+            index <- index - 1
         newFeed
 
     let private createFeedRecord url directoryPath (document : XDocument) : Feed =
