@@ -50,7 +50,7 @@ type Podcast =
 
         override x.Equals other = 
             match other with
-            | :? Podcast as y -> (x.URL = y.URL)
+            | :? Podcast as y -> (x.Title = y.Title)
             | _ -> false
 
         override x.GetHashCode() = hash x.URL

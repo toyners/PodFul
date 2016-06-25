@@ -8,12 +8,12 @@ open System
 type Podcast_UnitTest() = 
     
     [<Test>]
-    member public this.``Two different podcast records are equal because of same URL.``() =
+    member public this.``Two podcast records are equal because of same title.``() =
         let podcast1 = 
             {
-                Title = "title1"
+                Title = "title"
                 Description = "description1"
-                URL = "url"
+                URL = "url1"
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
                 DownloadDate = DateTime.MaxValue
@@ -22,9 +22,9 @@ type Podcast_UnitTest() =
 
         let podcast2 =
             {
-                Title = "title2"
+                Title = "title"
                 Description = "description2"
-                URL = "url"
+                URL = "url2"
                 FileSize = 2L
                 PubDate = new DateTime(2016, 12, 30)
                 DownloadDate = DateTime.MinValue
@@ -34,11 +34,11 @@ type Podcast_UnitTest() =
         podcast1 = podcast2 |> should equal true
 
     [<Test>]
-    member public this.``Two different podcast records are not equal because of different URL.``() =
+    member public this.``Two podcast records are not equal because of different title.``() =
         let podcast1 = 
             {
-                Title = "title"
-                Description = "description"
+                Title = "title1"
+                Description = "description1"
                 URL = "url1"
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
@@ -48,8 +48,8 @@ type Podcast_UnitTest() =
 
         let podcast2 =
             {
-                Title = "title"
-                Description = "description"
+                Title = "title2"
+                Description = "description2"
                 URL = "url2"
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
