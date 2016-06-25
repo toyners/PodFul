@@ -130,8 +130,8 @@ type FeedFunctions_IntergrationTests() =
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
         let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
-        initialFeed.Podcasts.[0] <- Podcast.SetDownloadDate initialFeed.Podcasts.[0] firstDateTime
-        initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate initialFeed.Podcasts.[1] secondDateTime
+        initialFeed.Podcasts.[0] <- Podcast.SetDownloadDate initialFeed.Podcasts.[0]  firstDateTime
+        initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate initialFeed.Podcasts.[1]  secondDateTime
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
         let finalFeed = FeedFunctions.UpdateFeed initialFeed

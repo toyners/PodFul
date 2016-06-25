@@ -158,16 +158,18 @@ module public FeedFunctions =
 
     let private mergeFeeds (oldFeed : Feed) (newFeed : Feed) : Feed =
 
-        let mutable index = oldFeed.Podcasts.Length - 1
-        while index >= 0 do
-            let oldPodcast = oldFeed.Podcasts.[index]
-            let newPodcast = newFeed.Podcasts.[index]
+        let mutable oldIndex = oldFeed.Podcasts.Length - 1
+        let mutable newIndex = newFeed.Podcasts.Length - 1
+        while oldIndex >= 0 && newIndex >= 0 do
+            let oldPodcast = oldFeed.Podcasts.[oldIndex]
+            let newPodcast = newFeed.Podcasts.[newIndex]
             if oldPodcast = newPodcast then
-                newFeed.Podcasts.[index] <- Podcast.SetDownloadDate newPodcast oldPodcast.DownloadDate
-                newFeed.Podcasts.[index] <- Podcast.SetFileSize newPodcast oldPodcast.FileSize
-                newFeed.Podcasts.[index] <- Podcast.SetImageFileName newPodcast oldPodcast.ImageFileName
+                newFeed.Podcasts.[newIndex] <- Podcast.SetDownloadDate newPodcast oldPodcast.DownloadDate
+                newFeed.Podcasts.[newIndex] <- Podcast.SetFileSize newFeed.Podcasts.[newIndex] oldPodcast.FileSize
+                newFeed.Podcasts.[newIndex] <- Podcast.SetImageFileName newFeed.Podcasts.[newIndex] oldPodcast.ImageFileName
 
-            index <- index - 1
+            oldIndex <- oldIndex - 1
+            newIndex <- newIndex - 1
         newFeed
 
     let private createFeedRecord url directoryPath (document : XDocument) : Feed =
