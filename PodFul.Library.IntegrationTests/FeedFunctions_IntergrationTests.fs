@@ -16,6 +16,8 @@ type FeedFunctions_IntergrationTests() =
     let rssFileName = "RSSFile.rss"
     let initialRSSFileName = "Initial RSSFile.rss"
     let finalRSSFileName = "Final RSSFile.rss"
+    let initialRSSWithMaximumPodcastsFileName = "Initial RSSFile with Maximum Podcasts.rss"
+    let finalRSSWithMaximumPodcastsFileName = "Final RSSFile with Maximum Podcasts.rss"
 
     let feedTitle = "Feed Title"
     let feedDescription = "Feed Description"
@@ -134,6 +136,26 @@ type FeedFunctions_IntergrationTests() =
         initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate initialFeed.Podcasts.[1]  secondDateTime
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
+        let finalFeed = FeedFunctions.UpdateFeed initialFeed
+
+        finalFeed |> should equal initialFeed
+        finalFeed.Podcasts.Length |> should equal 3
+
+        finalFeed.Podcasts.[1].DownloadDate |> should equal initialFeed.Podcasts.[0].DownloadDate
+        finalFeed.Podcasts.[2].DownloadDate |> should equal initialFeed.Podcasts.[1].DownloadDate
+
+    [<Test>]
+    member public this.``Update feed from RSS file with maximum number of podcasts``() =
+        let initialInputPath = workingDirectory + initialRSSWithMaximumPodcastsFileName
+        let firstDateTime = new DateTime(2015, 1, 2, 8, 9, 10)
+        let secondDateTime = new DateTime(2016, 3, 4, 11, 12, 13)
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSWithMaximumPodcastsFileName, initialInputPath)
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+        initialFeed.Podcasts.[0] <- Podcast.SetDownloadDate initialFeed.Podcasts.[0]  firstDateTime
+        initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate initialFeed.Podcasts.[1]  secondDateTime
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSWithMaximumPodcastsFileName, initialInputPath)
         let finalFeed = FeedFunctions.UpdateFeed initialFeed
 
         finalFeed |> should equal initialFeed
