@@ -91,7 +91,7 @@ namespace PodFul.WPF
           Feed newFeed = null;
           try
           {
-            newFeed = FeedFunctions.CreateFeed(feed.URL, feed.Directory);
+            newFeed = FeedFunctions.UpdateFeed(feed);
           }
           catch (Exception exception)
           {
@@ -149,7 +149,6 @@ namespace PodFul.WPF
             scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
           }
 
-          //newFeed = this.SynchroniseFeed(newFeed, podcastIndex, feed);
           this.log.Message(message);
 
           this.log.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
