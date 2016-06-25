@@ -24,6 +24,8 @@ namespace PodFul.WPF
 
     public MainWindow()
     {
+      this.logger = new FileLogger();
+
       InitializeComponent();
 
       this.DisplayTitle();
@@ -45,9 +47,10 @@ namespace PodFul.WPF
 
       this.FeedList.Focus();
 
-      this.logger = null;
       var settings = new Settings();
       this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(logger));
+
+      this.logger.Message("Main Window instantiated.");
     }
 
     private void DisplayTitle()
