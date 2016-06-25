@@ -96,8 +96,8 @@ namespace PodFul.Winforms
           continue;
         }
 
-        podcast = Podcast.SetDownloadDate(podcast, fileInfo.CreationTime);
-        podcast = Podcast.SetFileSize(podcast, fileInfo.Length);
+        podcast = Podcast.SetDownloadDate(fileInfo.CreationTime, podcast);
+        podcast = Podcast.SetFileSize(fileInfo.Length, podcast);
         feed.Podcasts[podcastIndex] = podcast;
         syncCount++;
       }

@@ -15,7 +15,7 @@ type Podcast =
     }
 
     with
-        static member SetDownloadDate original date =
+        static member SetDownloadDate date original =
             {
                 Title = original.Title
                 Description = original.Description
@@ -26,7 +26,7 @@ type Podcast =
                 ImageFileName = original.ImageFileName
             }
 
-        static member SetFileSize original size =
+        static member SetFileSize size original =
             {
                 Title = original.Title
                 Description = original.Description
@@ -37,7 +37,7 @@ type Podcast =
                 ImageFileName = original.ImageFileName
             }
 
-        static member SetImageFileName original (imageFileName : string) = 
+        static member SetImageFileName imageFileName original = 
             {
                 Title = original.Title
                 Description = original.Description

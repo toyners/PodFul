@@ -167,9 +167,9 @@ module public FeedFunctions =
             let oldPodcast = oldFeed.Podcasts.[oldIndex]
             let newPodcast = newFeed.Podcasts.[newIndex]
             if oldPodcast = newPodcast then
-                newFeed.Podcasts.[newIndex] <- Podcast.SetDownloadDate newPodcast oldPodcast.DownloadDate
-                newFeed.Podcasts.[newIndex] <- Podcast.SetFileSize newFeed.Podcasts.[newIndex] oldPodcast.FileSize
-                newFeed.Podcasts.[newIndex] <- Podcast.SetImageFileName newFeed.Podcasts.[newIndex] oldPodcast.ImageFileName
+                newFeed.Podcasts.[newIndex] <- Podcast.SetDownloadDate oldPodcast.DownloadDate newPodcast 
+                newFeed.Podcasts.[newIndex] <- Podcast.SetFileSize oldPodcast.FileSize newFeed.Podcasts.[newIndex]
+                newFeed.Podcasts.[newIndex] <- Podcast.SetImageFileName oldPodcast.ImageFileName newFeed.Podcasts.[newIndex] 
 
             oldIndex <- oldIndex + 1
             newIndex <- newIndex + 1

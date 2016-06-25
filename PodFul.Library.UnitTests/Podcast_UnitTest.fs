@@ -72,7 +72,7 @@ type Podcast_UnitTest() =
                 ImageFileName = "image"
             }
 
-        let podcast2 = Podcast.SetDownloadDate podcast1 DateTime.MaxValue
+        let podcast2 = Podcast.SetDownloadDate DateTime.MaxValue podcast1
 
         podcast2 |> should not' (be sameAs podcast1)
         podcast2.Title |> should equal podcast1.Title
@@ -95,7 +95,7 @@ type Podcast_UnitTest() =
                 ImageFileName = "image"
             }
 
-        let podcast2 = Podcast.SetFileSize podcast1 2L
+        let podcast2 = Podcast.SetFileSize 2L podcast1
 
         podcast2 |> should not' (be sameAs podcast1)
         podcast2.Title |> should equal podcast1.Title
@@ -118,7 +118,7 @@ type Podcast_UnitTest() =
                 ImageFileName = ""
             }
 
-        let podcast2 = Podcast.SetImageFileName podcast1 "image"
+        let podcast2 = Podcast.SetImageFileName "image" podcast1
 
         podcast2 |> should not' (be sameAs podcast1)
         podcast2.Title |> should equal podcast1.Title

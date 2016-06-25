@@ -39,16 +39,14 @@ type PodcastDownloader(
 
     let finaliseFileSizeOfPodcast (podcast : Podcast) fileSize = 
         match podcast.FileSize = fileSize with
-        | false -> Podcast.SetFileSize podcast fileSize
+        | false -> Podcast.SetFileSize fileSize podcast
         | _ -> podcast
-
-    let setDownloadDateOfPodcastToNow podcast = Podcast.SetDownloadDate podcast DateTime.Now
 
     let handleSuccess podcast filePath =
         if onSuccessfulDownload <> null then
             onSuccessfulDownload.Invoke(podcast, filePath)
     
-        getSizeOfDownloadedFile filePath |> finaliseFileSizeOfPodcast podcast |> setDownloadDateOfPodcastToNow
+        getSizeOfDownloadedFile filePath |> finaliseFileSizeOfPodcast podcast |> Podcast.SetDownloadDate DateTime.Now
 
     let combine x y =
         Path.Combine(x, y)

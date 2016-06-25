@@ -63,12 +63,12 @@ namespace PodFul.WPF
 
           this.OnSuccessfulDownload?.Invoke(podcast, filePath);
 
-          podcast = Podcast.SetDownloadDate(podcast, DateTime.Now);
+          podcast = Podcast.SetDownloadDate(DateTime.Now, podcast);
 
           var fileLength = new FileInfo(filePath).Length;
           if (podcast.FileSize != fileLength)
           {
-            podcast = Podcast.SetFileSize(podcast, fileLength);
+            podcast = Podcast.SetFileSize(fileLength, podcast);
           }
 
           podcasts[podcastIndex] = podcast;
