@@ -80,10 +80,12 @@ namespace PodFul.WPF
       try
       {
         feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory);
+        this.logger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
       }
       catch (Exception exception)
       {
         MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
+        this.logger.Exception("Trying to add new feed: " + exception.Message);
         return;
       }
 
@@ -99,6 +101,7 @@ namespace PodFul.WPF
 
       this.feedStorage.Add(feed);
       this.FeedList.SelectedItem = feed;
+      this.currentFeed = feed;
 
       this.DownloadPodcasts();
     }
