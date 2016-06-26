@@ -46,7 +46,7 @@ namespace PodFul.WPF
 
     public void Cancel()
     {
-      throw new NotImplementedException();
+      this.cancellationTokenSource.Cancel();
     }
 
     public void Process()
