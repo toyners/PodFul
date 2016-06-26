@@ -20,7 +20,6 @@ namespace PodFul.WPF
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
     private Boolean fileSizeNotKnown;
-    private String progressSizeLabel;
 
     public Action<String> SetWindowTitleEvent;
 
@@ -118,14 +117,15 @@ namespace PodFul.WPF
       String progressSize;
       if (expectedFileSize > 0)
       {
-        var total = expectedFileSize / 1048576.0;
-        this.progressSizeLabel = " / " + total.ToString("0.00") + "Mb";
-        progressSize = "0.00" + this.progressSizeLabel;
+        progressSize = "0.0%";
+      }
+      else if (expectedFileSize == 0)
+      {
+        progressSize = "0.0Mb";
       }
       else
       {
-        this.progressSizeLabel = "Mb";
-        progressSize = "0.00" + this.progressSizeLabel;
+        progressSize = String.Empty;
       }
 
       this.InitialiseProgressEvent?.Invoke(progressSize, this.fileSizeNotKnown);
@@ -134,7 +134,6 @@ namespace PodFul.WPF
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
       this.downloadedSize += bytesWrittenToFile;
-      var downloadedSizeInMb = this.downloadedSize / 1048576.0;
 
       Int64 value = 100;
       if (this.downloadedSize < this.fileSize)
@@ -142,7 +141,24 @@ namespace PodFul.WPF
         value = this.downloadedSize / this.percentageStepSize;
       }
 
-      var text = downloadedSizeInMb.ToString("0.00") + this.progressSizeLabel;
+      String text;
+      if (this.fileSizeNotKnown)
+      {
+        var downloadedSizeInMb = this.downloadedSize / 1048576.0;
+        text = downloadedSizeInMb.ToString("0.0") + "Mb";
+      }
+      else 
+      {
+        if (value == 100)
+        {
+          text = "100%";
+        }
+        else
+        {
+          var percentageValue = (Double)this.downloadedSize / this.percentageStepSize;
+          text = percentageValue.ToString("0.0") + "%";
+        }
+      }
 
       this.SetProgressEvent?.Invoke(text, (Int32)value);
     }
