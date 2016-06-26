@@ -10,28 +10,28 @@ open System.Reflection
 type FeedFunctions_UnitTests() = 
 
     [<Test>]
-    member public this.``Clean text of line break``() =
-        FeedFunctions.CleanText "\r\n" |> should equal " "
-    
-    [<Test>]
-    member public this.``Clean text of line break 2``() =
-        FeedFunctions.CleanText "\n" |> should equal " "
+    [<TestCase("\r\n")>]
+    [<TestCase("\n")>]
+    member public this.``Clean text of line breaks``(dirtyText : string) =
+        FeedFunctions.CleanText dirtyText |> should equal " "
 
     [<Test>]
-    member public this.``Clean text of multiple spaces``() =
-        FeedFunctions.CleanText "  " |> should equal " "
+    [<TestCase("  ")>]
+    [<TestCase("   ")>]
+    member public this.``Clean text of multiple spaces``(dirtyText : string) =
+        FeedFunctions.CleanText dirtyText |> should equal " "
 
     [<Test>]
-    member public this.``Clean text of multiple spaces 2``() =
-        FeedFunctions.CleanText "   " |> should equal " "
-
-    [<Test>]
-    member public this.``Clean text of <p></p> tags``() =
-        FeedFunctions.CleanText "<p> </p>" |> should equal " "
+    [<TestCase("<p>")>]
+    [<TestCase("<P>")>]
+    [<TestCase("</p>")>]
+    [<TestCase("</P>")>]
+    member public this.``Clean text of <p></p> tags``(dirtyText : string) =
+        FeedFunctions.CleanText dirtyText |> should equal String.Empty
 
     [<Test>]
     [<TestCase("&#8217;", "'")>]
     [<TestCase("&#124;", "|")>]
     [<TestCase("&#8230;", "...")>]
-    member public this.``Clean text of XML character codes``(dirtyText : string, cleanedText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal cleanedText
+    member public this.``Clean text of XML character codes``(dirtyText : string, cleanText : string) =
+        FeedFunctions.CleanText dirtyText |> should equal cleanText
