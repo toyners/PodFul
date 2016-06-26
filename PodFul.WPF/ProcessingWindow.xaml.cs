@@ -137,18 +137,14 @@ namespace PodFul.WPF
 
     public void SetProgressEventHandler(String text, Int32 value)
     {
-      if (this.Progress.IsIndeterminate)
-      {
-        new Task(() =>
-        {
-          this.ProgressSize.Text = text;
-        }).Start(this.mainTaskScheduler);
-
-        return;
-      }
-
       new Task(() =>
-      {
+      { 
+        if (this.Progress.IsIndeterminate)
+        {         
+          this.ProgressSize.Text = text;
+          return;
+        }
+        
         this.Progress.Value = value;
         this.ProgressSize.Text = text;
 
