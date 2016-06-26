@@ -30,6 +30,8 @@ namespace PodFul.WPF
 
     public Action<String, Boolean> InitialiseProgressEvent;
 
+    public Action ResetProgressEvent;
+
     public Action<String, Int32> SetProgressEvent;
 
     public FeedScanner(
@@ -214,7 +216,7 @@ namespace PodFul.WPF
         this.log.Exception(e.Message);
       };
 
-      podcastDownload.OnFinish += () => this.InitialiseProgress(-1);
+      podcastDownload.OnFinish += () => this.ResetProgressEvent?.Invoke();
 
       return podcastDownload;
     }

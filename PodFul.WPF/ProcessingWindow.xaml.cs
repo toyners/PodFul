@@ -135,6 +135,16 @@ namespace PodFul.WPF
       }).Start(this.mainTaskScheduler);
     }
 
+    public void ResetProgressEventHandler()
+    {
+      new Task(() =>
+      {
+        this.Progress.Value = 0;
+        this.ProgressSize.Text = String.Empty;
+        this.Progress.IsIndeterminate = false;
+      }).Start(this.mainTaskScheduler);
+    }
+
     public void SetProgressEventHandler(String text, Int32 value)
     {
       new Task(() =>

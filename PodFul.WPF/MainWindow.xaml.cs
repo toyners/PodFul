@@ -194,6 +194,7 @@ namespace PodFul.WPF
       feedScanner.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
       feedScanner.SetProgressEvent = processingWindow.SetProgressEventHandler;
+      feedScanner.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
 
       processingWindow.ShowDialog();
     }
@@ -229,6 +230,7 @@ namespace PodFul.WPF
       feedDownload.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
       feedDownload.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
       feedDownload.SetProgressEvent = processingWindow.SetProgressEventHandler;
+      feedDownload.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
 
       processingWindow.ShowDialog();
     }
