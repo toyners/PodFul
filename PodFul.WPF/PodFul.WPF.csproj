@@ -74,6 +74,7 @@
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreationDateTimeConverter.cs" />
+    <Compile Include="FeedDownload.cs" />
     <Compile Include="FeedScanner.cs" />
     <Compile Include="GUILogger.cs" />
     <Compile Include="IFeedProcessor.cs" />

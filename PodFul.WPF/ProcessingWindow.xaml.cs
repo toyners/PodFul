@@ -24,9 +24,9 @@ namespace PodFul.WPF
    
     public ProcessingWindow(IFeedProcessor feedProcessor)
     {
-      InitializeComponent();
-
       this.feedProcessor = feedProcessor;
+
+      InitializeComponent();
     }
 
     public ProcessingWindow(IFeedStorage feedStorage, Feed feed, Queue<Int32> podcastIndexes, IFileDeliverer fileDeliverer)

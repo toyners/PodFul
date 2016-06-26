@@ -220,7 +220,16 @@ namespace PodFul.WPF
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
       var podcastIndexes = new Queue<Int32>(selectedIndexes);
-      var processingWindow = new ProcessingWindow(this.feedStorage, this.currentFeed, podcastIndexes, this.fileDeliverer);
+      var guiLogger = new GUILogger(this.logger);
+      var feedDownload = new FeedDownload(this.feedStorage, this.currentFeed, podcastIndexes, this.fileDeliverer, guiLogger);
+      var processingWindow = new ProcessingWindow(feedDownload);
+
+      guiLogger.PostMessage = processingWindow.PostMessage;
+      feedDownload.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
+      feedDownload.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
+      feedDownload.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
+      feedDownload.SetProgressEvent = processingWindow.SetProgressEventHandler;
+
       processingWindow.ShowDialog();
     }
 
