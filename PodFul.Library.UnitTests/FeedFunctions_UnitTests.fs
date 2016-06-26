@@ -26,7 +26,7 @@ type FeedFunctions_UnitTests() =
     [<TestCase("<P>")>]
     [<TestCase("</p>")>]
     [<TestCase("</P>")>]
-    member public this.``Clean text of <p></p> tags``(dirtyText : string) =
+    member public this.``Clean text of tags``(dirtyText : string) =
         FeedFunctions.CleanText dirtyText |> should equal String.Empty
 
     [<Test>]
