@@ -39,11 +39,13 @@ module public FeedFunctions =
             fixedText <- fixedText.Replace("  ", " ")
 
         // Replace HTML code for right single quotation mark
-        fixedText <- fixedText.Replace("&#8217;", "'")
         fixedText <- fixedText.Replace("<p>", String.Empty)
             .Replace("</p>", String.Empty)
             .Replace("<P>", String.Empty)
-            .Replace("</P>", String.Empty);
+            .Replace("</P>", String.Empty)
+            .Replace("&#8217;", "'")
+            .Replace("&#124;", "|")
+            .Replace("&#8230;", "...") // Actually should be the ellipsis character but I'm going to use three dots instead.
 
         fixedText
 

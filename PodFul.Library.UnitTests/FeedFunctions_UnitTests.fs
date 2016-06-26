@@ -28,3 +28,10 @@ type FeedFunctions_UnitTests() =
     [<Test>]
     member public this.``Clean text of <p></p> tags``() =
         FeedFunctions.CleanText "<p> </p>" |> should equal " "
+
+    [<Test>]
+    [<TestCase("&#8217;", "'")>]
+    [<TestCase("&#124;", "|")>]
+    [<TestCase("&#8230;", "...")>]
+    member public this.``Clean text of XML character codes``(dirtyText : string, cleanedText : string) =
+        FeedFunctions.CleanText dirtyText |> should equal cleanedText
