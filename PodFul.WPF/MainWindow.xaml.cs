@@ -3,6 +3,7 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
+  using System.Collections.ObjectModel;
   using System.Configuration;
   using System.IO;
   using System.Reflection;
@@ -21,6 +22,7 @@ namespace PodFul.WPF
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
     private ILogger logger;
+    private ObservableCollection<Feed> feeds;
 
     public MainWindow()
     {
@@ -38,7 +40,8 @@ namespace PodFul.WPF
       this.imageResolver = new ImageResolver(imageDirectory);
       DirectoryOperations.EnsureDirectoryExists(imageDirectory);
 
-      this.FeedList.ItemsSource = this.feedStorage.Feeds;
+      this.feeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
+      this.FeedList.ItemsSource = feeds;
       this.FeedList.SelectedIndex = 0;
       if (this.feedStorage.Feeds.Length > 0)
       {
@@ -100,6 +103,7 @@ namespace PodFul.WPF
       feed = Feed.SetImageFileName(feed, resolvedName);
 
       this.feedStorage.Add(feed);
+      this.feeds.Add(feed);
       this.FeedList.SelectedItem = feed;
       this.currentFeed = feed;
 
@@ -115,8 +119,8 @@ namespace PodFul.WPF
     {
       var index = this.FeedList.SelectedIndex;
 
+      this.feeds.RemoveAt(index);
       this.feedStorage.Remove(this.currentFeed);
-      this.FeedList.Items.RemoveAt(index);
 
       if (this.feedStorage.Feeds.Length == 0)
       {
