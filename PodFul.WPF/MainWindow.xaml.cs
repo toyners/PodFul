@@ -90,9 +90,12 @@ namespace PodFul.WPF
 
       var fileCount = GetCountOfExistingMediaFilesForFeed(feed);
       if (fileCount > 0 &&
-        MessageBox.Show(String.Format("{0} mp3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+        MessageBox.Show(String.Format("{0} MP3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
       {
-        this.SyncWithExistingFiles(feed);
+        var count = this.SyncWithExistingFiles(feed);
+
+        var message = String.Format("{0} MP3 file(s) synced after adding '{1}'", count, feed.Title);
+        this.logger.Message(message);
       }
 
       var resolvedName = this.imageResolver.GetName(feed.ImageFileName);
