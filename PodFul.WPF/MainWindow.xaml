@@ -10,6 +10,7 @@
         Icon="baggage_cart_box_tE4_icon.ico">
   <Window.Resources>
     <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
+    <local:TextTruncator x:Key="TextTruncator" />
   </Window.Resources>
   <DockPanel Margin="5">
 
@@ -76,7 +77,7 @@
                       </TextBlock>
                     </StackPanel>
                     
-                    <TextBlock Text="{Binding Description}" />
+                    <TextBlock Text="{Binding Path=Description, Converter={StaticResource TextTruncator}}" />
                   </StackPanel>
                 </Grid>
               </DataTemplate>

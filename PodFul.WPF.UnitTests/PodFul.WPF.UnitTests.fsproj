@@ -55,6 +55,7 @@
     <Compile Include="CreationDateTimeConverter_UnitTests.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
+    <Compile Include="TextTruncator_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">
