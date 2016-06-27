@@ -9,15 +9,6 @@ namespace PodFul.WPF
   [ValueConversion(typeof(String), typeof(String))]
   public class TextTruncator : IValueConverter
   {
-    private Int32 limit;
-
-    public TextTruncator() : this(100) { }
-
-    public TextTruncator(Int32 limit)
-    {
-      this.limit = limit;
-    }
-
     public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
     {
       var text = value as String;
@@ -25,6 +16,8 @@ namespace PodFul.WPF
       {
         return String.Empty;
       }
+
+      var limit = Int32.Parse(parameter as String);
 
       if (text.Length <= limit)
       {

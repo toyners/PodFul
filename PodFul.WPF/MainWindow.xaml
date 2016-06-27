@@ -50,7 +50,8 @@
 
       <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
-          <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged">
+          <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <Grid Margin="0,2">
@@ -77,7 +78,8 @@
                       </TextBlock>
                     </StackPanel>
                     
-                    <TextBlock Text="{Binding Path=Description, Converter={StaticResource TextTruncator}}" />
+                    <TextBlock Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=250}"
+                               TextWrapping="WrapWithOverflow"/>
                   </StackPanel>
                 </Grid>
               </DataTemplate>
