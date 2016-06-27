@@ -3,6 +3,7 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
+  using System.Collections.ObjectModel;
   using System.Windows;
   using System.Windows.Controls;
   using PodFul.Library;
@@ -19,24 +20,21 @@ namespace PodFul.WPF
     }
 
     #region Construction
-    public SelectionWindow(String title, IEnumerable<Feed> feeds) : this(title)
+    public SelectionWindow(ObservableCollection<Feed> feeds)
     {
+      var title = String.Format("{0} feed{1}", feeds.Count, (feeds.Count != 1 ? "s" : String.Empty));
+      this.InitialiseWindow(title);
+
       this.ItemGrid.ItemsSource = feeds;
       this.ItemGrid.SelectAll();
     }
 
-    public SelectionWindow(String title, IEnumerable<Podcast> podcasts) : this(title)
+    public SelectionWindow(Podcast[] podcasts)
     {
+      var title = String.Format("{0} podcast{1}", podcasts.Length, (podcasts.Length != 1 ? "s" : String.Empty));
+      this.InitialiseWindow(title);
+
       this.ItemGrid.ItemsSource = podcasts;
-    }
-
-    private SelectionWindow(String title)
-    {
-      InitializeComponent();
-
-      this.Title = title;
-
-      this.ItemGrid.Focus();
     }
     #endregion
 
@@ -57,6 +55,15 @@ namespace PodFul.WPF
     #endregion
 
     #region Methods
+    private void InitialiseWindow(String title)
+    {
+      InitializeComponent();
+
+      this.Title = title;
+
+      this.ItemGrid.Focus();
+    }
+
     private void ClearButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.None);

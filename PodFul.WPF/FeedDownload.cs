@@ -10,7 +10,7 @@ namespace PodFul.WPF
   public class FeedDownload : IFeedProcessor
   {
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-    private IFeedStorage feedStorage;
+    private FeedCollection feedCollection;
     private Feed feed;
     private Queue<Int32> podcastIndexes;
     private IFileDeliverer fileDeliverer;
@@ -32,13 +32,13 @@ namespace PodFul.WPF
     public Action<String, Int32> SetProgressEvent;
 
     public FeedDownload(
-      IFeedStorage feedStorage,
+      FeedCollection feedCollection,
       Feed feed,
       Queue<Int32> podcastIndexes,
       IFileDeliverer fileDeliverer,
       ILogger log)
     {
-      this.feedStorage = feedStorage;
+      this.feedCollection = feedCollection;
       this.feed = feed;
       this.podcastIndexes = podcastIndexes;
       this.fileDeliverer = fileDeliverer;
@@ -64,7 +64,7 @@ namespace PodFul.WPF
         this.SetCancelButtonStateEvent?.Invoke(true);
         if (podcastDownload.Download(this.feed.Directory, this.feed.Podcasts, this.podcastIndexes))
         {
-          feedStorage.Update(this.feed);
+          feedCollection.UpdateFeed(this.feed);
         }
 
         this.SetCancelButtonStateEvent?.Invoke(false);

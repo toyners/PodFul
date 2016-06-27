@@ -3,7 +3,6 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
-  using System.Collections.ObjectModel;
   using System.Configuration;
   using System.IO;
   using System.Reflection;
@@ -17,12 +16,11 @@ namespace PodFul.WPF
   /// </summary>
   public partial class MainWindow : Window
   {
-    private IFeedStorage feedStorage;
+    private FeedCollection feedCollection;
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
     private ILogger logger;
-    private ObservableCollection<Feed> feeds;
 
     public MainWindow()
     {
@@ -33,19 +31,17 @@ namespace PodFul.WPF
       this.DisplayTitle();
 
       var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
-      this.feedStorage = new FeedFileStorage(feedDirectory);
-      this.feedStorage.Open();
+      this.feedCollection = new FeedCollection(feedDirectory);
 
       var imageDirectory = Path.Combine(feedDirectory, "Images");
       this.imageResolver = new ImageResolver(imageDirectory);
       DirectoryOperations.EnsureDirectoryExists(imageDirectory);
 
-      this.feeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
-      this.FeedList.ItemsSource = feeds;
+      this.FeedList.ItemsSource = feedCollection.Feeds;
       this.FeedList.SelectedIndex = 0;
-      if (this.feedStorage.Feeds.Length > 0)
+      if (this.feedCollection.Feeds.Count > 0)
       {
-        this.currentFeed = this.feedStorage.Feeds[0];
+        this.currentFeed = this.feedCollection.Feeds[0];
       }
 
       this.FeedList.Focus();
@@ -102,8 +98,7 @@ namespace PodFul.WPF
       var resolvedName = this.imageResolver.GetName(feed.ImageFileName);
       feed = Feed.SetImageFileName(feed, resolvedName);
 
-      this.feedStorage.Add(feed);
-      this.feeds.Add(feed);
+      this.feedCollection.AddFeed(feed);
       this.FeedList.SelectedItem = feed;
       this.currentFeed = feed;
 
@@ -119,10 +114,9 @@ namespace PodFul.WPF
     {
       var index = this.FeedList.SelectedIndex;
 
-      this.feeds.RemoveAt(index);
-      this.feedStorage.Remove(this.currentFeed);
+      this.feedCollection.RemoveFeed(this.currentFeed);
 
-      if (this.feedStorage.Feeds.Length == 0)
+      if (this.feedCollection.Feeds.Count == 0)
       {
         return;
       }
@@ -179,8 +173,7 @@ namespace PodFul.WPF
 
     private void scanButton_Click(Object sender, RoutedEventArgs e)
     {
-      var title = String.Format("{0} feed{1}", this.feedStorage.Feeds.Length, (this.feedStorage.Feeds.Length != 1 ? "s" : String.Empty));
-      var selectionWindow = new SelectionWindow(title, this.feedStorage.Feeds);
+      var selectionWindow = new SelectionWindow(this.feedCollection.Feeds);
       var startScanning = selectionWindow.ShowDialog();
 
       if (startScanning == null || !startScanning.Value)
@@ -190,7 +183,7 @@ namespace PodFul.WPF
 
       var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
       var guiLogger = new GUILogger(this.logger);
-      var feedScanner = new FeedScanner(this.feedStorage, feedIndexes, this.imageResolver, this.fileDeliverer, guiLogger);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, guiLogger);
       var processingWindow = new ProcessingWindow(feedScanner);
 
       guiLogger.PostMessage = processingWindow.PostMessage;
@@ -210,8 +203,7 @@ namespace PodFul.WPF
 
     private void DownloadPodcasts()
     {
-      var title = String.Format("{0} podcast{1}", this.currentFeed.Podcasts.Length, (this.currentFeed.Podcasts.Length != 1 ? "s" : String.Empty));
-      var selectionWindow = new SelectionWindow(title, this.currentFeed.Podcasts);
+      var selectionWindow = new SelectionWindow(this.currentFeed.Podcasts);
       var startDownloading = selectionWindow.ShowDialog();
 
       if (startDownloading == null || !startDownloading.Value)
@@ -226,7 +218,7 @@ namespace PodFul.WPF
       selectedIndexes.Sort((x, y) => { return y - x; });
       var podcastIndexes = new Queue<Int32>(selectedIndexes);
       var guiLogger = new GUILogger(this.logger);
-      var feedDownload = new FeedDownload(this.feedStorage, this.currentFeed, podcastIndexes, this.fileDeliverer, guiLogger);
+      var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.fileDeliverer, guiLogger);
       var processingWindow = new ProcessingWindow(feedDownload);
 
       guiLogger.PostMessage = processingWindow.PostMessage;
@@ -247,7 +239,7 @@ namespace PodFul.WPF
         return;
       }
 
-      var feed = this.feedStorage.Feeds[index];
+      var feed = this.feedCollection.Feeds[index];
       if (feed == this.currentFeed)
       {
         return;

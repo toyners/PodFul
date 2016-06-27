@@ -12,7 +12,7 @@ namespace PodFul.WPF
   {
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-    private IFeedStorage feedStorage;
+    private FeedCollection feedCollection;
     private Queue<Int32> feedIndexes;
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
@@ -35,13 +35,13 @@ namespace PodFul.WPF
     public Action<String, Int32> SetProgressEvent;
 
     public FeedScanner(
-      IFeedStorage feedStorage,
+      FeedCollection feedCollection,
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
       ILogger log)
     {
-      this.feedStorage = feedStorage;
+      this.feedCollection = feedCollection;
       this.feedIndexes = feedIndexes;
       this.fileDeliverer = fileDeliverer;
       this.imageResolver = imageResolver;
@@ -55,7 +55,7 @@ namespace PodFul.WPF
 
     public void Process()
     {
-      Feed[] feeds = this.feedStorage.Feeds;
+      //Feed[] feeds = this.feedStorage.Feeds;
 
       var feedTotal = this.feedIndexes.Count;
       var title = "Scanning " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
@@ -84,7 +84,7 @@ namespace PodFul.WPF
             return;
           }
 
-          var feed = feeds[feedIndex];
+          var feed = this.feedCollection.Feeds[feedIndex];
 
           this.log.Message("Scanning \"" + feed.Title + "\".");
 
@@ -152,10 +152,8 @@ namespace PodFul.WPF
           this.log.Message(message);
 
           this.log.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
-          feedStorage.Update(newFeed);
+          this.feedCollection.UpdateFeed(feedIndex, newFeed);
           this.log.Message("Completed.");
-
-          feeds[feedIndex] = newFeed;
 
           if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
