@@ -31,7 +31,7 @@ type FeedFunctions_UnitTests() =
 
     [<Test>]
     [<TestCase("&#8217;", "'")>]
-    [<TestCase("&#124;", "|")>]
+    [<TestCase("&#124;", "")>]
     [<TestCase("&#8230;", "...")>]
     member public this.``Clean text of XML character codes``(dirtyText : string, cleanText : string) =
         FeedFunctions.CleanText dirtyText |> should equal cleanText

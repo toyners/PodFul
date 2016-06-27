@@ -44,7 +44,7 @@ module public FeedFunctions =
             .Replace("<P>", String.Empty)
             .Replace("</P>", String.Empty)
             .Replace("&#8217;", "'")
-            .Replace("&#124;", "|")
+            .Replace("&#124;", "")
             .Replace("&#8230;", "...") // Actually should be the ellipsis character but I'm going to use three dots instead.
 
         fixedText
