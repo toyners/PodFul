@@ -115,12 +115,20 @@ namespace PodFul.WPF
 
     private void removeButton_Click(Object sender, RoutedEventArgs e)
     {
+      var dialogResult = MessageBox.Show(String.Format("Remove '{0}'?", this.currentFeed.Title), "Confirm Removal", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
+      if (dialogResult == MessageBoxResult.No)
+      {
+        return;
+      }
+
       var index = this.FeedList.SelectedIndex;
 
       this.feedCollection.RemoveFeed(this.currentFeed);
+      this.logger.Message(String.Format("'{0}' removed.", this.currentFeed.Title));
 
       if (this.feedCollection.Feeds.Count == 0)
       {
+        this.FeedList.SelectedIndex = -1;
         return;
       }
 
