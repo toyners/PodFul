@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="CreationDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
+    <Compile Include="FeedProcessor.cs" />
     <Compile Include="TextTruncator.cs" />
     <Compile Include="FeedDownload.cs" />
     <Compile Include="FeedScanner.cs" />

@@ -3,61 +3,27 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
-  using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
   using Library;
 
-  public class FeedScanner : IFeedProcessor
+  public class FeedScanner : FeedProcessor, IFeedProcessor
   {
-    private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-    private FeedCollection feedCollection;
-    private Queue<Int32> feedIndexes;
     private IImageResolver imageResolver;
-    private IFileDeliverer fileDeliverer;
-    private ILogger log;
-
-    private Int64 fileSize;
-    private Int64 downloadedSize;
-    private Int64 percentageStepSize;
-    private Boolean fileSizeNotKnown;
-    private String progressSizeLabel;
-
-    public Action<String> SetWindowTitleEvent;
-
-    public Action<Boolean> SetCancelButtonStateEvent;
-
-    public Action<String, Boolean> InitialiseProgressEvent;
-
-    public Action ResetProgressEvent;
-
-    public Action<String, Int32> SetProgressEvent;
 
     public FeedScanner(
       FeedCollection feedCollection,
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
-      ILogger log)
+      ILogger log) : base(feedCollection, feedIndexes, fileDeliverer, log)
     {
-      this.feedCollection = feedCollection;
-      this.feedIndexes = feedIndexes;
-      this.fileDeliverer = fileDeliverer;
       this.imageResolver = imageResolver;
-      this.log = log;
-    }
-
-    public void Cancel()
-    {
-      this.cancellationTokenSource.Cancel();
     }
 
     public void Process()
     {
-      //Feed[] feeds = this.feedStorage.Feeds;
-
-      var feedTotal = this.feedIndexes.Count;
+      var feedTotal = this.indexes.Count;
       var title = "Scanning " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
       this.SetWindowTitleEvent?.Invoke(title);
 
@@ -71,11 +37,11 @@ namespace PodFul.WPF
         var podcastIndexes = new Queue<Int32>();
         String scanReport = null;
 
-        while (feedIndexes.Count > 0)
+        while (indexes.Count > 0)
         {
-          Int32 feedIndex = feedIndexes.Dequeue();
+          Int32 feedIndex = indexes.Dequeue();
 
-          title = "Scanning " + (feedTotal - feedIndexes.Count) + " of " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
+          title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
           this.SetWindowTitleEvent?.Invoke(title);
 
           if (this.cancellationTokenSource.IsCancellationRequested)
@@ -177,81 +143,6 @@ namespace PodFul.WPF
         this.SetCancelButtonStateEvent?.Invoke(false);
 
       }, cancelToken);
-    }
-
-    private PodcastDownload InitialisePodcastDownload(CancellationToken cancelToken)
-    {
-      var podcastDownload = new PodcastDownload(cancelToken, this.UpdateProgessEventHandler);
-
-      podcastDownload.OnBeforeDownload += (podcast) =>
-      {
-        this.fileSize = podcast.FileSize;
-        this.percentageStepSize = this.fileSize / 100;
-        this.downloadedSize = 0;
-        this.InitialiseProgress(podcast.FileSize);
-        this.log.Message(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
-      };
-
-      podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
-      {
-        this.log.Message("Completed.");
-        this.fileDeliverer.Deliver(podcast, filePath);
-      };
-
-      podcastDownload.OnException += (podcast, exception) =>
-      {
-        Exception e = exception;
-        if (exception is AggregateException)
-        {
-          e = ((AggregateException)exception).Flatten();
-        }
-
-        if (e.InnerException != null)
-        {
-          e = e.InnerException;
-        }
-
-        this.log.Exception(e.Message);
-      };
-
-      podcastDownload.OnFinish += () => this.ResetProgressEvent?.Invoke();
-
-      return podcastDownload;
-    }
-
-    private void InitialiseProgress(Int64 expectedFileSize = -1)
-    {
-      this.fileSizeNotKnown = (expectedFileSize == 0);
-      String progressSize;
-      if (expectedFileSize > 0)
-      {
-        var total = expectedFileSize / 1048576.0;
-        this.progressSizeLabel = " / " + total.ToString("0.00") + "Mb";
-        progressSize = "0.00" + this.progressSizeLabel;
-      }
-      else
-      {
-        this.progressSizeLabel = "Mb";
-        progressSize = "0.00" + this.progressSizeLabel;
-      }
-
-      this.InitialiseProgressEvent?.Invoke(progressSize, this.fileSizeNotKnown);
-    }
-
-    private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
-    {
-      this.downloadedSize += bytesWrittenToFile;
-      var downloadedSizeInMb = this.downloadedSize / 1048576.0;
-
-      Int64 value = 100;
-      if (this.downloadedSize < this.fileSize)
-      {
-        value = this.downloadedSize / this.percentageStepSize;
-      }
-
-      var text = downloadedSizeInMb.ToString("0.00") + this.progressSizeLabel;
-
-      this.SetProgressEvent?.Invoke(text, (Int32)value);
     }
   }
 }
