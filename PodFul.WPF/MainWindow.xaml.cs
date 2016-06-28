@@ -239,6 +239,7 @@ namespace PodFul.WPF
       var index = (sender as ListBox).SelectedIndex;
       if (index == -1)
       {
+        this.currentFeed = null;
         return;
       }
 
