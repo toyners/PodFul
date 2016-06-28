@@ -107,8 +107,7 @@ namespace PodFul.WPF
       return podcastDownload;
     }
 
-    protected virtual void OnSuccessfulDownload(Podcast podcast, String filePath)
-    { }
+    protected virtual void OnSuccessfulDownload(Podcast podcast, String filePath) { }
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
