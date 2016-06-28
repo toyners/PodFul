@@ -20,7 +20,7 @@ module public FeedFunctions =
 
     let private removeTimeZoneAbbreviationsFromDateTimeString (value : string) : string =
         let mutable length = value.Length;
-        while Char.IsLetter(value.[length - 1]) do
+        while Char.IsLetter(value.[length - 1]) || Char.IsWhiteSpace(value.[length - 1]) do
             length <- length - 1
         
         value.Substring(0, length)
