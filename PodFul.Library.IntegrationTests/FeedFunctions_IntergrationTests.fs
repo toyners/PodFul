@@ -169,3 +169,5 @@ type FeedFunctions_IntergrationTests() =
         let inputPath = workingDirectory + "Multibyte file.txt"
         let (bytes : Byte[]) = [| 226uy (*; 8364uy; 8482*) |]
         File.WriteAllBytes(inputPath, bytes)
+        
+        true |> should equal false
