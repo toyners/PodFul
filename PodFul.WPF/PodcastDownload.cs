@@ -46,16 +46,15 @@ namespace PodFul.WPF
         var podcastIndex = podcastsIndexes.Dequeue();
         var podcast = podcasts[podcastIndex];
 
-        this.OnBeforeDownload?.Invoke(podcast);
-
-        var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
-        Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.updateProgress);
-
         try
         {
-          downloadTask.Wait();
+          this.OnBeforeDownload?.Invoke(podcast);
 
-          if (downloadTask.IsCanceled)
+          var filePath = Path.Combine(directoryPath, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
+
+          downloader.Download(podcast.URL, filePath, this.cancellationToken, this.updateProgress);
+
+          if (this.cancellationToken.IsCancellationRequested)
           {
             this.OnCancelledDownload?.Invoke(podcast);
             return false;
