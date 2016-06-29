@@ -35,3 +35,11 @@ type FeedFunctions_UnitTests() =
     [<TestCase("&#8230;", "...")>]
     member public this.``Clean text of XML character codes``(dirtyText : string, cleanText : string) =
         FeedFunctions.CleanText dirtyText |> should equal cleanText
+
+    [<Test>]
+    member public this.``Clean text of XML tags``() =
+        let dirtyText = "<span key=\"value\">some text</span>"
+        let pattern = "<.*>"
+        let result = System.Text.RegularExpressions.Regex.Replace(dirtyText, pattern, String.Empty)
+        result |> should equal "some text"
+         
