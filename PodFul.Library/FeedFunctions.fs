@@ -38,14 +38,13 @@ module public FeedFunctions =
         while fixedText.IndexOf("  ") <> -1 do 
             fixedText <- fixedText.Replace("  ", " ")
 
-        // Replace HTML code for right single quotation mark
-        fixedText <- fixedText.Replace("<p>", String.Empty)
-            .Replace("</p>", String.Empty)
-            .Replace("<P>", String.Empty)
-            .Replace("</P>", String.Empty)
-            .Replace("&#8217;", "'")
+        // Replace special character codes with the character.
+        fixedText <- fixedText.Replace("&#8217;", "'")
             .Replace("&#124;", "")
             .Replace("&#8230;", "...") // Actually should be the ellipsis character but I'm going to use three dots instead.
+
+        // Remove XML tags from the string. 
+        fixedText <- System.Text.RegularExpressions.Regex.Replace(fixedText, "<.*?>", String.Empty)
 
         fixedText
 
