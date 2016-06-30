@@ -38,7 +38,7 @@ module public FeedFunctions =
         while fixedText.IndexOf("  ") <> -1 do 
             fixedText <- fixedText.Replace("  ", " ")
 
-        // Replace special character codes with the character.
+        // Replace special character codes.
         fixedText <- fixedText.Replace("&#8217;", "'")
             .Replace("&#124;", "")
             .Replace("&#8230;", "...") // Actually should be the ellipsis character but I'm going to use three dots instead.
