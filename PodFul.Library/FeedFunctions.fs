@@ -39,10 +39,13 @@ module public FeedFunctions =
         while cleanText.IndexOf("  ") <> -1 do 
             cleanText <- cleanText.Replace("  ", " ")
 
-        // Replace special character codes.
-        cleanText <- cleanText.Replace("&#8217;", "'")
-            .Replace("&#124;", "")
+        // Replace known special character codes.
+        cleanText <- cleanText
+            .Replace("&#8217;", "'")
             .Replace("&#8230;", "...") // Actually should be the ellipsis character but I'm going to use three dots instead.
+
+        // Remove unknown special character codes.
+        cleanText <- System.Text.RegularExpressions.Regex.Replace(cleanText, "&#[0-9]*;", String.Empty)
 
         // Remove XML tags from the string. 
         cleanText <- System.Text.RegularExpressions.Regex.Replace(cleanText, "<.*?>", String.Empty)

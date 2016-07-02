@@ -31,9 +31,15 @@ type FeedFunctions_UnitTests() =
 
     [<Test>]
     [<TestCase("&#8217;", "'")>]
-    [<TestCase("&#124;", "")>]
+    
     [<TestCase("&#8230;", "...")>]
-    member public this.``Clean text of XML character codes``(dirtyText : string, cleanText : string) =
+    member public this.``Clean text of known XML character codes``(dirtyText : string, cleanText : string) =
+        FeedFunctions.CleanText dirtyText |> should equal cleanText
+
+    [<Test>]
+    [<TestCase("&#124;", "")>]
+    [<TestCase("&#9999;", "")>]
+    member public this.``Clean text of unknown XML character codes``(dirtyText : string, cleanText : string) =
         FeedFunctions.CleanText dirtyText |> should equal cleanText
 
     [<Test>]
