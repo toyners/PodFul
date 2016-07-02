@@ -163,14 +163,3 @@ type FeedFunctions_IntergrationTests() =
 
         finalFeed.Podcasts.[1].DownloadDate |> should equal initialFeed.Podcasts.[0].DownloadDate
         finalFeed.Podcasts.[2].DownloadDate |> should equal initialFeed.Podcasts.[1].DownloadDate
-
-    [<Test>]
-    member public this.``Remove multi-byte characters``() = 
-        let inputPath = workingDirectory + "Multibyte file.txt"
-        let data = new String((char)194uy, 1)
-
-        let isletter = Char.IsLetter((char)194uy);
-        let (bytes : Byte[]) = [| 226uy (*; 8364uy; 8482*) |]
-        File.WriteAllBytes(inputPath, bytes)
-        
-        true |> should equal false

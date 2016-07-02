@@ -32,15 +32,10 @@ module public FeedFunctions =
         else
             pubDateElement.Value |> removeTimeZoneAbbreviationsFromDateTimeString |> DateTime.Parse
 
-    let private removeUnreadableCharacters text : string =
-        text
-
     let public CleanText (dirtyText: string) : string = 
-
-        let mutable cleanText = removeUnreadableCharacters dirtyText
         
         // Replace line breaks and multiple spaces with single spaces
-        cleanText <- cleanText.Replace("\r\n", " ").Replace("\n", " ")
+        let mutable cleanText = dirtyText.Replace("\r\n", " ").Replace("\n", " ")
         while cleanText.IndexOf("  ") <> -1 do 
             cleanText <- cleanText.Replace("  ", " ")
 
@@ -149,6 +144,7 @@ module public FeedFunctions =
         try
             let webClient = new WebClient()
             webClient.Headers.Add("user-agent", "Podful Podcatcher")
+            webClient.Encoding <- System.Text.Encoding.UTF8;
             let data = webClient.DownloadString(Uri(url))
             XDocument.Parse(data)
         with
