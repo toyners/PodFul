@@ -32,21 +32,27 @@ module public FeedFunctions =
         else
             pubDateElement.Value |> removeTimeZoneAbbreviationsFromDateTimeString |> DateTime.Parse
 
-    let public CleanText (text: string) : string = 
+    let private removeUnreadableCharacters text : string =
+        text
+
+    let public CleanText (dirtyText: string) : string = 
+
+        let mutable cleanText = removeUnreadableCharacters dirtyText
+        
         // Replace line breaks and multiple spaces with single spaces
-        let mutable fixedText = text.Replace("\r\n", " ").Replace("\n", " ")
-        while fixedText.IndexOf("  ") <> -1 do 
-            fixedText <- fixedText.Replace("  ", " ")
+        cleanText <- cleanText.Replace("\r\n", " ").Replace("\n", " ")
+        while cleanText.IndexOf("  ") <> -1 do 
+            cleanText <- cleanText.Replace("  ", " ")
 
         // Replace special character codes.
-        fixedText <- fixedText.Replace("&#8217;", "'")
+        cleanText <- cleanText.Replace("&#8217;", "'")
             .Replace("&#124;", "")
             .Replace("&#8230;", "...") // Actually should be the ellipsis character but I'm going to use three dots instead.
 
         // Remove XML tags from the string. 
-        fixedText <- System.Text.RegularExpressions.Regex.Replace(fixedText, "<.*?>", String.Empty)
+        cleanText <- System.Text.RegularExpressions.Regex.Replace(cleanText, "<.*?>", String.Empty)
 
-        fixedText
+        cleanText
 
     let private getDescriptionFromItem (element : XElement) : string =
         let descriptionElement = element?description
