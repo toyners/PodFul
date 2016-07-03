@@ -44,6 +44,7 @@ namespace PodFul.WPF
       {
         this.FeedList.SelectedIndex = 0;
         this.currentFeed = this.feedCollection.Feeds[0];
+        this.ScanButton.IsEnabled = true;
       }
 
       this.FeedList.Focus();
@@ -106,6 +107,7 @@ namespace PodFul.WPF
       this.feedCollection.AddFeed(feed);
       this.FeedList.SelectedItem = feed;
       this.currentFeed = feed;
+      this.ScanButton.IsEnabled = true;
 
       this.DownloadPodcasts();
     }
@@ -131,6 +133,7 @@ namespace PodFul.WPF
       if (this.feedCollection.Feeds.Count == 0)
       {
         this.FeedList.SelectedIndex = -1;
+        this.ScanButton.IsEnabled = false;
         return;
       }
 
@@ -249,12 +252,12 @@ namespace PodFul.WPF
       {
         this.currentFeed = null;
         this.RemoveButton.IsEnabled = false;
-        this.ScanButton.IsEnabled = false;
+        this.DownloadButton.IsEnabled = false;
         return;
       }
 
       this.RemoveButton.IsEnabled = true;
-      this.ScanButton.IsEnabled = true;
+      this.DownloadButton.IsEnabled = true;
 
       var feed = this.feedCollection.Feeds[index];
       if (feed == this.currentFeed)
