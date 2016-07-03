@@ -16,7 +16,8 @@ namespace PodFul.WPF
 
     public void Message(String message)
     {
-      this.Message(message, true);
+      // No linebreak by default.
+      this.Message(message, false);
     }
 
     public void Message(String message, Boolean lineBreak)

@@ -20,7 +20,7 @@ namespace PodFul.WPF
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
-    private ILogger logger;
+    private FileLogger logger;
 
     public MainWindow()
     {
@@ -49,7 +49,7 @@ namespace PodFul.WPF
       var settings = new Settings();
       this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(logger));
 
-      this.logger.Message("Main Window instantiated.");
+        this.logger.Message("Main Window instantiated.");
     }
 
     private void DisplayTitle()
