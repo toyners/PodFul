@@ -124,9 +124,9 @@ namespace PodFul.WPF
       }
 
       var index = this.FeedList.SelectedIndex;
-
+      var title = this.currentFeed.Title;
       this.feedCollection.RemoveFeed(this.currentFeed);
-      this.fileLogger.Message(String.Format("'{0}' removed.", this.currentFeed.Title));
+      this.fileLogger.Message(String.Format("'{0}' removed.", title));
 
       if (this.feedCollection.Feeds.Count == 0)
       {
