@@ -18,6 +18,7 @@ namespace PodFul.WPF
     public void Exception(String message)
     {
       this.fileLogger.Exception(message);
+      this.Post(message, false);
     }
 
     public void Message(String message)
@@ -28,7 +29,11 @@ namespace PodFul.WPF
     public void Message(String message, Boolean lineBreak)
     {
       this.fileLogger.Message(message);
+      this.Post(message, lineBreak);
+    }
 
+    private void Post(String message, Boolean lineBreak)
+    {
       if (this.PostMessage != null)
       {
         message += (lineBreak ? lineBreakText : null);

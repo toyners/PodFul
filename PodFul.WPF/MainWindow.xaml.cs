@@ -20,11 +20,13 @@ namespace PodFul.WPF
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
-    private FileLogger logger;
+    private FileLogger fileLogger;
+    private GUILogger guiLogger;
 
     public MainWindow()
     {
-      this.logger = new FileLogger();
+      this.fileLogger = new FileLogger();
+      this.guiLogger = new GUILogger(this.fileLogger);
 
       InitializeComponent();
 
@@ -47,9 +49,9 @@ namespace PodFul.WPF
       this.FeedList.Focus();
 
       var settings = new Settings();
-      this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(logger));
+      this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(this.guiLogger));
 
-        this.logger.Message("Main Window instantiated.");
+        this.fileLogger.Message("Main Window instantiated.");
     }
 
     private void DisplayTitle()
@@ -79,12 +81,12 @@ namespace PodFul.WPF
       try
       {
         feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory);
-        this.logger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
+        this.fileLogger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
       }
       catch (Exception exception)
       {
         MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
-        this.logger.Exception("Trying to add new feed: " + exception.Message);
+        this.fileLogger.Exception("Trying to add new feed: " + exception.Message);
         return;
       }
 
@@ -95,7 +97,7 @@ namespace PodFul.WPF
         var count = this.SyncWithExistingFiles(feed);
 
         var message = String.Format("{0} MP3 file(s) synced after adding '{1}'", count, feed.Title);
-        this.logger.Message(message);
+        this.fileLogger.Message(message);
       }
 
       var resolvedName = this.imageResolver.GetName(feed.ImageFileName);
@@ -124,7 +126,7 @@ namespace PodFul.WPF
       var index = this.FeedList.SelectedIndex;
 
       this.feedCollection.RemoveFeed(this.currentFeed);
-      this.logger.Message(String.Format("'{0}' removed.", this.currentFeed.Title));
+      this.fileLogger.Message(String.Format("'{0}' removed.", this.currentFeed.Title));
 
       if (this.feedCollection.Feeds.Count == 0)
       {
@@ -193,7 +195,7 @@ namespace PodFul.WPF
       }
 
       var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
-      var guiLogger = new GUILogger(this.logger);
+      var guiLogger = new GUILogger(this.fileLogger);
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, guiLogger);
       var processingWindow = new ProcessingWindow(feedScanner);
 
@@ -228,8 +230,7 @@ namespace PodFul.WPF
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
       var podcastIndexes = new Queue<Int32>(selectedIndexes);
-      var guiLogger = new GUILogger(this.logger);
-      var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.fileDeliverer, guiLogger);
+      var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.fileDeliverer, this.guiLogger);
       var processingWindow = new ProcessingWindow(feedDownload);
 
       guiLogger.PostMessage = processingWindow.PostMessage;

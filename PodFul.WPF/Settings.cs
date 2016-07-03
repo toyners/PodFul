@@ -10,7 +10,7 @@ namespace PodFul.WPF
     {
       return new Action<Podcast, String>[]
       {
-        new WinampDeliveryPoint(@"C:\Program Files (x86)\Winamp\winamp.exe", log.Message).DeliverToWinamp
+        new WinampDeliveryPoint(@"C:\Program Files (x86)\Winamp\winamp.exe", log.Message, log.Exception).DeliverToWinamp
       };
     }
   }
