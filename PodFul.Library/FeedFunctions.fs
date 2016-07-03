@@ -50,7 +50,8 @@ module public FeedFunctions =
         // Remove XML tags from the string. 
         cleanText <- System.Text.RegularExpressions.Regex.Replace(cleanText, "<.*?>", String.Empty)
 
-        cleanText
+        // Remove any leading and trailing whitespace.
+        cleanText.Trim()
 
     let private getDescriptionFromItem (element : XElement) : string =
         let descriptionElement = element?description

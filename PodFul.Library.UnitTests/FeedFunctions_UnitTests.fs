@@ -10,16 +10,16 @@ open System.Reflection
 type FeedFunctions_UnitTests() = 
 
     [<Test>]
-    [<TestCase("\r\n")>]
-    [<TestCase("\n")>]
+    [<TestCase("a\r\nb")>]
+    [<TestCase("a\nb")>]
     member public this.``Clean text of line breaks``(dirtyText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal " "
+        FeedFunctions.CleanText dirtyText |> should equal "a b"
 
     [<Test>]
-    [<TestCase("  ")>]
-    [<TestCase("   ")>]
+    [<TestCase("a  b")>]
+    [<TestCase("a   b")>]
     member public this.``Clean text of multiple spaces``(dirtyText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal " "
+        FeedFunctions.CleanText dirtyText |> should equal "a b"
 
     [<Test>]
     [<TestCase("<p>")>]
@@ -51,3 +51,6 @@ type FeedFunctions_UnitTests() =
     member public this.``Clean text of XML tags``(dirtyText : string, cleanText : string) =
         FeedFunctions.CleanText dirtyText |> should equal cleanText
          
+    [<Test>]
+    member public this.``Clean text of leading and trailing whitespace``() =
+        FeedFunctions.CleanText " abc " |> should equal "abc"
