@@ -195,8 +195,7 @@ namespace PodFul.WPF
       }
 
       var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
-      var guiLogger = new GUILogger(this.fileLogger);
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, guiLogger);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
       var processingWindow = new ProcessingWindow(feedScanner);
 
       guiLogger.PostMessage = processingWindow.PostMessage;
