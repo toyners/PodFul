@@ -40,11 +40,10 @@ namespace PodFul.WPF
       DirectoryOperations.EnsureDirectoryExists(imageDirectory);
 
       this.FeedList.ItemsSource = feedCollection.Feeds;
-      this.FeedList.SelectedIndex = 0;
       if (this.feedCollection.Feeds.Count > 0)
       {
+        this.FeedList.SelectedIndex = 0;
         this.currentFeed = this.feedCollection.Feeds[0];
-        this.RemoveButton.IsEnabled = true;
       }
 
       this.FeedList.Focus();
@@ -132,7 +131,6 @@ namespace PodFul.WPF
       if (this.feedCollection.Feeds.Count == 0)
       {
         this.FeedList.SelectedIndex = -1;
-        this.RemoveButton.IsEnabled = false;
         return;
       }
 
@@ -251,10 +249,12 @@ namespace PodFul.WPF
       {
         this.currentFeed = null;
         this.RemoveButton.IsEnabled = false;
+        this.ScanButton.IsEnabled = false;
         return;
       }
 
       this.RemoveButton.IsEnabled = true;
+      this.ScanButton.IsEnabled = true;
 
       var feed = this.feedCollection.Feeds[index];
       if (feed == this.currentFeed)
