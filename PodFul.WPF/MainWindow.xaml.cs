@@ -44,6 +44,7 @@ namespace PodFul.WPF
       if (this.feedCollection.Feeds.Count > 0)
       {
         this.currentFeed = this.feedCollection.Feeds[0];
+        this.RemoveButton.IsEnabled = true;
       }
 
       this.FeedList.Focus();
@@ -51,7 +52,7 @@ namespace PodFul.WPF
       var settings = new Settings();
       this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(this.guiLogger));
 
-        this.fileLogger.Message("Main Window instantiated.");
+      this.fileLogger.Message("Main Window instantiated.");
     }
 
     private void DisplayTitle()
@@ -131,6 +132,7 @@ namespace PodFul.WPF
       if (this.feedCollection.Feeds.Count == 0)
       {
         this.FeedList.SelectedIndex = -1;
+        this.RemoveButton.IsEnabled = false;
         return;
       }
 
@@ -248,8 +250,11 @@ namespace PodFul.WPF
       if (index == -1)
       {
         this.currentFeed = null;
+        this.RemoveButton.IsEnabled = false;
         return;
       }
+
+      this.RemoveButton.IsEnabled = true;
 
       var feed = this.feedCollection.Feeds[index];
       if (feed == this.currentFeed)
