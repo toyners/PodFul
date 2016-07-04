@@ -118,8 +118,12 @@ namespace PodFul.WPF
           this.log.Message(message);
 
           this.log.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
-          this.feedCollection.UpdateFeed(feedIndex, newFeed);
-          this.log.Message("Completed.");
+
+          Application.Current.Dispatcher.Invoke(() =>
+          {
+            this.feedCollection.UpdateFeed(feedIndex, newFeed);
+            this.log.Message("Completed.");
+          });
 
           if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
