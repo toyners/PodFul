@@ -2,26 +2,33 @@
 namespace PodFul.WPF
 {
   using System;
-  using System.Collections.Generic;
   using System.Collections.ObjectModel;
-  using System.Linq;
-  using System.Text;
-  using System.Threading.Tasks;
   using Library;
 
+  /// <summary>
+  /// Thin container that combines the feed storage with the observable collection used as the source
+  /// for the GUI feed list.
+  /// </summary>
   public class FeedCollection
   {
+    #region Fields
     private IFeedStorage feedStorage;
+    #endregion
 
+    #region Construction
     public FeedCollection(String directoryPath)
     {
       this.feedStorage = new FeedFileStorage(directoryPath);
       this.feedStorage.Open();
       this.Feeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
     }
+    #endregion
 
+    #region Properties
     public ObservableCollection<Feed> Feeds { get; private set; }
+    #endregion
 
+    #region Methods
     public void AddFeed(Feed feed)
     {
       this.feedStorage.Add(feed);
@@ -44,5 +51,6 @@ namespace PodFul.WPF
     {
       this.feedStorage.Update(feed);
     }
+    #endregion
   }
 }
