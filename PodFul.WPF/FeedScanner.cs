@@ -65,7 +65,6 @@ namespace PodFul.WPF
 
             this.log.Message("Comparing podcasts ... ", false);
 
-            Int32 podcastIndex = 0;
             podcastIndexes.Clear();
             if (feed.Podcasts.Length == 0)
             {
@@ -76,6 +75,7 @@ namespace PodFul.WPF
             }
             else
             {
+              Int32 podcastIndex = 0;
               var firstPodcast = feed.Podcasts[0];
               while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
               {
@@ -84,14 +84,14 @@ namespace PodFul.WPF
               }
             }
 
-            Boolean downloadPodcasts = true;
+            Boolean downloadPodcasts = (podcastIndexes.Count > 0);
             if (podcastIndexes.Count > 5)
             {
               var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
               var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
               if (continuingDownloading == MessageBoxResult.Cancel)
               {
-                var feedReport = podcastIndex + " podcasts found";
+                var feedReport = podcastIndexes.Count + " podcasts found";
                 this.log.Message(feedReport + " (Scan cancelled).\r\n");
                 scanReport += feedReport + " for \"" + feed.Title + "\" (Scan cancelled).";
                 break;
@@ -104,14 +104,14 @@ namespace PodFul.WPF
             }
 
             String message = "Complete - ";
-            if (podcastIndex == 0)
+            if (podcastIndexes.Count == 0)
             {
               message += "No new podcasts found.";
             }
             else
             {
-              var feedReport = podcastIndex + " podcast" +
-                (podcastIndex != 1 ? "s" : String.Empty) + " found";
+              var feedReport = podcastIndexes.Count + " podcast" +
+                (podcastIndexes.Count != 1 ? "s" : String.Empty) + " found";
               var downloadingReport = (downloadPodcasts ? String.Empty : " (Downloading skipped)");
               message += feedReport + downloadingReport + ".";
               scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
