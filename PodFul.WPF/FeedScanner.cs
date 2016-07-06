@@ -67,11 +67,21 @@ namespace PodFul.WPF
 
             Int32 podcastIndex = 0;
             podcastIndexes.Clear();
-            var firstPodcast = feed.Podcasts[0];
-            while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
+            if (feed.Podcasts.Length == 0)
             {
-              podcastIndexes.Enqueue(podcastIndex);
-              podcastIndex++;
+              for (Int32 i = 0; i < newFeed.Podcasts.Length; i++)
+              {
+                podcastIndexes.Enqueue(i);
+              }
+            }
+            else
+            {
+              var firstPodcast = feed.Podcasts[0];
+              while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
+              {
+                podcastIndexes.Enqueue(podcastIndex);
+                podcastIndex++;
+              }
             }
 
             Boolean downloadPodcasts = true;
