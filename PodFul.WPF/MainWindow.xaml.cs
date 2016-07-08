@@ -152,11 +152,6 @@ namespace PodFul.WPF
       this.FeedList.SelectedIndex = index;
     }
 
-    private void syncButton_Click(Object sender, RoutedEventArgs e)
-    {
-
-    }
-
     private Int32 SyncWithExistingFiles(Feed feed)
     {
       var syncCount = 0;

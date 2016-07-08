@@ -32,7 +32,6 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
           <Button Click="addButton_Click">Add</Button>
           <Button Name="RemoveButton" Click="removeButton_Click" IsEnabled="False">Remove</Button>
-          <Button Click="syncButton_Click" Visibility="Hidden">Sync</Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
