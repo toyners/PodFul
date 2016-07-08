@@ -16,21 +16,21 @@ namespace PodFul.WPF
       InitializeComponent();
     }
 
-    public String FeedDirectory { get { return this.DirectoryPath.Text; } }
+    public String FeedDirectory { get; private set; }
 
     public String FeedURL { get { return this.URL.Text; } }
 
     private void okButton_Click(Object sender, RoutedEventArgs e)
     {
-      var directoryPath = this.DirectoryPath.Text;
-      if (!directoryPath.EndsWith(@"\", StringComparison.Ordinal))
+      this.FeedDirectory = this.DirectoryPath.Text;
+      if (!this.FeedDirectory.EndsWith(@"\", StringComparison.Ordinal))
       {
-        directoryPath += @"\";
+        this.FeedDirectory += @"\";
       }
 
-      if (!Directory.Exists(directoryPath))
+      if (!Directory.Exists(this.FeedDirectory))
       {
-        var message = String.Format("Directory '{0}' does not exist. Create it now?", directoryPath);
+        var message = String.Format("Directory '{0}' does not exist. Create it now?", this.FeedDirectory);
         var createDirectory = MessageBox.Show(message, "Directory does not exist", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Yes);
 
         if (createDirectory == MessageBoxResult.Cancel)
@@ -40,7 +40,7 @@ namespace PodFul.WPF
 
         if (createDirectory == MessageBoxResult.Yes)
         {
-          Directory.CreateDirectory(directoryPath);
+          Directory.CreateDirectory(this.FeedDirectory);
         }
       }
 
