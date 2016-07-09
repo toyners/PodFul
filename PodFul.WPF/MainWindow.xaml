@@ -8,11 +8,11 @@
         Title="MainWindow" Height="600" Width="800" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
-  <Window.Resources>
-    <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
-    <local:TextTruncator x:Key="TextTruncator" />
-  </Window.Resources>
-  <DockPanel Margin="5">
+    <Window.Resources>
+        <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
+        <local:TextTruncator x:Key="TextTruncator" />
+    </Window.Resources>
+    <DockPanel Margin="5">
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
@@ -30,14 +30,14 @@
         </Grid.Resources>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-          <Button Click="addButton_Click">Add</Button>
-          <Button Name="RemoveButton" Click="removeButton_Click" IsEnabled="False">Remove</Button>
+          <Button Click="AddFeed_Click">Add</Button>
+          <Button Name="RemoveButton" Click="RemoveFeed_Click" IsEnabled="False">Remove</Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
-          <Button Click="SettingsButton_Click">Settings</Button>
-          <Button Name="DownloadButton" Click="downloadButton_Click" IsEnabled="False">Download</Button>
-          <Button Name="ScanButton" Click="scanButton_Click" IsEnabled="False">Scan</Button>
+          <Button Click="Settings_Click">Settings</Button>
+          <Button Name="DownloadButton" Click="Download_Click" IsEnabled="False">Download</Button>
+          <Button Name="ScanButton" Click="Scan_Click" IsEnabled="False">Scan</Button>
         </StackPanel>
       </Grid>
     </Border>
@@ -51,6 +51,15 @@
         <ScrollViewer VerticalScrollBarVisibility="Visible">
           <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Download Podcasts ..." Click="Download_Click" />
+                    <MenuItem Header="Remove ..." Click="RemoveFeed_Click" />
+                    <MenuItem Header="Scan" Click="ScanFeed_Click"/>
+                    <Separator />
+                    <MenuItem Header="Properties" Click="Properties_Click" />
+                </ContextMenu>                
+            </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <Grid Margin="0,2">

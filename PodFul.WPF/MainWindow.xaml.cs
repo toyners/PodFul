@@ -68,7 +68,7 @@ namespace PodFul.WPF
         libraryVersion.Build);
     }
 
-    private void addButton_Click(Object sender, RoutedEventArgs e)
+    private void AddFeed_Click(Object sender, RoutedEventArgs e)
     {
       var addFeedWindow = new AddFeedWindow();
       var dialogResult = addFeedWindow.ShowDialog();
@@ -117,7 +117,7 @@ namespace PodFul.WPF
       return Directory.GetFiles(feed.Directory, "*.mp3").Length;
     }
 
-    private void removeButton_Click(Object sender, RoutedEventArgs e)
+    private void RemoveFeed_Click(Object sender, RoutedEventArgs e)
     {
       var dialogResult = MessageBox.Show(String.Format("Remove '{0}'?", this.currentFeed.Title), "Confirm Removal", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
       if (dialogResult == MessageBoxResult.No)
@@ -175,14 +175,14 @@ namespace PodFul.WPF
       return syncCount;
     }
 
-    private void SettingsButton_Click(Object sender, RoutedEventArgs e)
+    private void Settings_Click(Object sender, RoutedEventArgs e)
     {
       var settingsWindow = new SettingsWindow();
 
       settingsWindow.ShowDialog();  
     }
 
-    private void scanButton_Click(Object sender, RoutedEventArgs e)
+    private void Scan_Click(Object sender, RoutedEventArgs e)
     {
       var selectionWindow = new SelectionWindow(this.feedCollection.Feeds);
       var startScanning = selectionWindow.ShowDialog();
@@ -206,7 +206,7 @@ namespace PodFul.WPF
       processingWindow.ShowDialog();
     }
 
-    private void downloadButton_Click(Object sender, RoutedEventArgs e)
+    private void Download_Click(Object sender, RoutedEventArgs e)
     {
       this.DownloadPodcasts();
     }
@@ -271,6 +271,28 @@ namespace PodFul.WPF
       }
 
       e.Handled = true;
+    }
+
+    private void ScanFeed_Click(Object sender, RoutedEventArgs e)
+    {
+      var feedIndexes = new Queue<Int32>();
+      feedIndexes.Enqueue(this.FeedList.Items.IndexOf(this.currentFeed));
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
+      var processingWindow = new ProcessingWindow(feedScanner);
+
+      guiLogger.PostMessage = processingWindow.PostMessage;
+      feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
+      feedScanner.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
+      feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
+      feedScanner.SetProgressEvent = processingWindow.SetProgressEventHandler;
+      feedScanner.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
+
+      processingWindow.ShowDialog();
+    }
+
+    private void Properties_Click(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
     }
   }
 }
