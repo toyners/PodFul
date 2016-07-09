@@ -50,7 +50,7 @@
       <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
           <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
-                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick">
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <Grid Margin="0,2">

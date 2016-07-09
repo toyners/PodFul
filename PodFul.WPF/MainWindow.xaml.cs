@@ -262,5 +262,13 @@ namespace PodFul.WPF
 
       this.currentFeed = feed;
     }
+
+    private void FeedList_MouseDoubleClick(Object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+      if (this.currentFeed != null)
+      {
+        this.DownloadPodcasts();
+      }
+    }
   }
 }
