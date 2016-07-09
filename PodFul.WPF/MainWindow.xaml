@@ -53,11 +53,11 @@
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick">
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Download Podcasts ..." Click="Download_Click" />
-                    <MenuItem Header="Remove ..." Click="RemoveFeed_Click" />
-                    <MenuItem Header="Scan" Click="ScanFeed_Click"/>
+                    <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />
+                    <MenuItem Header="_Remove ..." Click="RemoveFeed_Click" />
+                    <MenuItem Header="_Scan" Click="ScanFeed_Click"/>
                     <Separator />
-                    <MenuItem Header="Properties" Click="Properties_Click" />
+                    <MenuItem Header="_Properties" Click="Properties_Click" />
                 </ContextMenu>                
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
