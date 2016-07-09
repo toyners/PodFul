@@ -8,6 +8,9 @@
         Title="SelectionWindow" Height="600" Width="800" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
+  <Window.Resources>
+    <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
+  </Window.Resources>
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
@@ -46,9 +49,9 @@
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
-          
+
           <DataGridTextColumn Header="File Size" Binding="{Binding FileSize}"/>
-          <DataGridTextColumn Header="Download Date" Binding="{Binding DownloadDate}"/>
+          <DataGridTextColumn Header="Download Date" Binding="{Binding Path=DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}"/>
         </DataGrid.Columns>
       </DataGrid>
     </Border>

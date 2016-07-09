@@ -8,11 +8,11 @@
         Title="MainWindow" Height="600" Width="800" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
-    <Window.Resources>
-        <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
-        <local:TextTruncator x:Key="TextTruncator" />
-    </Window.Resources>
-    <DockPanel Margin="5">
+  <Window.Resources>
+    <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
+    <local:TextTruncator x:Key="TextTruncator" />
+  </Window.Resources>
+  <DockPanel Margin="5">
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
@@ -52,13 +52,13 @@
           <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick">
             <ListBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />
-                    <MenuItem Header="_Remove ..." Click="RemoveFeed_Click" />
-                    <MenuItem Header="_Scan" Click="ScanFeed_Click"/>
-                    <Separator />
-                    <MenuItem Header="_Properties" Click="Properties_Click" />
-                </ContextMenu>                
+              <ContextMenu>
+                <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />
+                <MenuItem Header="_Remove ..." Click="RemoveFeed_Click" />
+                <MenuItem Header="_Scan" Click="ScanFeed_Click"/>
+                <Separator />
+                <MenuItem Header="_Properties" Click="Properties_Click" />
+              </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
               <DataTemplate>
@@ -76,7 +76,7 @@
                         </TextBlock.Inlines>
                       </TextBlock>
                       <TextBlock Margin="5,0,0,0" Text="{Binding Path=CreationDateTime, Converter={StaticResource CreationDateTimeConverter}}" />
-                      
+
                       <TextBlock Margin="5,0,0,0">
                         <TextBlock.Text>
                           <MultiBinding StringFormat="Podcasts: {0}">
@@ -85,7 +85,7 @@
                         </TextBlock.Text>
                       </TextBlock>
                     </StackPanel>
-                    
+
                     <TextBlock Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=250}"
                                TextWrapping="WrapWithOverflow"/>
                   </StackPanel>
