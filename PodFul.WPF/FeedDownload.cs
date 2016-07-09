@@ -46,8 +46,8 @@ namespace PodFul.WPF
     protected override void OnSuccessfulDownload(Podcast podcast, String filePath)
     {
       this.log.Message("Completed.");
-      this.log.Message(String.Empty); //Blank line to break up text flow
       this.fileDeliverer.Deliver(podcast, filePath);
+      this.log.Message(String.Empty); //Blank line to break up text flow
     }
   }
 }

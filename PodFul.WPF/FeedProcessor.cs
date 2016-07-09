@@ -80,11 +80,7 @@ namespace PodFul.WPF
         this.log.Message(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 
-      podcastDownload.OnSuccessfulDownload += (podcast, filePath) =>
-      {
-        this.log.Message("Completed.");
-        this.fileDeliverer.Deliver(podcast, filePath);
-      };
+      podcastDownload.OnSuccessfulDownload += OnSuccessfulDownload;
 
       podcastDownload.OnException += (podcast, exception) =>
       {
@@ -107,7 +103,11 @@ namespace PodFul.WPF
       return podcastDownload;
     }
 
-    protected virtual void OnSuccessfulDownload(Podcast podcast, String filePath) { }
+    protected virtual void OnSuccessfulDownload(Podcast podcast, String filePath)
+    {
+      this.log.Message("Completed.");
+      this.fileDeliverer.Deliver(podcast, filePath);
+    }
 
     private void UpdateProgessEventHandler(Int32 bytesWrittenToFile)
     {
