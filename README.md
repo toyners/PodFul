@@ -13,4 +13,9 @@
 3. Special character codes, HTML tags removed or replaced in descriptions.
 4. Multi-byte characters in descriptions handled correctly.
 5. Logging improved.
-6. Various bugfixes
+6. Various bugfixes.
+
+## 2.1.1 (1.2)
+1. Fixed bug where exceptions thrown in feed scanning thread were not being displayed to the user on screen or in the log.
+2. Fixed bug where syncing podcasts while adding a feed was not working.
+3. Fixed bug when updating a feed that has no podcasts. 
