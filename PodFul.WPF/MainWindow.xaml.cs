@@ -269,6 +269,8 @@ namespace PodFul.WPF
       {
         this.DownloadPodcasts();
       }
+
+      e.Handled = true;
     }
   }
 }
