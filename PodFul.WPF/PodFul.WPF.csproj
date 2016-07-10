@@ -77,6 +77,9 @@
     <Compile Include="DownloadDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
     <Compile Include="FeedProcessor.cs" />
+    <Compile Include="PropertiesWindow.xaml.cs">
+      <DependentUpon>PropertiesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TextTruncator.cs" />
     <Compile Include="FeedDownload.cs" />
     <Compile Include="FeedScanner.cs" />
@@ -119,6 +122,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ProcessingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PropertiesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

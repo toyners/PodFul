@@ -292,7 +292,8 @@ namespace PodFul.WPF
 
     private void Properties_Click(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      var propertiesWindow = new PropertiesWindow(this.currentFeed);
+      propertiesWindow.ShowDialog();
     }
   }
 }
