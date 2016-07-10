@@ -13,6 +13,7 @@ type Feed =
         ImageFileName : string;
         Podcasts : Podcast[];
         CreationDateTime : DateTime
+        UpdatedDateTime : DateTime
     }
 
     with
@@ -27,6 +28,20 @@ type Feed =
                 ImageFileName = imageFileName
                 Podcasts = original.Podcasts
                 CreationDateTime = original.CreationDateTime
+                UpdatedDateTime = original.UpdatedDateTime
+            }
+
+        static member SetUpdatedDate date original =
+            {
+                Title = original.Title
+                Description = original.Description
+                Website = original.Website
+                Directory = original.Directory
+                URL = original.URL
+                ImageFileName = original.ImageFileName
+                Podcasts = original.Podcasts
+                CreationDateTime = original.CreationDateTime
+                UpdatedDateTime = date
             }
 
         override x.Equals other = 

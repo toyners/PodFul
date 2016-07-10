@@ -181,7 +181,7 @@ module public FeedFunctions =
             newIndex <- newIndex + 1
         newFeed
 
-    let private createFeedRecord url directoryPath (document : XDocument) : Feed =
+    let private createFeedRecord url directoryPath creationDate (document : XDocument) : Feed =
         let channel = document.Element(xn "rss").Element(xn "channel")
         let imageFileURL = getImageForChannel channel
 
@@ -193,11 +193,15 @@ module public FeedFunctions =
              URL = url
              ImageFileName = imageFileURL
              Podcasts = createPodcastArrayFromDocument document
-             CreationDateTime = DateTime.Now
+             CreationDateTime = creationDate
+             UpdatedDateTime = DateTime.MinValue
         }
 
     let public CreateFeed url directoryPath =
-        downloadDocument url |> createFeedRecord url directoryPath
+        downloadDocument url |> createFeedRecord url directoryPath DateTime.Now
 
     let public UpdateFeed (feed : Feed) : Feed = 
-        downloadDocument feed.URL |> createFeedRecord feed.URL feed.Directory |> mergeFeeds feed 
+        downloadDocument feed.URL |> 
+        createFeedRecord feed.URL feed.Directory feed.CreationDateTime |>  
+        Feed.SetUpdatedDate feed.UpdatedDateTime |> 
+        mergeFeeds feed 

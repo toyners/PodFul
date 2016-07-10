@@ -74,9 +74,9 @@ type FeedFileStorage(directoryPath : String) =
         else
             String.Empty
 
-    member private this.getCreationDateTime (fields : string[]) : DateTime =
-        if fields.Length > 6 then
-            DateTime.Parse(fields.[6])
+    member private this.getDateTimeAt (fields : string[], index) : DateTime =
+        if fields.Length > index then
+            DateTime.Parse(fields.[index])
         else
             DateTime.MinValue
 
@@ -92,7 +92,8 @@ type FeedFileStorage(directoryPath : String) =
             URL = fields.[3]
             Description = fields.[4]
             ImageFileName = this.getImageFileName fields
-            CreationDateTime = this.getCreationDateTime fields
+            CreationDateTime = this.getDateTimeAt(fields, 6)
+            UpdatedDateTime = this.getDateTimeAt(fields, 7)
             Podcasts = List.unfold this.getPodcastFromFile (reader) |> List.toArray
         }
 
@@ -100,7 +101,7 @@ type FeedFileStorage(directoryPath : String) =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName + "|" + feed.CreationDateTime.ToString());
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName + "|" + feed.CreationDateTime.ToString() + "|" + feed.UpdatedDateTime.ToString());
 
         for podcast in feed.Podcasts do
             writer.WriteLine(podcast.Title + "|" + 

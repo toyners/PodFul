@@ -110,6 +110,7 @@ namespace PodFul.WPF
             }
             else
             {
+              newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
               var feedReport = podcastIndexes.Count + " podcast" +
                 (podcastIndexes.Count != 1 ? "s" : String.Empty) + " found";
               var downloadingReport = (downloadPodcasts ? String.Empty : " (Downloading skipped)");
