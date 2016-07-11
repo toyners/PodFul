@@ -8,58 +8,69 @@
         Title="Properties" Height="300" Width="300"
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
-  <Grid Margin="0">
-    <Grid.RowDefinitions>
-      <RowDefinition />
-      <RowDefinition />
-      <RowDefinition />
-      <RowDefinition />
-      <RowDefinition />
-      <RowDefinition />
-      <RowDefinition />
-      <RowDefinition />
-      <RowDefinition />
-    </Grid.RowDefinitions>
+  <Window.Resources>
+    <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
+  </Window.Resources>
+  <DockPanel>
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,">
+      <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,2.5,2.5,2.5">
+        <Button Name="CloseButton" IsDefault="True" Padding="2.5" Width="70"  
+              VerticalContentAlignment="Center">Close</Button>
+      </StackPanel>
+    </Border>
+    <Border Margin="0,0,2.5,2.5" BorderBrush="Black" BorderThickness="1">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
 
-    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-      <Label Height="28" VerticalAlignment="Center">Title:</Label>
-      <TextBlock Height="28" Text="Hello"/>
-      <!--{Binding Title}-->
-    </StackPanel>
-    
-    <StackPanel Grid.Row="1" Orientation="Horizontal">
-      <Label Margin="0" Height="28" VerticalAlignment="Center">Description:</Label>
-      <TextBlock Margin="0" Height="28" VerticalAlignment="Center" Text="{Binding Description}" />
-    </StackPanel>
-    
-    <StackPanel Grid.Row="2" Orientation="Horizontal">
-      <Label Margin="0" Height="28" VerticalAlignment="Center">Website:</Label>
-      <TextBlock Margin="0" Height="28" VerticalAlignment="Center" Text="{Binding Website}" />
-    </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Label VerticalAlignment="Center">Title:</Label>
+          <TextBlock  Text="{Binding Title}" VerticalAlignment="Center"/>
+        </StackPanel>
 
-    <StackPanel Grid.Row="3" Orientation="Horizontal">
-      <Label Margin="0" Height="28" VerticalAlignment="Center">Directory:</Label>
-      <TextBlock Margin="0" Height="28" VerticalAlignment="Center" Text="{Binding Directory}" />
-    </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+          <Label VerticalAlignment="Center">Description:</Label>
+          <TextBlock VerticalAlignment="Center" Text="{Binding Description}" />
+        </StackPanel>
 
-    <StackPanel Grid.Row="4" Orientation="Horizontal">
-      <Label Margin="0" Height="28" VerticalAlignment="Center">URL:</Label>
-      <TextBlock Margin="0" Height="28" VerticalAlignment="Center" Text="{Binding URL}" />
-    </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+          <Label VerticalAlignment="Center">Website:</Label>
+          <TextBlock VerticalAlignment="Center" Text="{Binding Website}" />
+        </StackPanel>
 
-    <StackPanel Grid.Row="5" Orientation="Horizontal">
-      <Label Margin="0" Height="28" VerticalAlignment="Center">Podcasts:</Label>
-      <TextBlock Margin="0" Height="28" VerticalAlignment="Center" Text="{Binding Podcasts.Length}" />
-    </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+          <Label VerticalAlignment="Center">Directory:</Label>
+          <TextBlock VerticalAlignment="Center" Text="{Binding Directory}" />
+        </StackPanel>
 
-    <StackPanel Grid.Row="6" Orientation="Horizontal">
-      <Label Margin="0" Height="28" VerticalAlignment="Center">Created:</Label>
-      <TextBlock Margin="0" Height="28" VerticalAlignment="Center" Text="{Binding CreationDateTime}" />
-    </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+          <Label VerticalAlignment="Center">URL:</Label>
+          <TextBlock VerticalAlignment="Center" Text="{Binding URL}" />
+        </StackPanel>
 
-    <StackPanel Grid.Row="7" Orientation="Horizontal">
-      <Label Margin="0" Height="28" VerticalAlignment="Center">Updated:</Label>
-      <TextBlock Margin="0" Height="28" VerticalAlignment="Center" Text="{Binding UpdatedDateTime}" />
-    </StackPanel>
-  </Grid>
+        <StackPanel Grid.Row="5" Orientation="Horizontal">
+          <Label VerticalAlignment="Center">Podcasts:</Label>
+          <TextBlock VerticalAlignment="Center" Text="{Binding Podcasts.Length}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal">
+          <Label VerticalAlignment="Center">Created:</Label>
+          <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource CreationDateTimeConverter}}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="7" Orientation="Horizontal">
+          <Label VerticalAlignment="Center">Updated:</Label>
+          <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource CreationDateTimeConverter}}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </DockPanel>
 </Window>
