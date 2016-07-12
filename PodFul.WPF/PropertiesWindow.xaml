@@ -15,10 +15,10 @@
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,2.5,2.5,2.5">
         <Button Name="CloseButton" IsDefault="True" Padding="2.5" Width="70"  
-              VerticalContentAlignment="Center">Close</Button>
+              VerticalContentAlignment="Center" Click="CloseButton_Click">Close</Button>
       </StackPanel>
     </Border>
-    <Border Margin="0,0,2.5,2.5" BorderBrush="Black" BorderThickness="1">
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,2.5" >
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition />

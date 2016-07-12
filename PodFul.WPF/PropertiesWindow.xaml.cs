@@ -14,5 +14,10 @@ namespace PodFul.WPF
       InitializeComponent();
       this.DataContext = feed;
     }
+
+    private void CloseButton_Click(System.Object sender, RoutedEventArgs e)
+    {
+      this.Close();
+    }
   }
 }
