@@ -18,6 +18,8 @@ type FeedFunctions_IntergrationTests() =
     let finalRSSFileName = "Final RSSFile.rss"
     let initialRSSWithMaximumPodcastsFileName = "Initial RSSFile with Maximum Podcasts.rss"
     let finalRSSWithMaximumPodcastsFileName = "Final RSSFile with Maximum Podcasts.rss"
+    let rssWithNoPodcasts = "No Podcasts.rss"
+    let rssWithOnePodcast = "One Podcast.rss"
 
     let feedTitle = "Feed Title"
     let feedDescription = "Feed Description"
@@ -163,3 +165,29 @@ type FeedFunctions_IntergrationTests() =
 
         finalFeed.Podcasts.[1].DownloadDate |> should equal initialFeed.Podcasts.[0].DownloadDate
         finalFeed.Podcasts.[2].DownloadDate |> should equal initialFeed.Podcasts.[1].DownloadDate
+
+    [<Test>]
+    member public this.``Update feed with no podcasts from RSS file with no podcasts``() =
+        let initialInputPath = workingDirectory + rssWithNoPodcasts
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
+        let finalFeed = FeedFunctions.UpdateFeed initialFeed
+
+        finalFeed |> should equal initialFeed
+        finalFeed.Podcasts.Length |> should equal 0
+
+    [<Test>]
+    member public this.``Update feed with no podcasts from RSS file with podcasts``() =
+        let initialInputPath = workingDirectory + rssWithNoPodcasts
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithOnePodcast, initialInputPath)
+        let finalFeed = FeedFunctions.UpdateFeed initialFeed
+
+        finalFeed |> should equal initialFeed
+        finalFeed.Podcasts.Length |> should equal 1

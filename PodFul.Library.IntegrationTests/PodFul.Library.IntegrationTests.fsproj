@@ -69,6 +69,8 @@
     <EmbeddedResource Include="RSSFile with Empty Image 2.rss" />
     <EmbeddedResource Include="RSSFile with Empty URL 1.rss" />
     <EmbeddedResource Include="Initial RSSFile.rss" />
+    <EmbeddedResource Include="One Podcast.rss" />
+    <EmbeddedResource Include="No Podcasts.rss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
