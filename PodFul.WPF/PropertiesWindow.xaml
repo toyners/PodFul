@@ -12,7 +12,7 @@
     <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
   </Window.Resources>
   <DockPanel>
-    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,2.5,2.5,2.5">
         <Button Name="CloseButton" IsDefault="True" Padding="2.5" Width="70"  
               VerticalContentAlignment="Center">Close</Button>
