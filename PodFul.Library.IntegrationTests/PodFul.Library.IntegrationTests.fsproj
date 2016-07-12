@@ -59,6 +59,8 @@
     <EmbeddedResource Include="Final RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
     <EmbeddedResource Include="Initial RSSFile with Maximum Podcasts.rss" />
+    <EmbeddedResource Include="No Podcasts.rss" />
+    <EmbeddedResource Include="One Podcast.rss" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <EmbeddedResource Include="RSSFile.rss" />
