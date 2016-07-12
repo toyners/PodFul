@@ -167,9 +167,7 @@ module public FeedFunctions =
 
         let mutable newIndex = 0
         let mutable oldIndex = 0
-        while newIndex < newFeed.Podcasts.Length && 
-          oldIndex < oldFeed.Podcasts.Length &&
-          oldFeed.Podcasts.[oldIndex] <> newFeed.Podcasts.[newIndex] do
+        while newIndex < newFeed.Podcasts.Length && oldFeed.Podcasts.[oldIndex] <> newFeed.Podcasts.[newIndex] do
             newIndex <- newIndex + 1
 
         while oldIndex < oldFeed.Podcasts.Length && newIndex < newFeed.Podcasts.Length do
