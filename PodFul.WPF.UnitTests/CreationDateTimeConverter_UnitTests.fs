@@ -25,14 +25,14 @@ type CreationDateTimeConverter_UnitTests() =
         let converter = new CreationDateTimeConverter()
         let value = DateTime.Now - TimeSpan.FromHours(1.0)
         let resultTime = value.ToString("HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal ("Last Updated: Today at " + resultTime)
+        converter.Convert(value, null, null, null) |> should equal ("Today at " + resultTime)
 
      [<Test>]
      member public this.``Value is a day ago so string starts with Yesterday.``() =
         let converter = new CreationDateTimeConverter()
         let value = DateTime.Now - TimeSpan.FromDays(1.0)
         let resultTime = value.ToString("HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal ("Last Updated: Yesterday at " + resultTime)
+        converter.Convert(value, null, null, null) |> should equal ("Yesterday at " + resultTime)
 
      [<Test>]
      [<TestCase(2)>]
@@ -46,7 +46,7 @@ type CreationDateTimeConverter_UnitTests() =
         let value = DateTime.Now - TimeSpan.FromDays(dayCount)
         let dayName = value.ToString("dddd")
         let resultTime = value.ToString("HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal ("Last Updated: " + dayName + " at " + resultTime)
+        converter.Convert(value, null, null, null) |> should equal (dayName + " at " + resultTime)
 
      [<Test>]
      [<TestCase(8)>]
@@ -55,4 +55,4 @@ type CreationDateTimeConverter_UnitTests() =
         let converter = new CreationDateTimeConverter()
         let value = DateTime.Now - TimeSpan.FromDays(dayCount)
         let resultDateTime = value.ToString("dd-MMM-yyyy HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal ("Last Updated: " + resultDateTime)
+        converter.Convert(value, null, null, null) |> should equal (resultDateTime)

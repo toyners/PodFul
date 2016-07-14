@@ -30,20 +30,20 @@ namespace PodFul.WPF
 
       if (timeSpan.Days == 0)
       {
-        return String.Format("Last Updated: Today at {0:HH:mm:ss}", creationDateTime);
+        return String.Format("Today at {0:HH:mm:ss}", creationDateTime);
       }
 
       if (timeSpan.Days == 1)
       {
-        return String.Format("Last Updated: Yesterday at {0:HH:mm:ss}", creationDateTime);
+        return String.Format("Yesterday at {0:HH:mm:ss}", creationDateTime);
       }
 
       if (timeSpan.Days < 8)
       {
-        return String.Format("Last Updated: {0:dddd} at {0:HH:mm:ss}", creationDateTime);
+        return String.Format("{0:dddd} at {0:HH:mm:ss}", creationDateTime);
       }
 
-      return String.Format("Last Updated: {0:dd-MMM-yyyy HH:mm:ss}", creationDateTime);
+      return String.Format("{0:dd-MMM-yyyy HH:mm:ss}", creationDateTime);
     }
 
     public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)

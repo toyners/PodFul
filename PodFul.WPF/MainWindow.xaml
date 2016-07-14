@@ -75,7 +75,12 @@
                           <Run FontWeight="Bold" Text="{Binding Title, Mode=OneWay}" />
                         </TextBlock.Inlines>
                       </TextBlock>
-                      <TextBlock Margin="5,0,0,0" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource CreationDateTimeConverter}}" />
+                      <TextBlock Margin="5,0,0,0">
+                        <TextBlock.Inlines>
+                          <Run Text="Last Updated: "/>
+                          <Run Text="{Binding UpdatedDateTime, Converter={StaticResource CreationDateTimeConverter}, Mode=OneWay}" />
+                        </TextBlock.Inlines>
+                      </TextBlock>
 
                       <TextBlock Margin="5,0,0,0">
                         <TextBlock.Text>
