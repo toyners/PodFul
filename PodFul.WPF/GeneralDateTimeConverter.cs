@@ -10,7 +10,7 @@ namespace PodFul.WPF
   /// Converts datetime to user friendly string for use with the feed creation time.
   /// </summary>
   [ValueConversion(typeof(DateTime), typeof(String))]
-  public class CreationDateTimeConverter : IValueConverter
+  public class GeneralDateTimeConverter : IValueConverter
   {
     public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
     {

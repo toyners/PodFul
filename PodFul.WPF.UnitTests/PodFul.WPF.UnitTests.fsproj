@@ -52,7 +52,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="CreationDateTimeConverter_UnitTests.fs" />
+    <Compile Include="GeneralDateTimeConverter_UnitTests.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <Compile Include="TextTruncator_UnitTests.fs" />

@@ -9,7 +9,7 @@
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
   <Window.Resources>
-    <local:CreationDateTimeConverter x:Key="CreationDateTimeConverter" />
+    <local:GeneralDateTimeConverter x:Key="CreationDateTimeConverter" />
     <local:TextTruncator x:Key="TextTruncator" />
   </Window.Resources>
   <DockPanel Margin="5">

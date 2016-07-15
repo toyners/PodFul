@@ -73,7 +73,7 @@
     <Compile Include="AddDeliveryPointWindow.xaml.cs">
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CreationDateTimeConverter.cs" />
+    <Compile Include="GeneralDateTimeConverter.cs" />
     <Compile Include="DownloadDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
     <Compile Include="FeedProcessor.cs" />
