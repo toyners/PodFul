@@ -124,8 +124,12 @@ type FeedFileStorage(directoryPath : String) =
             
             if feeds.Contains(feed) then
                 failwith "Feed already in storage."
+            
+            let filePath = directoryPath + 
+                           feed.Title.Substitute(this.fileNameSubstitutions) + "_" +
+                           System.Guid.NewGuid().ToString() + 
+                           feedFileExtension;
 
-            let filePath = directoryPath + feeds.Length.ToString() + "_" + feed.Title.Substitute(this.fileNameSubstitutions) + feedFileExtension;
             this.writeFeedToFile feed filePath
             feeds <- Array.append feeds [|feed|]
             feedPaths.Add(feed, filePath)
