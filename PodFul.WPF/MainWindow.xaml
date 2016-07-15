@@ -9,7 +9,7 @@
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
   <Window.Resources>
-    <local:GeneralDateTimeConverter x:Key="CreationDateTimeConverter" />
+    <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
     <local:TextTruncator x:Key="TextTruncator" />
   </Window.Resources>
   <DockPanel Margin="5">
@@ -78,7 +78,7 @@
                       <TextBlock Margin="5,0,0,0">
                         <TextBlock.Inlines>
                           <Run Text="Last Updated: "/>
-                          <Run Text="{Binding UpdatedDateTime, Converter={StaticResource CreationDateTimeConverter}, Mode=OneWay}" />
+                          <Run Text="{Binding UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
                         </TextBlock.Inlines>
                       </TextBlock>
 
