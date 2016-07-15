@@ -48,9 +48,10 @@
       </Grid.ColumnDefinitions>
 
       <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <ScrollViewer Name="FeedList_Scroller" VerticalScrollBarVisibility="Visible" >
           <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
-                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick">
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick"
+                   PreviewMouseWheel="FeedList_MouseWheel">
             <ListBox.ContextMenu>
               <ContextMenu>
                 <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />

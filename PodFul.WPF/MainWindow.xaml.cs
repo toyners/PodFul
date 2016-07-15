@@ -295,5 +295,17 @@ namespace PodFul.WPF
       var propertiesWindow = new PropertiesWindow(this.currentFeed);
       propertiesWindow.ShowDialog();
     }
+
+    private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+      if (e.Delta < 0)
+      {
+        this.FeedList_Scroller.LineDown();
+      }
+      else
+      {
+        this.FeedList_Scroller.LineUp();
+      }
+    }
   }
 }
