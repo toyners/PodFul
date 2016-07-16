@@ -82,7 +82,7 @@ type FeedFileStorage_IntergrationTests() =
         feedStorage.Add(feed)
 
         Directory.GetFiles(workingDirectory, "*").Length |> should equal 1
-        Directory.GetFiles(workingDirectory, "0_" + feed.Title + ".feed").Length |> should equal 1
+        Directory.GetFiles(workingDirectory, feed.Title + "_*.feed").Length |> should equal 1
 
     [<Test>]
     member public this.``Adding a feed adds it to the feed storage``() = 
@@ -155,7 +155,7 @@ type FeedFileStorage_IntergrationTests() =
         feedStorage.Open()
         feedStorage.Add(originalFeed)
 
-        let filePath = Directory.GetFiles(workingDirectory, "0_" + originalFeed.Title + ".feed").[0]
+        let filePath = Directory.GetFiles(workingDirectory, originalFeed.Title + "_*.feed").[0]
         let fileInfo = new FileInfo(filePath)
         let addedDateTime = fileInfo.LastWriteTime
 
@@ -176,7 +176,7 @@ type FeedFileStorage_IntergrationTests() =
         feedStorage.Update(updatedFeed)
 
         Directory.GetFiles(workingDirectory, "*").Length |> should equal 2
-        Directory.GetFiles(workingDirectory, "0_" + originalFeed.Title + ".feed.old").Length |> should equal 1
+        Directory.GetFiles(workingDirectory, originalFeed.Title + "_*.feed.old").Length |> should equal 1
 
     [<Test>]
     member public this.``Updating the feed updates the feed in storage``() =
