@@ -44,7 +44,11 @@ namespace PodFul.WPF
     public void UpdateFeed(Int32 index, Feed feed)
     {
       this.feedStorage.Update(feed);
-      this.Feeds[index] = feed;
+
+      // Triggering changed event on the ObservableCollection by
+      // removing and adding since reassigning does not work.
+      this.Feeds.RemoveAt(index); 
+      this.Feeds.Insert(index, feed);
     }
 
     public void UpdateFeed(Feed feed)
