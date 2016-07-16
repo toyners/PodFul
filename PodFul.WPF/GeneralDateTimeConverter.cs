@@ -23,7 +23,7 @@ namespace PodFul.WPF
 
       if (creationDateTime == DateTime.MinValue)
       {
-        return String.Empty;
+        return "<Never>";
       }
 
       var timeSpan = DateTime.Now - creationDateTime;

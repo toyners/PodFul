@@ -16,9 +16,9 @@ type GeneralDateTimeConverter_UnitTests() =
         converter.Convert(new Object(), null, null, null) |> should equal String.Empty;
 
      [<Test>]
-     member public this.``Value is DateTime.MinValue so empty string is returned.``() =
+     member public this.``Value is DateTime MinValue so Never is returned.``() =
         let converter = new GeneralDateTimeConverter()
-        converter.Convert(new Object(), null, null, null) |> should equal String.Empty;
+        converter.Convert(DateTime.MinValue, null, null, null) |> should equal "<Never>";
 
      [<Test>]
      member public this.``Value is an hour ago so string starts with Today.``() =
