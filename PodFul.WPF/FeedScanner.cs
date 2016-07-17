@@ -34,7 +34,7 @@ namespace PodFul.WPF
       Task task = Task.Factory.StartNew(() =>
       {
         this.SetCancelButtonStateEvent?.Invoke(true);
-        var podcastIndexes = new Queue<Int32>();
+        var podcastIndexes = new List<Int32>();
         String scanReport = null;
 
         while (indexes.Count > 0)
@@ -70,7 +70,7 @@ namespace PodFul.WPF
             {
               for (Int32 i = 0; i < newFeed.Podcasts.Length; i++)
               {
-                podcastIndexes.Enqueue(i);
+                podcastIndexes.Add(i);
               }
             }
             else
@@ -79,7 +79,7 @@ namespace PodFul.WPF
               var firstPodcast = feed.Podcasts[0];
               while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
               {
-                podcastIndexes.Enqueue(podcastIndex);
+                podcastIndexes.Add(podcastIndex);
                 podcastIndex++;
               }
             }
@@ -128,10 +128,15 @@ namespace PodFul.WPF
               this.log.Message("Completed.");
             });
 
-            if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
+            if (downloadPodcasts)
             {
-              this.log.Message("\r\nCANCELLED");
-              return;
+              podcastIndexes.Reverse();
+              var podcastQueue = new Queue<Int32>(podcastIndexes);
+              if (!podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastQueue))
+              {
+                this.log.Message("\r\nCANCELLED");
+                return;
+              }
             }
 
             this.log.Message(String.Empty);
