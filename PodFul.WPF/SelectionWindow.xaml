@@ -11,6 +11,7 @@
   <Window.Resources>
     <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
     <local:TextTruncator x:Key="TextTruncator" />
+    <local:FileSizeConverter x:Key="FileSizeConverter" />
   </Window.Resources>
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
@@ -71,11 +72,10 @@
                     </TextBlock>
 
                     <TextBlock Margin="5,0,0,0">
-                      <TextBlock.Text>
-                        <MultiBinding StringFormat="File Size: {0}">
-                          <Binding Path="FileSize" />
-                        </MultiBinding>
-                      </TextBlock.Text>
+                      <TextBlock.Inlines>
+                        <Run Text="File Size: " />
+                        <Run Text="{Binding FileSize, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" />
+                      </TextBlock.Inlines>
                     </TextBlock>
                   </StackPanel>
 
