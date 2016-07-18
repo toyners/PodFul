@@ -184,15 +184,12 @@ namespace PodFul.WPF
 
     private void Scan_Click(Object sender, RoutedEventArgs e)
     {
-      var selectionWindow = new SelectionWindow(this.feedCollection.Feeds);
-      var startScanning = selectionWindow.ShowDialog();
-
-      if (startScanning == null || !startScanning.Value)
+      var feedIndexes = new Queue<Int32>();
+      for (Int32 i = 0; i < this.feedCollection.Feeds.Count; i++)
       {
-        return;
+        feedIndexes.Enqueue(i);
       }
 
-      var feedIndexes = new Queue<Int32>(selectionWindow.SelectedIndexes);
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
       var processingWindow = new ProcessingWindow(feedScanner);
 

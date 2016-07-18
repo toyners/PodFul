@@ -21,15 +21,6 @@ namespace PodFul.WPF
     }
 
     #region Construction
-    public SelectionWindow(ObservableCollection<Feed> feeds)
-    {
-      var title = String.Format("{0} feed{1}", feeds.Count, (feeds.Count != 1 ? "s" : String.Empty));
-      this.InitialiseWindow(title);
-
-      this.PodcastList.ItemsSource = feeds;
-      this.PodcastList.SelectAll();
-    }
-
     public SelectionWindow(Podcast[] podcasts)
     {
       var title = String.Format("{0} podcast{1}", podcasts.Length, (podcasts.Length != 1 ? "s" : String.Empty));
@@ -85,26 +76,15 @@ namespace PodFul.WPF
 
       this.PodcastList.UnselectAll();
     }
-    
-    private void ItemGrid_SelectionChanged(Object sender, SelectionChangedEventArgs e)
-    {
-      this.startButton.IsEnabled = (sender as DataGrid).SelectedItems.Count > 0;
-    }
-
-    private void startButton_Click(Object sender, RoutedEventArgs e)
-    {
-      this.DialogResult = true;
-    }
-    #endregion
 
     private void PodcastList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
     {
-
+      this.startButton.IsEnabled = (sender as ListBox).SelectedItems.Count > 0;
     }
 
     private void PodcastList_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
     {
-
+      // Show properties
     }
 
     private void PodcastList_MouseWheel(Object sender, MouseWheelEventArgs e)
@@ -112,5 +92,11 @@ namespace PodFul.WPF
       this.PodcastList_Scroller.ScrollToVerticalOffset(this.PodcastList_Scroller.VerticalOffset - e.Delta);
       e.Handled = true;
     }
+
+    private void StartButton_Click(Object sender, RoutedEventArgs e)
+    {
+      this.DialogResult = true;
+    }
+    #endregion
   }
 }
