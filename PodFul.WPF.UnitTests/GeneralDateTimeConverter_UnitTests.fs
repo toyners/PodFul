@@ -11,6 +11,11 @@ open PodFul.WPF
 type GeneralDateTimeConverter_UnitTests() = 
      
      [<Test>]
+     member public this.``Value is null so empty string is returned.``() =
+        let converter = new GeneralDateTimeConverter()
+        converter.Convert(null, null, null, null) |> should equal String.Empty;
+
+     [<Test>]
      member public this.``Value is not of datetime type so empty string is returned.``() =
         let converter = new GeneralDateTimeConverter()
         converter.Convert(new Object(), null, null, null) |> should equal String.Empty;
