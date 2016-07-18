@@ -298,14 +298,8 @@ namespace PodFul.WPF
 
     private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
     {
-      if (e.Delta < 0)
-      {
-        this.FeedList_Scroller.LineDown();
-      }
-      else
-      {
-        this.FeedList_Scroller.LineUp();
-      }
+      this.FeedList_Scroller.ScrollToVerticalOffset(this.FeedList_Scroller.VerticalOffset - e.Delta);
+      e.Handled = true;
     }
   }
 }

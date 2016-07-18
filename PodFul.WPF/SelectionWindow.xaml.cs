@@ -109,15 +109,8 @@ namespace PodFul.WPF
 
     private void PodcastList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
-      if (e.Delta < 0)
-      {
-        this.PodcastList_Scroller.LineDown();
-      }
-      else
-      {
-        this.PodcastList_Scroller.LineUp();
-      }
-
+      this.PodcastList_Scroller.ScrollToVerticalOffset(this.PodcastList_Scroller.VerticalOffset - e.Delta);
+      e.Handled = true;
     }
   }
 }
