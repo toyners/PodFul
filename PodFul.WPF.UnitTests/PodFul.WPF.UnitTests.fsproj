@@ -57,6 +57,7 @@
     <Content Include="packages.config" />
     <Compile Include="TextTruncator_UnitTests.fs" />
     <Compile Include="DownloadDateTimeConverter_UnitTests.fs" />
+    <Compile Include="FileSizeConverter_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">
