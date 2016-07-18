@@ -13,7 +13,6 @@
     <local:TextTruncator x:Key="TextTruncator" />
   </Window.Resources>
   <DockPanel Margin="5">
-
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
         <Grid.ColumnDefinitions>

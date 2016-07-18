@@ -10,14 +10,14 @@
         Icon="baggage_cart_box_tE4_icon.ico">
   <Window.Resources>
     <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
+    <local:TextTruncator x:Key="TextTruncator" />
   </Window.Resources>
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
-
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="*" />
+          <ColumnDefinition />
+          <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" Height="50">
@@ -35,25 +35,58 @@
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
-      <DataGrid Name="ItemGrid" IsReadOnly="true" AutoGenerateColumns="False" CanUserAddRows="False" 
-                CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" 
-                CanUserSortColumns="False" SelectionChanged="ItemGrid_SelectionChanged"
-                HorizontalGridLinesBrush="Gray" VerticalGridLinesBrush="Gray">
-        <DataGrid.Columns>
-          <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="200" />
+      <ScrollViewer Name="PodcastList_Scroller" VerticalScrollBarVisibility="Visible" >
+        <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" SelectionChanged="PodcastList_SelectionChanged"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="PodcastList_MouseDoubleClick"
+                   PreviewMouseWheel="PodcastList_MouseWheel">
+          <!--<ListBox.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />
+              <MenuItem Header="_Remove ..." Click="RemoveFeed_Click" />
+              <MenuItem Header="_Scan" Click="ScanFeed_Click"/>
+              <Separator />
+              <MenuItem Header="_Properties" Click="Properties_Click" />
+            </ContextMenu>
+          </ListBox.ContextMenu>-->
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="0,2">
+                <Grid.ColumnDefinitions>
+                  <!--<ColumnDefinition Width="50" />-->
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <!--<Image Source="{Binding ImageFileName}" />-->
+                <StackPanel Grid.Column="1" Margin="2,0">
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock>
+                      <TextBlock.Inlines>
+                        <Run FontWeight="Bold" Text="{Binding Title, Mode=OneWay}" />
+                      </TextBlock.Inlines>
+                    </TextBlock>
+                    <TextBlock Margin="5,0,0,0">
+                      <TextBlock.Inlines>
+                        <Run Text="Last Download: "/>
+                        <Run Text="{Binding DownloadDate, Converter={StaticResource DownloadDateTimeConverter}, Mode=OneWay}" />
+                      </TextBlock.Inlines>
+                    </TextBlock>
 
-          <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="400">
-            <DataGridTextColumn.ElementStyle>
-              <Style>
-                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-              </Style>
-            </DataGridTextColumn.ElementStyle>
-          </DataGridTextColumn>
+                    <TextBlock Margin="5,0,0,0">
+                      <TextBlock.Text>
+                        <MultiBinding StringFormat="File Size: {0}">
+                          <Binding Path="FileSize" />
+                        </MultiBinding>
+                      </TextBlock.Text>
+                    </TextBlock>
+                  </StackPanel>
 
-          <DataGridTextColumn Header="File Size" Binding="{Binding FileSize}"/>
-          <DataGridTextColumn Header="Download Date" Binding="{Binding Path=DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}"/>
-        </DataGrid.Columns>
-      </DataGrid>
+                  <TextBlock Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=250}"
+                               TextWrapping="WrapWithOverflow"/>
+                </StackPanel>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </ScrollViewer>
     </Border>
   </DockPanel>
 </Window>

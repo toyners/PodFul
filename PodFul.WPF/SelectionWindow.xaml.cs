@@ -6,6 +6,7 @@ namespace PodFul.WPF
   using System.Collections.ObjectModel;
   using System.Windows;
   using System.Windows.Controls;
+  using System.Windows.Input;
   using PodFul.Library;
 
   /// <summary>
@@ -25,8 +26,8 @@ namespace PodFul.WPF
       var title = String.Format("{0} feed{1}", feeds.Count, (feeds.Count != 1 ? "s" : String.Empty));
       this.InitialiseWindow(title);
 
-      this.ItemGrid.ItemsSource = feeds;
-      this.ItemGrid.SelectAll();
+      this.PodcastList.ItemsSource = feeds;
+      this.PodcastList.SelectAll();
     }
 
     public SelectionWindow(Podcast[] podcasts)
@@ -34,7 +35,7 @@ namespace PodFul.WPF
       var title = String.Format("{0} podcast{1}", podcasts.Length, (podcasts.Length != 1 ? "s" : String.Empty));
       this.InitialiseWindow(title);
 
-      this.ItemGrid.ItemsSource = podcasts;
+      this.PodcastList.ItemsSource = podcasts;
     }
     #endregion
 
@@ -44,9 +45,9 @@ namespace PodFul.WPF
       get
       {
         var indexes = new List<Int32>();
-        foreach (var row in this.ItemGrid.SelectedItems)
+        foreach (var row in this.PodcastList.SelectedItems)
         {
-          indexes.Add(this.ItemGrid.Items.IndexOf(row));
+          indexes.Add(this.PodcastList.Items.IndexOf(row));
         }
 
         return indexes;
@@ -61,7 +62,7 @@ namespace PodFul.WPF
 
       this.Title = title;
 
-      this.ItemGrid.Focus();
+      this.PodcastList.Focus();
     }
 
     private void ClearButton_Click(Object sender, RoutedEventArgs e)
@@ -78,11 +79,11 @@ namespace PodFul.WPF
     {
       if (selectRowsType == SelectRowsType.All)
       {
-        this.ItemGrid.SelectAll();
+        this.PodcastList.SelectAll();
         return;
       }
 
-      this.ItemGrid.UnselectAll();
+      this.PodcastList.UnselectAll();
     }
     
     private void ItemGrid_SelectionChanged(Object sender, SelectionChangedEventArgs e)
@@ -95,5 +96,28 @@ namespace PodFul.WPF
       this.DialogResult = true;
     }
     #endregion
+
+    private void PodcastList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void PodcastList_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
+    {
+
+    }
+
+    private void PodcastList_MouseWheel(Object sender, MouseWheelEventArgs e)
+    {
+      if (e.Delta < 0)
+      {
+        this.PodcastList_Scroller.LineDown();
+      }
+      else
+      {
+        this.PodcastList_Scroller.LineUp();
+      }
+
+    }
   }
 }
