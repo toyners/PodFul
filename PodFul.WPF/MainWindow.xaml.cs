@@ -58,14 +58,10 @@ namespace PodFul.WPF
     private void DisplayTitle()
     {
       var guiVersion = Assembly.GetExecutingAssembly().GetName().Version;
-      var libraryVersion = Assembly.GetAssembly(typeof(IFeedStorage)).GetName().Version;
-      this.Title = String.Format("PodFul - v{0}.{1}.{2} (v{3}.{4}.{5})",
+      this.Title = String.Format("PodFul - v{0}.{1}.{2}",
         guiVersion.Major,
         guiVersion.Minor,
-        guiVersion.Build,
-        libraryVersion.Major,
-        libraryVersion.Minor,
-        libraryVersion.Build);
+        guiVersion.Build);
     }
 
     private void AddFeed_Click(Object sender, RoutedEventArgs e)
