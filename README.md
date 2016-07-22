@@ -33,3 +33,6 @@
 10. Scan button now scans all feeds. Scanning one feed can be done using context menu.
 11. Fixed a bug where feeds with on podcasts failed scanning next time there was new podcasts.
 12. Minor format fix in processing window when manually downloading podcasts.
+
+## 2.2.1 (1.3)
+1. Changed selection mode of podcast selection window to be classic shift/ctrl click for multiple selections.
