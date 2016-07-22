@@ -56,32 +56,47 @@
                   <!--<ColumnDefinition Width="50" />-->
                   <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                
                 <!--<Image Source="{Binding ImageFileName}" />-->
-                <StackPanel Grid.Column="1" Margin="2,0">
-                  <StackPanel Orientation="Horizontal">
+
+                <Grid Grid.Column="1">
+                  <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                  </Grid.RowDefinitions>
+
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="3*" />
+                      <ColumnDefinition Width="2*" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
                     <TextBlock>
                       <TextBlock.Inlines>
-                        <Run FontWeight="Bold" Text="{Binding Title, Mode=OneWay}" />
+                        <Run FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
                       </TextBlock.Inlines>
                     </TextBlock>
-                    <TextBlock Margin="5,0,0,0">
+
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Right">
                       <TextBlock.Inlines>
                         <Run Text="Last Download: "/>
-                        <Run Text="{Binding DownloadDate, Converter={StaticResource DownloadDateTimeConverter}, Mode=OneWay}" />
+                        <Run FontWeight="Bold" Text="{Binding DownloadDate, Converter={StaticResource DownloadDateTimeConverter}, Mode=OneWay}" />
                       </TextBlock.Inlines>
                     </TextBlock>
 
-                    <TextBlock Margin="5,0,0,0">
+                    <TextBlock Grid.Column="2" Margin="20,0,0,0" HorizontalAlignment="Left">
                       <TextBlock.Inlines>
                         <Run Text="File Size: " />
-                        <Run Text="{Binding FileSize, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" />
+                        <Run FontWeight="Bold" Text="{Binding FileSize, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" />
                       </TextBlock.Inlines>
                     </TextBlock>
-                  </StackPanel>
+                  </Grid>
 
-                  <TextBlock Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=250}"
-                               TextWrapping="WrapWithOverflow"/>
-                </StackPanel>
+                  <TextBlock Grid.Row="1"  VerticalAlignment="Top" 
+                             Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=250}"
+                             TextWrapping="WrapWithOverflow"/>
+                </Grid>
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
