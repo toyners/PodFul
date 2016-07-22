@@ -39,7 +39,7 @@
       <ScrollViewer Name="PodcastList_Scroller" VerticalScrollBarVisibility="Visible" >
         <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" SelectionChanged="PodcastList_SelectionChanged"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="PodcastList_MouseDoubleClick"
-                   PreviewMouseWheel="PodcastList_MouseWheel" SelectionMode="Multiple">
+                   PreviewMouseWheel="PodcastList_MouseWheel" SelectionMode="Extended">
           <!--<ListBox.ContextMenu>
             <ContextMenu>
               <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />
