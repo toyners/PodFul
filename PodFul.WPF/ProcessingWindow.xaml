@@ -20,7 +20,8 @@
       <Grid>
         <ProgressBar Name="Progress" Margin="5" Height="50" />
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-          <TextBlock FontSize="14" FontWeight="Bold" Name="ProgressSize"/>
+          <TextBlock FontSize="14" FontWeight="Bold" Name="ProgressMajorSize"/>
+          <TextBlock Name="ProgressMinorSize"/>
           <TextBlock Name="ProgressUnit"/>
         </StackPanel>
       </Grid>

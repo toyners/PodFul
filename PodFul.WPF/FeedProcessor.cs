@@ -24,11 +24,11 @@ namespace PodFul.WPF
 
     public Action<Boolean> SetCancelButtonStateEvent;
 
-    public Action<String, String, Boolean> InitialiseProgressEvent;
+    public Action<String, String, String, Boolean> InitialiseProgressEvent;
 
     public Action ResetProgressEvent;
 
-    public Action<String, Int32> SetProgressEvent;
+    public Action<String, String, Int32> SetProgressEvent;
 
     protected FeedProcessor(
       FeedCollection feedCollection,
@@ -50,24 +50,27 @@ namespace PodFul.WPF
     protected void InitialiseProgress(Int64 expectedFileSize = -1)
     {
       this.fileSizeNotKnown = (expectedFileSize <= 0);
-      String progressSize;
+      String progressMajorSize;
+      String progressMinorSize;
       String progressUnit;
       if (expectedFileSize > 0)
       {
-        progressSize = "0.0";
+        progressMajorSize = "0";
+        progressMinorSize = ".0";
         progressUnit = "%";
       }
       else if (expectedFileSize == 0)
       {
-        progressSize = "0.0";
+        progressMajorSize = "0";
+        progressMinorSize = ".0";
         progressUnit = "MB";
       }
       else
       {
-        progressSize = progressUnit = String.Empty;
+        progressMajorSize = progressMinorSize = progressUnit = String.Empty;
       }
 
-      this.InitialiseProgressEvent?.Invoke(progressSize, progressUnit, this.fileSizeNotKnown);
+      this.InitialiseProgressEvent?.Invoke(progressMajorSize, progressMinorSize, progressUnit, this.fileSizeNotKnown);
     }
 
     protected PodcastDownload InitialisePodcastDownload(CancellationToken cancelToken)
@@ -123,25 +126,36 @@ namespace PodFul.WPF
       }
 
       String size;
+      String majorSize;
+      String minorSize;
       if (this.fileSizeNotKnown)
       {
         var downloadedSizeInMb = this.downloadedSize / 1048576.0;
-        size = downloadedSizeInMb.ToString("0.0");
+        this.GetMajorMinorComponentsOfSize(downloadedSizeInMb, out majorSize, out minorSize);
       }
       else
       {
         if (value == 100)
         {
-          size = "100";
+          majorSize = "100";
+          minorSize = ".0";
         }
         else
         {
           var percentageValue = (Double)this.downloadedSize / this.percentageStepSize;
-          size = percentageValue.ToString("0.0");
+          this.GetMajorMinorComponentsOfSize(percentageValue, out majorSize, out minorSize);
         }
       }
 
-      this.SetProgressEvent?.Invoke(size, (Int32)value);
+      this.SetProgressEvent?.Invoke(majorSize, minorSize, (Int32)value);
+    }
+
+    private void GetMajorMinorComponentsOfSize(Double value, out String majorSize, out String minorSize)
+    {
+      var size = value.ToString("0.0");
+      Int32 index = size.IndexOf('.');
+      majorSize = size.Substring(0, index);
+      minorSize = size.Substring(index);
     }
   }
 }
