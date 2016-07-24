@@ -122,26 +122,26 @@ namespace PodFul.WPF
         value = this.downloadedSize / this.percentageStepSize;
       }
 
-      String text;
+      String size;
       if (this.fileSizeNotKnown)
       {
         var downloadedSizeInMb = this.downloadedSize / 1048576.0;
-        text = downloadedSizeInMb.ToString("0.0") + "Mb";
+        size = downloadedSizeInMb.ToString("0.0");
       }
       else
       {
         if (value == 100)
         {
-          text = "100%";
+          size = "100";
         }
         else
         {
           var percentageValue = (Double)this.downloadedSize / this.percentageStepSize;
-          text = percentageValue.ToString("0.0") + "%";
+          size = percentageValue.ToString("0.0");
         }
       }
 
-      this.SetProgressEvent?.Invoke(text, (Int32)value);
+      this.SetProgressEvent?.Invoke(size, (Int32)value);
     }
   }
 }
