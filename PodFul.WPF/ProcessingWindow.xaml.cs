@@ -12,6 +12,7 @@ namespace PodFul.WPF
   {
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
     private IFeedProcessor feedProcessor;
+    private Boolean isLoaded;
    
     public ProcessingWindow(IFeedProcessor feedProcessor)
     {
@@ -87,9 +88,14 @@ namespace PodFul.WPF
       this.feedProcessor.Cancel();
     }
 
-    private void Window_Initialized(Object sender, EventArgs e)
+    private void Window_Loaded(Object sender, RoutedEventArgs e)
     {
-      this.feedProcessor.Process();
+      if (!this.isLoaded)
+      {
+        // Ensure this is only called once.
+        this.feedProcessor.Process();
+        this.isLoaded = true;
+      }
     }
   }
 }
