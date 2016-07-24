@@ -18,11 +18,7 @@ namespace PodFul.WPF
     public PodcastDownload(CancellationToken cancellationToken, Action<Int32> updateProgress)
     {
       cancellationToken.VerifyThatObjectIsNotNull("Parameter 'cancellationToken' is null.");
-      if (updateProgress == null)
-      {
-        throw new Exception("Parameter 'updateProgress' is null.");
-      }
-
+      updateProgress.VerifyThatObjectIsNotNull("Parameter 'updateProgress' is null.");
       this.cancellationToken = cancellationToken;
       this.updateProgress = updateProgress;
     }
