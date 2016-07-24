@@ -24,7 +24,7 @@ namespace PodFul.WPF
 
     public Action<Boolean> SetCancelButtonStateEvent;
 
-    public Action<String, Boolean> InitialiseProgressEvent;
+    public Action<String, String, Boolean> InitialiseProgressEvent;
 
     public Action ResetProgressEvent;
 
@@ -51,20 +51,23 @@ namespace PodFul.WPF
     {
       this.fileSizeNotKnown = (expectedFileSize <= 0);
       String progressSize;
+      String progressUnit;
       if (expectedFileSize > 0)
       {
-        progressSize = "0.0%";
+        progressSize = "0.0";
+        progressUnit = "%";
       }
       else if (expectedFileSize == 0)
       {
-        progressSize = "0.0Mb";
+        progressSize = "0.0";
+        progressUnit = "MB";
       }
       else
       {
-        progressSize = String.Empty;
+        progressSize = progressUnit = String.Empty;
       }
 
-      this.InitialiseProgressEvent?.Invoke(progressSize, this.fileSizeNotKnown);
+      this.InitialiseProgressEvent?.Invoke(progressSize, progressUnit, this.fileSizeNotKnown);
     }
 
     protected PodcastDownload InitialisePodcastDownload(CancellationToken cancelToken)

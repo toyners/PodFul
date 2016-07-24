@@ -39,12 +39,13 @@ namespace PodFul.WPF
       }).Start(this.mainTaskScheduler);
     }
 
-    public void InitialiseProgressEventHandler(String text, Boolean isIndeterminate)
+    public void InitialiseProgressEventHandler(String size, String unit, Boolean isIndeterminate)
     {
       new Task(() =>
       {
         this.Progress.Value = 0;
-        this.ProgressSize.Text = text;
+        this.ProgressSize.Text = size;
+        this.ProgressUnit.Text = unit;
         this.Progress.IsIndeterminate = isIndeterminate;
       }).Start(this.mainTaskScheduler);
     }
@@ -55,22 +56,23 @@ namespace PodFul.WPF
       {
         this.Progress.Value = 0;
         this.ProgressSize.Text = String.Empty;
+        this.ProgressUnit.Text = String.Empty;
         this.Progress.IsIndeterminate = false;
       }).Start(this.mainTaskScheduler);
     }
 
-    public void SetProgressEventHandler(String text, Int32 value)
+    public void SetProgressEventHandler(String size, Int32 value)
     {
       new Task(() =>
       { 
         if (this.Progress.IsIndeterminate)
         {         
-          this.ProgressSize.Text = text;
+          this.ProgressSize.Text = size;
           return;
         }
         
         this.Progress.Value = value;
-        this.ProgressSize.Text = text;
+        this.ProgressSize.Text = size;
 
       }).Start(this.mainTaskScheduler);
     }

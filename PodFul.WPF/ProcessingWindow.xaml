@@ -19,7 +19,10 @@
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,0,5">
       <Grid>
         <ProgressBar Name="Progress" Margin="5" Height="50" />
-        <TextBlock Name="ProgressSize" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+          <TextBlock FontSize="14" FontWeight="Bold" Name="ProgressSize"/>
+          <TextBlock Name="ProgressUnit"/>
+        </StackPanel>
       </Grid>
     </Border>
     
