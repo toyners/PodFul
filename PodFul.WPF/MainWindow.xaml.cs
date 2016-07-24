@@ -82,8 +82,8 @@ namespace PodFul.WPF
       }
       catch (Exception exception)
       {
-        MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
-        this.fileLogger.Exception("Trying to add new feed: " + exception.Message);
+        MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + exception.Message, "Exception occurred.");
+        this.fileLogger.Exception("Trying to create new feed: " + exception.Message);
         return;
       }
 
@@ -100,7 +100,17 @@ namespace PodFul.WPF
       var resolvedName = this.imageResolver.GetName(feed.ImageFileName);
       feed = Feed.SetImageFileName(feed, resolvedName);
 
-      this.feedCollection.AddFeed(feed);
+      try
+      {
+        this.feedCollection.AddFeed(feed);
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
+        this.fileLogger.Exception("Trying to add new feed: " + exception.Message);
+        return;
+      }
+
       this.FeedList.SelectedItem = feed;
       this.currentFeed = feed;
       this.ScanButton.IsEnabled = true;
