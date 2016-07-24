@@ -25,14 +25,15 @@ namespace PodFul.WPF
       {
         return "0.0 MB";
       }
+      
+      var sizeInMb = (fileSize / (1048576.0)).ToString("0.0");
 
-      if (fileSize <= 104857)
+      if (sizeInMb == "0.0")
       {
-        return "~0.0 MB";
+        return "~" + sizeInMb + " MB";
       }
 
-      var sizeInMb = fileSize / (1048576.0);
-      return sizeInMb.ToString("0.0 MB");
+      return sizeInMb + " MB";
     }
 
     public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
