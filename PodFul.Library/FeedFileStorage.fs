@@ -62,7 +62,7 @@ type FeedFileStorage(directoryPath : String) =
                     FileSize = Int64.Parse(fields.[3])
                     Description = fields.[4]
                     DownloadDate = DateTime.Parse(fields.[5])
-                    ImageFileName = ""
+                    ImageFileName = fields.[6]
                 }
 
               // Set the threaded state to be the XML reader.
@@ -101,7 +101,7 @@ type FeedFileStorage(directoryPath : String) =
         
         use writer = new StreamWriter(filePath)
 
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName + "|" + feed.CreationDateTime.ToString() + "|" + feed.UpdatedDateTime.ToString());
+        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName + "|" + feed.CreationDateTime.ToString() + "|" + feed.UpdatedDateTime.ToString() + "|");
 
         for podcast in feed.Podcasts do
             writer.WriteLine(podcast.Title + "|" + 
@@ -109,7 +109,8 @@ type FeedFileStorage(directoryPath : String) =
                 podcast.URL + "|" + 
                 podcast.FileSize.ToString() + "|" +
                 podcast.Description + "|" +
-                podcast.DownloadDate.ToString() + "|")
+                podcast.DownloadDate.ToString() + "|" +
+                podcast.ImageFileName + "|")
 
     interface IFeedStorage with
 

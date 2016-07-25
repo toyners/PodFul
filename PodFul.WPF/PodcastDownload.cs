@@ -70,7 +70,10 @@ namespace PodFul.WPF
           }
 
           var imageFileName = this.imageResolver.GetName(podcast.ImageFileName);
-          podcast = Podcast.SetImageFileName(imageFileName, podcast);
+          if (podcast.ImageFileName != imageFileName)
+          {
+            podcast = Podcast.SetImageFileName(imageFileName, podcast);
+          }
 
           podcasts[podcastIndex] = podcast;
         }
