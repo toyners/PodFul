@@ -5,7 +5,6 @@ namespace PodFul.WPF
   using System.Collections.Generic;
   using System.IO;
   using System.Threading;
-  using System.Threading.Tasks;
   using Jabberwocky.Toolkit.Object;
   using Library;
 
@@ -15,12 +14,16 @@ namespace PodFul.WPF
 
     private readonly Action<Int32> updateProgress;
 
-    public PodcastDownload(CancellationToken cancellationToken, Action<Int32> updateProgress)
+    private readonly IImageResolver imageResolver;
+
+    public PodcastDownload(CancellationToken cancellationToken, Action<Int32> updateProgress, IImageResolver imageResolver)
     {
       cancellationToken.VerifyThatObjectIsNotNull("Parameter 'cancellationToken' is null.");
       updateProgress.VerifyThatObjectIsNotNull("Parameter 'updateProgress' is null.");
+      imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
       this.cancellationToken = cancellationToken;
       this.updateProgress = updateProgress;
+      this.imageResolver = imageResolver;
     }
 
     public event Action<Podcast> OnBeforeDownload;
@@ -65,6 +68,9 @@ namespace PodFul.WPF
           {
             podcast = Podcast.SetFileSize(fileLength, podcast);
           }
+
+          var imageFileName = this.imageResolver.GetName(podcast.ImageFileName);
+          podcast = Podcast.SetImageFileName(imageFileName, podcast);
 
           podcasts[podcastIndex] = podcast;
         }

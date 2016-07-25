@@ -230,7 +230,7 @@ namespace PodFul.WPF
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
       var podcastIndexes = new Queue<Int32>(selectedIndexes);
-      var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.fileDeliverer, this.guiLogger);
+      var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
       var processingWindow = new ProcessingWindow(feedDownload);
 
       guiLogger.PostMessage = processingWindow.PostMessage;

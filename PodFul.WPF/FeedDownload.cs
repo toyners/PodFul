@@ -15,8 +15,9 @@ namespace PodFul.WPF
       FeedCollection feedCollection,
       Feed feed,
       Queue<Int32> podcastIndexes,
+      IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
-      ILogger log) : base(feedCollection, podcastIndexes, fileDeliverer, log)
+      ILogger log) : base(feedCollection, podcastIndexes, imageResolver, fileDeliverer, log)
     {
       this.feed = feed;
     }

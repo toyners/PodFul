@@ -9,16 +9,13 @@ namespace PodFul.WPF
 
   public class FeedScanner : FeedProcessor, IFeedProcessor
   {
-    private IImageResolver imageResolver;
-
     public FeedScanner(
       FeedCollection feedCollection,
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
-      ILogger log) : base(feedCollection, feedIndexes, fileDeliverer, log)
+      ILogger log) : base(feedCollection, feedIndexes, imageResolver, fileDeliverer, log)
     {
-      this.imageResolver = imageResolver;
     }
 
     public void Process()

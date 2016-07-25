@@ -12,6 +12,7 @@ namespace PodFul.WPF
 
     protected FeedCollection feedCollection;
     protected Queue<Int32> indexes;
+    protected IImageResolver imageResolver;
     protected IFileDeliverer fileDeliverer;
     protected ILogger log;
 
@@ -33,11 +34,13 @@ namespace PodFul.WPF
     protected FeedProcessor(
       FeedCollection feedCollection,
       Queue<Int32> indexes,
+      IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
       ILogger log)
     {
       this.feedCollection = feedCollection;
       this.indexes = indexes;
+      this.imageResolver = imageResolver;
       this.fileDeliverer = fileDeliverer;
       this.log = log;
     }
@@ -75,7 +78,7 @@ namespace PodFul.WPF
 
     protected PodcastDownload InitialisePodcastDownload(CancellationToken cancelToken)
     {
-      var podcastDownload = new PodcastDownload(cancelToken, this.UpdateProgessEventHandler);
+      var podcastDownload = new PodcastDownload(cancelToken, this.UpdateProgessEventHandler, this.imageResolver);
 
       podcastDownload.OnBeforeDownload += (podcast) =>
       {

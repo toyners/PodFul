@@ -53,11 +53,11 @@
             <DataTemplate>
               <Grid Margin="0,2">
                 <Grid.ColumnDefinitions>
-                  <!--<ColumnDefinition Width="50" />-->
+                  <ColumnDefinition Width="50" />
                   <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 
-                <!--<Image Source="{Binding ImageFileName}" />-->
+                <Image Source="{Binding ImageFileName}" />
 
                 <Grid Grid.Column="1">
                   <Grid.RowDefinitions>
