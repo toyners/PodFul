@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" 
+        Title="MainWindow" Height="600" Width="1000" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
   <Window.Resources>
@@ -79,8 +79,8 @@
                     <Grid>
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="1.75*" />
+                        <ColumnDefinition Width="0.75*" />
                       </Grid.ColumnDefinitions>
 
                       <TextBlock>
@@ -96,7 +96,7 @@
                         </TextBlock.Inlines>
                       </TextBlock>
 
-                      <TextBlock Grid.Column="2" Margin="20,0,0,0" HorizontalAlignment="Left">
+                      <TextBlock Grid.Column="2" Margin="20,0,0,0" HorizontalAlignment="Right">
                         <TextBlock.Inlines>
                           <Run Text="Podcasts: " />
                           <Run FontWeight="Bold" Text="{Binding Podcasts.Length, Mode=OneWay}" />
