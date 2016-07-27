@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.Collections.ObjectModel;
   using Library;
+  using Jabberwocky.Toolkit.Object;
 
   /// <summary>
   /// Thin container that combines the feed storage with the observable collection used as the source
@@ -16,10 +17,15 @@ namespace PodFul.WPF
     #endregion
 
     #region Construction
-    public FeedCollection(String directoryPath)
+    public FeedCollection(IFeedStorage feedStorage)
     {
-      this.feedStorage = new FeedFileStorage(directoryPath);
-      this.feedStorage.Open();
+      feedStorage.VerifyThatObjectIsNotNull("Parameter 'feedStorage' is null.");
+      this.feedStorage = feedStorage;
+      if (!this.feedStorage.IsOpen)
+      {
+        this.feedStorage.Open();
+      }
+
       this.Feeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
     }
     #endregion
