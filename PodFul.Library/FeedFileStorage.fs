@@ -6,6 +6,9 @@ open System.IO
 open System.Linq
 open Jabberwocky.Toolkit.String
 
+open System.Runtime.Serialization.Json
+open System.Text
+
 type FeedFileStorage(directoryPath : String) = 
 
     let directoryPath = directoryPath
@@ -183,3 +186,17 @@ type FeedFileStorage(directoryPath : String) =
             
     member public this.Storage () =
             this :> IFeedStorage
+
+    /// Object to Json 
+    member private this.json (feed : Feed) =   
+        use ms = new MemoryStream() 
+        let t  = typeof<Feed>
+        let d = new DataContractJsonSerializer(t)
+        d.WriteObject(ms, feed) 
+        Encoding.Default.GetString(ms.ToArray()) 
+
+     /// Object from Json 
+     member private this.unjson (jsonString : string)  : Feed =  
+        use ms = new MemoryStream(ASCIIEncoding.Default.GetBytes(jsonString)) 
+        let obj = (new DataContractJsonSerializer(typeof<Feed>)).ReadObject(ms) 
+        obj :?> Feed
