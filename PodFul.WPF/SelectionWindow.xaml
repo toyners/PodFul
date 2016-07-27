@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="SelectionWindow" Height="600" Width="800" 
+        Title="SelectionWindow" Height="600" Width="1000" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
   <Window.Resources>
@@ -67,9 +67,9 @@
 
                   <Grid>
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="3*" />
-                      <ColumnDefinition Width="2*" />
-                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="3.25*" />
+                      <ColumnDefinition Width="1.5*" />
+                      <ColumnDefinition Width="0.8*" />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock>
