@@ -68,6 +68,7 @@
     <Compile Include="FileDeliverer.fs" />
     <Compile Include="LocationDeliveryPoint.fs" />
     <Compile Include="WinampDeliveryPoint.fs" />
+    <Compile Include="FeedJSONStorage.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">
