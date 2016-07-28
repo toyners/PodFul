@@ -6,10 +6,12 @@ open System.IO
 open System.Linq
 open Jabberwocky.Toolkit.String
 
-type FeedFileStorage(directoryPath : String) = 
+type FeedFileStorage(directoryPath : String, reader : Func<string, Feed>, writer : Action<Feed, string>) = 
 
     let directoryPath = directoryPath
     let feedFileExtension = ".feed"
+    let reader = reader
+    let writer = writer
     let mutable isopen = false
     let mutable feeds = Array.empty
     let mutable feedPaths = new Dictionary<Feed, String>()
@@ -131,7 +133,7 @@ type FeedFileStorage(directoryPath : String) =
                            System.Guid.NewGuid().ToString() + 
                            feedFileExtension;
 
-            this.writeFeedToFile feed filePath
+            writer.Invoke(feed, filePath)
             feeds <- Array.append feeds [|feed|]
             feedPaths.Add(feed, filePath)
                 
@@ -144,7 +146,7 @@ type FeedFileStorage(directoryPath : String) =
             
             feeds <-
                 [|for filePath in Directory.GetFiles(directoryPath, "*" + feedFileExtension, SearchOption.TopDirectoryOnly) do
-                    let feed = this.readFeedFromFile filePath
+                    let feed = reader.Invoke(filePath)
                     feedPaths.Add(feed, filePath)
                     yield feed
                 |]
@@ -174,7 +176,7 @@ type FeedFileStorage(directoryPath : String) =
                 File.Delete(oldFilePath)
             File.Move(filePath, oldFilePath)
 
-            this.writeFeedToFile feed filePath |> ignore
+            writer.Invoke(feed, filePath) |> ignore
 
             // Update the feed object in the array
             let equalsFeed f = (f = feed)
