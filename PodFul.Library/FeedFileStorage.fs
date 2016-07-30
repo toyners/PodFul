@@ -1,22 +1,26 @@
 ﻿namespace PodFul.Library
 
-open System
 open System.Collections.Generic
 open System.IO
 open System.Linq
 open Jabberwocky.Toolkit.String
 
-type FeedFileStorage(directoryPath : String, reader : Func<string, Feed>, writer : Action<Feed, string>) = 
+type FeedFileStorage(directoryPath : string, reader : string -> Feed, writer : Feed -> string -> unit) = 
 
     let directoryPath = directoryPath
     let feedFileExtension = ".feed"
     let reader = reader
     let writer = writer
+    
     let mutable isopen = false
     let mutable feeds = Array.empty
-    let mutable feedPaths = new Dictionary<Feed, String>()
+    let mutable feedPaths = new Dictionary<Feed, string>()
 
-    member private this.fileNameSubstitutions = Dictionary<String, String>(dict
+    // Constructor that sets the directory only. NativeFeed IO functions for reading/writing are used by default.
+    new (directoryPath : string) = 
+      FeedFileStorage(directoryPath, NativeFeedIO.ReadFeedFromFile, NativeFeedIO.WriteFeedToFile)
+    
+    member private this.fileNameSubstitutions = Dictionary<string, string>(dict
                                                     [
                                                         ( "\\", "_bs_" );
                                                         ( "/", "_fs_" );
@@ -28,91 +32,6 @@ type FeedFileStorage(directoryPath : String, reader : Func<string, Feed>, writer
                                                         ( ">", "_g_" );
                                                         ( "|", "_b_" )
                                                     ])
-
-    member private this.readLineFromFile (reader: StreamReader) : string = 
-        let text = reader.ReadLine()
-        match text with
-        | null ->   failwith "Raw text is null."
-        | "" ->     failwith "Raw text is empty."
-        | _ -> text
-
-    member private this.splitStringUsingDelimiter (text : string) : string[] = text.Split('|')
-
-    member private this.verifyFields (fields: string[]) : string[] =
-        if fields = null then
-            failwith "Fields array is null."
-        else if fields.Length = 0 then
-            failwith "Fields array is empty."
-        else if fields.Length < 7 then
-            failwith ("Fields array only has " + fields.Length.ToString() + " field(s).")
-        else
-            fields
-
-    member private this.getPodcastFromFile (reader: StreamReader) = 
-        match reader.EndOfStream with
-        | true -> None
-        | _ ->
-              // Create fields array using line read from reader.
-              let fields = this.readLineFromFile reader |> this.splitStringUsingDelimiter |> this.verifyFields
-
-              // Create the podcast record.
-              let podcast = 
-                {
-                    Title = fields.[0]
-                    PubDate = DateTime.Parse(fields.[1])
-                    URL = fields.[2]
-                    FileSize = Int64.Parse(fields.[3])
-                    Description = fields.[4]
-                    DownloadDate = DateTime.Parse(fields.[5])
-                    ImageFileName = fields.[6]
-                }
-
-              // Set the threaded state to be the XML reader.
-              Some(podcast, reader)
-
-    member private this.getImageFileName (fields : string[]) : string =
-        if fields.Length > 5 then
-            fields.[5]
-        else
-            String.Empty
-
-    member private this.getDateTimeAt (fields : string[], index) : DateTime =
-        if fields.Length > index then
-            DateTime.Parse(fields.[index])
-        else
-            DateTime.MinValue
-
-    member private this.readFeedFromFile (filePath : String) : Feed =
-        
-        use reader = new StreamReader(filePath)
-        let fields =  this.readLineFromFile reader |> this.splitStringUsingDelimiter
-
-        { 
-            Title = fields.[0]
-            Website = fields.[1]
-            Directory = fields.[2]
-            URL = fields.[3]
-            Description = fields.[4]
-            ImageFileName = this.getImageFileName fields
-            CreationDateTime = this.getDateTimeAt(fields, 6)
-            UpdatedDateTime = this.getDateTimeAt(fields, 7)
-            Podcasts = List.unfold this.getPodcastFromFile (reader) |> List.toArray
-        }
-
-    member private this.writeFeedToFile (feed : Feed) (filePath : string) : unit =
-        
-        use writer = new StreamWriter(filePath)
-
-        writer.WriteLine(feed.Title + "|" + feed.Website + "|" + feed.Directory + "|" + feed.URL + "|" + feed.Description + "|" + feed.ImageFileName + "|" + feed.CreationDateTime.ToString() + "|" + feed.UpdatedDateTime.ToString() + "|");
-
-        for podcast in feed.Podcasts do
-            writer.WriteLine(podcast.Title + "|" + 
-                podcast.PubDate.ToString() + "|" + 
-                podcast.URL + "|" + 
-                podcast.FileSize.ToString() + "|" +
-                podcast.Description + "|" +
-                podcast.DownloadDate.ToString() + "|" +
-                podcast.ImageFileName + "|")
 
     interface IFeedStorage with
 
@@ -133,7 +52,7 @@ type FeedFileStorage(directoryPath : String, reader : Func<string, Feed>, writer
                            System.Guid.NewGuid().ToString() + 
                            feedFileExtension;
 
-            writer.Invoke(feed, filePath)
+            writer feed filePath
             feeds <- Array.append feeds [|feed|]
             feedPaths.Add(feed, filePath)
                 
@@ -146,7 +65,7 @@ type FeedFileStorage(directoryPath : String, reader : Func<string, Feed>, writer
             
             feeds <-
                 [|for filePath in Directory.GetFiles(directoryPath, "*" + feedFileExtension, SearchOption.TopDirectoryOnly) do
-                    let feed = reader.Invoke(filePath)
+                    let feed = reader filePath
                     feedPaths.Add(feed, filePath)
                     yield feed
                 |]
@@ -176,7 +95,7 @@ type FeedFileStorage(directoryPath : String, reader : Func<string, Feed>, writer
                 File.Delete(oldFilePath)
             File.Move(filePath, oldFilePath)
 
-            writer.Invoke(feed, filePath) |> ignore
+            writer feed filePath |> ignore
 
             // Update the feed object in the array
             let equalsFeed f = (f = feed)

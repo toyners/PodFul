@@ -203,10 +203,43 @@ type FeedFileStorage_IntergrationTests() =
         originalFeedStorage.Feeds |> should equal null
 
     [<Test>]
-    member public this.``Writing/Reading cycle of Feed``() =
+    member public this.``Writing/Reading cycle of Feed using Native IO``() =
 
         let feed = this.CreateFeed
         let originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        originalFeedStorage.Open()
+        originalFeedStorage.Add(feed)
+        originalFeedStorage.Close()
+
+        let nextFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        nextFeedStorage.Open()
+
+        let actualFeed = nextFeedStorage.Feeds.[0]
+        actualFeed |> should equal feed
+        actualFeed.Title |> should equal feed.Title
+        actualFeed.Description |> should equal feed.Description
+        actualFeed.Website |> should equal feed.Website
+        actualFeed.Directory |> should equal feed.Directory
+        actualFeed.URL |> should equal feed.URL
+        actualFeed.CreationDateTime |> should equal feed.CreationDateTime
+        actualFeed.UpdatedDateTime |> should equal feed.UpdatedDateTime
+
+        let actualPodcast = actualFeed.Podcasts.[0]
+        actualFeed.Podcasts.Length |> should equal feed.Podcasts.Length
+        actualPodcast |> should equal feed.Podcasts.[0]
+        actualPodcast.Title |> should equal feed.Podcasts.[0].Title
+        actualPodcast.Description |> should equal feed.Podcasts.[0].Description
+        actualPodcast.URL |> should equal feed.Podcasts.[0].URL
+        actualPodcast.FileSize |> should equal feed.Podcasts.[0].FileSize
+        actualPodcast.PubDate |> should equal feed.Podcasts.[0].PubDate
+        actualPodcast.DownloadDate |> should equal feed.Podcasts.[0].DownloadDate
+
+    [<Test>]
+    member public this.``Writing/Reading cycle of Feed using JSON IO``() =
+    
+        let feed = this.CreateFeed
+        let n = FeedFileStorage(workingDirectory, JSONFeedIO.ReadFeedFromFile, JSONFeedIO.WriteFeedToFile)
+        let originalFeedStorage = n.Storage()
         originalFeedStorage.Open()
         originalFeedStorage.Add(feed)
         originalFeedStorage.Close()
