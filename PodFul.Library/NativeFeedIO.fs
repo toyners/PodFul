@@ -37,7 +37,7 @@ type NativeFeedIO() =
     if fields.Length > index then
       DateTime.Parse(fields.[index])
     else
-      DateTime.MinValue
+      DateTime.MinValue.ToUniversalTime()
 
   static member private getPodcastFromFile (reader: StreamReader) = 
     match reader.EndOfStream with

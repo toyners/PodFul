@@ -27,7 +27,7 @@ type Podcast_UnitTest() =
                 URL = "url2"
                 FileSize = 2L
                 PubDate = new DateTime(2016, 12, 30)
-                DownloadDate = DateTime.MinValue
+                DownloadDate = DateTime.MinValue.ToUniversalTime()
                 ImageFileName = "image2"
             }
 
@@ -68,7 +68,7 @@ type Podcast_UnitTest() =
                 URL = "url1"
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
-                DownloadDate = DateTime.MinValue
+                DownloadDate = DateTime.MinValue.ToUniversalTime()
                 ImageFileName = "image"
             }
 
@@ -91,7 +91,7 @@ type Podcast_UnitTest() =
                 URL = "url1"
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
-                DownloadDate = DateTime.MinValue
+                DownloadDate = DateTime.MinValue.ToUniversalTime()
                 ImageFileName = "image"
             }
 
@@ -114,7 +114,7 @@ type Podcast_UnitTest() =
                 URL = "url1"
                 FileSize = 1L
                 PubDate = new DateTime(2016, 12, 31)
-                DownloadDate = DateTime.MinValue
+                DownloadDate = DateTime.MinValue.ToUniversalTime()
                 ImageFileName = ""
             }
 

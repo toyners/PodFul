@@ -28,7 +28,7 @@ module public FeedFunctions =
     let private getPubDateFromItem (element : XElement) : DateTime =
         let pubDateElement = element?pubDate
         if pubDateElement = null || pubDateElement.Value = String.Empty then
-            DateTime.MinValue
+            DateTime.MinValue.ToUniversalTime()
         else
             pubDateElement.Value |> removeTimeZoneAbbreviationsFromDateTimeString |> DateTime.Parse
 
@@ -139,7 +139,7 @@ module public FeedFunctions =
                     PubDate = getPubDateFromItem element
                     URL = url
                     FileSize = getFilesizeForItem enclosureElement contentElement
-                    DownloadDate = DateTime.MinValue
+                    DownloadDate = DateTime.MinValue.ToUniversalTime()
                     ImageFileName = getImageForItem element
                 }
           ] |> List.toArray
@@ -196,7 +196,7 @@ module public FeedFunctions =
              ImageFileName = imageFileURL
              Podcasts = createPodcastArrayFromDocument document
              CreationDateTime = creationDate
-             UpdatedDateTime = DateTime.MinValue
+             UpdatedDateTime = DateTime.MinValue.ToUniversalTime()
         }
 
     let public CreateFeed url directoryPath =
