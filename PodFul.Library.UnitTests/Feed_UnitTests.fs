@@ -19,7 +19,7 @@ type Feed_UnitTest() =
                 ImageFileName = ""
                 Podcasts = null
                 CreationDateTime = new DateTime(2016, 2, 3)
-                UpdatedDateTime = DateTime.MinValue.ToUniversalTime()
+                UpdatedDateTime = FeedFunctions.NoDateTime
             }
 
         let feed2 = Feed.SetImageFileName feed1 "imagefilename"
@@ -47,7 +47,7 @@ type Feed_UnitTest() =
                 ImageFileName = ""
                 Podcasts = null
                 CreationDateTime = new DateTime(2016, 2, 3)
-                UpdatedDateTime = DateTime.MinValue.ToUniversalTime()
+                UpdatedDateTime = FeedFunctions.NoDateTime
             }
 
         let feed2 = Feed.SetUpdatedDate DateTime.MaxValue feed1

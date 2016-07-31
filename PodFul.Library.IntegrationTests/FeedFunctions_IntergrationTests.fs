@@ -78,12 +78,11 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
         feed.Podcasts.[1].ImageFileName |> should equal String.Empty
 
-        let t = DateTime.MinValue.ToUniversalTime()
         feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
         feed.Podcasts.[2].Description |> should equal ""
         feed.Podcasts.[2].URL |> should equal thirdPodcastURL
         feed.Podcasts.[2].FileSize |> should equal -1
-        feed.Podcasts.[2].PubDate |> should equal t
+        feed.Podcasts.[2].PubDate |> should equal FeedFunctions.NoDateTime
         feed.Podcasts.[2].ImageFileName |> should equal String.Empty
 
     [<Test>]

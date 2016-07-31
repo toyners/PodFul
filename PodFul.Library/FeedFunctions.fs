@@ -9,6 +9,9 @@ open FSharp.Data
 
 module public FeedFunctions =
 
+    // A version of DateTime.MinValue that can be serialised. Used to indicate no date time set.
+    let public NoDateTime = DateTime.MinValue.ToUniversalTime()
+
     let private xn name = XName.Get(name)
 
     // This implementation of the dynamic operator ? returns the child element from the parent that matches the name.
@@ -28,7 +31,7 @@ module public FeedFunctions =
     let private getPubDateFromItem (element : XElement) : DateTime =
         let pubDateElement = element?pubDate
         if pubDateElement = null || pubDateElement.Value = String.Empty then
-            DateTime.MinValue.ToUniversalTime()
+            NoDateTime
         else
             pubDateElement.Value |> removeTimeZoneAbbreviationsFromDateTimeString |> DateTime.Parse
 
@@ -139,7 +142,7 @@ module public FeedFunctions =
                     PubDate = getPubDateFromItem element
                     URL = url
                     FileSize = getFilesizeForItem enclosureElement contentElement
-                    DownloadDate = DateTime.MinValue.ToUniversalTime()
+                    DownloadDate = NoDateTime
                     ImageFileName = getImageForItem element
                 }
           ] |> List.toArray
@@ -196,7 +199,7 @@ module public FeedFunctions =
              ImageFileName = imageFileURL
              Podcasts = createPodcastArrayFromDocument document
              CreationDateTime = creationDate
-             UpdatedDateTime = DateTime.MinValue.ToUniversalTime()
+             UpdatedDateTime = NoDateTime
         }
 
     let public CreateFeed url directoryPath =
