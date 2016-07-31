@@ -5,21 +5,17 @@ open System.IO
 open System.Linq
 open Jabberwocky.Toolkit.String
 
-type FeedFileStorage(directoryPath : string, reader : string -> Feed, writer : Feed -> string -> unit) = 
+type FeedFileStorage(directoryPath : string) = 
 
     let directoryPath = directoryPath
     let feedFileExtension = ".feed"
-    let reader = reader
-    let writer = writer
+    let reader = JSONFeedIO.ReadFeedFromFile
+    let writer = JSONFeedIO.WriteFeedToFile
     
     let mutable isopen = false
     let mutable feeds = Array.empty
     let mutable feedPaths = new Dictionary<Feed, string>()
 
-    // Constructor that sets the directory only. NativeFeed IO functions for reading/writing are used by default.
-    new (directoryPath : string) = 
-      FeedFileStorage(directoryPath, NativeFeedIO.ReadFeedFromFile, NativeFeedIO.WriteFeedToFile)
-    
     member private this.fileNameSubstitutions = Dictionary<string, string>(dict
                                                     [
                                                         ( "\\", "_bs_" );
