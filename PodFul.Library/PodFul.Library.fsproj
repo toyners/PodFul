@@ -58,12 +58,12 @@
     <Compile Include="JSONFeedIO.fs" />
     <Compile Include="IFeedStorage.fs" />
     <Compile Include="FileDownloader.fs" />
+    <Compile Include="IImageResolver.fs" />
     <Compile Include="FeedFunctions.fs" />
     <Compile Include="NativeFeedIO.fs" />
     <Compile Include="FeedFileStorage.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
-    <Compile Include="IImageResolver.fs" />
     <Compile Include="ImageResolver.fs" />
     <Compile Include="PodcastDownloader.fs" />
     <Compile Include="IFileDeliverer.fs" />

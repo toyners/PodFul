@@ -202,11 +202,32 @@ module public FeedFunctions =
              UpdatedDateTime = NoDateTime
         }
 
+    let private resolveImages (imageResolver : IImageResolver) (feed : Feed) : Feed =
+
+      match (imageResolver) with
+      | null -> feed
+      | _ ->
+        let mutable index = 0
+        while index < feed.Podcasts.Length do
+          let podcast = feed.Podcasts.[index]
+          let imageFileName = imageResolver.GetName podcast.ImageFileName
+          if (imageFileName <> podcast.ImageFileName) then
+            feed.Podcasts.[index] <- Podcast.SetImageFileName imageFileName podcast
+        
+          index <- index + 1
+
+        let imageFileName = imageResolver.GetName feed.ImageFileName  
+        match (imageFileName <> feed.ImageFileName) with
+        | false -> feed
+        | _ -> Feed.SetImageFileName feed imageFileName
+
+
     let public CreateFeed url directoryPath =
         downloadDocument url |> createFeedRecord url directoryPath DateTime.Now
 
-    let public UpdateFeed (feed : Feed) : Feed = 
+    let public UpdateFeed (feed : Feed, imageResolver : IImageResolver) : Feed = 
         downloadDocument feed.URL |> 
         createFeedRecord feed.URL feed.Directory feed.CreationDateTime |>  
         Feed.SetUpdatedDate feed.UpdatedDateTime |> 
-        mergeFeeds feed
+        mergeFeeds feed |>
+        resolveImages imageResolver

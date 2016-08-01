@@ -69,12 +69,6 @@ namespace PodFul.WPF
             podcast = Podcast.SetFileSize(fileLength, podcast);
           }
 
-          var imageFileName = this.imageResolver.GetName(podcast.ImageFileName);
-          if (podcast.ImageFileName != imageFileName)
-          {
-            podcast = Podcast.SetImageFileName(imageFileName, podcast);
-          }
-
           podcasts[podcastIndex] = podcast;
         }
         catch (AggregateException exception)

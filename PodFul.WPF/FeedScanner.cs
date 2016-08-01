@@ -54,7 +54,7 @@ namespace PodFul.WPF
           Feed newFeed = null;
           try
           {
-            newFeed = FeedFunctions.UpdateFeed(feed);
+            newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver);
 
             // Resolve the feed image.
             var imageFileName = imageResolver.GetName(newFeed.ImageFileName);
