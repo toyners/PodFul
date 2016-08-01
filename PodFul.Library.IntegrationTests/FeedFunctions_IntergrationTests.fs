@@ -20,6 +20,7 @@ type FeedFunctions_IntergrationTests() =
     let finalRSSWithMaximumPodcastsFileName = "Final RSSFile with Maximum Podcasts.rss"
     let rssWithNoPodcasts = "No Podcasts.rss"
     let rssWithOnePodcast = "One Podcast.rss"
+    let rssWithValidImages = "RSS with valid Images.rss"
 
     let feedTitle = "Feed Title"
     let feedDescription = "Feed Description"
@@ -191,3 +192,21 @@ type FeedFunctions_IntergrationTests() =
 
         finalFeed |> should equal initialFeed
         finalFeed.Podcasts.Length |> should equal 1
+
+    [<Test>]
+    member public this.``Image filenames resolved when creating feed``() =
+        let initialInputPath = workingDirectory + rssWithValidImages
+
+        let imageDirectory = workingDirectory + "Images"
+        let imageResolver = ImageResolver(imageDirectory)
+
+        let assembly = Assembly.GetExecutingAssembly()
+        assembly.CopyEmbeddedResourceToFile(rssWithValidImages, initialInputPath)
+        assembly.CopyEmbeddedResourceToFile("FeedImage.jpg", workingDirectory + "FeedImage.jpg")
+        assembly.CopyEmbeddedResourceToFile("PodcastImage.jpg", workingDirectory + "PodcastImage.jpg")
+
+        let feed = FeedFunctions.CreateFeed2 initialInputPath "DirectoryPath" imageResolver
+
+        feed.ImageFileName |> should equal (imageDirectory + "FeedImage.jpg")
+        feed.Podcasts.Length |> should equal 1
+        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + "PodcastImage.jpg")
