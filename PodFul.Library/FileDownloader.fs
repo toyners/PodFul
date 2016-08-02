@@ -11,10 +11,16 @@ type FileDownloader() =
         try
             // Downcast the web request object to a HttpWebRequest object so that 
             // the UserAgent property can be set.
-            let request = WebRequest.Create(Uri(url)) :?> HttpWebRequest
-            request.UserAgent <- "Podful Podcatcher";
-
-            let response = request.GetResponse()
+            let uri = Uri(url)
+            let response = 
+                match (uri.Scheme) with
+                | "http" -> 
+                    let request = WebRequest.Create(Uri(url)) :?> HttpWebRequest
+                    request.UserAgent <- "Podful Podcatcher";
+                    request.GetResponse()
+                | _ ->
+                    WebRequest.Create(uri).GetResponse()
+            //let response = request.GetResponse()
 
             use stream = response.GetResponseStream()
             use writer = new FileStream(filePath, FileMode.Create, FileAccess.Write)

@@ -197,7 +197,12 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Image filenames resolved when creating feed``() =
         let initialInputPath = workingDirectory + rssWithValidImages
 
-        let imageDirectory = workingDirectory + "Images"
+        let expectedFeedImageName = @"C_c__bs_Projects_bs_PodFul_bs_PodFul.Library.IntegrationTests_bs_FeedFunctions_IntergrationTests_bs_FeedImage.jpg"
+        let expectedPodcastImageName = @"C_c__bs_Projects_bs_PodFul_bs_PodFul.Library.IntegrationTests_bs_FeedFunctions_IntergrationTests_bs_PodcastImage.jpg"
+
+        let imageDirectory = workingDirectory + @"Images\"
+        Directory.CreateDirectory(imageDirectory) |> ignore
+        
         let imageResolver = ImageResolver(imageDirectory)
 
         let assembly = Assembly.GetExecutingAssembly()
@@ -207,6 +212,6 @@ type FeedFunctions_IntergrationTests() =
 
         let feed = FeedFunctions.CreateFeed2 initialInputPath "DirectoryPath" imageResolver
 
-        feed.ImageFileName |> should equal (imageDirectory + "FeedImage.jpg")
+        feed.ImageFileName |> should equal (imageDirectory + expectedFeedImageName)
         feed.Podcasts.Length |> should equal 1
-        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + "PodcastImage.jpg")
+        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedPodcastImageName)
