@@ -52,7 +52,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create Feed from RSS url``() =
         let inputPath = workingDirectory + rssFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" null
 
         feed |> should not' (equal null)
         feed.Title |> should equal feedTitle
@@ -90,7 +90,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create RSS Feed that contains media content tags``() =
         let inputPath = workingDirectory + "RSSFileWithMediaContent.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileWithMediaContent.rss", inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" null
 
         feed |> should not' (equal null)
         feed.Title |> should equal feedTitle
@@ -123,7 +123,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed from RSS file with no feed image data``(feedFileName : string) =
         let inputPath = workingDirectory + feedFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath"
+        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" null
 
         feed.ImageFileName |> should equal String.Empty
 
@@ -134,7 +134,7 @@ type FeedFunctions_IntergrationTests() =
         let secondDateTime = new DateTime(2016, 3, 4, 11, 12, 13)
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
         initialFeed.Podcasts.[0] <- Podcast.SetDownloadDate firstDateTime initialFeed.Podcasts.[0]
         initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate secondDateTime initialFeed.Podcasts.[1]
 
@@ -154,7 +154,7 @@ type FeedFunctions_IntergrationTests() =
         let secondDateTime = new DateTime(2016, 3, 4, 11, 12, 13)
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSWithMaximumPodcastsFileName, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
         initialFeed.Podcasts.[0] <- Podcast.SetDownloadDate firstDateTime initialFeed.Podcasts.[0]
         initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate secondDateTime initialFeed.Podcasts.[1]
 
@@ -172,7 +172,7 @@ type FeedFunctions_IntergrationTests() =
         let initialInputPath = workingDirectory + rssWithNoPodcasts
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
         let finalFeed = FeedFunctions.UpdateFeed initialFeed null
@@ -185,7 +185,7 @@ type FeedFunctions_IntergrationTests() =
         let initialInputPath = workingDirectory + rssWithNoPodcasts
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath"
+        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithOnePodcast, initialInputPath)
         let finalFeed = FeedFunctions.UpdateFeed initialFeed null
@@ -210,7 +210,7 @@ type FeedFunctions_IntergrationTests() =
         assembly.CopyEmbeddedResourceToFile("FeedImage.jpg", workingDirectory + "FeedImage.jpg")
         assembly.CopyEmbeddedResourceToFile("PodcastImage.jpg", workingDirectory + "PodcastImage.jpg")
 
-        let feed = FeedFunctions.CreateFeed2 initialInputPath "DirectoryPath" imageResolver
+        let feed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" imageResolver
 
         feed.ImageFileName |> should equal (imageDirectory + expectedFeedImageName)
         feed.Podcasts.Length |> should equal 1

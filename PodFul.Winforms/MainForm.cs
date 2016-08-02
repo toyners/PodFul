@@ -56,7 +56,7 @@ namespace PodFul.Winforms
       Feed feed = null;
       try
       {
-        feed = FeedFunctions.CreateFeed(addFeedForm.FeedURL.Text, addFeedForm.FeedDirectory.Text);
+        feed = FeedFunctions.CreateFeed(addFeedForm.FeedURL.Text, addFeedForm.FeedDirectory.Text, null);
       }
       catch (Exception exception)
       {

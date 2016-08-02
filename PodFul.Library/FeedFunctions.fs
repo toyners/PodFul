@@ -221,11 +221,7 @@ module public FeedFunctions =
         | false -> feed
         | _ -> Feed.SetImageFileName feed imageFileName
 
-
-    let public CreateFeed url directoryPath =
-        downloadDocument url |> createFeedRecord url directoryPath DateTime.Now
-
-    let public CreateFeed2 url directoryPath imageResolver = 
+    let public CreateFeed url directoryPath imageResolver = 
         downloadDocument url |> 
         createFeedRecord url directoryPath DateTime.Now |>
         resolveImages imageResolver
