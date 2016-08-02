@@ -215,3 +215,34 @@ type FeedFunctions_IntergrationTests() =
         feed.ImageFileName |> should equal (imageDirectory + expectedFeedImageName)
         feed.Podcasts.Length |> should equal 1
         feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedPodcastImageName)
+
+    [<Test>]
+    member public this.``Image filenames resolved when updating feed``() =
+        let initialInputPath = workingDirectory + rssWithValidImages
+
+        let expectedFeedImageName = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\FeedImage.jpg"
+        let expectedPodcastImageName = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\PodcastImage.jpg"
+        let expectedResolvedFeedImageName = @"C_c__bs_Projects_bs_PodFul_bs_PodFul.Library.IntegrationTests_bs_FeedFunctions_IntergrationTests_bs_FeedImage.jpg"
+        let expectedResolvedPodcastImageName = @"C_c__bs_Projects_bs_PodFul_bs_PodFul.Library.IntegrationTests_bs_FeedFunctions_IntergrationTests_bs_PodcastImage.jpg"
+
+        let imageDirectory = workingDirectory + @"Images\"
+        Directory.CreateDirectory(imageDirectory) |> ignore
+        
+        let imageResolver = ImageResolver(imageDirectory)
+
+        let assembly = Assembly.GetExecutingAssembly()
+        assembly.CopyEmbeddedResourceToFile(rssWithValidImages, initialInputPath)
+        assembly.CopyEmbeddedResourceToFile("FeedImage.jpg", workingDirectory + "FeedImage.jpg")
+        assembly.CopyEmbeddedResourceToFile("PodcastImage.jpg", workingDirectory + "PodcastImage.jpg")
+
+        let feed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
+
+        feed.ImageFileName |> should equal expectedFeedImageName
+        feed.Podcasts.Length |> should equal 1
+        feed.Podcasts.[0].ImageFileName |> should equal expectedPodcastImageName
+
+        let feed = FeedFunctions.UpdateFeed feed imageResolver
+
+        feed.ImageFileName |> should equal (imageDirectory + expectedResolvedFeedImageName)
+        feed.Podcasts.Length |> should equal 1
+        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedResolvedPodcastImageName)
