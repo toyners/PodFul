@@ -10,8 +10,11 @@
   xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 >
   <channel>
-    <title>Feed Title</title>
-    <link>Feed Website</link>
-    <description>Feed Description</description>
-  </channel>
+	  <title>Feed Title</title>
+	  <link>Feed Website</link>
+	  <description>Feed Description</description>
+    <image>
+      <url>Feed Image</url>
+    </image>
+	</channel>
 </rss>
