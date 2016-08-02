@@ -56,10 +56,6 @@ namespace PodFul.WPF
           {
             newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver);
 
-            // Resolve the feed image.
-            var imageFileName = imageResolver.GetName(newFeed.ImageFileName);
-            newFeed = Feed.SetImageFileName(newFeed, imageFileName);
-
             this.log.Message("Comparing podcasts ... ", false);
 
             podcastIndexes.Clear();
