@@ -33,9 +33,12 @@ type NativeFeedIO() =
     else
       String.Empty
 
-  static member private getDateTimeAt (fields : string[], index) : DateTime =
+  static member private getDateTimeAt (fields : string[]) index : DateTime =
     if fields.Length > index then
-      DateTime.Parse(fields.[index])
+      let dateTime = DateTime.Parse(fields.[index])
+      match (dateTime = DateTime.MinValue) with
+      | true -> FeedFunctions.NoDateTime
+      | _ -> dateTime
     else
       FeedFunctions.NoDateTime
 
@@ -56,7 +59,7 @@ type NativeFeedIO() =
           URL = fields.[2]
           FileSize = Int64.Parse(fields.[3])
           Description = fields.[4]
-          DownloadDate = DateTime.Parse(fields.[5])
+          DownloadDate = NativeFeedIO.getDateTimeAt fields 5  //DateTime.Parse(fields.[5])
           ImageFileName = fields.[6]
         }
 
@@ -75,8 +78,8 @@ type NativeFeedIO() =
       URL = fields.[3]
       Description = fields.[4]
       ImageFileName = NativeFeedIO.getImageFileName fields
-      CreationDateTime = NativeFeedIO.getDateTimeAt(fields, 6)
-      UpdatedDateTime = NativeFeedIO.getDateTimeAt(fields, 7)
+      CreationDateTime = NativeFeedIO.getDateTimeAt fields 6
+      UpdatedDateTime = NativeFeedIO.getDateTimeAt fields 7
       Podcasts = List.unfold NativeFeedIO.getPodcastFromFile (reader) |> List.toArray
     }
 

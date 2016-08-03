@@ -21,7 +21,7 @@ namespace PodFul.Winforms
       this.DisplayTitle();
 
       var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
-      this.feedStorage = new FeedFileStorage(feedDirectory);
+      this.feedStorage = new JSONFileStorage(feedDirectory);
       this.feedStorage.Open();
       foreach (var feed in this.feedStorage.Feeds)
       {

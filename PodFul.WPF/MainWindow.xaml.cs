@@ -33,7 +33,7 @@ namespace PodFul.WPF
       this.DisplayTitle();
 
       var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
-      var feedStorage = new FeedFileStorage(feedDirectory);
+      var feedStorage = new JSONFileStorage(feedDirectory);
       this.feedCollection = new FeedCollection(feedStorage);
 
       var imageDirectory = Path.Combine(feedDirectory, "Images");

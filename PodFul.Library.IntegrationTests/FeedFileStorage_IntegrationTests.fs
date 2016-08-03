@@ -68,7 +68,7 @@ type FeedFileStorage_IntergrationTests() =
 
     [<Test>]
     member public this.``Feed File Storage is not open by default``() = 
-        let feedStorage = FeedFileStorage(String.Empty).Storage()
+        let feedStorage = JSONFileStorage(String.Empty).Storage()
         feedStorage.IsOpen |> should equal false
         feedStorage.Feeds |> should equal null;
 
@@ -76,7 +76,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Adding a feed creates a file in the directory``() = 
 
         let feed = this.CreateFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
 
         feedStorage.Open()
         feedStorage.Add(feed)
@@ -88,7 +88,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Adding a feed adds it to the feed storage``() = 
 
         let feed = this.CreateFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
 
         feedStorage.Open()
         feedStorage.Add(feed)
@@ -100,7 +100,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Adding the same feed throws meaningful exception``() = 
 
         let feed = this.CreateFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
 
         feedStorage.Open()
         feedStorage.Add(feed)
@@ -112,7 +112,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Removing a feed removes it from the feed storage``() =
     
         let feed = this.CreateFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
 
         feedStorage.Open()
         feedStorage.Add(feed)
@@ -124,7 +124,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Removing a feed removes file from the directory``() =
     
         let feed = this.CreateFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
 
         feedStorage.Open()
         feedStorage.Add(feed)
@@ -137,7 +137,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Removing the same feed throws meaningful exception``() =
     
         let feed = this.CreateFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
 
         feedStorage.Open()
         feedStorage.Add(feed)
@@ -151,7 +151,7 @@ type FeedFileStorage_IntergrationTests() =
 
         let originalFeed = this.CreateFeed
         let updatedFeed = this.UpdateFeed originalFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
         feedStorage.Open()
         feedStorage.Add(originalFeed)
 
@@ -170,7 +170,7 @@ type FeedFileStorage_IntergrationTests() =
 
         let originalFeed = this.CreateFeed
         let updatedFeed = this.UpdateFeed originalFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
         feedStorage.Open()
         feedStorage.Add(originalFeed)
         feedStorage.Update(updatedFeed)
@@ -183,7 +183,7 @@ type FeedFileStorage_IntergrationTests() =
 
         let originalFeed = this.CreateFeed
         let updatedFeed = this.UpdateFeed originalFeed
-        let feedStorage = FeedFileStorage(workingDirectory).Storage()
+        let feedStorage = JSONFileStorage(workingDirectory).Storage()
         feedStorage.Open()
         feedStorage.Add(originalFeed)
         feedStorage.Update(updatedFeed)
@@ -195,7 +195,7 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Closing the feed storage removes all feeds from memory``() =
 
         let feed = this.CreateFeed
-        let originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        let originalFeedStorage = JSONFileStorage(workingDirectory).Storage()
         originalFeedStorage.Open()
         originalFeedStorage.Add(feed)
         originalFeedStorage.Close()
@@ -206,12 +206,12 @@ type FeedFileStorage_IntergrationTests() =
     member public this.``Writing/Reading cycle of Feed``() =
 
         let feed = this.CreateFeed
-        let originalFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        let originalFeedStorage = JSONFileStorage(workingDirectory).Storage()
         originalFeedStorage.Open()
         originalFeedStorage.Add(feed)
         originalFeedStorage.Close()
 
-        let nextFeedStorage = FeedFileStorage(workingDirectory).Storage()
+        let nextFeedStorage = JSONFileStorage(workingDirectory).Storage()
         nextFeedStorage.Open()
 
         let actualFeed = nextFeedStorage.Feeds.[0]

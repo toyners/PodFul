@@ -5,16 +5,20 @@ open System.IO
 open System.Linq
 open Jabberwocky.Toolkit.String
 
-type FeedFileStorage(directoryPath : string) = 
+type JSONFileStorage(directoryPath : string) = 
 
     let directoryPath = directoryPath
     let feedFileExtension = ".feed"
-    let reader = JSONFeedIO.ReadFeedFromFile
-    let writer = JSONFeedIO.WriteFeedToFile
     
     let mutable isopen = false
     let mutable feeds = Array.empty
     let mutable feedPaths = new Dictionary<Feed, string>()
+
+    abstract member ReadFeedFromFile: string -> Feed
+    abstract member WriteFeedToFile: Feed -> string -> unit
+
+    default this.ReadFeedFromFile filePath = JSONFeedIO.ReadFeedFromFile filePath
+    default this.WriteFeedToFile feed filePath = JSONFeedIO.WriteFeedToFile feed filePath
 
     member private this.fileNameSubstitutions = Dictionary<string, string>(dict
                                                     [
@@ -48,7 +52,7 @@ type FeedFileStorage(directoryPath : string) =
                            System.Guid.NewGuid().ToString() + 
                            feedFileExtension;
 
-            writer feed filePath
+            this.WriteFeedToFile feed filePath
             feeds <- Array.append feeds [|feed|]
             feedPaths.Add(feed, filePath)
                 
@@ -61,7 +65,7 @@ type FeedFileStorage(directoryPath : string) =
             
             feeds <-
                 [|for filePath in Directory.GetFiles(directoryPath, "*" + feedFileExtension, SearchOption.TopDirectoryOnly) do
-                    let feed = reader filePath
+                    let feed = this.ReadFeedFromFile filePath
                     feedPaths.Add(feed, filePath)
                     yield feed
                 |]
@@ -91,7 +95,7 @@ type FeedFileStorage(directoryPath : string) =
                 File.Delete(oldFilePath)
             File.Move(filePath, oldFilePath)
 
-            writer feed filePath |> ignore
+            this.WriteFeedToFile feed filePath |> ignore
 
             // Update the feed object in the array
             let equalsFeed f = (f = feed)
