@@ -13,8 +13,11 @@
 	  <title>Feed Title</title>
 	  <link>Feed Website</link>
 	  <description>Feed Description</description>
-    <image>
-      <url>Feed Image</url>
-    </image>
+    <item>
+		  <title>Podcast #1 Title</title>
+		  <pubDate>2 Jan 2014 01:02:03</pubDate>
+		  <description><![CDATA[Podcast #1 Description]]></description>
+      <enclosure url="Podcast1.mp3" length="1" type="audio/mpeg" />
+	  </item>
 	</channel>
 </rss>

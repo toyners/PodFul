@@ -21,6 +21,7 @@ type FeedFunctions_IntergrationTests() =
     let rssWithNoPodcasts = "No Podcasts.rss"
     let rssWithOnePodcast = "One Podcast.rss"
     let rssWithValidImages = "RSS with valid Images.rss"
+    let rssWithNoImages = "RSSFile with no Images.rss"
 
     let feedTitle = "Feed Title"
     let feedDescription = "Feed Description"
@@ -217,7 +218,7 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedPodcastImageName)
 
     [<Test>]
-    member public this.``Image filenames resolved when updating feed``() =
+    member public this.``Image filenames resolved when updating feed with unresolved image names``() =
         let initialInputPath = workingDirectory + rssWithValidImages
 
         let expectedFeedImageName = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\FeedImage.jpg"
@@ -242,6 +243,36 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[0].ImageFileName |> should equal expectedPodcastImageName
 
         let feed = FeedFunctions.UpdateFeed feed imageResolver
+
+        feed.ImageFileName |> should equal (imageDirectory + expectedResolvedFeedImageName)
+        feed.Podcasts.Length |> should equal 1
+        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedResolvedPodcastImageName)
+
+    [<Test>]
+    member public this.``Image filenames resolved when updating feed with no image names``() = 
+        let initialInputPath = workingDirectory + rssWithNoImages
+        
+        let imageDirectory = workingDirectory + @"Images\"
+        Directory.CreateDirectory(imageDirectory) |> ignore
+        
+        let imageResolver = ImageResolver(imageDirectory)
+
+        let assembly = Assembly.GetExecutingAssembly()
+        assembly.CopyEmbeddedResourceToFile(rssWithNoImages, initialInputPath)
+        assembly.CopyEmbeddedResourceToFile("FeedImage.jpg", workingDirectory + "FeedImage.jpg")
+        assembly.CopyEmbeddedResourceToFile("PodcastImage.jpg", workingDirectory + "PodcastImage.jpg")
+
+        let feed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
+
+        feed.ImageFileName |> should equal String.Empty
+        feed.Podcasts.Length |> should equal 1
+        feed.Podcasts.[0].ImageFileName |> should equal String.Empty
+
+        assembly.CopyEmbeddedResourceToFile(rssWithValidImages, initialInputPath)
+        
+        let feed = FeedFunctions.UpdateFeed feed imageResolver
+        let expectedResolvedFeedImageName = @"C_c__bs_Projects_bs_PodFul_bs_PodFul.Library.IntegrationTests_bs_FeedFunctions_IntergrationTests_bs_FeedImage.jpg"
+        let expectedResolvedPodcastImageName = @"C_c__bs_Projects_bs_PodFul_bs_PodFul.Library.IntegrationTests_bs_FeedFunctions_IntergrationTests_bs_PodcastImage.jpg"
 
         feed.ImageFileName |> should equal (imageDirectory + expectedResolvedFeedImageName)
         feed.Podcasts.Length |> should equal 1
