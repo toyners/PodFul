@@ -40,6 +40,14 @@ type GeneralDateTimeConverter_UnitTests() =
         converter.Convert(value, null, null, null) |> should equal ("Yesterday at " + resultTime)
 
      [<Test>]
+     member public this.``Value is last night so string starts with Yesterday ``() =
+        let converter = new GeneralDateTimeConverter()
+        let yesterday = DateTime.Now - TimeSpan.FromDays(1.0)
+        let value = new DateTime(yesterday.Year, yesterday.Month, yesterday.Day, 23, 59, 59)
+        let resultTime = value.ToString("HH:mm:ss");
+        converter.Convert(value, null, null, null) |> should equal ("Yesterday at " + resultTime)
+
+     [<Test>]
      [<TestCase(2)>]
      [<TestCase(3)>]
      [<TestCase(4)>]

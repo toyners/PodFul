@@ -26,19 +26,27 @@ namespace PodFul.WPF
         return "Never";
       }
 
-      var timeSpan = DateTime.Now - creationDateTime;
+      var days = 0;
+      var now = DateTime.Now;
+      var dateTime = creationDateTime;
+      while (dateTime.Year != now.Year || dateTime.DayOfYear != now.DayOfYear)
+      {
+        dateTime = dateTime.AddDays(1.0);
+        days++;
+      }
+      //var timeSpan = DateTime.Now - creationDateTime.;
 
-      if (timeSpan.Days == 0)
+      if (days == 0)
       {
         return String.Format("Today at {0:HH:mm:ss}", creationDateTime);
       }
 
-      if (timeSpan.Days == 1)
+      if (days == 1)
       {
         return String.Format("Yesterday at {0:HH:mm:ss}", creationDateTime);
       }
 
-      if (timeSpan.Days < 8)
+      if (days < 8)
       {
         return String.Format("{0:dddd} at {0:HH:mm:ss}", creationDateTime);
       }
