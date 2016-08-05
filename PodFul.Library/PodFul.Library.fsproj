@@ -63,7 +63,6 @@
     <Compile Include="NativeFeedIO.fs" />
     <Compile Include="JSONFileStorage.fs" />
     <Compile Include="NativeFileStorage.fs" />
-    <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <Compile Include="ImageResolver.fs" />
     <Compile Include="PodcastDownloader.fs" />
