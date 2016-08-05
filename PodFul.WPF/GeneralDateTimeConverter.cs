@@ -34,7 +34,6 @@ namespace PodFul.WPF
         dateTime = dateTime.AddDays(1.0);
         days++;
       }
-      //var timeSpan = DateTime.Now - creationDateTime.;
 
       if (days == 0)
       {
