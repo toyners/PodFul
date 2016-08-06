@@ -8,6 +8,7 @@ namespace PodFul.WPF
   using System.Reflection;
   using System.Windows;
   using System.Windows.Controls;
+  using Jabberwocky.Toolkit.Assembly;
   using Jabberwocky.Toolkit.IO;
   using PodFul.Library;
 
@@ -16,6 +17,7 @@ namespace PodFul.WPF
   /// </summary>
   public partial class MainWindow : Window
   {
+    private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
@@ -37,8 +39,15 @@ namespace PodFul.WPF
       this.feedCollection = new FeedCollection(feedStorage);
 
       var imageDirectory = Path.Combine(feedDirectory, "Images");
-      this.imageResolver = new ImageResolver(imageDirectory);
       DirectoryOperations.EnsureDirectoryExists(imageDirectory);
+
+      String defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
+      if (!File.Exists(defaultImagePath))
+      {
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, defaultImagePath);
+      }
+
+      this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath);
 
       this.FeedList.ItemsSource = feedCollection.Feeds;
       if (this.feedCollection.Feeds.Count > 0)

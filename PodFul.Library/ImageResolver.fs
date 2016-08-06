@@ -5,9 +5,10 @@ open System.IO
 open System.Collections.Generic
 open Jabberwocky.Toolkit.String
 
-type ImageResolver(imageDirectoryPath : string) =
+type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
 
     let directoryPath = imageDirectoryPath
+    let defaultImagePath = defaultImagePath
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
                                                     [
@@ -27,7 +28,7 @@ type ImageResolver(imageDirectoryPath : string) =
         member this.GetName (imageFileName : string) : string = 
 
             match String.IsNullOrEmpty(imageFileName) with
-            | true -> String.Empty
+            | true -> defaultImagePath
             | _ ->
                 let cleanImageFileName = imageFileName.Substitute(this.fileNameSubstitutions);
                 let imageFilePath = Path.Combine(directoryPath, cleanImageFileName)

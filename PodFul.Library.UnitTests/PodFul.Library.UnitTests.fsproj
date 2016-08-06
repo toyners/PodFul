@@ -57,6 +57,7 @@
     <Content Include="packages.config" />
     <Compile Include="FeedFunctions_UnitTests.fs" />
     <Compile Include="Feed_UnitTests.fs" />
+    <Compile Include="ImageResolver_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">
