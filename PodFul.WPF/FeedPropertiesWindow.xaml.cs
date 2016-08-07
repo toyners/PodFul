@@ -1,6 +1,7 @@
 ﻿
 namespace PodFul.WPF
 {
+  using System;
   using System.Windows;
   using PodFul.Library;
 
@@ -15,7 +16,7 @@ namespace PodFul.WPF
       this.DataContext = feed;
     }
 
-    private void CloseButton_Click(System.Object sender, RoutedEventArgs e)
+    private void CloseButton_Click(Object sender, RoutedEventArgs e)
     {
       this.Close();
     }
