@@ -5,7 +5,7 @@ namespace PodFul.WPF
   using PodFul.Library;
 
   /// <summary>
-  /// Interaction logic for Properties.xaml
+  /// Interaction logic for FeedPropertiesWindow.xaml
   /// </summary>
   public partial class FeedPropertiesWindow : Window
   {
