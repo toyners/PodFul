@@ -1,0 +1,70 @@
+﻿<Window x:Class="PodFul.WPF.PodcastPropertiesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PodFul.WPF"
+        mc:Ignorable="d"
+        Title="Properties" Height="300" Width="600"
+        Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize">
+  <Window.Resources>
+    <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
+    <local:TextTruncator x:Key="TextTruncator" />
+  </Window.Resources>
+  <DockPanel Margin="5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+      <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,2.5,2.5,2.5">
+        <Button Name="CloseButton" IsDefault="True" Padding="2.5" Width="70"  
+              VerticalContentAlignment="Center" Click="CloseButton_Click">Close</Button>
+      </StackPanel>
+    </Border>
+    
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,2.5" >
+      <Grid>
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Column="0">
+        </Image>
+        
+        <Grid Grid.Column="1">
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Label VerticalAlignment="Center">Title:</Label>
+            <TextBlock  Text="{Binding Path=Title, Converter={StaticResource TextTruncator}, ConverterParameter=100}" VerticalAlignment="Center" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,5,0" >
+            <Label VerticalAlignment="Center">Description:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=100}" TextWrapping="Wrap" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">File:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Directory, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Downloaded:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Size:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+          </StackPanel>
+        </Grid>
+      </Grid>
+    </Border>
+  </DockPanel>
+</Window>
