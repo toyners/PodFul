@@ -31,8 +31,19 @@
 8. Podcasts downloaded during scanning is done in oldest first order (same as manual downloading).
 9. File storage names now use a GUID instead of index.
 10. Scan button now scans all feeds. Scanning one feed can be done using context menu.
-11. Fixed a bug where feeds with on podcasts failed scanning next time there was new podcasts.
+11. Fixed a bug where feeds with no podcasts failed scanning next time there are new podcasts.
 12. Minor format fix in processing window when manually downloading podcasts.
 
 ## 2.2.1 (1.3)
 1. Changed selection mode of podcast selection window to be classic shift/ctrl click for multiple selections.
+
+## 2.3 (1.4)
+1. **Fixed:** Processing window title was not being updated correctly.
+2. **Changed:** Feed list layout updated to be easier to read - updated date and podcast count right aligned and bold.
+3. **Changed:** Enhanced logging around the adding of a feed as part of an ongoing investigation into feed file creation issue.
+4. **Fixed:** File size now rounded correctly when converted to readable format.
+5. **Changed:** Download progress bar layout improved.
+6. **Changed:** Feed file format is now JSON.
+7. **Fixed:** Feed Updated string was showing the incorrect tense for yesterday's date.
+8. **Changed:** Podcast list now shows podcast thumbnail image.
+9. **Changed:** Default image now used for feeds and podcasts that do not have a specified thumbnail image.
