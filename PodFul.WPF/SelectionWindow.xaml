@@ -40,15 +40,13 @@
         <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" SelectionChanged="PodcastList_SelectionChanged"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="PodcastList_MouseDoubleClick"
                    PreviewMouseWheel="PodcastList_MouseWheel" SelectionMode="Extended">
-          <!--<ListBox.ContextMenu>
+          <ListBox.ContextMenu>
             <ContextMenu>
-              <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />
-              <MenuItem Header="_Remove ..." Click="RemoveFeed_Click" />
-              <MenuItem Header="_Scan" Click="ScanFeed_Click"/>
+              <MenuItem Header="_Download" Click="Download_Click" FontWeight="Bold" />
               <Separator />
               <MenuItem Header="_Properties" Click="Properties_Click" />
             </ContextMenu>
-          </ListBox.ContextMenu>-->
+          </ListBox.ContextMenu>
           <ListBox.ItemTemplate>
             <DataTemplate>
               <Grid Margin="0,2">

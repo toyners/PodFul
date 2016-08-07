@@ -65,6 +65,18 @@ namespace PodFul.WPF
       this.SelectRows(SelectRowsType.All);
     }
 
+    private void Download_Click(Object sender, RoutedEventArgs e)
+    {
+      this.DialogResult = true;
+    }
+
+    private void Properties_Click(Object sender, RoutedEventArgs e)
+    {
+      var podcast = PodcastList.SelectedItem as Podcast;
+      var propertiesWindow = new PodcastPropertiesWindow(podcast);
+      propertiesWindow.ShowDialog();
+    }
+
     private void SelectRows(SelectRowsType selectRowsType)
     {
       if (selectRowsType == SelectRowsType.All)
@@ -83,7 +95,7 @@ namespace PodFul.WPF
 
     private void PodcastList_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
     {
-      // Show properties
+      this.DialogResult = true;
     }
 
     private void PodcastList_MouseWheel(Object sender, MouseWheelEventArgs e)
