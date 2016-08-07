@@ -7,9 +7,9 @@ namespace PodFul.WPF
   /// <summary>
   /// Interaction logic for Properties.xaml
   /// </summary>
-  public partial class PropertiesWindow : Window
+  public partial class FeedPropertiesWindow : Window
   {
-    public PropertiesWindow(Feed feed)
+    public FeedPropertiesWindow(Feed feed)
     {
       InitializeComponent();
       this.DataContext = feed;

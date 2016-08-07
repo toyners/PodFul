@@ -305,7 +305,7 @@ namespace PodFul.WPF
 
     private void Properties_Click(Object sender, RoutedEventArgs e)
     {
-      var propertiesWindow = new PropertiesWindow(this.currentFeed);
+      var propertiesWindow = new FeedPropertiesWindow(this.currentFeed);
       propertiesWindow.ShowDialog();
     }
 
