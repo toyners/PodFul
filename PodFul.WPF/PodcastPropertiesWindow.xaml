@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Properties" Height="300" Width="600"
+        Title="Properties" Height="250" Width="800"
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize">
   <Window.Resources>
-    <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
+    <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
     <local:TextTruncator x:Key="TextTruncator" />
+    <local:FileSizeConverter x:Key="FileSizeConverter" />
   </Window.Resources>
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
@@ -23,15 +24,15 @@
       <Grid>
 
         <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Grid.Column="0">
-        </Image>
-        
+        <Image Source="{Binding ImageFileName}" Grid.Column="0" Margin="2" />
+
         <Grid Grid.Column="1">
           <Grid.RowDefinitions>
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -55,13 +56,18 @@
           </StackPanel>
 
           <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Published:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=PubDate, Converter={StaticResource DownloadDateTimeConverter}}" />
+          </StackPanel>
+          
+          <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Label VerticalAlignment="Center">Downloaded:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}" />
           </StackPanel>
 
-          <StackPanel Grid.Row="4" Orientation="Horizontal">
+          <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Label VerticalAlignment="Center">Size:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileSize, Converter={StaticResource FileSizeConverter}}" />
           </StackPanel>
         </Grid>
       </Grid>
