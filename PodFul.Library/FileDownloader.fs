@@ -20,7 +20,6 @@ type FileDownloader() =
                     request.GetResponse()
                 | _ ->
                     WebRequest.Create(uri).GetResponse()
-            //let response = request.GetResponse()
 
             use stream = response.GetResponseStream()
             use writer = new FileStream(filePath, FileMode.Create, FileAccess.Write)
