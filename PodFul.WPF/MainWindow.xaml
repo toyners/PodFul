@@ -53,7 +53,7 @@
                    PreviewMouseWheel="FeedList_MouseWheel">
             <ListBox.ContextMenu>
               <ContextMenu>
-                <MenuItem Header="_Download Podcasts ..." Click="Download_Click" FontWeight="Bold" />
+                <MenuItem Header="_Download ..." Click="Download_Click" FontWeight="Bold" />
                 <MenuItem Header="_Remove ..." Click="RemoveFeed_Click" />
                 <MenuItem Header="_Scan" Click="ScanFeed_Click"/>
                 <Separator />
