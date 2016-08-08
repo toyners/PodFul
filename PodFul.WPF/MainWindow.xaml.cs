@@ -314,5 +314,39 @@ namespace PodFul.WPF
       this.FeedList_Scroller.ScrollToVerticalOffset(this.FeedList_Scroller.VerticalOffset - e.Delta);
       e.Handled = true;
     }
+
+    private void Synchronise_Click(Object sender, RoutedEventArgs e)
+    {
+      var feedUpdated = false;
+      for (int i = 0; i < this.currentFeed.Podcasts.Length; i++)
+      {
+        var podcast = this.currentFeed.Podcasts[i];
+        var podcastFilePath = Path.Combine(this.currentFeed.Directory, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
+        var podcastFileInfo = new FileInfo(podcastFilePath);
+        if (!podcastFileInfo.Exists)
+        {
+          continue;
+        }
+
+        if (podcast.FileSize != podcastFileInfo.Length)
+        {
+          podcast = Podcast.SetFileSize(podcastFileInfo.Length, podcast);
+          feedUpdated = true;
+        }
+
+        if (podcast.DownloadDate != podcastFileInfo.LastWriteTime)
+        {
+          podcast = Podcast.SetDownloadDate(podcastFileInfo.LastWriteTime, podcast);
+          feedUpdated = true;
+        }
+
+        this.currentFeed.Podcasts[i] = podcast;
+      }
+
+      if (feedUpdated)
+      {
+        this.feedCollection.UpdateFeed(this.currentFeed);
+      }
+    }
   }
 }
