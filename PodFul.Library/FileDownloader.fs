@@ -36,9 +36,13 @@ type FileDownloader() =
             copyTo ()
         with
         | :? System.Net.WebException as webex ->
-                use exstream = new StreamReader(webex.Response.GetResponseStream())
-                let responseText = exstream.ReadToEnd()
-                failwith responseText
+                match (webex.Response = null) with
+                | true -> 
+                    failwith webex.Message
+                | _ ->
+                    use exstream = new StreamReader(webex.Response.GetResponseStream())
+                    let responseText = exstream.ReadToEnd()
+                    failwith responseText
 
     member this.DownloadAsync(url, filePath,  cancelToken, updateProgressFn: Action<int>) = 
         async {

@@ -71,9 +71,10 @@ namespace PodFul.WPF
 
           podcasts[podcastIndex] = podcast;
         }
-        catch (AggregateException exception)
+        catch (Exception exception)
         {
           this.OnException?.Invoke(podcast, exception);
+          return false;
         }
       }
 
