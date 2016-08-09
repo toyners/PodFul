@@ -15,6 +15,8 @@ namespace PodFul.WPF
     {
       InitializeComponent();
 
+      this.Title = podcast.Title;
+
       this.Podcast = podcast;
       if (podcast.DownloadDate == FeedFunctions.NoDateTime)
       {
