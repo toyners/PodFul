@@ -24,11 +24,15 @@ namespace PodFul.WPF
     #region Construction
     public PodcastsWindow(Feed feed)
     {
+      InitializeComponent();
+
       var title = String.Format("{0} podcast{1}", feed.Podcasts.Length, (feed.Podcasts.Length != 1 ? "s" : String.Empty));
-      this.InitialiseWindow(title);
+      this.Title = title;
 
       this.PodcastList.ItemsSource = feed.Podcasts;
       this.feedDirectory = feed.Directory;
+
+      this.PodcastList.Focus();
     }
     #endregion
 
@@ -49,15 +53,6 @@ namespace PodFul.WPF
     #endregion
 
     #region Methods
-    private void InitialiseWindow(String title)
-    {
-      InitializeComponent();
-
-      this.Title = title;
-
-      this.PodcastList.Focus();
-    }
-
     private void ClearButton_Click(Object sender, RoutedEventArgs e)
     {
       this.SelectRows(SelectRowsType.None);
