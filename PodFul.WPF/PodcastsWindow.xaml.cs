@@ -11,7 +11,7 @@ namespace PodFul.WPF
   /// <summary>
   /// Interaction logic for SelectionWindow.xaml
   /// </summary>
-  public partial class SelectionWindow : Window
+  public partial class PodcastsWindow : Window
   {
     private enum SelectRowsType
     {
@@ -20,7 +20,7 @@ namespace PodFul.WPF
     }
 
     #region Construction
-    public SelectionWindow(Podcast[] podcasts)
+    public PodcastsWindow(Podcast[] podcasts)
     {
       var title = String.Format("{0} podcast{1}", podcasts.Length, (podcasts.Length != 1 ? "s" : String.Empty));
       this.InitialiseWindow(title);

@@ -95,8 +95,8 @@
     <Compile Include="ProcessingWindow.xaml.cs">
       <DependentUpon>ProcessingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SelectionWindow.xaml.cs">
-      <DependentUpon>SelectionWindow.xaml</DependentUpon>
+    <Compile Include="PodcastsWindow.xaml.cs">
+      <DependentUpon>PodcastsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
@@ -137,7 +137,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SelectionWindow.xaml">
+    <Page Include="PodcastsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

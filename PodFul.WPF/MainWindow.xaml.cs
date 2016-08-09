@@ -226,7 +226,7 @@ namespace PodFul.WPF
 
     private void DownloadPodcasts()
     {
-      var selectionWindow = new SelectionWindow(this.currentFeed.Podcasts);
+      var selectionWindow = new PodcastsWindow(this.currentFeed.Podcasts);
       var startDownloading = selectionWindow.ShowDialog();
 
       if (startDownloading == null || !startDownloading.Value)
