@@ -174,8 +174,7 @@ namespace PodFul.WPF
       for (Int32 podcastIndex = 0; podcastIndex < feed.Podcasts.Length; podcastIndex++)
       {
         var podcast = feed.Podcasts[podcastIndex];
-        var fileName = podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1);
-        var fileInfo = new FileInfo(feed.Directory + fileName);
+        var fileInfo = new FileInfo(Path.Combine(feed.Directory, podcast.FileName));
 
         if (!fileInfo.Exists)
         {

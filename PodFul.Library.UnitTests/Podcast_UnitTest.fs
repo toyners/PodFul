@@ -128,3 +128,39 @@ type Podcast_UnitTest() =
         podcast2.PubDate |> should equal podcast1.PubDate
         podcast2.DownloadDate |> should equal podcast1.DownloadDate
         podcast2.ImageFileName |> should equal "image"
+
+    [<Test>]
+    [<TestCase(null)>]
+    [<TestCase("")>]
+    member public this.``Getting file name when URL is null or empty throws meaningful exception``(url : string) =
+        let podcast =
+            {
+                Title = "title"
+                Description = "description"
+                URL = url
+                FileSize = 1L
+                PubDate = new DateTime(2016, 12, 31)
+                DownloadDate = FeedFunctions.NoDateTime
+                ImageFileName = ""
+            }
+
+        (fun() -> podcast.FileName |> ignore)
+        |> should (throwWithMessage "Cannot get FileName: URL is null or empty.") typeof<System.Exception>
+
+    [<Test>]
+    [<TestCase("fileName.mp3")>]
+    [<TestCase("http://abc.com/fileName.mp3")>]
+    [<TestCase(@"C:\abc\fileName.mp3")>]
+    member public this.``Getting file name when URL is valid returns file name only``(url : string) =
+        let podcast =
+            {
+                Title = "title"
+                Description = "description"
+                URL = url
+                FileSize = 1L
+                PubDate = new DateTime(2016, 12, 31)
+                DownloadDate = FeedFunctions.NoDateTime
+                ImageFileName = ""
+            }
+
+        podcast.FileName |> should equal "fileName.mp3"

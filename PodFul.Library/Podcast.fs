@@ -15,6 +15,18 @@ type Podcast =
     }
 
     with
+        member this.FileName 
+            with get() = 
+                match(String.IsNullOrEmpty(this.URL)) with
+                | true -> 
+                    failwith "Cannot get FileName: URL is null or empty."
+                | _ ->
+                    let mutable index = this.URL.LastIndexOf('/') + 1
+                    if index = 0 then
+                        index <- this.URL.LastIndexOf('\\') + 1
+
+                    this.URL.Substring(index)
+
         static member SetDownloadDate date original =
             {
                 Title = original.Title
