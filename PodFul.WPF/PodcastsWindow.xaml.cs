@@ -19,7 +19,7 @@ namespace PodFul.WPF
       All,
     }
 
-    private Feed feed;
+    private String feedDirectory;
 
     #region Construction
     public PodcastsWindow(Feed feed)
@@ -28,7 +28,7 @@ namespace PodFul.WPF
       this.InitialiseWindow(title);
 
       this.PodcastList.ItemsSource = feed.Podcasts;
-      this.feed = feed;
+      this.feedDirectory = feed.Directory;
     }
     #endregion
 
@@ -76,7 +76,7 @@ namespace PodFul.WPF
     private void Properties_Click(Object sender, RoutedEventArgs e)
     {
       var podcast = PodcastList.SelectedItem as Podcast;
-      var propertiesWindow = new PodcastPropertiesWindow(podcast, this.feed.Directory);
+      var propertiesWindow = new PodcastPropertiesWindow(podcast, this.feedDirectory);
       propertiesWindow.ShowDialog();
     }
 
