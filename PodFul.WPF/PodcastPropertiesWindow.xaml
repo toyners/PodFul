@@ -28,7 +28,7 @@
           <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="{Binding ImageFileName}" Grid.Column="0" Margin="2" />
+        <Image Source="{Binding Podcast.ImageFileName}" Grid.Column="0" Margin="2" />
 
         <Grid Grid.Column="1">
           <Grid.RowDefinitions>
@@ -42,32 +42,32 @@
 
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <Label VerticalAlignment="Center">Title:</Label>
-            <TextBlock  Text="{Binding Path=Title, Converter={StaticResource TextTruncator}, ConverterParameter=100}" VerticalAlignment="Center" />
+            <TextBlock  Text="{Binding Path=Podcast.Title, Converter={StaticResource TextTruncator}, ConverterParameter=100}" VerticalAlignment="Center" />
           </StackPanel>
 
           <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,5,0" >
             <Label VerticalAlignment="Center">Description:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=100}" TextWrapping="Wrap" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Podcast.Description, Converter={StaticResource TextTruncator}, ConverterParameter=100}" TextWrapping="Wrap" />
           </StackPanel>
 
           <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Label VerticalAlignment="Center">File:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Directory, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=FilePath, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
           </StackPanel>
 
           <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Label VerticalAlignment="Center">Published:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=PubDate, Converter={StaticResource DownloadDateTimeConverter}}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Podcast.PubDate, Converter={StaticResource DownloadDateTimeConverter}}" />
           </StackPanel>
           
           <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Label VerticalAlignment="Center">Downloaded:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Podcast.DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}" />
           </StackPanel>
 
           <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Label VerticalAlignment="Center">Size:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileSize, Converter={StaticResource FileSizeConverter}}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Podcast.FileSize, Converter={StaticResource FileSizeConverter}}" />
           </StackPanel>
         </Grid>
       </Grid>
