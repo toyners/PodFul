@@ -128,7 +128,6 @@ namespace PodFul.WPF
         value = this.downloadedSize / this.percentageStepSize;
       }
 
-      String size;
       String majorSize;
       String minorSize;
       if (this.fileSizeNotKnown)
