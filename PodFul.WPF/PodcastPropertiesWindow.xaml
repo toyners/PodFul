@@ -42,7 +42,7 @@
 
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <Label VerticalAlignment="Center">Description:</Label>
-            <TextBlock  Text="{Binding Path=Podcast.Description, Converter={StaticResource TextTruncator}, ConverterParameter=100}" VerticalAlignment="Center" />
+            <TextBlock  Text="{Binding Path=Podcast.Description, Converter={StaticResource TextTruncator}, ConverterParameter=90}" VerticalAlignment="Center" />
           </StackPanel>
 
           <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,5,0" >
@@ -67,7 +67,7 @@
 
           <StackPanel Grid.Row="5" Orientation="Horizontal">
             <Label VerticalAlignment="Center">Size:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Podcast.FileSize, Converter={StaticResource FileSizeConverter}}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileSize}" />
           </StackPanel>
         </Grid>
       </Grid>

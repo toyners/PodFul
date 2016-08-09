@@ -27,12 +27,16 @@ namespace PodFul.WPF
         this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
       }
 
-      this.DataContext = this; 
+      this.FileSize = (new FileSizeConverter()).ConvertToString(podcast.FileSize) + "  (" + podcast.FileSize + " bytes)";
+
+      this.DataContext = this;  
     }
 
     public Podcast Podcast { get; private set; }
 
     public String FilePath { get; private set; }
+
+    public String FileSize { get; private set; }
 
     private void CloseButton_Click(Object sender, RoutedEventArgs e)
     {

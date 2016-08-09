@@ -14,6 +14,16 @@ namespace PodFul.WPF
   {
     public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
     {
+      return this.ConvertToString(value);
+    }
+
+    public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
+    {
+      return DependencyProperty.UnsetValue;
+    }
+
+    internal String ConvertToString(Object value)
+    {
       if (!(value is Int64))
       {
         return String.Empty;
@@ -25,7 +35,7 @@ namespace PodFul.WPF
       {
         return "0.0 MB";
       }
-      
+
       var sizeInMb = (fileSize / (1048576.0)).ToString("0.0");
 
       if (sizeInMb == "0.0")
@@ -34,11 +44,6 @@ namespace PodFul.WPF
       }
 
       return sizeInMb + " MB";
-    }
-
-    public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
-    {
-      return DependencyProperty.UnsetValue;
     }
   }
 }
