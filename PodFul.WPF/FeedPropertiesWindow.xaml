@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Properties" Height="300" Width="800"
+        Title="Properties" Height="250" Width="800"
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize">
   <Window.Resources>
     <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
@@ -30,7 +30,6 @@
 
         <Grid Grid.Column="1">
           <Grid.RowDefinitions>
-            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -65,13 +64,22 @@
           </StackPanel>
 
           <StackPanel Grid.Row="5" Orientation="Horizontal">
-            <Label VerticalAlignment="Center">Created:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
-          </StackPanel>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+              </Grid.ColumnDefinitions>
 
-          <StackPanel Grid.Row="6" Orientation="Horizontal">
-            <Label VerticalAlignment="Center">Updated:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+              <StackPanel Grid.Column="0" Orientation="Horizontal" Width="280">
+                <Label VerticalAlignment="Center">Created:</Label>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+              </StackPanel>
+
+              <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Label VerticalAlignment="Center">Updated:</Label>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+              </StackPanel>
+            </Grid>
           </StackPanel>
         </Grid>
       </Grid>
