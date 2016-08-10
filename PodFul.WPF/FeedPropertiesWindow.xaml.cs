@@ -13,6 +13,7 @@ namespace PodFul.WPF
     public FeedPropertiesWindow(Feed feed)
     {
       InitializeComponent();
+      this.Title = feed.Title;
       this.DataContext = feed;
     }
 

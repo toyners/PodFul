@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Properties" Height="300" Width="600"
+        Title="Properties" Height="300" Width="800"
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize">
   <Window.Resources>
     <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
@@ -20,56 +20,60 @@
     </Border>
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,2.5" >
       <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-          <Label VerticalAlignment="Center">Title:</Label>
-          <TextBlock  Text="{Binding Path=Title, Converter={StaticResource TextTruncator}, ConverterParameter=100}" VerticalAlignment="Center" />
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,5,0" >
-          <Label VerticalAlignment="Center">Description:</Label>
-          <TextBlock VerticalAlignment="Center" Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=100}" TextWrapping="Wrap" />
-        </StackPanel>
+        <Image Source="{Binding ImageFileName}" Grid.Column="0" Margin="2" VerticalAlignment="Top" />
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-          <Label VerticalAlignment="Center">Website:</Label>
-          <TextBlock VerticalAlignment="Center" Text="{Binding Path=Website, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
-        </StackPanel>
+        <Grid Grid.Column="1">
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
-          <Label VerticalAlignment="Center">Directory:</Label>
-          <TextBlock VerticalAlignment="Center" Text="{Binding Path=Directory, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
-        </StackPanel>
+          <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,5,0" >
+            <Label VerticalAlignment="Center">Description:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=100}" TextWrapping="Wrap" />
+          </StackPanel>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
-          <Label VerticalAlignment="Center">URL:</Label>
-          <TextBlock VerticalAlignment="Center" Text="{Binding Path=URL, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
-        </StackPanel>
+          <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Website:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Website, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
+          </StackPanel>
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal">
-          <Label VerticalAlignment="Center">Podcasts:</Label>
-          <TextBlock VerticalAlignment="Center" Text="{Binding Podcasts.Length}" />
-        </StackPanel>
+          <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Directory:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Directory, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
+          </StackPanel>
 
-        <StackPanel Grid.Row="6" Orientation="Horizontal">
-          <Label VerticalAlignment="Center">Created:</Label>
-          <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
-        </StackPanel>
+          <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">URL:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=URL, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
+          </StackPanel>
 
-        <StackPanel Grid.Row="7" Orientation="Horizontal">
-          <Label VerticalAlignment="Center">Updated:</Label>
-          <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
-        </StackPanel>
+          <StackPanel Grid.Row="4" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Podcasts:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Podcasts.Length}" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="5" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Created:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="6" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">Updated:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
+          </StackPanel>
+        </Grid>
       </Grid>
     </Border>
   </DockPanel>
