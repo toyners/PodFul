@@ -25,6 +25,10 @@ namespace PodFul.WPF
       else
       {
         this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
+        if (!File.Exists(this.FilePath))
+        {
+          this.FilePath = "No file";
+        }
       }
 
       this.FileSize = (new FileSizeConverter()).ConvertToString(podcast.FileSize) + "  (" + podcast.FileSize + " bytes)";
