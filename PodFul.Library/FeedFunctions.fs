@@ -147,25 +147,51 @@ module public FeedFunctions =
                 }
           ] |> List.toArray
 
-    let private downloadDocument(url) : XDocument = 
+    exception RetryException of Exception
+
+    let rec tryDownloadDocument (webClient : WebClient) (uri : Uri) retryCount : XDocument =
+        try
+            let data = webClient.DownloadString(uri)
+            XDocument.Parse(data)
+        with
+        | :? System.Exception as ex ->
+            if retryCount > 0 then
+                tryDownloadDocument webClient uri (retryCount - 1)
+            else
+                raise (RetryException ex)
+
+    let private downloadDocument(url) : XDocument =
+
         try
             let webClient = new WebClient()
             webClient.Headers.Add("user-agent", "Podful Podcatcher")
             webClient.Encoding <- System.Text.Encoding.UTF8;
-            let data = webClient.DownloadString(Uri(url))
-            XDocument.Parse(data)
-        with
-        | :? System.Net.WebException as webex ->
-             match webex.Response with
-             | null -> failwith webex.Message
-             | _ ->
-                 use streamReader = new StreamReader(webex.Response.GetResponseStream())
-                 let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
-                 use streamWriter = new StreamWriter(errorLogFilePath)
-                 let responseText = streamReader.ReadToEnd()
-                 streamWriter.Write(responseText)
-                 failwith ("Error log written to '" + errorLogFilePath + "'.")
 
+            let uri = Uri(url)
+        
+            tryDownloadDocument webClient uri 5
+            
+        with
+        | :? RetryException as retryex ->
+            if retryex.InnerException = null then
+                reraise()
+                
+            match (retryex.InnerException :? System.Net.WebException) with
+            | false -> 
+                reraise()
+            | _ ->
+                let webex = retryex.InnerException :?> System.Net.WebException
+                match webex.Response with
+                | null -> reraise()
+                | _ -> 
+                    use streamReader = new StreamReader(webex.Response.GetResponseStream())
+                    let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
+                    use streamWriter = new StreamWriter(errorLogFilePath)
+                    let responseText = streamReader.ReadToEnd()
+                    streamWriter.Write(responseText)
+                    let message = webex.Message + ". Error log written to '" + errorLogFilePath + "'."
+                    raise (RetryException (new System.Net.WebException(message)))
+            
     let private mergeFeeds (oldFeed : Feed) (newFeed : Feed) : Feed =
 
         let mutable newIndex = 0

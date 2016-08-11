@@ -6,6 +6,7 @@ open PodFul.Library
 open System
 open System.IO
 open System.Reflection
+open System.Xml.Linq
 
 type FeedFunctions_UnitTests() = 
 
@@ -54,3 +55,11 @@ type FeedFunctions_UnitTests() =
     [<Test>]
     member public this.``Clean text of leading and trailing whitespace``() =
         FeedFunctions.CleanText " abc " |> should equal "abc"
+
+    [<Test>]
+    member public this.``Create feed with bad url returns retry exception``() =
+        let guid = Guid.NewGuid()
+        let badURL = "http://" + guid.ToString() + ".com"
+        let directory = @"C:\directory\"
+        let ex = (fun() -> FeedFunctions.CreateFeed badURL directory null |> ignore)
+        ex |> should throw typeof<FeedFunctions.RetryException>
