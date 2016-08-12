@@ -61,5 +61,14 @@ type FeedFunctions_UnitTests() =
         let guid = Guid.NewGuid()
         let badURL = "http://" + guid.ToString() + ".com"
         let directory = @"C:\directory\"
-        let ex = (fun() -> FeedFunctions.CreateFeed badURL directory null |> ignore)
-        ex |> should throw typeof<FeedFunctions.RetryException>
+
+        let mutable testSuccessful = false
+        try
+            FeedFunctions.CreateFeed badURL directory null |> ignore
+        with
+        | _ as e ->
+            e :? FeedFunctions.RetryException |> should equal true
+            
+            testSuccessful <- true
+
+        testSuccessful |> should equal true
