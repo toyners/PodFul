@@ -154,7 +154,7 @@ module public FeedFunctions =
             let data = webClient.DownloadString(uri)
             XDocument.Parse(data)
         with
-        | :? System.Exception as ex ->
+        | _ as ex ->
             if retryCount > 0 then
                 tryDownloadDocument webClient uri (retryCount - 1)
             else
