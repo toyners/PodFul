@@ -47,3 +47,12 @@
 7. **Fixed:** Feed Updated string was showing the incorrect tense for yesterday's date.
 8. **Changed:** Podcast list now shows podcast thumbnail image.
 9. **Changed:** Default image now used for feeds and podcasts that do not have a specified thumbnail image.
+
+## 2.4 (1.5)
+1. **Changed:** Added context menu for Podcast window.
+2. **Changed:** New podcast properties window available - accessed via context menu.
+3. **Changed:** Can synchronise podcast file date/size for a feed - accessed via feed context menu.
+4. **Changed:** Added feed image to the feed properties window.
+5. **Fixed:** Exceptions were not being handled correctly during manual download.
+6. **Changed:** RSS download is now more resilient against transient errors.
+7. **Changed:** Minor layout changes to podcast list window.
