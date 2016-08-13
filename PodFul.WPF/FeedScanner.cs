@@ -125,7 +125,14 @@ namespace PodFul.WPF
             {
               podcastIndexes.Reverse();
               var podcastQueue = new Queue<Int32>(podcastIndexes);
-              if (!podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastQueue))
+              var isCancelled = !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastQueue);
+
+              Application.Current.Dispatcher.Invoke(() =>
+              {
+                this.feedCollection.UpdateFeed(feedIndex, newFeed);
+              });
+
+              if (isCancelled)
               {
                 this.log.Message("\r\nCANCELLED");
                 return;
