@@ -101,7 +101,7 @@ namespace PodFul.WPF
       if (fileCount > 0 &&
         MessageBox.Show(String.Format("{0} MP3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
       {
-        var count = this.SyncWithExistingFiles(feed);
+        var count = this.SynchroniseWithExistingFiles(feed);
 
         var message = String.Format("{0} MP3 file(s) synced after adding '{1}'", count, feed.Title);
         this.fileLogger.Message(message);
@@ -168,23 +168,36 @@ namespace PodFul.WPF
       this.FeedList.SelectedIndex = index;
     }
 
-    private Int32 SyncWithExistingFiles(Feed feed)
+    private Int32 SynchroniseWithExistingFiles(Feed feed)
     {
       var syncCount = 0;
-      for (Int32 podcastIndex = 0; podcastIndex < feed.Podcasts.Length; podcastIndex++)
+      for (int i = 0; i < feed.Podcasts.Length; i++)
       {
-        var podcast = feed.Podcasts[podcastIndex];
-        var fileInfo = new FileInfo(Path.Combine(feed.Directory, podcast.FileName));
-
-        if (!fileInfo.Exists)
+        var podcastUpdated = false;
+        var podcast = feed.Podcasts[i];
+        var podcastFilePath = Path.Combine(feed.Directory, podcast.FileName);
+        var podcastFileInfo = new FileInfo(podcastFilePath);
+        if (!podcastFileInfo.Exists)
         {
           continue;
         }
 
-        podcast = Podcast.SetDownloadDate(fileInfo.CreationTime, podcast);
-        podcast = Podcast.SetFileSize(fileInfo.Length, podcast);
-        feed.Podcasts[podcastIndex] = podcast;
-        syncCount++;
+        if (podcast.FileSize != podcastFileInfo.Length)
+        {
+          podcast = Podcast.SetFileSize(podcastFileInfo.Length, podcast);
+          podcastUpdated = true;
+        }
+
+        if (podcast.DownloadDate != podcastFileInfo.LastWriteTime)
+        {
+          podcast = Podcast.SetDownloadDate(podcastFileInfo.LastWriteTime, podcast);
+          podcastUpdated = true;
+        }
+
+        if (podcastUpdated)
+        {
+          feed.Podcasts[i] = podcast;
+        }
       }
 
       return syncCount;
@@ -316,35 +329,15 @@ namespace PodFul.WPF
 
     private void Synchronise_Click(Object sender, RoutedEventArgs e)
     {
-      var feedUpdated = false;
-      for (int i = 0; i < this.currentFeed.Podcasts.Length; i++)
+      var count = this.SynchroniseWithExistingFiles(this.currentFeed);
+
+      if (count > 0)
       {
-        var podcast = this.currentFeed.Podcasts[i];
-        var podcastFilePath = Path.Combine(this.currentFeed.Directory, podcast.URL.Substring(podcast.URL.LastIndexOf('/') + 1));
-        var podcastFileInfo = new FileInfo(podcastFilePath);
-        if (!podcastFileInfo.Exists)
-        {
-          continue;
-        }
-
-        if (podcast.FileSize != podcastFileInfo.Length)
-        {
-          podcast = Podcast.SetFileSize(podcastFileInfo.Length, podcast);
-          feedUpdated = true;
-        }
-
-        if (podcast.DownloadDate != podcastFileInfo.LastWriteTime)
-        {
-          podcast = Podcast.SetDownloadDate(podcastFileInfo.LastWriteTime, podcast);
-          feedUpdated = true;
-        }
-
-        this.currentFeed.Podcasts[i] = podcast;
+        MessageBox.Show(String.Format("{0} MP3 file(s) snychronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
-
-      if (feedUpdated)
+      else
       {
-        this.feedCollection.UpdateFeed(this.currentFeed);
+        MessageBox.Show("No files synchronised", "Synchronisation completed");
       }
     }
   }
