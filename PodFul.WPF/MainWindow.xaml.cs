@@ -125,7 +125,7 @@ namespace PodFul.WPF
       this.currentFeed = feed;
       this.ScanButton.IsEnabled = true;
 
-      this.DownloadPodcasts();
+      this.DisplayPodcasts();
     }
 
     private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
@@ -218,12 +218,12 @@ namespace PodFul.WPF
       processingWindow.ShowDialog();
     }
 
-    private void Download_Click(Object sender, RoutedEventArgs e)
+    private void Podcasts_Click(Object sender, RoutedEventArgs e)
     {
-      this.DownloadPodcasts();
+      this.DisplayPodcasts();
     }
 
-    private void DownloadPodcasts()
+    private void DisplayPodcasts()
     {
       var selectionWindow = new PodcastsWindow(this.currentFeed);
       var startDownloading = selectionWindow.ShowDialog();
@@ -279,7 +279,7 @@ namespace PodFul.WPF
     {
       if (this.currentFeed != null)
       {
-        this.DownloadPodcasts();
+        this.DisplayPodcasts();
       }
 
       e.Handled = true;

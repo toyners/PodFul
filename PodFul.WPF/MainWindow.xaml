@@ -35,7 +35,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <Button Click="Settings_Click">Settings</Button>
-          <Button Name="DownloadButton" Click="Download_Click" IsEnabled="False">Download</Button>
+          <Button Name="DownloadButton" Click="Podcasts_Click" IsEnabled="False">Download</Button>
           <Button Name="ScanButton" Click="Scan_Click" IsEnabled="False">Scan</Button>
         </StackPanel>
       </Grid>
@@ -53,7 +53,7 @@
                    PreviewMouseWheel="FeedList_MouseWheel">
             <ListBox.ContextMenu>
               <ContextMenu>
-                <MenuItem Header="Podcasts ..." Click="Download_Click" FontWeight="Bold" />
+                <MenuItem Header="Podcasts ..." Click="Podcasts_Click" FontWeight="Bold" />
                 <MenuItem Header="Remove ..." Click="RemoveFeed_Click" />
                 <MenuItem Header="Scan" Click="ScanFeed_Click"/>
                 <MenuItem Header="Synchronise Podcasts" Click="Synchronise_Click" />
