@@ -257,7 +257,7 @@ module public FeedFunctions =
         createFeedRecord url directoryPath DateTime.Now |>
         resolveImages imageResolver
 
-    let public UpdateFeed (feed : Feed) (imageResolver : IImageResolver) : Feed = 
+    let public UpdateFeed feed imageResolver : Feed = 
         downloadDocument feed.URL |> 
         createFeedRecord feed.URL feed.Directory feed.CreationDateTime |>  
         Feed.SetUpdatedDate feed.UpdatedDateTime |> 

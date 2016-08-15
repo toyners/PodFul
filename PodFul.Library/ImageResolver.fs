@@ -9,7 +9,7 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, postM
 
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
-    let postMessage = postMessage
+    let mutable postMessage = null
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
                                                     [
@@ -26,6 +26,12 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, postM
 
     interface IImageResolver with
         
+        member this.PostMessage 
+            with get() : Action<string> =
+                postMessage
+            and set(v : Action<string>) =
+                postMessage <- v
+
         member this.GetName (imageFileName : string) : string = 
 
             match String.IsNullOrEmpty(imageFileName) with

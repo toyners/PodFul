@@ -223,6 +223,7 @@ namespace PodFul.WPF
       var processingWindow = new ProcessingWindow(feedScanner);
 
       guiLogger.PostMessage = processingWindow.PostMessage;
+      this.imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
@@ -257,6 +258,7 @@ namespace PodFul.WPF
       var processingWindow = new ProcessingWindow(feedDownload);
 
       guiLogger.PostMessage = processingWindow.PostMessage;
+      this.imageResolver.PostMessage = processingWindow.PostMessage;
       feedDownload.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedDownload.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
       feedDownload.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
