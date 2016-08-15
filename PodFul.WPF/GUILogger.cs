@@ -5,16 +5,21 @@ namespace PodFul.WPF
 
   public class GUILogger : ILogger
   {
-    private const String lineBreakText = "\r\n";
-    private readonly FileLogger fileLogger;
-
+    #region Members
     public Action<String> PostMessage;
 
+    private const String lineBreakText = "\r\n";
+    private readonly FileLogger fileLogger;
+    #endregion
+
+    #region Construction
     public GUILogger(FileLogger logger)
     {
       this.fileLogger = logger;
     }
+    #endregion
 
+    #region Methods
     public void Exception(String message)
     {
       this.fileLogger.Exception(message);
@@ -28,7 +33,11 @@ namespace PodFul.WPF
 
     public void Message(String message, Boolean lineBreak)
     {
-      this.fileLogger.Message(message);
+      if (String.IsNullOrEmpty(message))
+      {
+        this.fileLogger.Message(message);
+      }
+
       this.Post(message, lineBreak);
     }
 
@@ -40,5 +49,6 @@ namespace PodFul.WPF
         this.PostMessage(message);
       }
     }
+    #endregion
   }
 }
