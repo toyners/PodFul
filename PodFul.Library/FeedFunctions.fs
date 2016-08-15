@@ -149,16 +149,22 @@ module public FeedFunctions =
 
     exception RetryException of Exception
 
-    let rec tryDownloadDocument (webClient : WebClient) (uri : Uri) retryCount : XDocument =
-        try
-            let data = webClient.DownloadString(uri)
-            XDocument.Parse(data)
-        with
-        | _ as ex ->
-            if retryCount > 0 then
-                tryDownloadDocument webClient uri (retryCount - 1)
-            else
-                raise (RetryException ex)
+    let tryDownloadDocument (webClient : WebClient) (uri : Uri) retryCount : XDocument =
+        
+        let mutable retryCount = retryCount
+        let mutable document = null
+        while retryCount > 0 do
+            try
+                let data = webClient.DownloadString(uri)
+                document <- XDocument.Parse(data)
+                retryCount <- 0
+            with
+            | _ as ex ->
+                    retryCount <- retryCount - 1
+                    if retryCount = 0 then
+                        raise (RetryException ex)
+
+        document
 
     let private downloadDocument(url) : XDocument =
 
