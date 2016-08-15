@@ -197,6 +197,7 @@ namespace PodFul.WPF
         if (podcastUpdated)
         {
           feed.Podcasts[i] = podcast;
+          syncCount++;
         }
       }
 
@@ -333,6 +334,7 @@ namespace PodFul.WPF
 
       if (count > 0)
       {
+        this.feedCollection.UpdateFeed(this.currentFeed);
         MessageBox.Show(String.Format("{0} MP3 file(s) snychronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
       else

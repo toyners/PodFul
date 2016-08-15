@@ -47,6 +47,11 @@ namespace PodFul.WPF
       this.Feeds.Remove(feed);
     }
 
+    /// <summary>
+    /// Update the feed in storage and in the collection.
+    /// </summary>
+    /// <param name="index">Index of the feed in the collection.</param>
+    /// <param name="feed">Feed to be updated in storage and in collection.</param>
     public void UpdateFeed(Int32 index, Feed feed)
     {
       this.feedStorage.Update(feed);
@@ -57,6 +62,10 @@ namespace PodFul.WPF
       this.Feeds.Insert(index, feed);
     }
 
+    /// <summary>
+    /// Update the feed in storage.
+    /// </summary>
+    /// <param name="feed">Feed to be updated in storage</param>
     public void UpdateFeed(Feed feed)
     {
       this.feedStorage.Update(feed);
