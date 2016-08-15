@@ -5,10 +5,11 @@ open System.IO
 open System.Collections.Generic
 open Jabberwocky.Toolkit.String
 
-type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
+type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, postMessage : Action<String>) =
 
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
+    let postMessage = postMessage
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
                                                     [
@@ -34,6 +35,10 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
                 let imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
 
                 if File.Exists(imageFilePath) = false then
+                    if postMessage <> null then
+                        let message = "Downloading " + imageFileName + " ..."
+                        postMessage.Invoke(message)
+
                     let imageDownloader = new FileDownloader()
                     imageDownloader.Download(imageFileName, imageFilePath, System.Threading.CancellationToken.None, null) |> ignore              
 
