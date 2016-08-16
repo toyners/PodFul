@@ -47,7 +47,7 @@ namespace PodFul.WPF
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, defaultImagePath);
       }
 
-      this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath, guiLogger.PostMessage);
+      this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath);
 
       this.FeedList.ItemsSource = feedCollection.Feeds;
       if (this.feedCollection.Feeds.Count > 0)
@@ -309,6 +309,7 @@ namespace PodFul.WPF
       var processingWindow = new ProcessingWindow(feedScanner);
 
       guiLogger.PostMessage = processingWindow.PostMessage;
+      this.imageResolver.PostMessage = guiLogger.Message;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;

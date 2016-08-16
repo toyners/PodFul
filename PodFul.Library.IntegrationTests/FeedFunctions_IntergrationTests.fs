@@ -204,7 +204,7 @@ type FeedFunctions_IntergrationTests() =
         let imageDirectory = workingDirectory + @"Images\"
         Directory.CreateDirectory(imageDirectory) |> ignore
         
-        let imageResolver = ImageResolver(imageDirectory, null, null)
+        let imageResolver = ImageResolver(imageDirectory, null)
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(rssWithValidImages, initialInputPath)
@@ -229,7 +229,7 @@ type FeedFunctions_IntergrationTests() =
         let imageDirectory = workingDirectory + @"Images\"
         Directory.CreateDirectory(imageDirectory) |> ignore
         
-        let imageResolver = ImageResolver(imageDirectory, null, null)
+        let imageResolver = ImageResolver(imageDirectory, null)
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(rssWithValidImages, initialInputPath)
@@ -255,7 +255,7 @@ type FeedFunctions_IntergrationTests() =
         let imageDirectory = workingDirectory + @"Images\"
         Directory.CreateDirectory(imageDirectory) |> ignore
         
-        let imageResolver = ImageResolver(imageDirectory, null, null)
+        let imageResolver = ImageResolver(imageDirectory, null)
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(rssWithNoImages, initialInputPath)

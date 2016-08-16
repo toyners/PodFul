@@ -33,7 +33,7 @@ namespace PodFul.WPF
 
     public void Message(String message, Boolean lineBreak)
     {
-      if (String.IsNullOrEmpty(message))
+      if (!String.IsNullOrEmpty(message))
       {
         this.fileLogger.Message(message);
       }
