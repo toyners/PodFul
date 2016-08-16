@@ -303,16 +303,7 @@ namespace PodFul.WPF
       var feedIndexes = new Queue<Int32>();
       feedIndexes.Enqueue(this.FeedList.Items.IndexOf(this.currentFeed));
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
-      var processingWindow = new ProcessingWindow(feedScanner);
-
-      guiLogger.PostMessage = processingWindow.PostMessage;
-      this.imageResolver.PostMessage = guiLogger.Message;
-      feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
-      feedScanner.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
-      feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-      feedScanner.SetProgressEvent = processingWindow.SetProgressEventHandler;
-      feedScanner.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
-
+      var processingWindow = this.CreateProcessingWindow(feedScanner);
       processingWindow.ShowDialog();
     }
 
