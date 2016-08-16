@@ -11,10 +11,10 @@ namespace PodFul.WPF
   public partial class ProcessingWindow : Window
   {
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-    private IFeedProcessor feedProcessor;
+    private FeedProcessor feedProcessor;
     private Boolean isLoaded;
    
-    public ProcessingWindow(IFeedProcessor feedProcessor)
+    public ProcessingWindow(FeedProcessor feedProcessor)
     {
       this.feedProcessor = feedProcessor;
 

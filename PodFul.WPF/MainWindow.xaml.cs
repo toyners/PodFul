@@ -220,22 +220,28 @@ namespace PodFul.WPF
       }
 
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
-      var processingWindow = new ProcessingWindow(feedScanner);
-
-      guiLogger.PostMessage = processingWindow.PostMessage;
-      this.imageResolver.PostMessage = processingWindow.PostMessage;
-      feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
-      feedScanner.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
-      feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-      feedScanner.SetProgressEvent = processingWindow.SetProgressEventHandler;
-      feedScanner.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
-
+      var processingWindow = this.CreateProcessingWindow(feedScanner);
       processingWindow.ShowDialog();
     }
 
     private void Podcasts_Click(Object sender, RoutedEventArgs e)
     {
       this.DisplayPodcasts();
+    }
+
+    private ProcessingWindow CreateProcessingWindow(FeedProcessor feedProcessor)
+    {
+      var processingWindow = new ProcessingWindow(feedProcessor);
+
+      this.guiLogger.PostMessage = processingWindow.PostMessage;
+      this.imageResolver.PostMessage = processingWindow.PostMessage;
+      feedProcessor.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
+      feedProcessor.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
+      feedProcessor.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
+      feedProcessor.SetProgressEvent = processingWindow.SetProgressEventHandler;
+      feedProcessor.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
+
+      return processingWindow;
     }
 
     private void DisplayPodcasts()
@@ -255,16 +261,7 @@ namespace PodFul.WPF
       selectedIndexes.Sort((x, y) => { return y - x; });
       var podcastIndexes = new Queue<Int32>(selectedIndexes);
       var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
-      var processingWindow = new ProcessingWindow(feedDownload);
-
-      guiLogger.PostMessage = processingWindow.PostMessage;
-      this.imageResolver.PostMessage = processingWindow.PostMessage;
-      feedDownload.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
-      feedDownload.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
-      feedDownload.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-      feedDownload.SetProgressEvent = processingWindow.SetProgressEventHandler;
-      feedDownload.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
-
+      var processingWindow = this.CreateProcessingWindow(feedDownload);
       processingWindow.ShowDialog();
     }
 

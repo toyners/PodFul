@@ -88,7 +88,6 @@
     <Compile Include="FeedDownload.cs" />
     <Compile Include="FeedScanner.cs" />
     <Compile Include="GUILogger.cs" />
-    <Compile Include="IFeedProcessor.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="FileLogger.cs" />
     <Compile Include="PodcastDownload.cs" />

@@ -7,7 +7,7 @@ namespace PodFul.WPF
   using System.Windows;
   using Library;
 
-  public class FeedScanner : FeedProcessor, IFeedProcessor
+  public class FeedScanner : FeedProcessor
   {
     public FeedScanner(
       FeedCollection feedCollection,
@@ -18,7 +18,7 @@ namespace PodFul.WPF
     {
     }
 
-    public void Process()
+    public override void Process()
     {
       var feedTotal = this.indexes.Count;
       var title = "Scanning " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);

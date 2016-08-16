@@ -6,7 +6,7 @@ namespace PodFul.WPF
   using System.Threading.Tasks;
   using Library;
 
-  public class FeedDownload : FeedProcessor, IFeedProcessor
+  public class FeedDownload : FeedProcessor
   {
     private Feed feed;
 
@@ -21,7 +21,7 @@ namespace PodFul.WPF
       this.feed = feed;
     }
 
-    public void Process()
+    public override void Process()
     {
       var title = "Downloading " + this.indexes.Count + " podcast" + (this.indexes.Count != 1 ? "s" : String.Empty);
       this.SetWindowTitleEvent?.Invoke(title);

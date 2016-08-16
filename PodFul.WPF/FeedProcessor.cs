@@ -6,7 +6,7 @@ namespace PodFul.WPF
   using System.Threading;
   using Library;
 
-  public class FeedProcessor
+  public abstract class FeedProcessor
   {
     protected CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -49,6 +49,8 @@ namespace PodFul.WPF
     {
       this.cancellationTokenSource.Cancel();
     }
+
+    public abstract void Process();
 
     protected void InitialiseProgress(Int64 expectedFileSize = -1)
     {
