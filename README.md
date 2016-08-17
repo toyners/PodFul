@@ -56,3 +56,9 @@
 5. **Fixed:** Exceptions were not being handled correctly during manual download.
 6. **Changed:** RSS download is now more resilient against transient errors.
 7. **Changed:** Minor layout changes to podcast list window.
+
+## 2.5 (1.6)
+1. **Fixed:** Download date was not being updated after manual downloading.
+2. **Changed:** Providing feedback when downloading images for feed and podcasts.
+3. **Fixed:** Manual synchronisation of podcast files.
+4. **Changed:** Tidied up logging so that blank lines are excluded.
