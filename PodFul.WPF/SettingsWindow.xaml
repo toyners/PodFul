@@ -9,7 +9,6 @@
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico">
   <DockPanel Margin="5">
-
     <DockPanel.Resources>
       <Style TargetType="Button">
         <Setter Property="Padding" Value="2.5"/>

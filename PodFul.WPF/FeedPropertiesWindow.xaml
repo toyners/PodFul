@@ -7,10 +7,6 @@
         mc:Ignorable="d"
         Title="Properties" Height="250" Width="800"
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize">
-  <Window.Resources>
-    <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
-    <local:TextTruncator x:Key="TextTruncator" />
-  </Window.Resources>
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,2.5,2.5,2.5">
