@@ -31,7 +31,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <Button Click="Settings_Click" Visibility="Hidden">Settings</Button>
-          <Button Name="DownloadButton" Click="Podcasts_Click" IsEnabled="False">Download</Button>
+          <Button Name="PodcastsButton" Click="Podcasts_Click" IsEnabled="False">Podcasts</Button>
           <Button Name="ScanButton" Click="Scan_Click" IsEnabled="False">Scan</Button>
         </StackPanel>
       </Grid>

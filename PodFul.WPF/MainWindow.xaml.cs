@@ -272,12 +272,12 @@ namespace PodFul.WPF
       {
         this.currentFeed = null;
         this.RemoveButton.IsEnabled = false;
-        this.DownloadButton.IsEnabled = false;
+        this.PodcastsButton.IsEnabled = false;
         return;
       }
 
       this.RemoveButton.IsEnabled = true;
-      this.DownloadButton.IsEnabled = true;
+      this.PodcastsButton.IsEnabled = true;
 
       var feed = this.feedCollection.Feeds[index];
       if (feed == this.currentFeed)
