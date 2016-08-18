@@ -25,6 +25,12 @@ namespace PodFul.WPF
       }
 
       var words = text.Split(' ');
+
+      if (words[0].Length >= limit)
+      {
+        return text;
+      }
+
       var s = "";
       var index = 0;
       while (s.Length + words[index].Length + 1 <= limit - "...".Length)

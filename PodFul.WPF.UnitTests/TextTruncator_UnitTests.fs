@@ -32,3 +32,8 @@ type TextTruncator_UnitTests() =
         let converter = new TextTruncator()
         converter.Convert("The quick red fox jumped over the lazy brown dog", null, "16", null) |> should equal "The quick ...";
 
+    [<Test>]
+    member public this.``First Word is too long so full text is returned.``() =
+        let converter = new TextTruncator()
+        let text = "abcdefghijklmnopqrstuvwxz"
+        converter.Convert(text, null, "24", null) |> should equal text;
