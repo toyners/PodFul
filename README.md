@@ -62,3 +62,6 @@
 2. **Changed:** Providing feedback when downloading images for feed and podcasts.
 3. **Fixed:** Manual synchronisation of podcast files.
 4. **Changed:** Tidied up logging so that blank lines are excluded.
+
+## 2.6 (1.6)
+1. **Fixed:** Long urls no longer replaced with '...' in the podcast properties window.
