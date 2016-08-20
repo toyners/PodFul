@@ -63,5 +63,5 @@
 3. **Fixed:** Manual synchronisation of podcast files.
 4. **Changed:** Tidied up logging so that blank lines are excluded.
 
-## 2.6 (1.6)
+## 2.5.1 (1.6)
 1. **Fixed:** Long urls no longer replaced with '...' in the podcast properties window.
