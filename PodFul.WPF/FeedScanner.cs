@@ -5,6 +5,7 @@ namespace PodFul.WPF
   using System.Collections.Generic;
   using System.Threading.Tasks;
   using System.Windows;
+  using Jabberwocky.Toolkit.String;
   using Library;
 
   public class FeedScanner : FeedProcessor
@@ -20,8 +21,8 @@ namespace PodFul.WPF
 
     public override void Process()
     {
-      var feedTotal = this.indexes.Count;
-      var title = "Scanning " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
+      var feedTotal = (UInt32)this.indexes.Count;
+      var title = "Scanning " + feedTotal + " feed".Pluralize(feedTotal);
       this.SetWindowTitleEvent?.Invoke(title);
 
       var cancelToken = this.cancellationTokenSource.Token;

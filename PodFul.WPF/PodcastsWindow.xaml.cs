@@ -6,6 +6,7 @@ namespace PodFul.WPF
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using Jabberwocky.Toolkit.String;
   using PodFul.Library;
 
   /// <summary>
@@ -26,7 +27,7 @@ namespace PodFul.WPF
     {
       InitializeComponent();
 
-      var title = String.Format("{0} podcast{1}", feed.Podcasts.Length, (feed.Podcasts.Length != 1 ? "s" : String.Empty));
+      var title = feed.Podcasts.Length + " podcast".Pluralize((UInt32)feed.Podcasts.Length);
       this.Title = title;
 
       this.PodcastList.ItemsSource = feed.Podcasts;

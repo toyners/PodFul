@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.Collections.Generic;
   using System.Threading.Tasks;
+  using Jabberwocky.Toolkit.String;
   using Library;
 
   public class FeedDownload : FeedProcessor
@@ -23,7 +24,7 @@ namespace PodFul.WPF
 
     public override void Process()
     {
-      var title = "Downloading " + this.indexes.Count + " podcast" + (this.indexes.Count != 1 ? "s" : String.Empty);
+      var title = "Downloading " + this.indexes.Count + " podcast".Pluralize((UInt32)this.indexes.Count);
       this.SetWindowTitleEvent?.Invoke(title);
 
       var cancelToken = this.cancellationTokenSource.Token;
