@@ -24,6 +24,7 @@ namespace PodFul.WPF
     private Feed currentFeed;
     private FileLogger fileLogger;
     private GUILogger guiLogger;
+    private System.Threading.Timer timer;
 
     public MainWindow()
     {
@@ -226,7 +227,7 @@ namespace PodFul.WPF
 
     private void Podcasts_Click(Object sender, RoutedEventArgs e)
     {
-      this.DisplayPodcasts();
+      this.DisplayPodcastsWithPause();
     }
 
     private ProcessingWindow CreateProcessingWindow(FeedProcessor feedProcessor)
@@ -244,9 +245,41 @@ namespace PodFul.WPF
       return processingWindow;
     }
 
+    private void callback(Object state)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.timer = null;
+        var selectionWindow = state as PodcastsWindow;
+        var startDownloading = selectionWindow.ShowDialog();
+
+        if (startDownloading == null || !startDownloading.Value)
+        {
+          return;
+        }
+
+        var selectedIndexes = selectionWindow.SelectedIndexes;
+
+        // Sort the indexes into descending order. Podcasts will be downloaded
+        // in Chronological order.
+        selectedIndexes.Sort((x, y) => { return y - x; });
+        var podcastIndexes = new Queue<Int32>(selectedIndexes);
+        var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
+        var processingWindow = this.CreateProcessingWindow(feedDownload);
+        processingWindow.ShowDialog();
+      });
+    }
+
+    private void DisplayPodcastsWithPause()
+    {
+      var selectionWindow = new PodcastsWindow(this.currentFeed);
+      this.timer = new System.Threading.Timer(callback, selectionWindow, 200, System.Threading.Timeout.Infinite);
+    }
+
     private void DisplayPodcasts()
     {
       var selectionWindow = new PodcastsWindow(this.currentFeed);
+      
       var startDownloading = selectionWindow.ShowDialog();
 
       if (startDownloading == null || !startDownloading.Value)
