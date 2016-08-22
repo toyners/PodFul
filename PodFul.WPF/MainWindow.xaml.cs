@@ -6,6 +6,7 @@ namespace PodFul.WPF
   using System.Configuration;
   using System.IO;
   using System.Reflection;
+  using System.Threading;
   using System.Windows;
   using System.Windows.Controls;
   using Jabberwocky.Toolkit.Assembly;
@@ -24,7 +25,7 @@ namespace PodFul.WPF
     private Feed currentFeed;
     private FileLogger fileLogger;
     private GUILogger guiLogger;
-    private System.Threading.Timer timer;
+    private Timer contextMenuTimer;
 
     public MainWindow()
     {
@@ -245,50 +246,49 @@ namespace PodFul.WPF
       return processingWindow;
     }
 
-    private void callback(Object state)
+    private void DownloadPodcastsCallback(Object state)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.timer = null;
-        var selectionWindow = state as PodcastsWindow;
-        var startDownloading = selectionWindow.ShowDialog();
+        this.contextMenuTimer = null;
 
-        if (startDownloading == null || !startDownloading.Value)
+        var selectedIndexes = this.GetSelectedPodcasts();
+        if (selectedIndexes != null)
         {
-          return;
+          this.DownloadPodcasts(selectedIndexes);
         }
-
-        var selectedIndexes = selectionWindow.SelectedIndexes;
-
-        // Sort the indexes into descending order. Podcasts will be downloaded
-        // in Chronological order.
-        selectedIndexes.Sort((x, y) => { return y - x; });
-        var podcastIndexes = new Queue<Int32>(selectedIndexes);
-        var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
-        var processingWindow = this.CreateProcessingWindow(feedDownload);
-        processingWindow.ShowDialog();
       });
     }
 
-    private void DisplayPodcastsWithPause()
+    private List<Int32> GetSelectedPodcasts()
     {
       var selectionWindow = new PodcastsWindow(this.currentFeed);
-      this.timer = new System.Threading.Timer(callback, selectionWindow, 200, System.Threading.Timeout.Infinite);
-    }
-
-    private void DisplayPodcasts()
-    {
-      var selectionWindow = new PodcastsWindow(this.currentFeed);
-      
       var startDownloading = selectionWindow.ShowDialog();
 
       if (startDownloading == null || !startDownloading.Value)
       {
-        return;
+        return null;
       }
 
-      var selectedIndexes = selectionWindow.SelectedIndexes;
+      return selectionWindow.SelectedIndexes;
+    }
 
+    private void DisplayPodcastsWithPause()
+    {
+      this.contextMenuTimer = new Timer(DownloadPodcastsCallback, null, 200, Timeout.Infinite);
+    }
+
+    private void DisplayPodcasts()
+    {
+      var selectedIndexes = this.GetSelectedPodcasts();
+      if (selectedIndexes != null)
+      {
+        this.DownloadPodcasts(selectedIndexes);
+      }
+    }
+
+    private void DownloadPodcasts(List<Int32> selectedIndexes)
+    {
       // Sort the indexes into descending order. Podcasts will be downloaded
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
