@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.Threading.Tasks;
   using System.Windows;
+  using Library;
 
   /// <summary>
   /// Interaction logic for ProcessingWindow.xaml
@@ -13,13 +14,30 @@ namespace PodFul.WPF
     private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
     private FeedProcessor feedProcessor;
     private Boolean isLoaded;
-   
+
+    #region Construction   
+    public static ProcessingWindow CreateWindow(FeedProcessor feedProcessor, GUILogger logger, IImageResolver imageResolver)
+    {
+      var processingWindow = new ProcessingWindow(feedProcessor);
+
+      logger.PostMessage = processingWindow.PostMessage;
+      imageResolver.PostMessage = processingWindow.PostMessage;
+      feedProcessor.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
+      feedProcessor.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
+      feedProcessor.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
+      feedProcessor.SetProgressEvent = processingWindow.SetProgressEventHandler;
+      feedProcessor.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
+
+      return processingWindow;
+    }
+
     public ProcessingWindow(FeedProcessor feedProcessor)
     {
       this.feedProcessor = feedProcessor;
 
       InitializeComponent();
     }
+    #endregion
 
     public void SetWindowTitleEventHandler(String title)
     {
