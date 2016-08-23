@@ -67,6 +67,11 @@ namespace PodFul.WPF
       this.fileLogger.Message("Main Window instantiated.");
     }
 
+    private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
+    {
+      return Directory.GetFiles(feed.Directory, "*.mp3").Length;
+    }
+
     private void DisplayTitle()
     {
       var guiVersion = Assembly.GetExecutingAssembly().GetName().Version;
@@ -128,11 +133,6 @@ namespace PodFul.WPF
       this.ScanButton.IsEnabled = true;
 
       this.DisplayPodcasts();
-    }
-
-    private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
-    {
-      return Directory.GetFiles(feed.Directory, "*.mp3").Length;
     }
 
     private void RemoveFeed_Click(Object sender, RoutedEventArgs e)
