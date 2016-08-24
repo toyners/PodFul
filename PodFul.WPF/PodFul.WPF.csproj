@@ -73,81 +73,81 @@
     <Compile Include="Windows\AddDeliveryPointWindow.xaml.cs">
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FileSizeConverter.cs" />
-    <Compile Include="GeneralDateTimeConverter.cs" />
+    <Compile Include="Converters\FileSizeConverter.cs" />
+    <Compile Include="Converters\GeneralDateTimeConverter.cs" />
     <Compile Include="DownloadDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
-    <Compile Include="FeedProcessor.cs" />
-    <Compile Include="FeedPropertiesWindow.xaml.cs">
+    <Compile Include="Processing\FeedProcessor.cs" />
+    <Compile Include="Windows\FeedPropertiesWindow.xaml.cs">
       <DependentUpon>FeedPropertiesWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PodcastDownloadWindow.xaml.cs">
+    <Compile Include="Windows\PodcastDownloadWindow.xaml.cs">
       <DependentUpon>PodcastDownloadWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PodcastPropertiesWindow.xaml.cs">
+    <Compile Include="Windows\PodcastPropertiesWindow.xaml.cs">
       <DependentUpon>PodcastPropertiesWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TextTruncator.cs" />
-    <Compile Include="FeedDownload.cs" />
-    <Compile Include="FeedScanner.cs" />
-    <Compile Include="GUILogger.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="FileLogger.cs" />
+    <Compile Include="Converters\TextTruncator.cs" />
+    <Compile Include="Processing\FeedDownload.cs" />
+    <Compile Include="Processing\FeedScanner.cs" />
+    <Compile Include="Logging\GUILogger.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\FileLogger.cs" />
     <Compile Include="PodcastDownload.cs" />
-    <Compile Include="ProcessingWindow.xaml.cs">
+    <Compile Include="Windows\ProcessingWindow.xaml.cs">
       <DependentUpon>ProcessingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PodcastsWindow.xaml.cs">
+    <Compile Include="Windows\PodcastsWindow.xaml.cs">
       <DependentUpon>PodcastsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="SettingsWindow.xaml.cs">
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\AddDeliveryPointWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddFeedWindow.xaml">
+    <Page Include="Windows\AddFeedWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AddFeedWindow.xaml.cs">
+    <Compile Include="Windows\AddFeedWindow.xaml.cs">
       <DependentUpon>AddFeedWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PodcastDownloadWindow.xaml">
+    <Page Include="Windows\PodcastDownloadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PodcastPropertiesWindow.xaml">
+    <Page Include="Windows\PodcastPropertiesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProcessingWindow.xaml">
+    <Page Include="Windows\ProcessingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FeedPropertiesWindow.xaml">
+    <Page Include="Windows\FeedPropertiesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PodcastsWindow.xaml">
+    <Page Include="Windows\PodcastsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="Windows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
