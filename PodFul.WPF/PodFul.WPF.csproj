@@ -70,12 +70,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Processing\DownloadManager.cs" />
     <Compile Include="Windows\AddDeliveryPointWindow.xaml.cs">
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\FileSizeConverter.cs" />
     <Compile Include="Converters\GeneralDateTimeConverter.cs" />
-    <Compile Include="DownloadDateTimeConverter.cs" />
+    <Compile Include="Converters\DownloadDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
     <Compile Include="Processing\FeedProcessor.cs" />
     <Compile Include="Windows\FeedPropertiesWindow.xaml.cs">
