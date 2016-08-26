@@ -12,6 +12,7 @@ namespace PodFul.WPF
   using Jabberwocky.Toolkit.Assembly;
   using Jabberwocky.Toolkit.IO;
   using PodFul.Library;
+  using PodFul.WPF.Processing;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -281,6 +282,19 @@ namespace PodFul.WPF
       var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
       var processingWindow = ProcessingWindow.CreateWindow(feedDownload, this.guiLogger, this.imageResolver);
       processingWindow.ShowDialog();
+    }
+
+    private void DownloadPodcasts2(List<Int32> selectedIndexes)
+    {
+      // Sort the indexes into descending order. Podcasts will be downloaded
+      // in Chronological order.
+      selectedIndexes.Sort((x, y) => { return y - x; });
+      var podcastIndexes = new Queue<Int32>(selectedIndexes);
+
+      var podcastDownloadManager = new DownloadManager(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
+
+      var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
+      podcastDownloadWindow.ShowDialog();
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)

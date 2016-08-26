@@ -3,6 +3,7 @@ namespace PodFul.WPF.Processing
 {
   using System;
   using System.Collections.Generic;
+  using System.Collections.ObjectModel;
   using System.IO;
   using System.Linq;
   using System.Text;
@@ -12,32 +13,46 @@ namespace PodFul.WPF.Processing
 
   public class DownloadManager
   {
-    public IEnumerable<Boolean> Download(String directoryPath, PodcastMonitor[] podcasts, Int32 threadCount)
+    private Feed currentFeed;
+    private FeedCollection feedCollection;
+    private IFileDeliverer fileDeliverer;
+    private GUILogger guiLogger;
+    private IImageResolver imageResolver;
+    private Queue<Int32> podcastIndexes;
+
+    private Queue<PodcastMonitor> podcasts;
+
+    public DownloadManager(FeedCollection feedCollection, Feed currentFeed, Queue<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, GUILogger guiLogger)
     {
-      for (int i = 0; i < podcasts.Length; i++)
+      this.feedCollection = feedCollection;
+      this.currentFeed = currentFeed;
+      this.podcastIndexes = podcastIndexes;
+      this.imageResolver = imageResolver;
+      this.fileDeliverer = fileDeliverer;
+      this.guiLogger = guiLogger;
+    }
+
+    public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } 
+
+    public Boolean DownloadNextPodcast()
+    {
+      if (this.podcasts.Count == 0)
       {
-        var podcast = podcasts[i];
-
-        try
-        {
-          var downloader = new FileDownloader();
-          downloader.DownloadAsync(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
-
-          //var filePath = Path.Combine(directoryPath, podcast.FilePath);
-
-          //downloader.DownloadAsync(podcast.URL, podcast.FilePath, podcast.CancellationToken)
-
-        }
-        catch (Exception e)
-        {
-          // Log exception and then continue;
-        }
-
-        yield return true;
+        return false;
       }
 
-      yield return false;
+      try
+      {
+        var podcast = this.podcasts.Dequeue();
+        var downloader = new FileDownloader();
+        downloader.DownloadAsync(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
+      }
+      catch (Exception e)
+      {
+        this.guiLogger.Exception(e.Message);
+      }
 
+      return true;
     }
   }
 }

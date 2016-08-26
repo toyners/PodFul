@@ -12,11 +12,16 @@ namespace PodFul.WPF
   /// </summary>
   public partial class PodcastDownloadWindow : Window
   {
-    public PodcastDownloadWindow(ObservableCollection<PodcastMonitor> podcasts)
+    private Boolean isLoaded;
+    private DownloadManager downloadManager;
+
+    public PodcastDownloadWindow(DownloadManager downloadManager)
     {
       InitializeComponent();
 
-      this.PodcastList.ItemsSource = podcasts;
+      this.downloadManager = downloadManager;
+
+      this.PodcastList.ItemsSource = downloadManager.Podcasts;
     }
 
     private void CancelAll_Click(Object sender, RoutedEventArgs e)
@@ -25,6 +30,16 @@ namespace PodFul.WPF
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
+    }
+
+    private void Window_Loaded(Object sender, RoutedEventArgs e)
+    {
+      if (!this.isLoaded)
+      {
+        // Ensure this is only called once.
+        this.downloadManager.DownloadNextPodcast();
+        this.isLoaded = true;
+      }
     }
   }
 }
