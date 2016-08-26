@@ -3,9 +3,9 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.ObjectModel;
-  using System.Threading;
   using System.Windows;
   using System.Windows.Input;
+  using PodFul.WPF.Processing;
 
   /// <summary>
   /// Interaction logic for PodcastDownloadWindow.xaml
@@ -25,28 +25,6 @@ namespace PodFul.WPF
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
-    }
-  }
-
-  public class PodcastMonitor
-  {
-    public String Name;
-
-    public String ProgressMajorSize;
-
-    public String ProgressMinorSize;
-
-    public String ProgressUnit;
-
-    public String FilePath;
-
-    public String URL;
-
-    public CancellationToken CancellationToken;
-
-    public void ProgressEventHandler(int bytesRead)
-    {
-
     }
   }
 }
