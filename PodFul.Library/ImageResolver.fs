@@ -42,7 +42,7 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
 
                 if File.Exists(imageFilePath) = false then
                     if Object.ReferenceEquals(postMessage, null) <> true then 
-                        let message = "Downloading " + imageFileName + " ..."
+                        let message = "Downloading " + imageFileName + " ...\r\n"
                         postMessage.Invoke(message)
 
                     let imageDownloader = new FileDownloader()
