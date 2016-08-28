@@ -41,6 +41,7 @@ namespace PodFul.WPF
         // Ensure this is only called once.
         this.StartPodcastDownload();
         this.isLoaded = true;
+        this.CancelAll.IsEnabled = true;
       }
     }
 
@@ -54,10 +55,10 @@ namespace PodFul.WPF
     {
       if (--this.podcastCount == 0)
       {
-        // Turn off cancel all button
+        // Turn off cancel-all button
+        this.CancelAll.IsEnabled = false;
         return;
       }
-
 
       this.StartPodcastDownload();
     }
