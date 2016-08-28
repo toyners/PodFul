@@ -28,6 +28,10 @@ namespace PodFul.WPF
 
     private void CancelAll_Click(Object sender, RoutedEventArgs e)
     {
+      foreach (var podcast in this.downloadManager.Podcasts)
+      {
+        podcast.CancelDownload();
+      }
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
@@ -48,7 +52,6 @@ namespace PodFul.WPF
     private void StartPodcastDownload()
     {
       this.downloadManager.DownloadNextPodcast(this.PodcastDownloadCompleted);
-      
     }
 
     private void PodcastDownloadCompleted(Task task)

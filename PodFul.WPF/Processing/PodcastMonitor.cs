@@ -6,6 +6,8 @@ namespace PodFul.WPF.Processing
 
   public class PodcastMonitor
   {
+    private CancellationTokenSource cancellationTokenSource;
+
     public String Name;
 
     public String ProgressMajorSize;
@@ -18,7 +20,21 @@ namespace PodFul.WPF.Processing
 
     public String URL;
 
-    public CancellationToken CancellationToken;
+    public PodcastMonitor()
+    {
+      this.cancellationTokenSource = new CancellationTokenSource();
+      this.CancellationToken = this.cancellationTokenSource.Token;
+    }
+
+    public CancellationToken CancellationToken { get; private set; }
+
+    public void CancelDownload()
+    {
+      if (this.CancellationToken.CanBeCanceled)
+      {
+        this.cancellationTokenSource.Cancel();
+      }
+    }
 
     public void ProgressEventHandler(int bytesRead)
     {
