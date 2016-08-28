@@ -35,24 +35,48 @@ type FileDownloader() =
 
         copyTo ()
 
-    let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
+    let defaultExceptionHandler (ex : Exception) = 
+        match ex with
+        | :? System.Net.WebException as webex ->
+            match (webex.Response = null) with
+            | true -> 
+                failwith webex.Message
+            | _ ->
+                use exstream = new StreamReader(webex.Response.GetResponseStream())
+                let responseText = exstream.ReadToEnd()
+                failwith responseText
+        ignore
+
+    let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) (failedFn : Action<Exception>) =
         try
             getResponseFromURL url |> 
             writeToFile filePath cancelToken updateProgressFn
             
         with
-        | :? System.Net.WebException as webex ->
-                match (webex.Response = null) with
-                | true -> 
-                    failwith webex.Message
-                | _ ->
-                    use exstream = new StreamReader(webex.Response.GetResponseStream())
-                    let responseText = exstream.ReadToEnd()
-                    failwith responseText
+        | _ as ex ->
+            if failedFn <> null then
+                failedFn.Invoke ex
+            else
+                //defaultExceptionHandler ex
+                match ex with
+                | :? System.Net.WebException as webex ->
+                    match (webex.Response = null) with
+                    | true ->   
+                        failwith webex.Message
+                    | _ ->
+                        use exstream = new StreamReader(webex.Response.GetResponseStream())
+                        let responseText = exstream.ReadToEnd()
+                        failwith responseText
 
     member this.DownloadAsync(url, filePath,  cancelToken, updateProgressFn: Action<int>) = 
         async {
-            download url filePath cancelToken updateProgressFn
+            download url filePath cancelToken updateProgressFn null
+        } |> Async.StartAsTask
+
+    member this.DownloadAsync2(url, filePath,  cancelToken, updateProgressFn: Action<int>, failedFn : Action<Exception>) = 
+        async {
+            getResponseFromURL url |> 
+            writeToFile filePath cancelToken updateProgressFn
         } |> Async.StartAsTask
 
     member this.Download(url, filePath, cancelToken, updateProgressFn: Action<int>) =

@@ -24,5 +24,10 @@ namespace PodFul.WPF.Processing
     {
 
     }
+
+    public void ExceptionEventHandler(Exception e)
+    {
+
+    }
   }
 }

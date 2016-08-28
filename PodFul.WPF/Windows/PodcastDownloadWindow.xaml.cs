@@ -2,7 +2,7 @@
 namespace PodFul.WPF
 {
   using System;
-  using System.Collections.ObjectModel;
+  using System.Threading.Tasks;
   using System.Windows;
   using System.Windows.Input;
   using PodFul.WPF.Processing;
@@ -14,6 +14,7 @@ namespace PodFul.WPF
   {
     private Boolean isLoaded;
     private DownloadManager downloadManager;
+    private Int32 podcastCount;
 
     public PodcastDownloadWindow(DownloadManager downloadManager)
     {
@@ -22,6 +23,7 @@ namespace PodFul.WPF
       this.downloadManager = downloadManager;
 
       this.PodcastList.ItemsSource = downloadManager.Podcasts;
+      this.podcastCount = downloadManager.Podcasts.Count;
     }
 
     private void CancelAll_Click(Object sender, RoutedEventArgs e)
@@ -37,9 +39,27 @@ namespace PodFul.WPF
       if (!this.isLoaded)
       {
         // Ensure this is only called once.
-        this.downloadManager.DownloadNextPodcast();
+        this.StartPodcastDownload();
         this.isLoaded = true;
       }
+    }
+
+    private void StartPodcastDownload()
+    {
+      this.downloadManager.DownloadNextPodcast(this.PodcastDownloadCompleted);
+      
+    }
+
+    private void PodcastDownloadCompleted(Task task)
+    {
+      if (--this.podcastCount == 0)
+      {
+        // Turn off cancel all button
+        return;
+      }
+
+
+      this.StartPodcastDownload();
     }
   }
 }

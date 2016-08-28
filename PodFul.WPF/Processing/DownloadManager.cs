@@ -4,10 +4,6 @@ namespace PodFul.WPF.Processing
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
-  using System.IO;
-  using System.Linq;
-  using System.Text;
-  using System.Threading;
   using System.Threading.Tasks;
   using Library;
 
@@ -34,23 +30,30 @@ namespace PodFul.WPF.Processing
 
     public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } 
 
-    public Boolean DownloadNextPodcast()
+    public Boolean DownloadNextPodcast(Action<Task> taskCompletionFunc)
     {
       if (this.podcasts.Count == 0)
       {
         return false;
       }
 
+      Task task = null;
       try
       {
         var podcast = this.podcasts.Dequeue();
         var downloader = new FileDownloader();
-        downloader.DownloadAsync(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
+        task = downloader.DownloadAsync2(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler, podcast.ExceptionEventHandler);
+
+        task.ContinueWith(t => taskCompletionFunc);
       }
       catch (Exception e)
       {
+        // Catch any exceptions regarding the setup of the task. May not be necessary
         this.guiLogger.Exception(e.Message);
+        return true;
       }
+
+      task.Start();
 
       return true;
     }
