@@ -9,22 +9,22 @@ namespace PodFul.WPF.Processing
 
   public class DownloadManager
   {
-    private Feed currentFeed;
-    private FeedCollection feedCollection;
-    private IFileDeliverer fileDeliverer;
+    //private Feed currentFeed;
+    //private FeedCollection feedCollection;
+    //private IFileDeliverer fileDeliverer;
     private GUILogger guiLogger;
-    private IImageResolver imageResolver;
+    //private IImageResolver imageResolver;
     private Queue<Int32> podcastIndexes;
 
     private Queue<PodcastMonitor> podcasts;
 
     public DownloadManager(FeedCollection feedCollection, Feed currentFeed, Queue<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, GUILogger guiLogger)
     {
-      this.feedCollection = feedCollection;
-      this.currentFeed = currentFeed;
+      //this.feedCollection = feedCollection;
+      //this.currentFeed = currentFeed;
       this.podcastIndexes = podcastIndexes;
-      this.imageResolver = imageResolver;
-      this.fileDeliverer = fileDeliverer;
+      //this.imageResolver = imageResolver;
+      //this.fileDeliverer = fileDeliverer;
       this.guiLogger = guiLogger;
     }
 
