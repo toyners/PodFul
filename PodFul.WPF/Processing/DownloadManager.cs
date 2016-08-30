@@ -13,7 +13,7 @@ namespace PodFul.WPF.Processing
     //private FeedCollection feedCollection;
     //private IFileDeliverer fileDeliverer;
     private GUILogger guiLogger;
-    //private IImageResolver imageResolver;
+    private IImageResolver imageResolver;
     private Queue<Int32> podcastIndexes;
 
     private Queue<PodcastMonitor> podcasts;
@@ -23,7 +23,7 @@ namespace PodFul.WPF.Processing
       //this.feedCollection = feedCollection;
       //this.currentFeed = currentFeed;
       this.podcastIndexes = podcastIndexes;
-      //this.imageResolver = imageResolver;
+      this.imageResolver = imageResolver;
       //this.fileDeliverer = fileDeliverer;
       this.guiLogger = guiLogger;
     }
@@ -44,7 +44,18 @@ namespace PodFul.WPF.Processing
         var downloader = new FileDownloader();
         task = downloader.DownloadAsync2(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler, podcast.ExceptionEventHandler);
 
-        task.ContinueWith(t => taskCompletionFunc);
+        task.ContinueWith(t =>
+        {
+          var fileInfo = new System.IO.FileInfo(podcast.FilePath);
+          if (fileInfo.Exists)
+          {
+            podcast.DownloadDate = DateTime.Now;
+            podcast.FileSize = fileInfo.Length;
+            podcast.ImageFileName = this.imageResolver.GetName(podcast.ImageFileName);
+          }
+
+          taskCompletionFunc(t);
+        });
       }
       catch (Exception e)
       {

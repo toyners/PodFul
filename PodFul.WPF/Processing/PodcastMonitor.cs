@@ -10,17 +10,21 @@ namespace PodFul.WPF.Processing
     #region Fields
     private CancellationTokenSource cancellationTokenSource;
 
-    private Int64 fileSize;
+    private Int64 podcastSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
 
     public String Name;
+
+    public DateTime DownloadDate;
 
     public String ExceptionMessage;
 
     public Boolean FileSizeNotKnown;
 
     public String FilePath;
+
+    public Int64 FileSize;
 
     public String ProgressMajorSize;
 
@@ -29,6 +33,8 @@ namespace PodFul.WPF.Processing
     public String ProgressUnit;
 
     public String URL;
+
+    public String ImageFileName;
     #endregion
 
     #region Construction
@@ -40,8 +46,8 @@ namespace PodFul.WPF.Processing
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
 
-      this.fileSize = fileSize;
-      if (this.fileSize > 0)
+      this.podcastSize = fileSize;
+      if (this.podcastSize > 0)
       {
         this.ProgressUnit = "%";
         this.FileSizeNotKnown = false;
@@ -54,6 +60,7 @@ namespace PodFul.WPF.Processing
 
       //this.ProgressBrush = Brush.;
       this.ExceptionMessage = String.Empty;
+      this.percentageStepSize = this.podcastSize / 100;
     }
     #endregion
 
@@ -77,7 +84,7 @@ namespace PodFul.WPF.Processing
       this.downloadedSize += bytesWrittenToFile;
 
       Int64 value = 100;
-      if (this.downloadedSize < this.fileSize)
+      if (this.downloadedSize < this.podcastSize)
       {
         value = this.downloadedSize / this.percentageStepSize;
       }
