@@ -9,32 +9,32 @@ namespace PodFul.WPF.Processing
 
   public class DownloadManager
   {
-    //private Feed currentFeed;
-    //private FeedCollection feedCollection;
-    //private IFileDeliverer fileDeliverer;
+    private Feed feed;
+    private FeedCollection feedCollection;
+    private IFileDeliverer fileDeliverer;
     private GUILogger guiLogger;
     private IImageResolver imageResolver;
     private Queue<Int32> podcastIndexes;
 
     private Queue<PodcastMonitor> podcasts;
 
-    public DownloadManager(FeedCollection feedCollection, Feed currentFeed, Queue<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, GUILogger guiLogger)
+    public DownloadManager(FeedCollection feedCollection, Feed feed, Queue<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, GUILogger guiLogger)
     {
-      //this.feedCollection = feedCollection;
-      //this.currentFeed = currentFeed;
+      this.feedCollection = feedCollection;
+      this.feed = feed;
       this.podcastIndexes = podcastIndexes;
       this.imageResolver = imageResolver;
-      //this.fileDeliverer = fileDeliverer;
+      this.fileDeliverer = fileDeliverer;
       this.guiLogger = guiLogger;
     }
 
     public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } 
 
-    public Boolean DownloadNextPodcast(Action<Task> taskCompletionFunc)
+    public void DownloadNextPodcast(Action<Task> taskCompletionFunc)
     {
       if (this.podcasts.Count == 0)
       {
-        return false;
+        return;
       }
 
       Task task = null;
@@ -46,13 +46,28 @@ namespace PodFul.WPF.Processing
 
         task.ContinueWith(t =>
         {
+          if (t.Exception != null)
+          {
+            return;
+          }
+
           var fileInfo = new System.IO.FileInfo(podcast.FilePath);
           if (fileInfo.Exists)
           {
+            //podcast = Podcast.SetDownloadDate(DateTime.Now, podcast);
+            /*var fileLength = new FileInfo(filePath).Length;
+            if (podcast.FileSize != fileLength)
+            {
+              podcast = Podcast.SetFileSize(fileLength, podcast);
+            }
+             */
+
             podcast.DownloadDate = DateTime.Now;
             podcast.FileSize = fileInfo.Length;
             podcast.ImageFileName = this.imageResolver.GetName(podcast.ImageFileName);
           }
+
+          this.fileDeliverer.Deliver(null, "");
 
           taskCompletionFunc(t);
         });
@@ -61,12 +76,15 @@ namespace PodFul.WPF.Processing
       {
         // Catch any exceptions regarding the setup of the task. May not be necessary
         this.guiLogger.Exception(e.Message);
-        return true;
+        return;
       }
 
       task.Start();
+    }
 
-      return true;
+    public void PodcastDownloadCompleted()
+    {
+      this.feedCollection.UpdateFeed(feed);
     }
   }
 }
