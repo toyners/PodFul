@@ -48,7 +48,7 @@ namespace PodFul.WPF.Processing
         {
           if (t.Exception != null)
           {
-            podcast.ExceptionEventHandler(t.Exception);
+            this.ProcessException(t.Exception, podcast);
             return;
           }
 
@@ -56,11 +56,11 @@ namespace PodFul.WPF.Processing
           if (!fileInfo.Exists)
           {
             // record missing file exception
-            podcast.ExceptionEventHandler(new Exception("Podcast file is missing."));
+            this.ProcessException(new Exception("Podcast file is missing."), podcast);
             return;
           }
 
-          podcast.SetPodcastFileDetails(fileInfo.Length, this.imageResolver);
+          podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
           podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
 
           taskCompletionFunc(t);
@@ -79,6 +79,23 @@ namespace PodFul.WPF.Processing
     public void PodcastDownloadCompleted()
     {
       this.feedCollection.UpdateFeed(feed);
+    }
+
+    private void ProcessException(Exception exception, PodcastMonitor podcast)
+    {
+      Exception e = exception;
+      if (exception is AggregateException)
+      {
+        e = ((AggregateException)exception).Flatten();
+      }
+
+      if (e.InnerException != null)
+      {
+        e = e.InnerException;
+      }
+
+      this.guiLogger.Exception(e.Message);
+      podcast.ExceptionMessage = e.Message;
     }
   }
 }

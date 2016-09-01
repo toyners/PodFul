@@ -124,12 +124,7 @@ namespace PodFul.WPF.Processing
       this.ProgressMinorSize = minorSize;
     }
 
-    public void ExceptionEventHandler(Exception e)
-    {
-      this.ExceptionMessage = e.Message;
-    }
-
-    public void SetPodcastFileDetails(Int64 fileLength, IImageResolver imageResolver)
+    public void SetPodcastFileDetails(IImageResolver imageResolver, Int64 fileLength)
     {
       this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver?.GetName(this.podcast.FileDetails.ImageFileName));
     }
