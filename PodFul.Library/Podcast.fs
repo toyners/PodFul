@@ -8,10 +8,8 @@ type Podcast =
         Title : string;
         Description : string;
         URL : string;
-        FileSize : Int64;
         PubDate : DateTime;
-        DownloadDate : DateTime;
-        ImageFileName : string;
+        mutable FileDetails : PodcastFile;
     }
 
     with
@@ -27,38 +25,23 @@ type Podcast =
 
                     this.URL.Substring(index)
 
-        static member SetDownloadDate date original =
-            {
-                Title = original.Title
-                Description = original.Description
-                URL = original.URL
-                FileSize = original.FileSize
-                PubDate = original.PubDate
-                DownloadDate = date
-                ImageFileName = original.ImageFileName
-            }
+        member this.SetAllFileDetails fileSize downloadDate imageFileName =
+            if this.FileDetails.FileSize <> fileSize ||
+               this.FileDetails.DownloadDate <> downloadDate ||
+               this.FileDetails.ImageFileName <> imageFileName then
+                    this.FileDetails <-
+                    {
+                        FileSize = fileSize
+                        DownloadDate = downloadDate
+                        ImageFileName = imageFileName
+                    }
 
-        static member SetFileSize size original =
-            {
-                Title = original.Title
-                Description = original.Description
-                URL = original.URL
-                FileSize = size
-                PubDate = original.PubDate
-                DownloadDate = original.DownloadDate
-                ImageFileName = original.ImageFileName
-            }
+        member this.SetImageFileName imageFileName = 
+            if (imageFileName <> this.FileDetails.ImageFileName) then
+                this.SetAllFileDetails this.FileDetails.FileSize this.FileDetails.DownloadDate imageFileName
 
-        static member SetImageFileName imageFileName original = 
-            {
-                Title = original.Title
-                Description = original.Description
-                URL = original.URL
-                FileSize = original.FileSize
-                PubDate = original.PubDate
-                DownloadDate = original.DownloadDate
-                ImageFileName = imageFileName
-            }
+        member this.SetFileDetails fileSize downloadDate = 
+            this.SetAllFileDetails fileSize downloadDate this.FileDetails.ImageFileName        
 
         override x.Equals other = 
             match other with

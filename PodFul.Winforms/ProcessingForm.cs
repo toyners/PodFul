@@ -178,10 +178,10 @@ namespace PodFul.Winforms
       var podcastDownload = new PodcastDownload(cancellationToken, this.UpdateProgessEventHandler);
       podcastDownload.OnBeforeDownload += (podcast) =>
       {
-        this.fileSize = podcast.FileSize;
+        this.fileSize = podcast.FileDetails.FileSize;
         this.percentageStepSize = this.fileSize / 100;
         this.downloadedSize = 0;
-        this.ResetProgressBar(podcast.FileSize);
+        this.ResetProgressBar(podcast.FileDetails.FileSize);
         this.PostMessage(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 

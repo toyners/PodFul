@@ -41,10 +41,13 @@ type FeedFileStorage_IntergrationTests() =
                     Title = podcastTitle
                     Description = podcastDescription
                     URL = podcastURL
-                    FileSize = podcastFileSize
                     PubDate = podcastPubDate
-                    DownloadDate = new DateTime(2017, 1, 2)
-                    ImageFileName = podcastImageFileName
+                    FileDetails =
+                    {
+                        FileSize = podcastFileSize
+                        DownloadDate = new DateTime(2017, 1, 2)
+                        ImageFileName = podcastImageFileName
+                    }
                 };           
             |]
         }
@@ -230,6 +233,6 @@ type FeedFileStorage_IntergrationTests() =
         actualPodcast.Title |> should equal feed.Podcasts.[0].Title
         actualPodcast.Description |> should equal feed.Podcasts.[0].Description
         actualPodcast.URL |> should equal feed.Podcasts.[0].URL
-        actualPodcast.FileSize |> should equal feed.Podcasts.[0].FileSize
         actualPodcast.PubDate |> should equal feed.Podcasts.[0].PubDate
-        actualPodcast.DownloadDate |> should equal feed.Podcasts.[0].DownloadDate
+        actualPodcast.FileDetails.FileSize |> should equal feed.Podcasts.[0].FileDetails.FileSize
+        actualPodcast.FileDetails.DownloadDate |> should equal feed.Podcasts.[0].FileDetails.DownloadDate

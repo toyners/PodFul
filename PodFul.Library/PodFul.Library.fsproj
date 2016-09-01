@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Miscellaneous.fs" />
+    <Compile Include="PodcastFile.fs" />
     <Compile Include="Podcast.fs" />
     <Compile Include="Feed.fs" />
     <Compile Include="JSONFeedIO.fs" />
@@ -65,7 +66,6 @@
     <Compile Include="NativeFileStorage.fs" />
     <Content Include="packages.config" />
     <Compile Include="ImageResolver.fs" />
-    <Compile Include="PodcastDownloader.fs" />
     <Compile Include="IFileDeliverer.fs" />
     <Compile Include="FileDeliverer.fs" />
     <Compile Include="LocationDeliveryPoint.fs" />

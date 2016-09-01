@@ -84,10 +84,10 @@ namespace PodFul.WPF
 
       podcastDownload.OnBeforeDownload += (podcast) =>
       {
-        this.fileSize = podcast.FileSize;
+        this.fileSize = podcast.FileDetails.FileSize;
         this.percentageStepSize = this.fileSize / 100;
         this.downloadedSize = 0;
-        this.InitialiseProgress(podcast.FileSize);
+        this.InitialiseProgress(podcast.FileDetails.FileSize);
         this.log.Message(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 

@@ -18,7 +18,7 @@ namespace PodFul.WPF
       this.Title = podcast.Title;
 
       this.Podcast = podcast;
-      if (podcast.DownloadDate == FeedFunctions.NoDateTime)
+      if (podcast.FileDetails.DownloadDate == FeedFunctions.NoDateTime)
       {
         this.FilePath = "No download";
       }
@@ -31,7 +31,7 @@ namespace PodFul.WPF
         }
       }
 
-      this.FileSize = (new FileSizeConverter()).ConvertToString(podcast.FileSize) + "  (" + podcast.FileSize + " bytes)";
+      this.FileSize = (new FileSizeConverter()).ConvertToString(podcast.FileDetails.FileSize) + "  (" + podcast.FileDetails.FileSize + " bytes)";
 
       this.DataContext = this;  
     }

@@ -57,10 +57,13 @@ type NativeFeedIO() =
           Title = fields.[0]
           PubDate = DateTime.Parse(fields.[1])
           URL = fields.[2]
-          FileSize = Int64.Parse(fields.[3])
           Description = fields.[4]
-          DownloadDate = NativeFeedIO.getDateTimeAt fields 5  //DateTime.Parse(fields.[5])
-          ImageFileName = fields.[6]
+          FileDetails =
+          {
+              FileSize = Int64.Parse(fields.[3])
+              DownloadDate = NativeFeedIO.getDateTimeAt fields 5
+              ImageFileName = fields.[6]
+          }
         }
 
       // Set the threaded state to be the XML reader.
@@ -93,8 +96,8 @@ type NativeFeedIO() =
       writer.WriteLine(podcast.Title + "|" + 
         podcast.PubDate.ToString() + "|" + 
         podcast.URL + "|" + 
-        podcast.FileSize.ToString() + "|" +
+        podcast.FileDetails.FileSize.ToString() + "|" +
         podcast.Description + "|" +
-        podcast.DownloadDate.ToString() + "|" +
-        podcast.ImageFileName + "|")
+        podcast.FileDetails.DownloadDate.ToString() + "|" +
+        podcast.FileDetails.ImageFileName + "|")
 

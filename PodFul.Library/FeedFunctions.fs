@@ -141,9 +141,12 @@ module public FeedFunctions =
                     Description = getDescriptionFromItem element
                     PubDate = getPubDateFromItem element
                     URL = url
-                    FileSize = getFilesizeForItem enclosureElement contentElement
-                    DownloadDate = NoDateTime
-                    ImageFileName = getImageForItem element
+                    FileDetails = 
+                    {
+                        FileSize = getFilesizeForItem enclosureElement contentElement
+                        DownloadDate = NoDateTime
+                        ImageFileName = getImageForItem element
+                    }
                 }
           ] |> List.toArray
 
@@ -211,8 +214,7 @@ module public FeedFunctions =
             let oldPodcast = oldFeed.Podcasts.[oldIndex]
             let newPodcast = newFeed.Podcasts.[newIndex]
             if oldPodcast = newPodcast then
-                newFeed.Podcasts.[newIndex] <- Podcast.SetDownloadDate oldPodcast.DownloadDate newPodcast |> 
-                    Podcast.SetFileSize oldPodcast.FileSize
+                newPodcast.SetFileDetails oldPodcast.FileDetails.FileSize oldPodcast.FileDetails.DownloadDate
             oldIndex <- oldIndex + 1
             newIndex <- newIndex + 1
         newFeed
@@ -241,9 +243,7 @@ module public FeedFunctions =
         let mutable index = 0
         while index < feed.Podcasts.Length do
           let podcast = feed.Podcasts.[index]
-          let imageFileName = imageResolver.GetName podcast.ImageFileName
-          if (imageFileName <> podcast.ImageFileName) then
-            feed.Podcasts.[index] <- Podcast.SetImageFileName imageFileName podcast
+          imageResolver.GetName podcast.FileDetails.ImageFileName |> podcast.SetImageFileName
         
           index <- index + 1
 

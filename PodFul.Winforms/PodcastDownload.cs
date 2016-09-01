@@ -63,21 +63,8 @@ namespace PodFul.Winforms
 
           this.OnSuccessfulDownload?.Invoke(podcast, filePath);
 
-          podcast = Podcast.SetDownloadDate(DateTime.Now, podcast);
-
           var fileLength = new FileInfo(filePath).Length;
-          if (podcast.FileSize != fileLength)
-          {
-            podcast = Podcast.SetFileSize(fileLength, podcast);
-          }
-
-          var imageName = imageResolver.GetName(podcast.ImageFileName);
-          if (imageName != podcast.ImageFileName)
-          {
-            podcast = Podcast.SetImageFileName(imageName, podcast);
-          }
-
-          podcasts[podcastIndex] = podcast;
+          podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver.GetName(podcast.FileDetails.ImageFileName));
         }
         catch (AggregateException exception)
         {

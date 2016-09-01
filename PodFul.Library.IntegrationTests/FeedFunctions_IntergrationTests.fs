@@ -69,23 +69,23 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[0].Title |> should equal firstPodcastTitle
         feed.Podcasts.[0].Description |> should equal firstPodcastDescription
         feed.Podcasts.[0].URL |> should equal firstPodcastURL
-        feed.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
+        feed.Podcasts.[0].FileDetails.FileSize |> should equal firstPodcastFileSize
         feed.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
-        feed.Podcasts.[0].ImageFileName |> should equal firstPodcastImageFileName
+        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal firstPodcastImageFileName
 
         feed.Podcasts.[1].Title |> should equal secondPodcastTitle
         feed.Podcasts.[1].Description |> should equal secondPodcastDescription
         feed.Podcasts.[1].URL |> should equal secondPodcastURL
-        feed.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
+        feed.Podcasts.[1].FileDetails.FileSize |> should equal secondPodcastFileSize
         feed.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
-        feed.Podcasts.[1].ImageFileName |> should equal String.Empty
+        feed.Podcasts.[1].FileDetails.ImageFileName |> should equal String.Empty
 
         feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
         feed.Podcasts.[2].Description |> should equal ""
         feed.Podcasts.[2].URL |> should equal thirdPodcastURL
-        feed.Podcasts.[2].FileSize |> should equal -1
+        feed.Podcasts.[2].FileDetails.FileSize |> should equal -1
         feed.Podcasts.[2].PubDate |> should equal FeedFunctions.NoDateTime
-        feed.Podcasts.[2].ImageFileName |> should equal String.Empty
+        feed.Podcasts.[2].FileDetails.ImageFileName |> should equal String.Empty
 
     [<Test>]
     member public this.``Create RSS Feed that contains media content tags``() =
@@ -105,15 +105,15 @@ type FeedFunctions_IntergrationTests() =
 
         feed.Podcasts.[0].Title |> should equal firstPodcastTitle
         feed.Podcasts.[0].URL |> should equal firstPodcastURL
-        feed.Podcasts.[0].FileSize |> should equal firstPodcastFileSize
+        feed.Podcasts.[0].FileDetails.FileSize |> should equal firstPodcastFileSize
 
         feed.Podcasts.[1].Title |> should equal secondPodcastTitle
         feed.Podcasts.[1].URL |> should equal secondPodcastURL
-        feed.Podcasts.[1].FileSize |> should equal secondPodcastFileSize
+        feed.Podcasts.[1].FileDetails.FileSize |> should equal secondPodcastFileSize
 
         feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
         feed.Podcasts.[2].URL |> should equal thirdPodcastURL
-        feed.Podcasts.[2].FileSize |> should equal thirdPodcastFileSize
+        feed.Podcasts.[2].FileDetails.FileSize |> should equal thirdPodcastFileSize
 
     [<Test>]
     [<TestCase("RSSFile with Missing Image.rss")>]
@@ -136,8 +136,12 @@ type FeedFunctions_IntergrationTests() =
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
         let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
-        initialFeed.Podcasts.[0] <- Podcast.SetDownloadDate firstDateTime initialFeed.Podcasts.[0]
-        initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate secondDateTime initialFeed.Podcasts.[1]
+        
+        let firstPodcast = initialFeed.Podcasts.[0]
+        firstPodcast.SetFileDetails firstPodcast.FileDetails.FileSize firstDateTime
+        
+        let secondPodcast = initialFeed.Podcasts.[1]
+        secondPodcast.SetFileDetails secondPodcast.FileDetails.FileSize secondDateTime
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
         let finalFeed = FeedFunctions.UpdateFeed initialFeed null
@@ -145,8 +149,8 @@ type FeedFunctions_IntergrationTests() =
         finalFeed |> should equal initialFeed
         finalFeed.Podcasts.Length |> should equal 3
 
-        finalFeed.Podcasts.[1].DownloadDate |> should equal initialFeed.Podcasts.[0].DownloadDate
-        finalFeed.Podcasts.[2].DownloadDate |> should equal initialFeed.Podcasts.[1].DownloadDate
+        finalFeed.Podcasts.[1].FileDetails.DownloadDate |> should equal firstPodcast.FileDetails.DownloadDate
+        finalFeed.Podcasts.[2].FileDetails.DownloadDate |> should equal secondPodcast.FileDetails.DownloadDate
 
     [<Test>]
     member public this.``Update feed from RSS file with maximum number of podcasts``() =
@@ -156,8 +160,12 @@ type FeedFunctions_IntergrationTests() =
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSWithMaximumPodcastsFileName, initialInputPath)
         let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
-        initialFeed.Podcasts.[0] <- Podcast.SetDownloadDate firstDateTime initialFeed.Podcasts.[0]
-        initialFeed.Podcasts.[1] <- Podcast.SetDownloadDate secondDateTime initialFeed.Podcasts.[1]
+        
+        let firstPodcast = initialFeed.Podcasts.[0]
+        firstPodcast.SetFileDetails firstPodcast.FileDetails.FileSize firstDateTime
+        
+        let secondPodcast = initialFeed.Podcasts.[1]
+        secondPodcast.SetFileDetails secondPodcast.FileDetails.FileSize secondDateTime
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSWithMaximumPodcastsFileName, initialInputPath)
         let finalFeed = FeedFunctions.UpdateFeed initialFeed  null
@@ -165,8 +173,8 @@ type FeedFunctions_IntergrationTests() =
         finalFeed |> should equal initialFeed
         finalFeed.Podcasts.Length |> should equal 3
 
-        finalFeed.Podcasts.[1].DownloadDate |> should equal initialFeed.Podcasts.[0].DownloadDate
-        finalFeed.Podcasts.[2].DownloadDate |> should equal initialFeed.Podcasts.[1].DownloadDate
+        finalFeed.Podcasts.[1].FileDetails.DownloadDate |> should equal firstPodcast.FileDetails.DownloadDate
+        finalFeed.Podcasts.[2].FileDetails.DownloadDate |> should equal secondPodcast.FileDetails.DownloadDate
 
     [<Test>]
     member public this.``Update feed with no podcasts from RSS file with no podcasts``() =
@@ -215,7 +223,7 @@ type FeedFunctions_IntergrationTests() =
 
         feed.ImageFileName |> should equal (imageDirectory + expectedFeedImageName)
         feed.Podcasts.Length |> should equal 1
-        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedPodcastImageName)
+        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal (imageDirectory + expectedPodcastImageName)
 
     [<Test>]
     member public this.``Image filenames resolved when updating feed with unresolved image names``() =
@@ -240,13 +248,13 @@ type FeedFunctions_IntergrationTests() =
 
         feed.ImageFileName |> should equal expectedFeedImageName
         feed.Podcasts.Length |> should equal 1
-        feed.Podcasts.[0].ImageFileName |> should equal expectedPodcastImageName
+        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal expectedPodcastImageName
 
         let feed = FeedFunctions.UpdateFeed feed imageResolver
 
         feed.ImageFileName |> should equal (imageDirectory + expectedResolvedFeedImageName)
         feed.Podcasts.Length |> should equal 1
-        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedResolvedPodcastImageName)
+        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal (imageDirectory + expectedResolvedPodcastImageName)
 
     [<Test>]
     member public this.``Image filenames resolved when updating feed with no image names``() = 
@@ -266,7 +274,7 @@ type FeedFunctions_IntergrationTests() =
 
         feed.ImageFileName |> should equal String.Empty
         feed.Podcasts.Length |> should equal 1
-        feed.Podcasts.[0].ImageFileName |> should equal String.Empty
+        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal String.Empty
 
         assembly.CopyEmbeddedResourceToFile(rssWithValidImages, initialInputPath)
         
@@ -276,4 +284,4 @@ type FeedFunctions_IntergrationTests() =
 
         feed.ImageFileName |> should equal (imageDirectory + expectedResolvedFeedImageName)
         feed.Podcasts.Length |> should equal 1
-        feed.Podcasts.[0].ImageFileName |> should equal (imageDirectory + expectedResolvedPodcastImageName)
+        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal (imageDirectory + expectedResolvedPodcastImageName)

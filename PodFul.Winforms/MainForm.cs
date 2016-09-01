@@ -96,9 +96,7 @@ namespace PodFul.Winforms
           continue;
         }
 
-        podcast = Podcast.SetDownloadDate(fileInfo.CreationTime, podcast);
-        podcast = Podcast.SetFileSize(fileInfo.Length, podcast);
-        feed.Podcasts[podcastIndex] = podcast;
+        podcast.SetFileDetails(fileInfo.Length, fileInfo.CreationTime);
         syncCount++;
       }
 
@@ -191,8 +189,8 @@ namespace PodFul.Winforms
       var text = String.Format("{0}\r\nPUB DATE: {1}\r\nFILE SIZE: {2}\r\nDOWNLOAD DATE: {3}",
         podcast.Description,
         podcast.PubDate.ToString("ddd, dd-MMM-yyyy"),
-        Miscellaneous.GetReadableFileSize(podcast.FileSize) + " MB",
-        podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
+        Miscellaneous.GetReadableFileSize(podcast.FileDetails.FileSize) + " MB",
+        podcast.FileDetails.DownloadDate != DateTime.MinValue ? podcast.FileDetails.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
 
       this.podcastDescription.Text = text;
     }

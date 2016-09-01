@@ -185,21 +185,10 @@ namespace PodFul.WPF
           continue;
         }
 
-        if (podcast.FileSize != podcastFileInfo.Length)
-        {
-          podcast = Podcast.SetFileSize(podcastFileInfo.Length, podcast);
-          podcastUpdated = true;
-        }
-
-        if (podcast.DownloadDate != podcastFileInfo.LastWriteTime)
-        {
-          podcast = Podcast.SetDownloadDate(podcastFileInfo.LastWriteTime, podcast);
-          podcastUpdated = true;
-        }
+        podcast.SetFileDetails(podcastFileInfo.Length, podcastFileInfo.CreationTime);
 
         if (podcastUpdated)
         {
-          feed.Podcasts[i] = podcast;
           syncCount++;
         }
       }

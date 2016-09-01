@@ -19,8 +19,8 @@ namespace PodFul.Winforms
         this.list.Rows.Add(
           podcast.Title, 
           podcast.Description, 
-          podcast.FileSize, 
-          podcast.DownloadDate != DateTime.MinValue ? podcast.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
+          podcast.FileDetails.FileSize, 
+          podcast.FileDetails.DownloadDate != DateTime.MinValue ? podcast.FileDetails.DownloadDate.ToString("ddd, dd-MMM-yyyy HH:mm:ss") : @"n\a");
       }
 
       this.start.Enabled = (this.list.SelectedRows.Count > 0);

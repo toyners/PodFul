@@ -93,7 +93,7 @@ namespace PodFul.Console
       foreach (var podcastRecord in feed.Podcasts)
       {
         Console.WriteLine(podcastRecord.Title);
-        Console.WriteLine(podcastRecord.FileSize);
+        Console.WriteLine(podcastRecord.FileDetails.FileSize);
         Console.WriteLine(podcastRecord.URL);
         Console.WriteLine();
       }
