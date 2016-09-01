@@ -10,9 +10,9 @@ namespace PodFul.WPF.Processing
   public class DownloadManager
   {
     private Feed feed;
-    private FeedCollection feedCollection;
+    private FeedCollection feedCollection; // Is this needed? Maybe only the feed
     private IFileDeliverer fileDeliverer;
-    private GUILogger guiLogger;
+    private GUILogger guiLogger; // Should this be a gui logger or just a file logger?
     private IImageResolver imageResolver;
     private Queue<Int32> podcastIndexes;
 
@@ -38,40 +38,41 @@ namespace PodFul.WPF.Processing
       }
 
       Task task = null;
+      var podcast = this.podcasts.Dequeue();
+
       try
       {
-        var podcast = this.podcasts.Dequeue();
         var downloader = new FileDownloader();
         task = downloader.DownloadAsync(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
-
-        task.ContinueWith(t =>
-        {
-          if (t.Exception != null)
-          {
-            this.ProcessException(t.Exception, podcast);
-            return;
-          }
-
-          var fileInfo = new System.IO.FileInfo(podcast.FilePath);
-          if (!fileInfo.Exists)
-          {
-            // record missing file exception
-            this.ProcessException(new Exception("Podcast file is missing."), podcast);
-            return;
-          }
-
-          podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
-          podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
-
-          taskCompletionFunc(t);
-        });
       }
       catch (Exception e)
       {
         // Catch any exceptions regarding the setup of the task. May not be necessary
-        this.guiLogger.Exception(e.Message);
+        this.ProcessException(e, podcast);
         return;
       }
+
+      task.ContinueWith(t =>
+      {
+        if (t.Exception != null)
+        {
+          this.ProcessException(t.Exception, podcast);
+          return;
+        }
+
+        var fileInfo = new System.IO.FileInfo(podcast.FilePath);
+        if (!fileInfo.Exists)
+        {
+          // record missing file exception
+          this.ProcessException(new Exception("Podcast file is missing."), podcast);
+          return;
+        }
+
+        podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
+        podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
+
+        taskCompletionFunc(t);
+      });
 
       task.Start();
     }

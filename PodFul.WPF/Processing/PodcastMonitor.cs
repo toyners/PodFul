@@ -126,7 +126,12 @@ namespace PodFul.WPF.Processing
 
     public void SetPodcastFileDetails(IImageResolver imageResolver, Int64 fileLength)
     {
-      this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver?.GetName(this.podcast.FileDetails.ImageFileName));
+      if (imageResolver != null)
+      {
+        throw new Exception("Should not get here");
+      }
+      
+      this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver.GetName(this.podcast.FileDetails.ImageFileName));
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)
