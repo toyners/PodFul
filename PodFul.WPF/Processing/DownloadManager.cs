@@ -42,32 +42,26 @@ namespace PodFul.WPF.Processing
       {
         var podcast = this.podcasts.Dequeue();
         var downloader = new FileDownloader();
-        task = downloader.DownloadAsync2(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler, podcast.ExceptionEventHandler);
+        task = downloader.DownloadAsync(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
 
         task.ContinueWith(t =>
         {
           if (t.Exception != null)
           {
+            podcast.ExceptionEventHandler(t.Exception);
             return;
           }
 
           var fileInfo = new System.IO.FileInfo(podcast.FilePath);
-          if (fileInfo.Exists)
+          if (!fileInfo.Exists)
           {
-            //podcast = Podcast.SetDownloadDate(DateTime.Now, podcast);
-            /*var fileLength = new FileInfo(filePath).Length;
-            if (podcast.FileSize != fileLength)
-            {
-              podcast = Podcast.SetFileSize(fileLength, podcast);
-            }
-             */
-
-            podcast.DownloadDate = DateTime.Now;
-            podcast.FileSize = fileInfo.Length;
-            podcast.ImageFileName = this.imageResolver.GetName(podcast.ImageFileName);
+            // record missing file exception
+            podcast.ExceptionEventHandler(new Exception("Podcast file is missing."));
+            return;
           }
 
-          this.fileDeliverer.Deliver(null, "");
+          podcast.SetPodcastFileDetails(fileInfo.Length, this.imageResolver);
+          podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
 
           taskCompletionFunc(t);
         });

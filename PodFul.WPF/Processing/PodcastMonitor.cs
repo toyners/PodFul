@@ -4,6 +4,7 @@ namespace PodFul.WPF.Processing
   using System;
   using System.Threading;
   using System.Windows.Media;
+  using Library;
 
   public class PodcastMonitor
   {
@@ -13,6 +14,8 @@ namespace PodFul.WPF.Processing
     private Int64 podcastSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
+
+    private Podcast podcast;
 
     public String Name;
 
@@ -38,7 +41,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public PodcastMonitor(Int64 fileSize)
+    public PodcastMonitor(Podcast podcast, Int64 fileSize)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
@@ -61,6 +64,8 @@ namespace PodFul.WPF.Processing
       //this.ProgressBrush = Brush.;
       this.ExceptionMessage = String.Empty;
       this.percentageStepSize = this.podcastSize / 100;
+
+      this.podcast = podcast;
     }
     #endregion
 
@@ -77,6 +82,11 @@ namespace PodFul.WPF.Processing
       {
         this.cancellationTokenSource.Cancel();
       }
+    }
+
+    public void DeliverPodcastFile(IFileDeliverer fileDeliver, String filePath)
+    {
+      fileDeliver?.Deliver(this.podcast, filePath);
     }
 
     public void ProgressEventHandler(int bytesWrittenToFile)
@@ -117,6 +127,11 @@ namespace PodFul.WPF.Processing
     public void ExceptionEventHandler(Exception e)
     {
       this.ExceptionMessage = e.Message;
+    }
+
+    public void SetPodcastFileDetails(Int64 fileLength, IImageResolver imageResolver)
+    {
+      this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver?.GetName(this.podcast.FileDetails.ImageFileName));
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)
