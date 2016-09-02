@@ -278,10 +278,8 @@ namespace PodFul.WPF
       // Sort the indexes into descending order. Podcasts will be downloaded
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
-      var podcastIndexes = new Queue<Int32>(selectedIndexes);
 
-      var podcastDownloadManager = new DownloadManager(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
-
+      var podcastDownloadManager = new DownloadManager(this.feedCollection, this.currentFeed, selectedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
       podcastDownloadWindow.ShowDialog();
     }

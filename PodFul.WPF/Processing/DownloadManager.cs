@@ -14,18 +14,27 @@ namespace PodFul.WPF.Processing
     private IFileDeliverer fileDeliverer;
     private ILogger logger;
     private IImageResolver imageResolver;
-    private Queue<Int32> podcastIndexes;
 
     private Queue<PodcastMonitor> podcasts;
 
-    public DownloadManager(FeedCollection feedCollection, Feed feed, Queue<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger)
+    public DownloadManager(FeedCollection feedCollection, Feed feed, List<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger)
     {
       this.feedCollection = feedCollection;
       this.feed = feed;
-      this.podcastIndexes = podcastIndexes;
       this.imageResolver = imageResolver;
       this.fileDeliverer = fileDeliverer;
       this.logger = logger;
+
+      this.podcasts = new Queue<PodcastMonitor>();
+      this.Podcasts = new ObservableCollection<PodcastMonitor>();
+      foreach (var index in podcastIndexes)
+      {
+        var podcast = feed.Podcasts[index];
+        var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize);
+
+        this.podcasts.Enqueue(podcastMonitor);
+        this.Podcasts.Add(podcastMonitor);
+      }
     }
 
     public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } 
