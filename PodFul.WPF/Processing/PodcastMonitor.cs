@@ -3,6 +3,7 @@ namespace PodFul.WPF.Processing
 {
   using System;
   using System.Threading;
+  using System.Windows;
   using System.Windows.Media;
   using Library;
 
@@ -32,6 +33,8 @@ namespace PodFul.WPF.Processing
     public String ProgressMajorSize;
 
     public String ProgressMinorSize;
+
+    private Int32 progressValue;
 
     public String ProgressUnit;
 
@@ -120,8 +123,18 @@ namespace PodFul.WPF.Processing
         }
       }
 
-      this.ProgressMajorSize = majorSize;
-      this.ProgressMinorSize = minorSize;
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.ProgressMajorSize = majorSize;
+        this.ProgressMinorSize = minorSize;
+
+        if (this.FileSizeNotKnown)
+        {
+          return;
+        }
+
+        this.progressValue = (Int32)value;
+      });
     }
 
     public void SetPodcastFileDetails(IImageResolver imageResolver, Int64 fileLength)

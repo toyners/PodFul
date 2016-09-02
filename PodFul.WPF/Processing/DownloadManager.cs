@@ -5,6 +5,7 @@ namespace PodFul.WPF.Processing
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Threading.Tasks;
+  using System.Windows;
   using Library;
 
   public class DownloadManager
@@ -105,7 +106,11 @@ namespace PodFul.WPF.Processing
       }
 
       this.logger.Exception(e.Message);
-      podcast.ExceptionMessage = e.Message;
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        podcast.ExceptionMessage = e.Message;
+      });
     }
   }
 }
