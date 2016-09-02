@@ -12,20 +12,20 @@ namespace PodFul.WPF.Processing
     private Feed feed;
     private FeedCollection feedCollection; // Is this needed? Maybe only the feed
     private IFileDeliverer fileDeliverer;
-    private GUILogger guiLogger; // Should this be a gui logger or just a file logger?
+    private ILogger logger;
     private IImageResolver imageResolver;
     private Queue<Int32> podcastIndexes;
 
     private Queue<PodcastMonitor> podcasts;
 
-    public DownloadManager(FeedCollection feedCollection, Feed feed, Queue<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, GUILogger guiLogger)
+    public DownloadManager(FeedCollection feedCollection, Feed feed, Queue<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger)
     {
       this.feedCollection = feedCollection;
       this.feed = feed;
       this.podcastIndexes = podcastIndexes;
       this.imageResolver = imageResolver;
       this.fileDeliverer = fileDeliverer;
-      this.guiLogger = guiLogger;
+      this.logger = logger;
     }
 
     public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } 
@@ -95,7 +95,7 @@ namespace PodFul.WPF.Processing
         e = e.InnerException;
       }
 
-      this.guiLogger.Exception(e.Message);
+      this.logger.Exception(e.Message);
       podcast.ExceptionMessage = e.Message;
     }
   }
