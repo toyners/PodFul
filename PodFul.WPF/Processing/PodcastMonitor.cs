@@ -2,9 +2,9 @@
 namespace PodFul.WPF.Processing
 {
   using System;
+  using System.IO;
   using System.Threading;
   using System.Windows;
-  using System.Windows.Media;
   using Library;
 
   public class PodcastMonitor
@@ -18,15 +18,11 @@ namespace PodFul.WPF.Processing
 
     private Podcast podcast;
 
-    public String Name;
-
     public DateTime DownloadDate;
 
     public String ExceptionMessage;
 
     public Boolean FileSizeNotKnown;
-
-    public String FilePath;
 
     public Int64 FileSize;
 
@@ -38,13 +34,11 @@ namespace PodFul.WPF.Processing
 
     public String ProgressUnit;
 
-    public String URL;
-
     public String ImageFileName;
     #endregion
 
     #region Construction
-    public PodcastMonitor(Podcast podcast, Int64 fileSize)
+    public PodcastMonitor(Podcast podcast, Int64 fileSize, String feedDirectory)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
@@ -64,9 +58,10 @@ namespace PodFul.WPF.Processing
         this.FileSizeNotKnown = true;
       }
 
-      //this.ProgressBrush = Brush.;
       this.ExceptionMessage = String.Empty;
       this.percentageStepSize = this.podcastSize / 100;
+
+      this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
 
       this.podcast = podcast;
     }
@@ -75,7 +70,11 @@ namespace PodFul.WPF.Processing
     #region Properties
     public CancellationToken CancellationToken { get; private set; }
 
-    public Brush ProgressBrush { get; private set; }
+    public String FilePath { get; private set; }
+
+    public String Name { get { return this.podcast.Title; } }
+
+    public String URL { get { return this.podcast.URL; } }
     #endregion
 
     #region Methods

@@ -38,6 +38,7 @@ namespace PodFul.WPF
       this.DisplayTitle();
 
       var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
+      DirectoryOperations.EnsureDirectoryExists(feedDirectory);
       var feedStorage = new JSONFileStorage(feedDirectory);
       this.feedCollection = new FeedCollection(feedStorage);
 
@@ -262,7 +263,7 @@ namespace PodFul.WPF
       }
     }
 
-    private void DownloadPodcasts(List<Int32> selectedIndexes)
+    private void DownloadPodcasts_Old(List<Int32> selectedIndexes)
     {
       // Sort the indexes into descending order. Podcasts will be downloaded
       // in Chronological order.
@@ -273,7 +274,7 @@ namespace PodFul.WPF
       processingWindow.ShowDialog();
     }
 
-    private void DownloadPodcasts2(List<Int32> selectedIndexes)
+    private void DownloadPodcasts(List<Int32> selectedIndexes)
     {
       // Sort the indexes into descending order. Podcasts will be downloaded
       // in Chronological order.

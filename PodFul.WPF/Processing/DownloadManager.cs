@@ -31,7 +31,7 @@ namespace PodFul.WPF.Processing
       foreach (var index in podcastIndexes)
       {
         var podcast = feed.Podcasts[index];
-        var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize);
+        var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, feed.Directory);
 
         this.podcasts.Enqueue(podcastMonitor);
         this.Podcasts.Add(podcastMonitor);
@@ -83,8 +83,6 @@ namespace PodFul.WPF.Processing
 
         taskCompletionFunc(t);
       });
-
-      task.Start();
     }
 
     public void PodcastDownloadCompleted()

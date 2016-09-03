@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="PodcastDownloadWindow" Height="600" Width="800"
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico">
+        Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Button Name="CancelAll" Margin="5" Width="60" Height="30" HorizontalAlignment="Right" Click="CancelAll_Click">
@@ -21,10 +21,10 @@
         <ListBox.ItemTemplate>
           <DataTemplate>
             <Grid Margin="0,2">
-              <ProgressBar Margin="5" Height="50" IsIndeterminate="{Binding FileSizeNotKnown}" Background="{Binding ProgressBrush}" />
+              <ProgressBar Margin="5" Height="50" IsIndeterminate="{Binding FileSizeNotKnown}" />
               <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Left" />
               <TextBlock Text="{Binding ExceptionMessage}" VerticalAlignment="Center" HorizontalAlignment="Left" />
-              <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <TextBlock Text="{Binding ProgressMajorSize}" FontSize="24" FontWeight="Bold"/>
                 <TextBlock Text="{Binding ProgressMinorSize}" FontSize="14" Margin="0,11,0,0" FontWeight="Bold"/>
                 <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,11,0,0" FontWeight="Bold"/>
