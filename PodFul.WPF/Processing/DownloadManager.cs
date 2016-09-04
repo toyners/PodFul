@@ -76,8 +76,8 @@ namespace PodFul.WPF.Processing
         var fileInfo = new System.IO.FileInfo(podcast.FilePath);
         if (!fileInfo.Exists)
         {
-          // record missing file exception
-          this.ProcessException(new Exception("Podcast file is missing."), podcast);
+          // TODO: Change to file not found exception
+          this.ProcessException(new Exception(String.Format("Podcast file '{0}' is missing.", podcast.FilePath)), podcast);
           return;
         }
 
