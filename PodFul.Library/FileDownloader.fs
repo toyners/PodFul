@@ -35,7 +35,7 @@ type FileDownloader() =
 
         copyTo ()
 
-    let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) (failedFn : Action<Exception>) =
+    let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
         try
             getResponseFromURL url |> 
             writeToFile filePath cancelToken updateProgressFn
@@ -52,7 +52,7 @@ type FileDownloader() =
 
     member this.DownloadAsync(url, filePath,  cancelToken, updateProgressFn: Action<int>) = 
         async {
-            download url filePath cancelToken updateProgressFn null
+            download url filePath cancelToken updateProgressFn
         } |> Async.StartAsTask
 
     member this.Download(url, filePath, cancelToken, updateProgressFn: Action<int>) =

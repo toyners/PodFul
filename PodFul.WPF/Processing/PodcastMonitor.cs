@@ -138,7 +138,7 @@ namespace PodFul.WPF.Processing
 
     public void SetPodcastFileDetails(IImageResolver imageResolver, Int64 fileLength)
     {
-      if (imageResolver != null)
+      if (imageResolver == null)
       {
         throw new Exception("Should not get here");
       }

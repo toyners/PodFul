@@ -56,15 +56,18 @@ namespace PodFul.WPF
 
     private void PodcastDownloadCompleted(Task task)
     {
-      if (--this.podcastCount == 0)
+      Application.Current.Dispatcher.Invoke(() =>
       {
-        // Turn off cancel-all button
-        this.CancelAll.IsEnabled = false;
-        this.downloadManager.PodcastDownloadCompleted();
-        return;
-      }
+        if (--this.podcastCount == 0)
+        {
+          // Turn off cancel-all button
+          this.CancelAll.IsEnabled = false;
+          this.downloadManager.PodcastDownloadCompleted();
+          return;
+        }
 
-      this.StartPodcastDownload();
+        this.StartPodcastDownload();
+      });
     }
   }
 }

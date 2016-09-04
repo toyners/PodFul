@@ -52,8 +52,11 @@ namespace PodFul.WPF.Processing
 
       try
       {
-        var downloader = new FileDownloader();
-        task = downloader.DownloadAsync(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
+        task = Task.Factory.StartNew(() =>
+        {
+          var downloader = new FileDownloader();
+          downloader.Download(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
+        }, podcast.CancellationToken);
       }
       catch (Exception e)
       {
