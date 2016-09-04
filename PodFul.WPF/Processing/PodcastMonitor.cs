@@ -2,39 +2,32 @@
 namespace PodFul.WPF.Processing
 {
   using System;
+  using System.Collections.Generic;
+  using System.ComponentModel;
   using System.IO;
+  using System.Runtime.CompilerServices;
   using System.Threading;
   using System.Windows;
   using Library;
 
-  public class PodcastMonitor
+  public class PodcastMonitor : INotifyPropertyChanged
   {
     #region Fields
     private CancellationTokenSource cancellationTokenSource;
+
+    private String message;
 
     private Int64 podcastSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
 
-    private Podcast podcast;
+    private String progressMajorSize;
 
-    public DateTime DownloadDate;
-
-    public String ExceptionMessage;
-
-    public Boolean FileSizeNotKnown;
-
-    public Int64 FileSize;
-
-    public String ProgressMajorSize;
-
-    public String ProgressMinorSize;
+    private String progressMinorSize;
 
     private Int32 progressValue;
 
-    public String ProgressUnit;
-
-    public String ImageFileName;
+    private Podcast podcast;
     #endregion
 
     #region Construction
@@ -43,8 +36,10 @@ namespace PodFul.WPF.Processing
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
 
-      this.ProgressMajorSize = "0";
-      this.ProgressMinorSize = ".0";
+      this.message = String.Empty;
+
+      this.progressMajorSize = "0";
+      this.progressMinorSize = ".0";
 
       this.podcastSize = fileSize;
       if (this.podcastSize > 0)
@@ -58,7 +53,6 @@ namespace PodFul.WPF.Processing
         this.FileSizeNotKnown = true;
       }
 
-      this.ExceptionMessage = String.Empty;
       this.percentageStepSize = this.podcastSize / 100;
 
       this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
@@ -67,12 +61,42 @@ namespace PodFul.WPF.Processing
     }
     #endregion
 
+    public event PropertyChangedEventHandler PropertyChanged;
+
     #region Properties
     public CancellationToken CancellationToken { get; private set; }
 
+    public String Message
+    {
+      get { return this.message; }
+      set { this.SetField(ref this.message, value); }
+    }
+
     public String FilePath { get; private set; }
 
+    public Boolean FileSizeNotKnown { get; private set; }
+
     public String Name { get { return this.podcast.Title; } }
+
+    public String ProgressMajorSize
+    {
+      get { return this.progressMajorSize; }
+      set { this.SetField(ref this.progressMajorSize, value); }
+    }
+
+    public String ProgressMinorSize
+    {
+      get { return this.progressMinorSize; }
+      set { this.SetField(ref this.progressMinorSize, value); }
+    }
+
+    public Int32 ProgressValue
+    {
+      get { return this.progressValue; }
+      set { this.SetField(ref this.progressValue, value); }
+    }
+
+    public String ProgressUnit { get; set; }
 
     public String URL { get { return this.podcast.URL; } }
     #endregion
@@ -84,6 +108,11 @@ namespace PodFul.WPF.Processing
       {
         this.cancellationTokenSource.Cancel();
       }
+    }
+
+    internal void DownloadCompleted()
+    {
+      throw new NotImplementedException();
     }
 
     public void DeliverPodcastFile(IFileDeliverer fileDeliver, String filePath)
@@ -132,7 +161,7 @@ namespace PodFul.WPF.Processing
           return;
         }
 
-        this.progressValue = (Int32)value;
+        this.ProgressValue = (Int32)value;
       });
     }
 
@@ -152,6 +181,24 @@ namespace PodFul.WPF.Processing
       Int32 index = size.IndexOf('.');
       majorSize = size.Substring(0, index);
       minorSize = size.Substring(index);
+    }
+
+    /// <summary>
+    /// Set the field to the new value if it is different and then raises the property changed event handler.
+    /// </summary>
+    /// <typeparam name="T">Type of the field and value</typeparam>
+    /// <param name="fieldValue">The existing field value.</param>
+    /// <param name="newValue">The new value.</param>
+    /// <param name="propertyName">Name of the property being changed. Uses the name of the calling method by default.</param>
+    private void SetField<T>(ref T fieldValue, T newValue, [CallerMemberName] String propertyName = null)
+    {
+      if (EqualityComparer<T>.Default.Equals(fieldValue, newValue))
+      {
+        return;
+      }
+
+      fieldValue = newValue;
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
     #endregion
   }

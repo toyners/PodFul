@@ -62,7 +62,6 @@ namespace PodFul.WPF
         {
           // Turn off cancel-all button
           this.CancelAll.IsEnabled = false;
-          this.downloadManager.PodcastDownloadCompleted();
           return;
         }
 

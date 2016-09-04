@@ -83,14 +83,12 @@ namespace PodFul.WPF.Processing
 
         podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
         podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
+        podcast.DownloadCompleted();
+
+        this.feedCollection.UpdateFeed(feed);
 
         taskCompletionFunc(t);
       });
-    }
-
-    public void PodcastDownloadCompleted()
-    {
-      this.feedCollection.UpdateFeed(feed);
     }
 
     private void ProcessException(Exception exception, PodcastMonitor podcast)
@@ -110,7 +108,7 @@ namespace PodFul.WPF.Processing
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        podcast.ExceptionMessage = e.Message;
+        podcast.Message = e.Message;
       });
     }
   }
