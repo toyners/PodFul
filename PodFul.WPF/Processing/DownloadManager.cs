@@ -74,6 +74,8 @@ namespace PodFul.WPF.Processing
 
       task.ContinueWith(t =>
       {
+        Application.Current.Dispatcher.Invoke(() => { podcast.CancellationCanBeRequested = false; });
+
         if (t.Exception != null)
         {
           this.ProcessException(t.Exception, podcast);

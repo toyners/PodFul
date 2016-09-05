@@ -13,6 +13,8 @@ namespace PodFul.WPF.Processing
   public class PodcastMonitor : INotifyPropertyChanged
   {
     #region Fields
+    private Boolean cancellationCanBeRequested = true;
+
     private CancellationTokenSource cancellationTokenSource;
 
     private String message;
@@ -64,6 +66,12 @@ namespace PodFul.WPF.Processing
     public event PropertyChangedEventHandler PropertyChanged;
 
     #region Properties
+    public Boolean CancellationCanBeRequested
+    {
+      get { return this.cancellationCanBeRequested; }
+      set { this.SetField(ref this.cancellationCanBeRequested, value); }
+    }
+
     public CancellationToken CancellationToken { get; private set; }
 
     public String Message
