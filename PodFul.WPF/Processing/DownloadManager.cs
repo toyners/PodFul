@@ -10,14 +10,17 @@ namespace PodFul.WPF.Processing
 
   public class DownloadManager
   {
+    #region Fields
     private Feed feed;
-    private FeedCollection feedCollection; // Is this needed? Maybe only the feed
+    private FeedCollection feedCollection; //TODO: Is this needed? Maybe only the feed
     private IFileDeliverer fileDeliverer;
     private ILogger logger;
     private IImageResolver imageResolver;
 
     private Queue<PodcastMonitor> podcasts;
+    #endregion
 
+    #region Construction
     public DownloadManager(FeedCollection feedCollection, Feed feed, List<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger)
     {
       this.feedCollection = feedCollection;
@@ -37,9 +40,13 @@ namespace PodFul.WPF.Processing
         this.Podcasts.Add(podcastMonitor);
       }
     }
+    #endregion
 
-    public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } 
+    #region Properties
+    public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } //TODO - no adding or removing so could just use a list<T> instead
+    #endregion
 
+    #region Methods
     public void DownloadNextPodcast(Action<Task> taskCompletionFunc)
     {
       if (this.podcasts.Count == 0)
@@ -70,22 +77,24 @@ namespace PodFul.WPF.Processing
         if (t.Exception != null)
         {
           this.ProcessException(t.Exception, podcast);
-          return;
         }
-
-        var fileInfo = new System.IO.FileInfo(podcast.FilePath);
-        if (!fileInfo.Exists)
+        else
         {
-          // TODO: Change to file not found exception
-          this.ProcessException(new Exception(String.Format("Podcast file '{0}' is missing.", podcast.FilePath)), podcast);
-          return;
+          var fileInfo = new System.IO.FileInfo(podcast.FilePath);
+          if (!fileInfo.Exists)
+          {
+            // TODO: Change to file not found exception
+            this.ProcessException(new Exception(String.Format("Podcast file '{0}' is missing.", podcast.FilePath)), podcast);
+          }
+          else
+          {
+            podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
+            //TODO: Turn on podcast delivery -> podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
+            podcast.DownloadCompleted();
+
+            this.feedCollection.UpdateFeed(feed);
+          }
         }
-
-        podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
-        //TODO: Turn on podcast delivery -> podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
-        podcast.DownloadCompleted();
-
-        this.feedCollection.UpdateFeed(feed);
 
         taskCompletionFunc(t);
       });
@@ -111,5 +120,6 @@ namespace PodFul.WPF.Processing
         podcast.Message = e.Message;
       });
     }
+    #endregion
   }
 }

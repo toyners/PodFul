@@ -110,7 +110,7 @@ namespace PodFul.WPF.Processing
       }
     }
 
-    internal void DownloadCompleted()
+    public void DownloadCompleted()
     {
       Application.Current.Dispatcher.Invoke(() =>
       {

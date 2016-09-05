@@ -15,6 +15,7 @@ namespace PodFul.WPF
     private Boolean isLoaded;
     private DownloadManager downloadManager;
     private Int32 podcastCount;
+    private Int32 threadCount = 1;
 
     public PodcastDownloadWindow(DownloadManager downloadManager)
     {
@@ -42,10 +43,15 @@ namespace PodFul.WPF
     {
       if (!this.isLoaded)
       {
-        // Ensure this is only called once.
-        this.StartPodcastDownload();
-        this.isLoaded = true;
+        for (Int32 i = 0; i < this.threadCount; i++)
+        {
+          this.StartPodcastDownload();
+        }
+
         this.CancelAll.IsEnabled = true;
+       
+        // Ensure this functionality is only called once.
+        this.isLoaded = true;
       }
     }
 
