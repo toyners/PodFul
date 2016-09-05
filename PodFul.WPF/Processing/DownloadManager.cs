@@ -82,7 +82,7 @@ namespace PodFul.WPF.Processing
         }
 
         podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
-        podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
+        //TODO: Turn on podcast delivery -> podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
         podcast.DownloadCompleted();
 
         this.feedCollection.UpdateFeed(feed);

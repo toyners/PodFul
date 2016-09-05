@@ -112,7 +112,11 @@ namespace PodFul.WPF.Processing
 
     internal void DownloadCompleted()
     {
-      throw new NotImplementedException();
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.ProgressValue = 0;
+        this.Message = "Download Completed";
+      });
     }
 
     public void DeliverPodcastFile(IFileDeliverer fileDeliver, String filePath)
