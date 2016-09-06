@@ -17,7 +17,7 @@ namespace PodFul.WPF.Processing
 
     private CancellationTokenSource cancellationTokenSource;
 
-    private String message;
+    private String exceptionMessage;
 
     private Int64 podcastSize;
     private Int64 downloadedSize;
@@ -30,6 +30,8 @@ namespace PodFul.WPF.Processing
     private Int32 progressValue;
 
     private Podcast podcast;
+
+    private String statusMessage;
     #endregion
 
     #region Construction
@@ -38,7 +40,7 @@ namespace PodFul.WPF.Processing
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
 
-      this.message = String.Empty;
+      this.exceptionMessage = String.Empty;
 
       this.progressMajorSize = "0";
       this.progressMinorSize = ".0";
@@ -74,10 +76,10 @@ namespace PodFul.WPF.Processing
 
     public CancellationToken CancellationToken { get; private set; }
 
-    public String Message
+    public String ExceptionMessage
     {
-      get { return this.message; }
-      set { this.SetField(ref this.message, value); }
+      get { return this.exceptionMessage; }
+      set { this.SetField(ref this.exceptionMessage, value); }
     }
 
     public String FilePath { get; private set; }
@@ -106,6 +108,12 @@ namespace PodFul.WPF.Processing
 
     public String ProgressUnit { get; set; }
 
+    public String StatusMessage
+    {
+      get { return this.statusMessage; }
+      set { this.SetField(ref this.statusMessage, value); }
+    }
+
     public String URL { get { return this.podcast.URL; } }
     #endregion
 
@@ -123,7 +131,7 @@ namespace PodFul.WPF.Processing
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressValue = 0;
-        this.Message = "Download Completed";
+        this.StatusMessage = "Download Completed";
       });
     }
 
