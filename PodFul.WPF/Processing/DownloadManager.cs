@@ -56,7 +56,7 @@ namespace PodFul.WPF.Processing
 
       Task task = null;
       var podcast = this.podcasts.Dequeue();
-
+      podcast.InitialiseBeforeDownload();
       try
       {
         task = Task.Factory.StartNew(() =>
@@ -119,7 +119,7 @@ namespace PodFul.WPF.Processing
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        podcast.StatusMessage = "Error";
+        podcast.Status = "Error";
         podcast.ExceptionMessage = e.Message;
       });
     }

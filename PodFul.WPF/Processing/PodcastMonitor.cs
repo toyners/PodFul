@@ -27,11 +27,13 @@ namespace PodFul.WPF.Processing
 
     private String progressMinorSize;
 
+    private String progressUnit;
+
     private Int32 progressValue;
 
     private Podcast podcast;
 
-    private String statusMessage;
+    private String status;
     #endregion
 
     #region Construction
@@ -42,24 +44,15 @@ namespace PodFul.WPF.Processing
 
       this.exceptionMessage = String.Empty;
 
-      this.progressMajorSize = "0";
-      this.progressMinorSize = ".0";
-
       this.podcastSize = fileSize;
-      if (this.podcastSize > 0)
-      {
-        this.ProgressUnit = "%";
-        this.FileSizeNotKnown = false;
-      }
-      else
-      {
-        this.ProgressUnit = "MB";
-        this.FileSizeNotKnown = true;
-      }
 
+      this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
+      
       this.percentageStepSize = this.podcastSize / 100;
 
       this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
+
+      this.Status = "Waiting";
 
       this.podcast = podcast;
     }
@@ -106,13 +99,19 @@ namespace PodFul.WPF.Processing
       set { this.SetField(ref this.progressValue, value); }
     }
 
-    public String ProgressUnit { get; set; }
-
-    public String StatusMessage
+    public String ProgressUnit
     {
-      get { return this.statusMessage; }
-      set { this.SetField(ref this.statusMessage, value); }
+      get { return this.progressUnit; }
+      set { this.SetField(ref this.progressUnit, value); }
     }
+
+    public String Status
+    {
+      get { return this.status; }
+      set { this.SetField(ref this.status, value); }
+    }
+
+    public String StatusColor { get; private set; }
 
     public String URL { get { return this.podcast.URL; } }
     #endregion
@@ -131,13 +130,32 @@ namespace PodFul.WPF.Processing
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressValue = 0;
-        this.StatusMessage = "Download Completed";
+        this.Status = "Download Completed";
       });
     }
 
     public void DeliverPodcastFile(IFileDeliverer fileDeliver, String filePath)
     {
       fileDeliver?.Deliver(this.podcast, filePath);
+    }
+
+    public void InitialiseBeforeDownload()
+    {
+      this.ProgressMajorSize = "0";
+      this.ProgressMinorSize = ".0";
+
+      if (this.podcastSize > 0)
+      {
+        this.ProgressUnit = "%";
+        this.FileSizeNotKnown = false;
+      }
+      else
+      {
+        this.ProgressUnit = "MB";
+        this.FileSizeNotKnown = true;
+      }
+
+      this.Status = "Running";
     }
 
     public void ProgressEventHandler(int bytesWrittenToFile)
