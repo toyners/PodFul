@@ -13,11 +13,14 @@ namespace PodFul.WPF
   /// </summary>
   public partial class PodcastDownloadWindow : Window
   {
+    #region Fields
     private Boolean isLoaded;
     private DownloadManager downloadManager;
     private Int32 podcastCount;
     private Int32 threadCount = 1;
+    #endregion
 
+    #region Construction
     public PodcastDownloadWindow(DownloadManager downloadManager)
     {
       InitializeComponent();
@@ -27,7 +30,9 @@ namespace PodFul.WPF
       this.PodcastList.ItemsSource = downloadManager.Podcasts;
       this.podcastCount = downloadManager.Podcasts.Count;
     }
+    #endregion
 
+    #region Methods
     private void CancelAllDownloads_Click(Object sender, RoutedEventArgs e)
     {
       foreach (var podcast in this.downloadManager.Podcasts)
@@ -82,5 +87,6 @@ namespace PodFul.WPF
       podcast.CancelDownload();
       
     }
+    #endregion
   }
 }
