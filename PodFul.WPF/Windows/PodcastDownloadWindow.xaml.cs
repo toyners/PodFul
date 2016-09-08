@@ -35,10 +35,18 @@ namespace PodFul.WPF
     #region Methods
     private void CancelAllDownloads_Click(Object sender, RoutedEventArgs e)
     {
+      this.CancelAll.IsEnabled = false;
+
       foreach (var podcast in this.downloadManager.Podcasts)
       {
         podcast.CancelDownload();
       }
+    }
+
+    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
+    {
+      var podcast = (PodcastMonitor)(sender as Button).DataContext;
+      podcast.CancelDownload();
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
@@ -79,13 +87,6 @@ namespace PodFul.WPF
 
         this.StartPodcastDownload();
       });
-    }
-
-    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
-    {
-      var podcast = (PodcastMonitor)(sender as Button).DataContext;
-      podcast.CancelDownload();
-      
     }
     #endregion
   }

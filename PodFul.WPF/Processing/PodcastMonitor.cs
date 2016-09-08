@@ -12,6 +12,15 @@ namespace PodFul.WPF.Processing
 
   public class PodcastMonitor : INotifyPropertyChanged
   {
+    public enum StatusTypes
+    {
+      Canceled,
+      Completed,
+      Failed,
+      Running,
+      Waiting
+    }
+
     #region Fields
     private Boolean cancellationCanBeRequested = true;
 
@@ -33,7 +42,7 @@ namespace PodFul.WPF.Processing
 
     private Podcast podcast;
 
-    private String status;
+    private StatusTypes status;
     #endregion
 
     #region Construction
@@ -52,7 +61,7 @@ namespace PodFul.WPF.Processing
 
       this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
 
-      this.Status = "Waiting";
+      this.status = StatusTypes.Waiting;
 
       this.podcast = podcast;
     }
@@ -105,13 +114,47 @@ namespace PodFul.WPF.Processing
       set { this.SetField(ref this.progressUnit, value); }
     }
 
-    public String Status
+    public String StatusMessage
     {
-      get { return this.status; }
-      set { this.SetField(ref this.status, value); }
+      get
+      {
+        switch (this.status)
+        {
+          case StatusTypes.Completed: return "Completed";
+          case StatusTypes.Canceled: return "Canceled";
+          case StatusTypes.Failed: return "Failed";
+          case StatusTypes.Running: return "Running";
+          default: return "Waiting";
+        }
+      }
     }
 
-    public String StatusColor { get; private set; }
+    public StatusTypes Status
+    {
+      set
+      {
+        this.status = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StatusMessage"));
+        
+        // Change brush based on status
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StatusColor"));
+      }
+    }
+
+    public String StatusColor
+    {
+      get
+      {
+        switch (this.status)
+        {
+          case StatusTypes.Completed: return "Green";
+          case StatusTypes.Canceled: return "Orange";
+          case StatusTypes.Failed: return "Red";
+          case StatusTypes.Running: return "Blue";
+          default: return "Grey";
+        }
+      }
+    }
 
     public String URL { get { return this.podcast.URL; } }
     #endregion
@@ -130,7 +173,7 @@ namespace PodFul.WPF.Processing
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressValue = 0;
-        this.Status = "Download Completed";
+        this.Status = StatusTypes.Completed;
       });
     }
 
@@ -141,6 +184,8 @@ namespace PodFul.WPF.Processing
 
     public void InitialiseBeforeDownload()
     {
+      // This method will always be executed on the UI thread hence no invoking.
+
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
 
@@ -155,7 +200,7 @@ namespace PodFul.WPF.Processing
         this.FileSizeNotKnown = true;
       }
 
-      this.Status = "Running";
+      this.Status = StatusTypes.Running;
     }
 
     public void ProgressEventHandler(int bytesWrittenToFile)

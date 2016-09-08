@@ -119,7 +119,7 @@ namespace PodFul.WPF.Processing
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        podcast.Status = "Error";
+        podcast.Status = PodcastMonitor.StatusTypes.Failed;
         podcast.ExceptionMessage = e.Message;
       });
     }
