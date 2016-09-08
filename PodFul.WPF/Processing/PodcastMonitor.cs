@@ -164,6 +164,7 @@ namespace PodFul.WPF.Processing
     {
       if (this.CancellationToken.CanBeCanceled)
       {
+        this.Status = StatusTypes.Canceled;
         this.cancellationTokenSource.Cancel();
       }
     }

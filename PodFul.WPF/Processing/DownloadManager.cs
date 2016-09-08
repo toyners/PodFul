@@ -47,7 +47,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Methods
-    public void DownloadNextPodcast(Action<Task> taskCompletionFunc)
+    public void DownloadNextPodcast(Action taskCompletionFunc)
     {
       if (this.podcasts.Count == 0)
       {
@@ -98,7 +98,7 @@ namespace PodFul.WPF.Processing
           }
         }
 
-        taskCompletionFunc(t);
+        taskCompletionFunc();
       });
     }
 

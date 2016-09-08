@@ -2,7 +2,6 @@
 namespace PodFul.WPF
 {
   using System;
-  using System.Threading.Tasks;
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
@@ -47,6 +46,7 @@ namespace PodFul.WPF
     {
       var podcast = (PodcastMonitor)(sender as Button).DataContext;
       podcast.CancelDownload();
+      this.PodcastDownloadCompleted();
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
@@ -74,7 +74,7 @@ namespace PodFul.WPF
       this.downloadManager.DownloadNextPodcast(this.PodcastDownloadCompleted);
     }
 
-    private void PodcastDownloadCompleted(Task task)
+    private void PodcastDownloadCompleted()
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
