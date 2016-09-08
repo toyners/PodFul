@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.Threading.Tasks;
   using System.Windows;
+  using System.Windows.Controls;
   using System.Windows.Input;
   using PodFul.WPF.Processing;
 
@@ -27,7 +28,7 @@ namespace PodFul.WPF
       this.podcastCount = downloadManager.Podcasts.Count;
     }
 
-    private void CancelAll_Click(Object sender, RoutedEventArgs e)
+    private void CancelAllDownloads_Click(Object sender, RoutedEventArgs e)
     {
       foreach (var podcast in this.downloadManager.Podcasts)
       {
@@ -73,6 +74,13 @@ namespace PodFul.WPF
 
         this.StartPodcastDownload();
       });
+    }
+
+    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
+    {
+      var podcast = (PodcastMonitor)(sender as Button).DataContext;
+      podcast.CancelDownload();
+      
     }
   }
 }

@@ -10,7 +10,7 @@
         Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button Name="CancelAll" Margin="5" Width="60" Height="30" HorizontalAlignment="Right" Click="CancelAll_Click">
+      <Button Name="CancelAll" Margin="5" Width="60" Height="30" HorizontalAlignment="Right" Click="CancelAllDownloads_Click">
         Cancel All
       </Button>
     </Border>
@@ -60,7 +60,7 @@
                 </StackPanel>
                 </Border>
                 <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">
-                  <Button VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="{Binding CancellationCanBeRequested}">
+                  <Button VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click">
                     <Image Source="cancel.png" Width="25" Height="25" />
                   </Button>
                 </Border>
