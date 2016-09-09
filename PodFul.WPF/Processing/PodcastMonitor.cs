@@ -134,10 +134,13 @@ namespace PodFul.WPF.Processing
       set
       {
         this.status = value;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StatusMessage"));
-        
-        // Change brush based on status
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StatusColor"));
+        if (PropertyChanged != null)
+        {
+          // Change all status properties.
+          PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusMessage"));
+          PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusColor"));
+          PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusWeight"));
+        }
       }
     }
 

@@ -15,7 +15,6 @@ namespace PodFul.WPF
     #region Fields
     private Boolean isLoaded;
     private DownloadManager downloadManager;
-    private Int32 podcastCount;
     private Int32 threadCount = 0;
     #endregion
 
@@ -25,9 +24,9 @@ namespace PodFul.WPF
       InitializeComponent();
 
       this.downloadManager = downloadManager;
+      this.downloadManager.AllDownloadsCompleted = DownloadCompleted;
 
       this.PodcastList.ItemsSource = downloadManager.Podcasts;
-      this.podcastCount = downloadManager.Podcasts.Count;
     }
     #endregion
 
@@ -35,18 +34,12 @@ namespace PodFul.WPF
     private void CancelAllDownloads_Click(Object sender, RoutedEventArgs e)
     {
       this.CancelAll.IsEnabled = false;
-
-      foreach (var podcast in this.downloadManager.Podcasts)
-      {
-        podcast.CancelDownload();
-      }
+      this.downloadManager.CancelAllDownloads();      
     }
 
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
-      var podcast = (PodcastMonitor)(sender as Button).DataContext;
-      podcast.CancelDownload();
-      this.PodcastDownloadCompleted();
+      this.downloadManager.CancelDownload((sender as Button).DataContext);
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
@@ -57,36 +50,17 @@ namespace PodFul.WPF
     {
       if (!this.isLoaded)
       {
-        for (Int32 i = 0; i < this.threadCount; i++)
-        {
-          this.StartPodcastDownload();
-        }
-
         this.CancelAll.IsEnabled = true;
-       
+        this.downloadManager.StartDownloads();
+        
         // Ensure this functionality is only called once.
         this.isLoaded = true;
       }
     }
 
-    private void StartPodcastDownload()
+    private void DownloadCompleted()
     {
-      this.downloadManager.DownloadNextPodcast(this.PodcastDownloadCompleted);
-    }
-
-    private void PodcastDownloadCompleted()
-    {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        if (--this.podcastCount == 0)
-        {
-          // Turn off cancel-all button
-          this.CancelAll.IsEnabled = false;
-          return;
-        }
-
-        this.StartPodcastDownload();
-      });
+      Application.Current.Dispatcher.Invoke(() => { this.CancelAll.IsEnabled = false; });
     }
     #endregion
   }

@@ -18,6 +18,8 @@ namespace PodFul.WPF.Processing
     private IImageResolver imageResolver;
 
     private Queue<PodcastMonitor> podcasts;
+
+    private Int32 threadCount = 0;
     #endregion
 
     #region Construction
@@ -46,11 +48,36 @@ namespace PodFul.WPF.Processing
     public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } //TODO - no adding or removing so could just use a list<T> instead
     #endregion
 
+    public Action AllDownloadsCompleted;
+
     #region Methods
-    public void DownloadNextPodcast(Action taskCompletionFunc)
+    public void CancelAllDownloads()
+    {
+      foreach (var podcast in this.Podcasts)
+      {
+        podcast.CancelDownload();
+      }
+    }
+
+    public void CancelDownload(Object dataContext)
+    {
+      var podcast = (PodcastMonitor)dataContext;
+      podcast.CancelDownload();
+    }
+
+    public void StartDownloads()
+    {
+      for (Int32 i = 0; i < this.threadCount; i++)
+      {
+        StartDownload();
+      }
+    }
+
+    private void StartDownload()
     {
       if (this.podcasts.Count == 0)
       {
+        AllDownloadsCompleted?.Invoke();
         return;
       }
 
@@ -98,7 +125,7 @@ namespace PodFul.WPF.Processing
           }
         }
 
-        taskCompletionFunc();
+        this.StartDownload();
       });
     }
 
