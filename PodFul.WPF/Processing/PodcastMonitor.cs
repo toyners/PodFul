@@ -124,7 +124,7 @@ namespace PodFul.WPF.Processing
           case StatusTypes.Canceled: return "Canceled";
           case StatusTypes.Failed: return "Failed";
           case StatusTypes.Running: return "Running";
-          default: return "Waiting";
+          default: return "Waiting...";
         }
       }
     }
@@ -155,6 +155,21 @@ namespace PodFul.WPF.Processing
         }
       }
     }
+
+    public FontWeight StatusWeight
+    {
+      get
+      {
+        switch (this.status)
+        {
+          case StatusTypes.Completed: return FontWeights.Bold;
+          case StatusTypes.Canceled: return FontWeights.Bold;
+          case StatusTypes.Failed: return FontWeights.Bold;
+          case StatusTypes.Running: return FontWeights.Normal;
+          default: return FontWeights.Normal;
+        }
+      }
+    } 
 
     public String URL { get { return this.podcast.URL; } }
     #endregion

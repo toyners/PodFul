@@ -16,7 +16,7 @@ namespace PodFul.WPF
     private Boolean isLoaded;
     private DownloadManager downloadManager;
     private Int32 podcastCount;
-    private Int32 threadCount = 1;
+    private Int32 threadCount = 0;
     #endregion
 
     #region Construction

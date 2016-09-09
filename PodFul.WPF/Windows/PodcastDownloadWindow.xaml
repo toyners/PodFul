@@ -45,7 +45,7 @@
                       <ColumnDefinition Width="7*"/>
                     </Grid.ColumnDefinitions>
                     <Border BorderBrush="Black" BorderThickness="1">
-                      <TextBlock Text="{Binding StatusMessage}" FontSize="14" Foreground="{Binding StatusColor}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                      <TextBlock Text="{Binding StatusMessage}" FontSize="14" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     </Border>
                     <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
                       <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" VerticalAlignment="Center" HorizontalAlignment="Left" />
