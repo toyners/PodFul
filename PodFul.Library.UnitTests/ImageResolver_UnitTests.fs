@@ -9,7 +9,6 @@ type ImageResolver_UnitTests() =
 
     [<Test>]
     member public this.``Null value returns the default image path``() = 
-        let imageDirectory = @""
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageResolver = ImageResolver(null, defaultImagePath) :> IImageResolver
 
@@ -17,7 +16,6 @@ type ImageResolver_UnitTests() =
 
     [<Test>]
     member public this.``Empty string value returns the default image path``() = 
-        let imageDirectory = @""
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageResolver = ImageResolver(null, defaultImagePath) :> IImageResolver
 
