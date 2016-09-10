@@ -5,12 +5,12 @@ open System.IO
 open System.Collections.Generic
 open Jabberwocky.Toolkit.String
 
-type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
+type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, returnDefaultImageOnException : Boolean) =
 
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
+    let returnDefaultImageOnException = returnDefaultImageOnException
     let mutable postMessage : Action<string> = null
-    let mutable returnDefaultImageOnException = false
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
                                                     [
@@ -26,14 +26,6 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
                                                     ])
 
     interface IImageResolver with
-        
-        // Gets or sets a value indicating whether the default image name from GetName if 
-        // an exception is thrown during download.
-        member this.ReturnDefaultImageOnException
-            with get() : Boolean = 
-                returnDefaultImageOnException
-            and set(v : Boolean) =
-                returnDefaultImageOnException <- v
 
         member this.PostMessage 
             with get() : Action<string> = 

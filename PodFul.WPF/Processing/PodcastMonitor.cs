@@ -278,7 +278,7 @@ namespace PodFul.WPF.Processing
       {
         throw new Exception("Should not get here");
       }
-      
+
       this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver.GetName(this.podcast.FileDetails.ImageFileName));
     }
 
