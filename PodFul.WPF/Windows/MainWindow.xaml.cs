@@ -280,7 +280,7 @@ namespace PodFul.WPF
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
 
-      var podcastDownloadManager = new DownloadManager(this.feedCollection, this.currentFeed, selectedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
+      var podcastDownloadManager = new DownloadManager(this.feedCollection, this.currentFeed, selectedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, 1);
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
       podcastDownloadWindow.ShowDialog();
     }

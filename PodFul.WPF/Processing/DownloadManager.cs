@@ -20,19 +20,20 @@ namespace PodFul.WPF.Processing
 
     private Queue<PodcastMonitor> podcasts;
 
-    private Int32 threadCount = 1;
+    private UInt32 concurrentDownloads = 1;
 
     private Int32 currentDownloads = 0;
     #endregion
 
     #region Construction
-    public DownloadManager(FeedCollection feedCollection, Feed feed, List<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger)
+    public DownloadManager(FeedCollection feedCollection, Feed feed, List<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger, UInt32 concurrentDownloads)
     {
       this.feedCollection = feedCollection;
       this.feed = feed;
       this.imageResolver = imageResolver;
       this.fileDeliverer = fileDeliverer;
       this.logger = logger;
+      this.concurrentDownloads = concurrentDownloads;
 
       this.podcasts = new Queue<PodcastMonitor>();
       this.Podcasts = new ObservableCollection<PodcastMonitor>();
@@ -70,7 +71,7 @@ namespace PodFul.WPF.Processing
 
     public void StartDownloads()
     {
-      for (Int32 i = 0; i < this.threadCount; i++)
+      for (UInt32 i = 0; i < this.concurrentDownloads; i++)
       {
         StartDownload();
       }
