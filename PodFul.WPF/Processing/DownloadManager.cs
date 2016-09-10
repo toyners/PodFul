@@ -4,6 +4,7 @@ namespace PodFul.WPF.Processing
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
+  using System.IO;
   using System.Threading.Tasks;
   using System.Windows;
   using Library;
@@ -19,7 +20,9 @@ namespace PodFul.WPF.Processing
 
     private Queue<PodcastMonitor> podcasts;
 
-    private Int32 threadCount = 0;
+    private Int32 threadCount = 1;
+
+    private Int32 currentDownloads = 0;
     #endregion
 
     #region Construction
@@ -75,11 +78,13 @@ namespace PodFul.WPF.Processing
 
     private void StartDownload()
     {
-      if (this.podcasts.Count == 0)
+      if (this.podcasts.Count == 0 && this.currentDownloads == 0)
       {
         AllDownloadsCompleted?.Invoke();
         return;
       }
+
+      this.currentDownloads++;
 
       Task task = null;
       var podcast = this.podcasts.Dequeue();
@@ -109,11 +114,10 @@ namespace PodFul.WPF.Processing
         }
         else
         {
-          var fileInfo = new System.IO.FileInfo(podcast.FilePath);
+          var fileInfo = new FileInfo(podcast.FilePath);
           if (!fileInfo.Exists)
           {
-            // TODO: Change to file not found exception
-            this.ProcessException(new Exception(String.Format("Podcast file '{0}' is missing.", podcast.FilePath)), podcast);
+            this.ProcessException(new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", podcast.FilePath)), podcast);
           }
           else
           {
@@ -124,6 +128,8 @@ namespace PodFul.WPF.Processing
             this.feedCollection.UpdateFeed(feed);
           }
         }
+
+        this.currentDownloads--;
 
         this.StartDownload();
       });

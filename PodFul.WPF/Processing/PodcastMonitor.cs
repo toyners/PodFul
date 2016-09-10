@@ -140,6 +140,11 @@ namespace PodFul.WPF.Processing
           PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusMessage"));
           PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusColor"));
           PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusWeight"));
+          
+          if (this.status == StatusTypes.Canceled)
+          {
+            this.CancellationCanBeRequested = false;
+          }
         }
       }
     }
