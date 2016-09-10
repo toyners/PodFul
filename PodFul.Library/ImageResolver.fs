@@ -10,6 +10,7 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
     let mutable postMessage : Action<string> = null
+    let mutable returnDefaultImageOnException = false
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
                                                     [
@@ -26,6 +27,14 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
 
     interface IImageResolver with
         
+        // Gets or sets a value indicating whether the default image name from GetName if 
+        // an exception is thrown during download.
+        member this.ReturnDefaultImageOnException
+            with get() : Boolean = 
+                returnDefaultImageOnException
+            and set(v : Boolean) =
+                returnDefaultImageOnException <- v
+
         member this.PostMessage 
             with get() : Action<string> = 
                 postMessage    
@@ -38,7 +47,7 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
             | true -> defaultImagePath
             | _ ->
                 let cleanImageFileName = imageFileName.Substitute(this.fileNameSubstitutions);
-                let imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
+                let mutable imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
 
                 if File.Exists(imageFilePath) = false then
                     if Object.ReferenceEquals(postMessage, null) <> true then 
@@ -46,6 +55,14 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string) =
                         postMessage.Invoke(message)
 
                     let imageDownloader = new FileDownloader()
-                    imageDownloader.Download(imageFileName, imageFilePath, System.Threading.CancellationToken.None, null) |> ignore              
+
+                    try
+                        imageDownloader.Download(imageFileName, imageFilePath, System.Threading.CancellationToken.None, null) |> ignore
+                    with
+                    | _ -> 
+                        if returnDefaultImageOnException = true then
+                            imageFilePath <- defaultImagePath
+                        else
+                            reraise()
 
                 imageFilePath
