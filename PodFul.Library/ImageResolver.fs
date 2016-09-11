@@ -38,10 +38,12 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
             match String.IsNullOrEmpty(imageFileName) with
             | true -> defaultImagePath
             | _ ->
-                let cleanImageFileName = imageFileName.Substitute(this.fileNameSubstitutions);
-                let mutable imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
+                match File.Exists(imageFileName) with
+                | true -> imageFileName
+                | _ ->
+                    let cleanImageFileName = imageFileName.Substitute(this.fileNameSubstitutions);
+                    let mutable imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
 
-                if File.Exists(imageFilePath) = false then
                     if Object.ReferenceEquals(postMessage, null) <> true then 
                         let message = "Downloading " + imageFileName + " ...\r\n"
                         postMessage.Invoke(message)
@@ -57,4 +59,4 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
                         else
                             reraise()
 
-                imageFilePath
+                    imageFilePath
