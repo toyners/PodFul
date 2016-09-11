@@ -7,6 +7,7 @@ namespace PodFul.WPF.Processing
   using System.IO;
   using System.Threading.Tasks;
   using System.Windows;
+  using Jabberwocky.Toolkit.Object;
   using Library;
 
   public class DownloadManager
@@ -28,6 +29,13 @@ namespace PodFul.WPF.Processing
     #region Construction
     public DownloadManager(FeedCollection feedCollection, Feed feed, List<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger, UInt32 concurrentDownloads)
     {
+      feedCollection.VerifyThatObjectIsNotNull("Parameter 'feedCollection' is null.");
+      feed.VerifyThatObjectIsNotNull("Parameter 'feed' is null.");
+      podcastIndexes.VerifyThatObjectIsNotNull("Parameter 'podcastIndexes' is null.");
+      imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
+      fileDeliverer.VerifyThatObjectIsNotNull("Parameter 'fileDeliverer' is null.");
+      logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
+
       this.feedCollection = feedCollection;
       this.feed = feed;
       this.imageResolver = imageResolver;
@@ -65,6 +73,7 @@ namespace PodFul.WPF.Processing
 
     public void CancelDownload(Object dataContext)
     {
+      dataContext.VerifyThatObjectIsNotNull("Parameter 'dataContext' is null.");
       var podcast = (PodcastMonitor)dataContext;
       podcast.CancelDownload();
     }
