@@ -79,9 +79,16 @@ namespace PodFul.WPF.Processing
 
     private void StartDownload()
     {
-      if (this.podcasts.Count == 0 && this.currentDownloads == 0)
+      if (this.podcasts.Count == 0)
       {
-        AllDownloadsCompleted?.Invoke();
+        // No more podcasts queued so do not start another download.
+
+        if (this.currentDownloads == 0)
+        {
+          // All current downloads have finished so nothing more to do.
+          AllDownloadsCompleted?.Invoke();
+        }
+
         return;
       }
 
