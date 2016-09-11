@@ -139,7 +139,11 @@ namespace PodFul.WPF.Processing
           else
           {
             podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
-            //TODO: Turn on podcast delivery -> podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
+            if (this.fileDeliverer != null)
+            {
+              podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
+            }
+
             podcast.DownloadCompleted();
 
             this.feedCollection.UpdateFeed(feed);
