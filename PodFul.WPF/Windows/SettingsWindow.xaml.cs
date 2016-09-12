@@ -9,10 +9,16 @@ namespace PodFul.WPF
   /// </summary>
   public partial class SettingsWindow : Window
   {
+    #region Fields
+    private Settings settings;
+    #endregion
+
     #region Construction
-    public SettingsWindow()
+    public SettingsWindow(Settings settings)
     {
       InitializeComponent();
+      this.settings = settings;
+      this.ConcurrentDownloadCount.Text = this.settings.ConcurrentDownloadCount.ToString();
     }
     #endregion
 
@@ -44,6 +50,11 @@ namespace PodFul.WPF
 
     }
     #endregion
+
+    private void close_Click(Object sender, RoutedEventArgs e)
+    {
+      this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
+    }
   }
 
   public abstract class DeliveryPointSetup

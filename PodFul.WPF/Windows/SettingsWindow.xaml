@@ -20,13 +20,13 @@
     </DockPanel.Resources>
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button HorizontalAlignment="Right" IsDefault="True">Close</Button>
+      <Button HorizontalAlignment="Right" IsDefault="True" Click="close_Click">Close</Button>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
       <StackPanel Orientation="Horizontal">
         <TextBlock Margin="6,2">Concurrent Download Count: </TextBlock>
-        <TextBox Name="DownloadCount" Margin="2,2">3</TextBox>
+        <TextBox Name="ConcurrentDownloadCount" Margin="2,2">3</TextBox>
       </StackPanel>
     </Border>
 

@@ -27,6 +27,7 @@ namespace PodFul.WPF
     private FileLogger fileLogger;
     private GUILogger guiLogger;
     private Timer contextMenuTimer;
+    private Settings settings;
 
     public MainWindow()
     {
@@ -63,8 +64,8 @@ namespace PodFul.WPF
 
       this.FeedList.Focus();
 
-      var settings = new Settings();
-      this.fileDeliverer = new FileDeliverer(settings.CreateDeliveryPoints(this.guiLogger));
+      this.settings = new Settings(this.guiLogger);
+      this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
 
       this.fileLogger.Message("Main Window instantiated.");
     }
@@ -199,7 +200,7 @@ namespace PodFul.WPF
 
     private void Settings_Click(Object sender, RoutedEventArgs e)
     {
-      var settingsWindow = new SettingsWindow();
+      var settingsWindow = new SettingsWindow(this.settings);
       settingsWindow.ShowDialog();  
     }
 
