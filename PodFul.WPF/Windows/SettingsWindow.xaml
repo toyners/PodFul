@@ -25,31 +25,28 @@
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
       <StackPanel Orientation="Horizontal">
-        <TextBlock>Concurrent Download Count: </TextBlock>
-        <TextBox Name="DownloadCount">3</TextBox>
+        <TextBlock Margin="6,2">Concurrent Download Count: </TextBlock>
+        <TextBox Name="DownloadCount" Margin="2,2">3</TextBox>
       </StackPanel>
     </Border>
 
-    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5">
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" Visibility="Hidden">
       <DockPanel>
-        <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right" Margin="2.5,0,0,5">
-          <StackPanel >
+        <TextBlock DockPanel.Dock="Top" Margin="6,2">Delivery points:</TextBlock>
+
+        <DockPanel>
+          <StackPanel DockPanel.Dock="Right" Margin="0,-5">
             <Button Click="addButton_Click" IsEnabled="False">Add</Button>
             <Button Click="editButton_Click" IsEnabled="False">Edit</Button>
             <Button Click="removeButton_Click" IsEnabled="False">Remove</Button>
           </StackPanel>
-        </Border>
-
-        <TextBlock DockPanel.Dock="Top">Delivery points:</TextBlock>
-
-        <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch" >
-          <ListBoxItem IsEnabled="false">Winamp: "C:\Program Files (x86)\Winamp\winamp.exe"</ListBoxItem>
-        </ListBox>
+          
+          <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch" >
+            <ListBoxItem IsEnabled="false">Winamp: "C:\Program Files (x86)\Winamp\winamp.exe"</ListBoxItem>
+          </ListBox>
+        </DockPanel>
       </DockPanel>
     </Border>
-
-    
-    
 
   </DockPanel>
 </Window>
