@@ -111,7 +111,7 @@ namespace PodFul.WPF
       if (fileCount > 0 &&
         MessageBox.Show(String.Format("{0} MP3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
       {
-        var count = this.SynchroniseWithExistingFiles(feed);
+        var count = PodcastSynchroniser.Synchronise(feed);
 
         var message = String.Format("{0} MP3 file(s) synced after adding '{1}'", count, feed.Title);
         this.fileLogger.Message(message);
@@ -173,7 +173,7 @@ namespace PodFul.WPF
       this.FeedList.SelectedIndex = index;
     }
 
-    private Int32 SynchroniseWithExistingFiles(Feed feed)
+    /*private Int32 SynchroniseWithExistingFiles(Feed feed)
     {
       var syncCount = 0;
       for (int i = 0; i < feed.Podcasts.Length; i++)
@@ -196,7 +196,7 @@ namespace PodFul.WPF
       }
 
       return syncCount;
-    }
+    }*/
 
     private void Settings_Click(Object sender, RoutedEventArgs e)
     {
@@ -330,7 +330,7 @@ namespace PodFul.WPF
 
     private void Synchronise_Click(Object sender, RoutedEventArgs e)
     {
-      var count = this.SynchroniseWithExistingFiles(this.currentFeed);
+      var count = PodcastSynchroniser.Synchronise(this.currentFeed);
 
       if (count > 0)
       {

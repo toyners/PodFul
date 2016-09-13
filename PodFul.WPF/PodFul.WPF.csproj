@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PodcastSynchroniser.cs" />
     <Compile Include="Processing\DownloadManager.cs" />
     <Compile Include="Processing\PodcastMonitor.cs" />
     <Compile Include="Windows\AddDeliveryPointWindow.xaml.cs">
