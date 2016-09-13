@@ -33,7 +33,6 @@ namespace PodFul.WPF.Processing
       feed.VerifyThatObjectIsNotNull("Parameter 'feed' is null.");
       podcastIndexes.VerifyThatObjectIsNotNull("Parameter 'podcastIndexes' is null.");
       imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
-      fileDeliverer.VerifyThatObjectIsNotNull("Parameter 'fileDeliverer' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
 
       this.feedCollection = feedCollection;
