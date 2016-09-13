@@ -263,17 +263,6 @@ namespace PodFul.WPF
       }
     }
 
-    private void DownloadPodcasts_Old(List<Int32> selectedIndexes)
-    {
-      // Sort the indexes into descending order. Podcasts will be downloaded
-      // in Chronological order.
-      selectedIndexes.Sort((x, y) => { return y - x; });
-      var podcastIndexes = new Queue<Int32>(selectedIndexes);
-      var feedDownload = new FeedDownload(this.feedCollection, this.currentFeed, podcastIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
-      var processingWindow = ProcessingWindow.CreateWindow(feedDownload, this.guiLogger, this.imageResolver);
-      processingWindow.ShowDialog();
-    }
-
     private void DownloadPodcasts(List<Int32> selectedIndexes)
     {
       // Sort the indexes into descending order. Podcasts will be downloaded
