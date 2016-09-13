@@ -61,7 +61,7 @@
                 </Border>
                 <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">
                   <Button VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click">
-                    <Image Source="cancel.png" Width="25" Height="25" />
+                    <Image Source="cancel.png" Width="15" Height="15" />
                   </Button>
                 </Border>
               </Grid>
