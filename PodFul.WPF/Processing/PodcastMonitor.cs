@@ -187,9 +187,10 @@ namespace PodFul.WPF.Processing
     {
       if (this.CancellationToken.CanBeCanceled)
       {
-        this.Status = StatusTypes.Canceled;
         this.cancellationTokenSource.Cancel();
       }
+
+      this.Status = StatusTypes.Canceled;
     }
 
     public void DownloadCompleted()
@@ -208,23 +209,24 @@ namespace PodFul.WPF.Processing
 
     public void InitialiseBeforeDownload()
     {
-      // This method will always be executed on the UI thread hence no invoking.
-
-      this.ProgressMajorSize = "0";
-      this.ProgressMinorSize = ".0";
-
-      if (this.podcastSize > 0)
+      Application.Current.Dispatcher.Invoke(() =>
       {
-        this.ProgressUnit = "%";
-        this.FileSizeNotKnown = false;
-      }
-      else
-      {
-        this.ProgressUnit = "MB";
-        this.FileSizeNotKnown = true;
-      }
+        this.ProgressMajorSize = "0";
+        this.ProgressMinorSize = ".0";
 
-      this.Status = StatusTypes.Running;
+        if (this.podcastSize > 0)
+        {
+          this.ProgressUnit = "%";
+          this.FileSizeNotKnown = false;
+        }
+        else
+        {
+          this.ProgressUnit = "MB";
+          this.FileSizeNotKnown = true;
+        }
+
+        this.Status = StatusTypes.Running;
+      });
     }
 
     public void ProgressEventHandler(int bytesWrittenToFile)
