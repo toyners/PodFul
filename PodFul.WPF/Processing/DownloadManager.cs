@@ -44,14 +44,8 @@ namespace PodFul.WPF.Processing
 
       this.podcasts = new Queue<PodcastMonitor>();
       this.Podcasts = new ObservableCollection<PodcastMonitor>();
-      foreach (var index in podcastIndexes)
-      {
-        var podcast = feed.Podcasts[index];
-        var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, feed.Directory);
 
-        this.podcasts.Enqueue(podcastMonitor);
-        this.Podcasts.Add(podcastMonitor);
-      }
+      this.LoadPodcastMonitors(podcastIndexes);
     }
     #endregion
 
@@ -82,6 +76,18 @@ namespace PodFul.WPF.Processing
       for (UInt32 i = 0; i < this.concurrentDownloads; i++)
       {
         StartDownload();
+      }
+    }
+
+    private void LoadPodcastMonitors(List<Int32> podcastIndexes)
+    {
+      foreach (var index in podcastIndexes)
+      {
+        var podcast = feed.Podcasts[index];
+        var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, feed.Directory);
+
+        this.podcasts.Enqueue(podcastMonitor);
+        this.Podcasts.Add(podcastMonitor);
       }
     }
 
