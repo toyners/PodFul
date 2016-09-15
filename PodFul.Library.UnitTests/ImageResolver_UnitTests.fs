@@ -29,3 +29,26 @@ type ImageResolver_UnitTests() =
 
         imageResolver.GetName "Bad image url" |> should equal defaultImagePath
 
+    [<Test>]
+    member public this.``Local path not set and URL path is set so file is downloaded and local path is returned``()=
+        ignore
+    
+    [<Test>]
+    member public this.``Local path set and file exists so local path is returned``()=
+        ignore
+
+    [<Test>]
+    member public this.``Local path not set and URL path not set so default path is returned``()=
+        ignore
+
+    [<Test>]
+    member public this.``Local path set but file not found locally so is downloaded and local path is returned``()=
+        ignore
+
+    [<Test>]
+    member public this.``Local name set to default but file not found locally so default name is returned``()=
+        ignore
+
+    [<Test>]
+    member public this.``Local name set to default and URL name is set so file is downloaded and updated local name is returned``()=
+        ignore
