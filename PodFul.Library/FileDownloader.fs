@@ -36,19 +36,8 @@ type FileDownloader() =
         copyTo ()
 
     let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
-        try
-            getResponseFromURL url |> 
-            writeToFile filePath cancelToken updateProgressFn
-            
-        with
-        | :? System.Net.WebException as webex ->
-            match (webex.Response = null) with
-            | true ->   
-                failwith webex.Message
-            | _ ->
-                use exstream = new StreamReader(webex.Response.GetResponseStream())
-                let responseText = exstream.ReadToEnd()
-                failwith responseText
+        getResponseFromURL url |> 
+        writeToFile filePath cancelToken updateProgressFn
 
     member this.DownloadAsync(url, filePath,  cancelToken, updateProgressFn: Action<int>) = 
         async {
