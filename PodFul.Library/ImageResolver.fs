@@ -5,11 +5,12 @@ open System.IO
 open System.Collections.Generic
 open Jabberwocky.Toolkit.String
 
-type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, returnDefaultImageOnException : Boolean) =
+type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, returnDefaultImageOnException : Boolean, renameFunction : string -> string) =
 
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
     let returnDefaultImageOnException = returnDefaultImageOnException
+    let renameFunction = renameFunction
     let mutable postMessage : Action<string> = null
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
@@ -60,3 +61,15 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
                             reraise()
 
                     imageFilePath
+
+        member this.GetName2 (localPath : string) (urlPath : string) : string = 
+
+            match localPath = "" && urlPath <> "" with
+            | true ->
+                let localName = renameFunction urlPath
+                let savePath = Path.Combine(directoryPath, localName)
+                let fileDownloader = new FileDownloader()
+                fileDownloader.Download(urlPath, savePath, System.Threading.CancellationToken.None, null) |> ignore
+                savePath
+            | _ ->
+                failwith "Not Implemented"
