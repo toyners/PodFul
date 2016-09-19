@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library", "PodFul.Library\PodFul.Library.fsproj", "{070B485B-B472-4DA6-A026-92A91A44ED94}"
 EndProject
@@ -21,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.WPF", "PodFul.WPF\PodFul.WPF.csproj", "{ACC61FE2-7DCB-4B41-9C2D-3DE3016DCF69}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.WPF.UnitTests", "PodFul.WPF.UnitTests\PodFul.WPF.UnitTests.fsproj", "{95E3D823-D00C-43D7-A351-C41ED7ADC458}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TestLibrary", "TestLibrary\TestLibrary.fsproj", "{CF3EECAE-E99D-4858-B7F2-B51514A0022D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{95E3D823-D00C-43D7-A351-C41ED7ADC458}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95E3D823-D00C-43D7-A351-C41ED7ADC458}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95E3D823-D00C-43D7-A351-C41ED7ADC458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3EECAE-E99D-4858-B7F2-B51514A0022D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3EECAE-E99D-4858-B7F2-B51514A0022D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3EECAE-E99D-4858-B7F2-B51514A0022D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3EECAE-E99D-4858-B7F2-B51514A0022D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
