@@ -1,4 +1,4 @@
-﻿namespace TestLibrary.AssemblyInfo
+﻿namespace PodFul.Library.IntegrationTests.AssemblyInfo
 
 open System.Reflection
 open System.Runtime.CompilerServices
@@ -7,11 +7,11 @@ open System.Runtime.InteropServices
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[<assembly: AssemblyTitle("TestLibrary")>]
+[<assembly: AssemblyTitle("PodFul.Library.IntegrationTests")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
-[<assembly: AssemblyProduct("TestLibrary")>]
+[<assembly: AssemblyProduct("PodFul.Library.IntegrationTests")>]
 [<assembly: AssemblyCopyright("Copyright ©  2016")>]
 [<assembly: AssemblyTrademark("")>]
 [<assembly: AssemblyCulture("")>]
@@ -22,7 +22,7 @@ open System.Runtime.InteropServices
 [<assembly: ComVisible(false)>]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[<assembly: Guid("cf3eecae-e99d-4858-b7f2-b51514a0022d")>]
+[<assembly: Guid("a6fc5368-e6d4-40de-bfde-9a2e400f7748")>]
 
 // Version information for an assembly consists of the following four values:
 // 

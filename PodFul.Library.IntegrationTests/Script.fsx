@@ -2,7 +2,7 @@
 // for more guidance on F# programming.
 
 #load "Library1.fs"
-open PodFul.Library.IntegrationTests
+open TestLibrary
 
 // Define your library scripting code here
 

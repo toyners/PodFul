@@ -1,7 +1,9 @@
-﻿namespace TestLibrary
+﻿namespace PodFul.Library.IntegrationTests
 
+open System
 open System.IO
 open System.Reflection
+open FsUnit
 open Jabberwocky.Toolkit.Assembly
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
@@ -21,9 +23,6 @@ type ImageResolver_IntegrationTests() =
         // Arrange
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
-
         let fileName = "Image.jpg"
         let urlPath = workingDirectory + fileName
         let localPath = ""
@@ -38,9 +37,9 @@ type ImageResolver_IntegrationTests() =
         let resultPath = imageResolver.GetName2 localPath urlPath
         
         // Assert
-        Assert.AreEqual(resultPath, expectedPath)
-        Assert.AreEqual(File.Exists(expectedPath), true);
-
+        resultPath |> should equal expectedPath
+        File.Exists(expectedPath) |> should equal true
+    
     (*[<Test>]
     member public this.``Local path set and file exists so local path is returned``()=
         ignore
@@ -59,4 +58,5 @@ type ImageResolver_IntegrationTests() =
 
     [<Test>]
     member public this.``Local name set to default and URL name is set so file is downloaded and updated local name is returned``()=
-        ignore*)
+        ignore
+        *)
