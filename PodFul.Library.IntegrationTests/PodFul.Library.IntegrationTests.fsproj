@@ -55,7 +55,6 @@
     <Compile Include="Feed_IntegrationTests.fs" />
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <Compile Include="FeedFileStorage_IntegrationTests.fs" />
-    <Compile Include="ImageResolver_IntegrationTests.fs" />
     <EmbeddedResource Include="Final RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
     <EmbeddedResource Include="Initial RSSFile with Maximum Podcasts.rss" />

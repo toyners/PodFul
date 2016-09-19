@@ -227,3 +227,4 @@ PodFul.Library.IntegrationTests/FeedFileStorage_IntergrationTests/
 
 # Installation setup inno script for PodFul
 InstallationSetup.iss
+/PodFul.Library.IntegrationTests/ImageResolver_IntergrationTests/ImageDirectory
