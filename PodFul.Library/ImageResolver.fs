@@ -64,12 +64,21 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
 
         member this.GetName2 (localPath : string) (urlPath : string) : string = 
 
-            match localPath = "" && urlPath <> "" with
-            | true ->
+            if (localPath = "" || localPath = defaultImagePath) && urlPath <> "" then
                 let localName = renameFunction urlPath
                 let savePath = Path.Combine(directoryPath, localName)
                 let fileDownloader = new FileDownloader()
                 fileDownloader.Download(urlPath, savePath, System.Threading.CancellationToken.None, null) |> ignore
                 savePath
-            | _ ->
+            else if (localPath = "" || localPath = defaultImagePath) && urlPath = "" then
+                defaultImagePath
+            else if localPath <> "" && File.Exists(localPath) then
+                localPath
+            else if localPath <> "" && File.Exists(localPath) = false then
+                let fileDownloader = new FileDownloader()
+                fileDownloader.Download(urlPath, localPath, System.Threading.CancellationToken.None, null) |> ignore
+                localPath
+            else
                 failwith "Not Implemented"
+            
+            
