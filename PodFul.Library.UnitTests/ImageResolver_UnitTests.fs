@@ -1,8 +1,7 @@
-﻿(*namespace PodFul.Library.UnitTests
+﻿namespace PodFul.Library.UnitTests
 
 open System
 open System.IO
-open FsUnit
 open NUnit.Framework
 open PodFul.Library
 
@@ -13,14 +12,18 @@ type ImageResolver_UnitTests() =
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageResolver = ImageResolver(null, defaultImagePath, false, (fun x -> "")) :> IImageResolver
 
-        imageResolver.GetName null |> should equal defaultImagePath
+        let actualName = imageResolver.GetName null 
+
+        Assert.AreEqual(actualName, defaultImagePath)
 
     [<Test>]
     member public this.``Empty string value returns the default image path``() = 
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageResolver = ImageResolver(null, defaultImagePath, false, (fun x -> "")) :> IImageResolver
 
-        imageResolver.GetName "" |> should equal defaultImagePath
+        let actualName = imageResolver.GetName ""
+
+        Assert.AreEqual(actualName, defaultImagePath)
 
     [<Test>]
     member public this.``Failed download returns the default image path if options set``() =
@@ -28,5 +31,6 @@ type ImageResolver_UnitTests() =
         let imageDirectory = @"C:\ImageDirectory\"
         let imageResolver = ImageResolver(imageDirectory, defaultImagePath, true, (fun x -> "")) :> IImageResolver
 
-        imageResolver.GetName "Bad image url" |> should equal defaultImagePath
-*)
+        let actualName = imageResolver.GetName "Bad image url"
+
+        Assert.AreEqual(actualName, defaultImagePath)

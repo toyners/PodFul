@@ -24,6 +24,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.WPF.UnitTests", "Pod
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library.IntegrationTests", "PodFul.Library.IntegrationTests\PodFul.Library.IntegrationTests.fsproj", "{CF3EECAE-E99D-4858-B7F2-B51514A0022D}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library.UnitTests", "PodFul.Library.UnitTests\PodFul.Library.UnitTests.fsproj", "{4A890F68-1A46-4697-9424-6A9CC3A77AB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{CF3EECAE-E99D-4858-B7F2-B51514A0022D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF3EECAE-E99D-4858-B7F2-B51514A0022D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF3EECAE-E99D-4858-B7F2-B51514A0022D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A890F68-1A46-4697-9424-6A9CC3A77AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A890F68-1A46-4697-9424-6A9CC3A77AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A890F68-1A46-4697-9424-6A9CC3A77AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A890F68-1A46-4697-9424-6A9CC3A77AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

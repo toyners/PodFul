@@ -41,11 +41,30 @@ type ImageResolver_IntegrationTests() =
         Assert.AreEqual(resultPath, expectedPath)
         Assert.AreEqual(File.Exists(expectedPath), true);
 
-    (*[<Test>]
-    member public this.``Local path set and file exists so local path is returned``()=
-        ignore
-
     [<Test>]
+    member public this.``Local path set and file exists so local path is returned``()=
+        // Arrange
+        let defaultImagePath = @"C:\DefaultImage.jpg"
+        let imageDirectory = workingDirectory + @"ImageDirectory\"
+
+        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
+
+        let fileName = "Image.jpg"
+        let urlPath = ""
+        let localPath = imageDirectory + fileName
+        let renameFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
+        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
+
+        let assembly = Assembly.GetExecutingAssembly()
+        assembly.CopyEmbeddedResourceToFile(fileName, localPath)
+        
+        // Act
+        let resultPath = imageResolver.GetName2 localPath urlPath
+        
+        // Assert
+        Assert.AreEqual(resultPath, localPath)
+
+    (*[<Test>]
     member public this.``Local path not set and URL path not set so default path is returned``()=
         ignore
 
