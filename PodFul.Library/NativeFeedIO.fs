@@ -80,6 +80,7 @@ type NativeFeedIO() =
       Directory = fields.[2]
       URL = fields.[3]
       Description = fields.[4]
+      ImageURL = null
       ImageFileName = NativeFeedIO.getImageFileName fields
       CreationDateTime = NativeFeedIO.getDateTimeAt fields 6
       UpdatedDateTime = NativeFeedIO.getDateTimeAt fields 7

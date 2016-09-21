@@ -10,6 +10,7 @@ type Feed =
         Website : string;
         Directory : string;
         URL : string;
+        ImageURL : string;
         ImageFileName : string;
         Podcasts : Podcast[];
         CreationDateTime : DateTime
@@ -25,6 +26,7 @@ type Feed =
                 Website = original.Website
                 Directory = original.Directory
                 URL = original.URL
+                ImageURL = original.ImageURL
                 ImageFileName = imageFileName
                 Podcasts = original.Podcasts
                 CreationDateTime = original.CreationDateTime
@@ -38,6 +40,7 @@ type Feed =
                 Website = original.Website
                 Directory = original.Directory
                 URL = original.URL
+                ImageURL = original.ImageURL
                 ImageFileName = original.ImageFileName
                 Podcasts = original.Podcasts
                 CreationDateTime = original.CreationDateTime
