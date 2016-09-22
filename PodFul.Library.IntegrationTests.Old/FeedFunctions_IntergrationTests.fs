@@ -61,7 +61,8 @@ type FeedFunctions_IntergrationTests() =
         feed.Website |> should equal feedWebsite
         feed.Directory |> should equal "DirectoryPath"
         feed.URL |> should equal inputPath
-        feed.ImageFileName |> should equal feedImageFileName
+        feed.ImageURL |> should equal feedImageFileName
+        feed.ImageFileName |> should equal ""
 
         feed.Podcasts |> should not' (be null)
         feed.Podcasts.Length |> should equal 3
