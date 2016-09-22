@@ -7,6 +7,6 @@ type IImageResolver =
 
     abstract member PostMessage : Action<string> with get, set
 
-    abstract member GetName : string -> string
+    //abstract member GetName : string -> string
 
-    abstract member GetName2 : string -> string -> string
+    abstract member GetName : string -> string -> string

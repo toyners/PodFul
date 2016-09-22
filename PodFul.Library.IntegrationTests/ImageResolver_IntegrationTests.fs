@@ -35,7 +35,7 @@ type ImageResolver_IntegrationTests() =
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
         
         // Act
-        let resultPath = imageResolver.GetName2 localPath urlPath
+        let resultPath = imageResolver.GetName localPath urlPath
         
         // Assert
         Assert.AreEqual(resultPath, expectedPath)
@@ -59,7 +59,7 @@ type ImageResolver_IntegrationTests() =
         assembly.CopyEmbeddedResourceToFile(fileName, localPath)
         
         // Act
-        let resultPath = imageResolver.GetName2 localPath urlPath
+        let resultPath = imageResolver.GetName localPath urlPath
         
         // Assert
         Assert.AreEqual(resultPath, localPath)
@@ -79,7 +79,7 @@ type ImageResolver_IntegrationTests() =
         let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
 
         // Act
-        let resultPath = imageResolver.GetName2 localPath urlPath
+        let resultPath = imageResolver.GetName localPath urlPath
         
         // Assert
         Assert.AreEqual(resultPath, defaultImagePath)
@@ -102,7 +102,7 @@ type ImageResolver_IntegrationTests() =
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
         
         // Act
-        let resultPath = imageResolver.GetName2 localPath urlPath
+        let resultPath = imageResolver.GetName localPath urlPath
         
         // Assert
         Assert.AreEqual(resultPath, localPath)
@@ -122,7 +122,7 @@ type ImageResolver_IntegrationTests() =
         let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
 
         // Act
-        let resultPath = imageResolver.GetName2 localPath urlPath
+        let resultPath = imageResolver.GetName localPath urlPath
         
         // Assert
         Assert.AreEqual(resultPath, localPath)
@@ -147,7 +147,7 @@ type ImageResolver_IntegrationTests() =
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
         
         // Act
-        let resultPath = imageResolver.GetName2 localPath urlPath
+        let resultPath = imageResolver.GetName localPath urlPath
         
         // Assert
         Assert.AreEqual(resultPath, expectedPath)

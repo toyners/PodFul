@@ -245,14 +245,18 @@ module public FeedFunctions =
         let mutable index = 0
         while index < feed.Podcasts.Length do
           let podcast = feed.Podcasts.[index]
-          imageResolver.GetName podcast.FileDetails.ImageFileName |> podcast.SetImageFileName
+
+          let localImagePath = imageResolver.GetName podcast.FileDetails.ImageFileName podcast.ImageURL
+          if localImagePath <> podcast.FileDetails.ImageFileName then
+            podcast.SetImageFileName localImagePath
         
           index <- index + 1
 
-        let imageFileName = imageResolver.GetName feed.ImageFileName  
-        match (imageFileName <> feed.ImageFileName) with
-        | false -> feed
-        | _ -> Feed.SetImageFileName feed imageFileName
+        let localImagePath = imageResolver.GetName feed.ImageFileName feed.ImageURL  
+        if (localImagePath <> feed.ImageFileName) then
+            Feed.SetImageFileName feed localImagePath
+        else
+            feed
 
     let public CreateFeed url directoryPath imageResolver = 
         downloadDocument url |> 

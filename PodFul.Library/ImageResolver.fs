@@ -34,7 +34,7 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
             and set(v : Action<string>) =
                 postMessage <- v
 
-        member this.GetName (imageFileName : string) : string = 
+        (*member this.GetName (imageFileName : string) : string = 
 
             match String.IsNullOrEmpty(imageFileName) with
             | true -> defaultImagePath
@@ -60,9 +60,9 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
                         else
                             reraise()
 
-                    imageFilePath
+                    imageFilePath*)
 
-        member this.GetName2 (localPath : string) (urlPath : string) : string = 
+        member this.GetName (localPath : string) (urlPath : string) : string = 
 
             let gotLocalPath = String.IsNullOrEmpty(localPath) = false
             let gotURLPath = String.IsNullOrEmpty(urlPath) = false

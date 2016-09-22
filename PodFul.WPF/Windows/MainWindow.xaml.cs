@@ -117,8 +117,8 @@ namespace PodFul.WPF
         this.fileLogger.Message(message);
       }
 
-      var resolvedName = this.imageResolver.GetName(feed.ImageFileName);
-      feed = Feed.SetImageFileName(feed, resolvedName);
+      var imagePath = this.imageResolver.GetName(feed.ImageFileName, feed.ImageURL);
+      feed = Feed.SetImageFileName(feed, imagePath);
 
       try
       {

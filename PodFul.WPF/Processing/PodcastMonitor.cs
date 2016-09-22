@@ -281,7 +281,8 @@ namespace PodFul.WPF.Processing
         throw new Exception("Should not get here");
       }
 
-      this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver.GetName(this.podcast.FileDetails.ImageFileName));
+      var imagePath = imageResolver.GetName(this.podcast.FileDetails.ImageFileName, this.podcast.ImageURL);
+      this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imagePath);
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)

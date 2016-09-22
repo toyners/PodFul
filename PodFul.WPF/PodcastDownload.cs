@@ -62,7 +62,8 @@ namespace PodFul.WPF
           this.OnSuccessfulDownload?.Invoke(podcast, filePath);
 
           var fileLength = new FileInfo(filePath).Length;
-          podcast.SetAllFileDetails(fileLength, DateTime.Now, imageResolver.GetName(podcast.FileDetails.ImageFileName));
+          var imagePath = imageResolver.GetName(podcast.FileDetails.ImageFileName, podcast.ImageURL);
+          podcast.SetAllFileDetails(fileLength, DateTime.Now, imagePath);
         }
         catch (Exception exception)
         {
