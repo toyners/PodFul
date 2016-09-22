@@ -33,7 +33,7 @@ type FeedFunctions_IntergrationTests() =
     let firstPodcastURL = "Podcast1.mp3"
     let firstPodcastFileSize = 1L
     let firstPodcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
-    let firstPodcastImageFileName = "Podcast #1 Image"
+    let firstPodcastImageURL = "Podcast #1 Image"
 
     let secondPodcastTitle = "Podcast #2 Title"
     let secondPodcastDescription = "Podcast #2 Description"
@@ -70,20 +70,23 @@ type FeedFunctions_IntergrationTests() =
         feed.Podcasts.[0].Title |> should equal firstPodcastTitle
         feed.Podcasts.[0].Description |> should equal firstPodcastDescription
         feed.Podcasts.[0].URL |> should equal firstPodcastURL
+        feed.Podcasts.[0].ImageURL |> should equal firstPodcastImageURL
         feed.Podcasts.[0].FileDetails.FileSize |> should equal firstPodcastFileSize
         feed.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
-        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal firstPodcastImageFileName
+        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal String.Empty
 
         feed.Podcasts.[1].Title |> should equal secondPodcastTitle
         feed.Podcasts.[1].Description |> should equal secondPodcastDescription
         feed.Podcasts.[1].URL |> should equal secondPodcastURL
+        feed.Podcasts.[1].ImageURL |> should equal String.Empty
         feed.Podcasts.[1].FileDetails.FileSize |> should equal secondPodcastFileSize
         feed.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
         feed.Podcasts.[1].FileDetails.ImageFileName |> should equal String.Empty
 
         feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
-        feed.Podcasts.[2].Description |> should equal ""
+        feed.Podcasts.[2].Description |> should equal String.Empty
         feed.Podcasts.[2].URL |> should equal thirdPodcastURL
+        feed.Podcasts.[2].ImageURL |> should equal String.Empty
         feed.Podcasts.[2].FileDetails.FileSize |> should equal -1
         feed.Podcasts.[2].PubDate |> should equal FeedFunctions.NoDateTime
         feed.Podcasts.[2].FileDetails.ImageFileName |> should equal String.Empty

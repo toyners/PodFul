@@ -141,11 +141,12 @@ module public FeedFunctions =
                     Description = getDescriptionFromItem element
                     PubDate = getPubDateFromItem element
                     URL = url
+                    ImageURL = getImageForItem element
                     FileDetails = 
                     {
                         FileSize = getFilesizeForItem enclosureElement contentElement
                         DownloadDate = NoDateTime
-                        ImageFileName = getImageForItem element
+                        ImageFileName = ""
                     }
                 }
           ] |> List.toArray

@@ -57,6 +57,7 @@ type NativeFeedIO() =
           Title = fields.[0]
           PubDate = DateTime.Parse(fields.[1])
           URL = fields.[2]
+          ImageURL = null
           Description = fields.[4]
           FileDetails =
           {

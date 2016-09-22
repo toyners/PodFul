@@ -22,6 +22,7 @@ type FeedFileStorage_IntergrationTests() =
     let podcastTitle = "Podcast #1 Title"
     let podcastDescription = "Podcast #1 Description"
     let podcastURL = "Podcast1.mp3"
+    let podcastImageURL = "Podcast #1 Image URL"
     let podcastFileSize = 1L
     let podcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
     let podcastImageFileName = "Podcast #1 Image"
@@ -43,6 +44,7 @@ type FeedFileStorage_IntergrationTests() =
                     Title = podcastTitle
                     Description = podcastDescription
                     URL = podcastURL
+                    ImageURL = podcastImageURL
                     PubDate = podcastPubDate
                     FileDetails =
                     {
