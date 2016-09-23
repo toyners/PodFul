@@ -152,3 +152,13 @@ type ImageResolver_IntegrationTests() =
         // Assert
         Assert.AreEqual(resultPath, expectedPath)
         Assert.AreEqual(File.Exists(expectedPath), true);
+
+    [<Test>]
+    member public this.``Failed download returns the default image path if options set``() =
+        let defaultImagePath = @"C:\DefaultImage.jpg"
+        let imageDirectory = @"C:\ImageDirectory\"
+        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, true, (fun x -> "")) :> IImageResolver
+
+        let actualName = imageResolver.GetName "" "Bad image url"
+
+        Assert.AreEqual(actualName, defaultImagePath)
