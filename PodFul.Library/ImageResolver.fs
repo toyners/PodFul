@@ -25,6 +25,20 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
                                                         ( ">", "_g_" );
                                                         ( "|", "_b_" )
                                                     ])
+    member private this.downloadImageFile urlPath savePath =
+        let imageDownloader = new FileDownloader()
+        let mutable localPath = savePath
+
+        try
+            imageDownloader.Download(urlPath, savePath, System.Threading.CancellationToken.None, null) |> ignore
+        with
+        | _ -> 
+            if returnDefaultImageOnException = true then
+                localPath <- defaultImagePath
+            else
+                reraise()
+
+        localPath
 
     interface IImageResolver with
 
@@ -72,18 +86,15 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
                 if gotURLPath then    
                     let localName = renameFunction urlPath
                     let savePath = Path.Combine(directoryPath, localName)
-                    let fileDownloader = new FileDownloader()
-                    fileDownloader.Download(urlPath, savePath, System.Threading.CancellationToken.None, null) |> ignore
-                    savePath
+                    this.downloadImageFile urlPath savePath
                 else
                     defaultImagePath
                 
             else if gotLocalPath then
                  if (File.Exists(localPath)) = false then
-                    let fileDownloader = new FileDownloader()
-                    fileDownloader.Download(urlPath, localPath, System.Threading.CancellationToken.None, null) |> ignore
+                    this.downloadImageFile urlPath localPath |> ignore
                  localPath    
             else
                 failwith "Not Implemented"
             
-            
+    
