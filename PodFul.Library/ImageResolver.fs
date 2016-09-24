@@ -48,34 +48,6 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
             and set(v : Action<string>) =
                 postMessage <- v
 
-        (*member this.GetName (imageFileName : string) : string = 
-
-            match String.IsNullOrEmpty(imageFileName) with
-            | true -> defaultImagePath
-            | _ ->
-                match File.Exists(imageFileName) with
-                | true -> imageFileName
-                | _ ->
-                    let cleanImageFileName = imageFileName.Substitute(this.fileNameSubstitutions);
-                    let mutable imageFilePath = Path.Combine(directoryPath, cleanImageFileName)
-
-                    if Object.ReferenceEquals(postMessage, null) <> true then 
-                        let message = "Downloading " + imageFileName + " ...\r\n"
-                        postMessage.Invoke(message)
-
-                    let imageDownloader = new FileDownloader()
-
-                    try
-                        imageDownloader.Download(imageFileName, imageFilePath, System.Threading.CancellationToken.None, null) |> ignore
-                    with
-                    | _ -> 
-                        if returnDefaultImageOnException = true then
-                            imageFilePath <- defaultImagePath
-                        else
-                            reraise()
-
-                    imageFilePath*)
-
         member this.GetName (localPath : string) (urlPath : string) : string = 
 
             let gotLocalPath = String.IsNullOrEmpty(localPath) = false
