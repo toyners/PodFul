@@ -1,6 +1,6 @@
 ﻿namespace PodFul.Library.UnitTests
 
-open FsUnit
+//open FsUnit
 open NUnit.Framework
 open PodFul.Library
 open System
@@ -14,13 +14,15 @@ type FeedFunctions_UnitTests() =
     [<TestCase("a\r\nb")>]
     [<TestCase("a\nb")>]
     member public this.``Clean text of line breaks``(dirtyText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal "a b"
+        let result = FeedFunctions.CleanText dirtyText
+        Assert.AreEqual(result, "a b")
 
     [<Test>]
     [<TestCase("a  b")>]
     [<TestCase("a   b")>]
     member public this.``Clean text of multiple spaces``(dirtyText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal "a b"
+        let result = FeedFunctions.CleanText dirtyText
+        Assert.AreEqual(result, "a b")
 
     [<Test>]
     [<TestCase("<p>")>]
@@ -28,20 +30,22 @@ type FeedFunctions_UnitTests() =
     [<TestCase("</p>")>]
     [<TestCase("</P>")>]
     member public this.``Clean text of tags``(dirtyText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal String.Empty
+        let result = FeedFunctions.CleanText dirtyText
+        Assert.AreEqual(result, String.Empty)
 
     [<Test>]
     [<TestCase("&#8217;", "'")>]
-    
     [<TestCase("&#8230;", "...")>]
     member public this.``Clean text of known XML character codes``(dirtyText : string, cleanText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal cleanText
+        let result = FeedFunctions.CleanText dirtyText
+        Assert.AreEqual(result, cleanText)
 
     [<Test>]
     [<TestCase("&#124;", "")>]
     [<TestCase("&#9999;", "")>]
     member public this.``Clean text of unknown XML character codes``(dirtyText : string, cleanText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal cleanText
+        let result = FeedFunctions.CleanText dirtyText
+        Assert.AreEqual(result, cleanText)
 
     [<Test>]
     [<TestCase("<p>", "")>]
@@ -50,11 +54,13 @@ type FeedFunctions_UnitTests() =
     [<TestCase("</P>", "")>]
     [<TestCase("<span key=\"value\">text</span>", "text")>]
     member public this.``Clean text of XML tags``(dirtyText : string, cleanText : string) =
-        FeedFunctions.CleanText dirtyText |> should equal cleanText
-         
+        let result = FeedFunctions.CleanText dirtyText
+        Assert.AreEqual(result, cleanText)
+ 
     [<Test>]
     member public this.``Clean text of leading and trailing whitespace``() =
-        FeedFunctions.CleanText " abc " |> should equal "abc"
+        let result = FeedFunctions.CleanText " abc "
+        Assert.AreEqual(result, "abc")
 
     [<Test>]
     member public this.``Create feed with bad url returns retry exception``() =
@@ -67,8 +73,9 @@ type FeedFunctions_UnitTests() =
             FeedFunctions.CreateFeed badURL directory null |> ignore
         with
         | _ as e ->
-            e :? FeedFunctions.RetryException |> should equal true
+            let r = e :? FeedFunctions.RetryException
+            Assert.AreEqual(r, true)
             
             testSuccessful <- true
 
-        testSuccessful |> should equal true
+        Assert.AreEqual(testSuccessful, true)
