@@ -13,19 +13,6 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
     let mutable renameFunction = Miscellaneous.NextImageFileName
     let mutable postMessage : Action<string> = null
 
-    member private this.fileNameSubstitutions = Dictionary<String, String>(dict
-                                                    [
-                                                        ( "\\", "_bs_" );
-                                                        ( "/", "_fs_" );
-                                                        ( ":", "_c_" );
-                                                        ( "*", "_a_" );
-                                                        ( "?", "_q_" );
-                                                        ( "\"", "_qu_" );
-                                                        ( "<", "_l_" );
-                                                        ( ">", "_g_" );
-                                                        ( "|", "_b_" )
-                                                    ])
-
     member private this.tryPostMessage message = 
         if Object.ReferenceEquals(postMessage, null) <> true then 
             postMessage.Invoke(message)
