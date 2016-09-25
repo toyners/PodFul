@@ -50,7 +50,7 @@
                   <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Image Source="{Binding ImageFileName, IsAsync=True}" Margin="0,0,2,0" />
+                <Image Source="{Binding FileDetails.ImageFileName, IsAsync=True}" Margin="0,0,2,0" />
 
                 <Grid Grid.Column="1">
                   <Grid.RowDefinitions>
@@ -74,14 +74,14 @@
                     <TextBlock Grid.Column="1" HorizontalAlignment="Right">
                       <TextBlock.Inlines>
                         <Run Text="Last Download: "/>
-                        <Run FontWeight="Bold" Text="{Binding DownloadDate, Converter={StaticResource DownloadDateTimeConverter}, Mode=OneWay}" />
+                        <Run FontWeight="Bold" Text="{Binding FileDetails.DownloadDate, Converter={StaticResource DownloadDateTimeConverter}, Mode=OneWay}" />
                       </TextBlock.Inlines>
                     </TextBlock>
 
                     <TextBlock Grid.Column="2" Margin="20,0,0,0" HorizontalAlignment="Left">
                       <TextBlock.Inlines>
                         <Run Text="File Size: " />
-                        <Run FontWeight="Bold" Text="{Binding FileSize, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" />
+                        <Run FontWeight="Bold" Text="{Binding FileDetails.FileSize, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" />
                       </TextBlock.Inlines>
                     </TextBlock>
                   </Grid>
