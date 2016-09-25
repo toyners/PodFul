@@ -65,5 +65,11 @@
 
 ## 2.5.1 (1.6)
 1. **Fixed:** Broken podcast URLs displayed when viewing podcast properties.
+
 ## 2.5.1 (1.6)
 1. **Fixed:** Long urls no longer replaced with '...' in the podcast properties window.
+
+## 2.6 (1.7)
+1. **Changed:** If downloading the image fails then the default image is used.
+2. **Fixed:** Minor issues with logging format with regard to image downloading and general exceptions.
+3. **Changed:** Podcasts can now be downloaded simultaneously. Number of concurrent downloads can be set in settings window (for application session only).
