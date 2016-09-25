@@ -11,6 +11,11 @@ type ImageResolver_IntegrationTests() =
 
     let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\ImageResolver_IntergrationTests\";
 
+    let createImageResolver imageDirectory defaultImagePath renameFunction =
+        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false)
+        imageResolver.RenameFunction <- renameFunction
+        imageResolver :> IImageResolver
+
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
@@ -29,7 +34,7 @@ type ImageResolver_IntegrationTests() =
         let localPath = ""
         let expectedPath = imageDirectory + fileName
         let renameFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
-        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
+        let imageResolver = createImageResolver imageDirectory defaultImagePath renameFunction
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
@@ -53,7 +58,7 @@ type ImageResolver_IntegrationTests() =
         let urlPath = ""
         let localPath = imageDirectory + fileName
         let renameFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
-        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
+        let imageResolver = createImageResolver imageDirectory defaultImagePath renameFunction
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, localPath)
@@ -76,7 +81,7 @@ type ImageResolver_IntegrationTests() =
         let urlPath = ""
         let localPath = ""
         let renameFunction = fun n -> failwith "Incorrect Parameters"
-        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
+        let imageResolver = createImageResolver imageDirectory defaultImagePath renameFunction
 
         // Act
         let resultPath = imageResolver.GetName localPath urlPath
@@ -96,7 +101,7 @@ type ImageResolver_IntegrationTests() =
         let urlPath = workingDirectory + fileName
         let localPath = imageDirectory + fileName
         let renameFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
-        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
+        let imageResolver = createImageResolver imageDirectory defaultImagePath renameFunction
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
@@ -119,7 +124,7 @@ type ImageResolver_IntegrationTests() =
         let urlPath = ""
         let localPath = defaultImagePath
         let renameFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
-        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
+        let imageResolver = createImageResolver imageDirectory defaultImagePath renameFunction
 
         // Act
         let resultPath = imageResolver.GetName localPath urlPath
@@ -141,7 +146,7 @@ type ImageResolver_IntegrationTests() =
         let localPath = defaultImagePath
         let expectedPath = imageDirectory + fileName
         let renameFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
-        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false, renameFunction) :> IImageResolver
+        let imageResolver = createImageResolver imageDirectory defaultImagePath renameFunction
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
@@ -157,7 +162,10 @@ type ImageResolver_IntegrationTests() =
     member public this.``Failed download returns the default image path if options set``() =
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageDirectory = @"C:\ImageDirectory\"
-        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, true, (fun x -> "")) :> IImageResolver
+        
+        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, true)
+        imageResolver.RenameFunction <- (fun x -> "")
+        let imageResolver = imageResolver :> IImageResolver
 
         let actualName = imageResolver.GetName "" "Bad image url"
 

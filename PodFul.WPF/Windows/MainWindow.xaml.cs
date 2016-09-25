@@ -52,7 +52,7 @@ namespace PodFul.WPF
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, defaultImagePath);
       }
 
-      this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath, true, null);
+      this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath, true);
 
       this.FeedList.ItemsSource = feedCollection.Feeds;
       if (this.feedCollection.Feeds.Count > 0)

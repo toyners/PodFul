@@ -5,12 +5,12 @@ open System.IO
 open System.Collections.Generic
 open Jabberwocky.Toolkit.String
 
-type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, returnDefaultImageOnException : Boolean, renameFunction : string -> string) =
+type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, returnDefaultImageOnException : Boolean) =
 
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
     let returnDefaultImageOnException = returnDefaultImageOnException
-    let renameFunction = renameFunction
+    let mutable renameFunction = Miscellaneous.NextImageFileName
     let mutable postMessage : Action<string> = null
 
     member private this.fileNameSubstitutions = Dictionary<String, String>(dict
@@ -39,6 +39,10 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
                 reraise()
 
         localPath
+
+    member public this.RenameFunction
+        with set(v : string -> string) =
+            renameFunction <- v
 
     interface IImageResolver with
 
