@@ -54,6 +54,7 @@
     <Content Include="packages.config" />
     <Compile Include="FeedFunctions_UnitTests.fs" />
     <Compile Include="Miscellaneous_UnitTests.fs" />
+    <Compile Include="Feed_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

@@ -5,8 +5,8 @@ open FsUnit
 open NUnit.Framework
 open PodFul.Library
 
-type Feed_UnitTest() = 
-
+(*type Feed_UnitTest() = 
+    none
     member private this.CreateFeed =
         {
             Title = "title"
@@ -53,4 +53,4 @@ type Feed_UnitTest() =
         feed2.Podcasts |> should equal feed1.Podcasts
         feed2.CreationDateTime |> should equal feed1.CreationDateTime
         feed2.UpdatedDateTime |> should equal DateTime.MaxValue
-        
+        *)
