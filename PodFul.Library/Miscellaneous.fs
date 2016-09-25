@@ -15,3 +15,12 @@ module public Miscellaneous =
 
     let public SwapDirectoryInFilePath directoryPath (filePath : string) =
         filePath.LastIndexOf('/') + 1 |> filePath.Substring |> combine directoryPath
+
+    let public NextImageFileName (urlPath : string) =
+        let mutable name = Guid.NewGuid().ToString()
+        let lastDotIndex = urlPath.LastIndexOf('.')
+
+        if (lastDotIndex <> -1) then
+            name <- name + urlPath.Substring(lastDotIndex)
+        name
+        
