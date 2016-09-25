@@ -160,6 +160,7 @@ type ImageResolver_IntegrationTests() =
 
     [<Test>]
     member public this.``Failed download returns the default image path if options set``() =
+        
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageDirectory = @"C:\ImageDirectory\"
         
@@ -170,3 +171,19 @@ type ImageResolver_IntegrationTests() =
         let actualName = imageResolver.GetName "" "Bad image url"
 
         Assert.AreEqual(actualName, defaultImagePath)
+
+    [<Test>]
+    member public this.``When image download fails then the posted message ends with 'FAILED'``() =
+        let mutable postedMessage = ""
+
+        let defaultImagePath = @"C:\DefaultImage.jpg"
+        let imageDirectory = @"C:\ImageDirectory\"
+
+        let postMessageFunction = fun message -> postedMessage <- message
+
+        let imageResolver = ImageResolver(imageDirectory, defaultImagePath, true) :> IImageResolver
+        imageResolver.PostMessage <- new System.Action<string>(postMessageFunction)
+
+        let actualName = imageResolver.GetName "" "Bad image url"
+
+        Assert.AreEqual(true, postedMessage.EndsWith("FAILED\r\n"))

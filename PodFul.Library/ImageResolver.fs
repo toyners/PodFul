@@ -45,6 +45,7 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
         | _ -> 
             if returnDefaultImageOnException = true then
                 localPath <- defaultImagePath
+                this.tryPostMessage "FAILED\r\n"
             else
                 reraise()
 
