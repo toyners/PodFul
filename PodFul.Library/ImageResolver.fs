@@ -25,12 +25,22 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
                                                         ( ">", "_g_" );
                                                         ( "|", "_b_" )
                                                     ])
+
+    member private this.tryPostMessage message = 
+        if Object.ReferenceEquals(postMessage, null) <> true then 
+            postMessage.Invoke(message)
+
     member private this.downloadImageFile urlPath savePath =
         let imageDownloader = new FileDownloader()
         let mutable localPath = savePath
 
+        let message = "Downloading '" + urlPath + "' ... "
+        this.tryPostMessage message
+
         try
             imageDownloader.Download(urlPath, savePath, System.Threading.CancellationToken.None, null) |> ignore
+
+            this.tryPostMessage "Complete\r\n"
         with
         | _ -> 
             if returnDefaultImageOnException = true then
