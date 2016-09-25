@@ -55,7 +55,6 @@
     <Compile Include="Podcast_UnitTest.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
-    <Compile Include="Feed_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">
