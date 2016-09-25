@@ -48,7 +48,7 @@
                       <TextBlock Text="{Binding StatusMessage}" FontSize="14" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <!--</Border>-->
                     <!--<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">-->
-                      <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" Height="14" TextTrimming="WordEllipsis" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                      <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" Height="14" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <!--</Border>-->
                   </Grid>
                 </Grid>
