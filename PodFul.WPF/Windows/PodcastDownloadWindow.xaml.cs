@@ -5,6 +5,7 @@ namespace PodFul.WPF
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using Jabberwocky.Toolkit.String;
   using PodFul.WPF.Processing;
 
   /// <summary>
@@ -27,6 +28,8 @@ namespace PodFul.WPF
       this.downloadManager.AllDownloadsCompleted = DownloadCompleted;
 
       this.PodcastList.ItemsSource = downloadManager.Podcasts;
+
+      this.Title = "Downloading " + downloadManager.Podcasts.Count + " Podcast".Pluralize((UInt32)downloadManager.Podcasts.Count);
     }
     #endregion
 
