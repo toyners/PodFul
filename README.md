@@ -73,3 +73,8 @@
 1. **Changed:** If downloading the image fails then the default image is used.
 2. **Fixed:** Minor issues with logging format with regard to image downloading and general exceptions.
 3. **Changed:** Podcasts can now be downloaded simultaneously. Number of concurrent downloads can be set in settings window (for application session only).
+
+## 2.6.1 (1.7)
+1. **Fixed:** Podcast download window now has a meaningful title.
+2. **Fixed:** Podcasts now delivered to Winamp once downloaded.
+3. **Fixed:** Image download message if the download fails.
