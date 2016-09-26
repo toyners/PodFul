@@ -55,6 +55,8 @@
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <EmbeddedResource Include="Image.jpg" />
+    <Compile Include="FeedFunctions_IntergrationTests.fs" />
+    <EmbeddedResource Include="Feed.rss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">

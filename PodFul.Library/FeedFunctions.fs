@@ -215,12 +215,13 @@ module public FeedFunctions =
             let oldPodcast = oldFeed.Podcasts.[oldIndex]
             let newPodcast = newFeed.Podcasts.[newIndex]
             if oldPodcast = newPodcast then
-                newPodcast.SetFileDetails oldPodcast.FileDetails.FileSize oldPodcast.FileDetails.DownloadDate
+                let fileDetails = oldPodcast.FileDetails
+                newPodcast.SetAllFileDetails fileDetails.FileSize fileDetails.DownloadDate fileDetails.ImageFileName
             oldIndex <- oldIndex + 1
             newIndex <- newIndex + 1
         newFeed
 
-    let private createFeedRecord url directoryPath creationDate (document : XDocument) : Feed =
+    let private createFeedRecord url directoryPath imageFileName creationDate (document : XDocument) : Feed =
         let channel = document.Element(xn "rss").Element(xn "channel")
         let imageFileURL = getImageForChannel channel
 
@@ -231,7 +232,7 @@ module public FeedFunctions =
              Directory = directoryPath
              URL = url
              ImageURL = imageFileURL
-             ImageFileName = ""
+             ImageFileName = imageFileName
              Podcasts = createPodcastArrayFromDocument document
              CreationDateTime = creationDate
              UpdatedDateTime = NoDateTime
@@ -260,12 +261,12 @@ module public FeedFunctions =
 
     let public CreateFeed url directoryPath imageResolver = 
         downloadDocument url |> 
-        createFeedRecord url directoryPath DateTime.Now |>
+        createFeedRecord url directoryPath String.Empty DateTime.Now |>
         resolveImages imageResolver
 
     let public UpdateFeed feed imageResolver : Feed = 
         downloadDocument feed.URL |> 
-        createFeedRecord feed.URL feed.Directory feed.CreationDateTime |>  
+        createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |>  
         Feed.SetUpdatedDate feed.UpdatedDateTime |> 
         mergeFeeds feed |>
         resolveImages imageResolver
