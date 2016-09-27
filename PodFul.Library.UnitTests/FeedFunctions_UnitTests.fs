@@ -70,7 +70,7 @@ type FeedFunctions_UnitTests() =
 
         let mutable testSuccessful = false
         try
-            FeedFunctions.CreateFeed badURL directory null |> ignore
+            FeedFunctions.CreateFeed badURL directory null System.Threading.CancellationToken.None |> ignore
         with
         | _ as e ->
             let r = e :? FeedFunctions.RetryException
@@ -78,4 +78,4 @@ type FeedFunctions_UnitTests() =
             
             testSuccessful <- true
 
-        Assert.AreEqual(testSuccessful, true)
+        Assert.AreEqual(true, testSuccessful)

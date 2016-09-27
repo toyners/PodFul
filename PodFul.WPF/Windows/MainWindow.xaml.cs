@@ -97,7 +97,7 @@ namespace PodFul.WPF
       Feed feed = null;
       try
       {
-        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver);
+        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, CancellationToken.None);
         this.fileLogger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
       }
       catch (Exception exception)

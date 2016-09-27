@@ -1,13 +1,14 @@
 ﻿namespace PodFul.Library.IntegrationTests
 
+open System
+open System.IO
+open System.Reflection
+open System.Threading
 open FsUnit
 open Jabberwocky.Toolkit.Assembly
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
-open System
-open System.IO
-open System.Reflection
 
 type FeedFunctions_IntergrationTests() = 
 
@@ -53,7 +54,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create Feed from RSS url``() =
         let inputPath = workingDirectory + rssFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" null
+        let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
 
         feed |> should not' (equal null)
         feed.Title |> should equal feedTitle
@@ -95,7 +96,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create RSS Feed that contains media content tags``() =
         let inputPath = workingDirectory + "RSSFileWithMediaContent.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileWithMediaContent.rss", inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" null
+        let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
 
         feed |> should not' (equal null)
         feed.Title |> should equal feedTitle
@@ -128,7 +129,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed from RSS file with no feed image data``(feedFileName : string) =
         let inputPath = workingDirectory + feedFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
-        let feed = FeedFunctions.CreateFeed inputPath "DirectoryPath" null
+        let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
 
         feed.ImageFileName |> should equal String.Empty
 
@@ -139,7 +140,7 @@ type FeedFunctions_IntergrationTests() =
         let secondDateTime = new DateTime(2016, 3, 4, 11, 12, 13)
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
+        let initialFeed = TestingSupport.createTestFeed initialInputPath "DirectoryPath"
         
         let firstPodcast = initialFeed.Podcasts.[0]
         firstPodcast.SetFileDetails firstPodcast.FileDetails.FileSize firstDateTime
@@ -148,7 +149,7 @@ type FeedFunctions_IntergrationTests() =
         secondPodcast.SetFileDetails secondPodcast.FileDetails.FileSize secondDateTime
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
-        let finalFeed = FeedFunctions.UpdateFeed initialFeed null
+        let finalFeed = TestingSupport.updateTestFeed initialFeed
 
         finalFeed |> should equal initialFeed
         finalFeed.Podcasts.Length |> should equal 3
@@ -163,7 +164,7 @@ type FeedFunctions_IntergrationTests() =
         let secondDateTime = new DateTime(2016, 3, 4, 11, 12, 13)
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSWithMaximumPodcastsFileName, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
+        let initialFeed = TestingSupport.createTestFeed initialInputPath "DirectoryPath"
         
         let firstPodcast = initialFeed.Podcasts.[0]
         firstPodcast.SetFileDetails firstPodcast.FileDetails.FileSize firstDateTime
@@ -172,7 +173,7 @@ type FeedFunctions_IntergrationTests() =
         secondPodcast.SetFileDetails secondPodcast.FileDetails.FileSize secondDateTime
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSWithMaximumPodcastsFileName, initialInputPath)
-        let finalFeed = FeedFunctions.UpdateFeed initialFeed  null
+        let finalFeed = TestingSupport.updateTestFeed initialFeed
 
         finalFeed |> should equal initialFeed
         finalFeed.Podcasts.Length |> should equal 3
@@ -185,10 +186,10 @@ type FeedFunctions_IntergrationTests() =
         let initialInputPath = workingDirectory + rssWithNoPodcasts
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
+        let initialFeed = TestingSupport.createTestFeed initialInputPath "DirectoryPath"
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
-        let finalFeed = FeedFunctions.UpdateFeed initialFeed null
+        let finalFeed = TestingSupport.updateTestFeed initialFeed
 
         finalFeed |> should equal initialFeed
         finalFeed.Podcasts.Length |> should equal 0
@@ -198,10 +199,10 @@ type FeedFunctions_IntergrationTests() =
         let initialInputPath = workingDirectory + rssWithNoPodcasts
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
-        let initialFeed = FeedFunctions.CreateFeed initialInputPath "DirectoryPath" null
+        let initialFeed = TestingSupport.createTestFeed initialInputPath "DirectoryPath"
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithOnePodcast, initialInputPath)
-        let finalFeed = FeedFunctions.UpdateFeed initialFeed null
+        let finalFeed = TestingSupport.updateTestFeed initialFeed
 
         finalFeed |> should equal initialFeed
         finalFeed.Podcasts.Length |> should equal 1

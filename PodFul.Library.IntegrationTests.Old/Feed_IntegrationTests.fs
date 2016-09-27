@@ -21,8 +21,8 @@ type Feed_IntergrationTests() =
         let inputPath = workingDirectory + "RSSFile.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath)
 
-        let feed1 = FeedFunctions.CreateFeed inputPath "DirectoryPath1" null
-        let feed2 = FeedFunctions.CreateFeed inputPath "DirectoryPath2" null
+        let feed1 = TestingSupport.createTestFeed inputPath "DirectoryPath1"
+        let feed2 = TestingSupport.createTestFeed inputPath "DirectoryPath2"
 
         feed1 = feed2 |> should equal true
 
@@ -34,7 +34,7 @@ type Feed_IntergrationTests() =
         let inputPath2 = workingDirectory + "podcast2.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFile.rss", inputPath2)
 
-        let feed1 = FeedFunctions.CreateFeed inputPath1 "DirectoryPath1" null
-        let feed2 = FeedFunctions.CreateFeed inputPath2 "DirectoryPath2" null
+        let feed1 = TestingSupport.createTestFeed inputPath1 "DirectoryPath1"
+        let feed2 = TestingSupport.createTestFeed inputPath2 "DirectoryPath2"
 
         feed1 = feed2 |> should equal false

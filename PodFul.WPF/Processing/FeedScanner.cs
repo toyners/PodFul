@@ -55,7 +55,7 @@ namespace PodFul.WPF
           Feed newFeed = null;
           try
           {
-            newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver);
+            newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver, cancelToken);
 
             this.log.Message("Comparing podcasts ... ", false);
 
