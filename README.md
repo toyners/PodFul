@@ -78,3 +78,7 @@
 1. **Fixed:** Podcast download window now has a meaningful title.
 2. **Fixed:** Podcasts now delivered to Winamp once downloaded.
 3. **Fixed:** Image download message if the download fails.
+
+## 2.6.2 (1.7)
+1. **Fixed:** Bug where updating the feed trashed any local image paths.
+2. **Changed:** Can now cancel scanning when images are being downloaded.

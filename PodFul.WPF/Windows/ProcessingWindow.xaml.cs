@@ -102,11 +102,14 @@ namespace PodFul.WPF
       new Task(() =>
       {
         this.Cancel.IsEnabled = state;
+        this.Cancel.Content = "Cancel";
       }).Start(this.mainTaskScheduler);
     }
 
     private void Cancel_Click(Object sender, RoutedEventArgs e)
     {
+      this.Cancel.IsEnabled = false;
+      this.Cancel.Content = "Cancelling";
       this.feedProcessor.Cancel();
     }
 

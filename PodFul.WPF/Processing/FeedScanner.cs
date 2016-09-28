@@ -45,6 +45,7 @@ namespace PodFul.WPF
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
             this.log.Message("\r\nCANCELLED");
+            this.SetCancelButtonStateEvent?.Invoke(false);
             return;
           }
 
@@ -56,6 +57,13 @@ namespace PodFul.WPF
           try
           {
             newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver, cancelToken);
+
+            if (this.cancellationTokenSource.IsCancellationRequested)
+            {
+              this.log.Message("CANCELLED");
+              this.SetCancelButtonStateEvent?.Invoke(false);
+              return;
+            }
 
             this.log.Message("Comparing podcasts ... ", false);
 
@@ -136,6 +144,7 @@ namespace PodFul.WPF
               if (isCancelled)
               {
                 this.log.Message("\r\nCANCELLED");
+                this.SetCancelButtonStateEvent?.Invoke(false);
                 return;
               }
             }
