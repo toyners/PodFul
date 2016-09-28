@@ -51,12 +51,15 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="TestingSupport.fs" />
     <Compile Include="ImageResolver_IntegrationTests.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <EmbeddedResource Include="Image.jpg" />
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <EmbeddedResource Include="Feed.rss" />
+    <Compile Include="Feed_IntegrationTests.fs" />
+    <EmbeddedResource Include="RSSFile.rss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">

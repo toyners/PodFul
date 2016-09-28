@@ -1,6 +1,5 @@
 ﻿namespace PodFul.Library.IntegrationTests
 
-open FsUnit
 open Jabberwocky.Toolkit.Assembly
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
@@ -24,7 +23,7 @@ type Feed_IntergrationTests() =
         let feed1 = TestingSupport.createTestFeed inputPath "DirectoryPath1"
         let feed2 = TestingSupport.createTestFeed inputPath "DirectoryPath2"
 
-        feed1 = feed2 |> should equal true
+        Assert.AreEqual(true, (feed1 = feed2))
 
     [<Test>]
     member public this.``Two different feed records are not equal because of different feed URLs.``() =
@@ -37,4 +36,4 @@ type Feed_IntergrationTests() =
         let feed1 = TestingSupport.createTestFeed inputPath1 "DirectoryPath1"
         let feed2 = TestingSupport.createTestFeed inputPath2 "DirectoryPath2"
 
-        feed1 = feed2 |> should equal false
+        Assert.AreEqual(false, (feed1 = feed2))

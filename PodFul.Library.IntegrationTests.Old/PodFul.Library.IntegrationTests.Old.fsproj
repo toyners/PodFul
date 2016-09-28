@@ -53,8 +53,6 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="TestingSupport.fs" />
-    <Compile Include="Feed_IntegrationTests.fs" />
-    <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <Compile Include="FeedFileStorage_IntegrationTests.fs" />
     <EmbeddedResource Include="Final RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
