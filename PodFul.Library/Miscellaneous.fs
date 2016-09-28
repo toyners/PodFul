@@ -18,9 +18,7 @@ module public Miscellaneous =
 
     let public NextImageFileName (urlPath : string) =
         let mutable name = Guid.NewGuid().ToString()
-        let lastDotIndex = urlPath.LastIndexOf('.')
-
-        if (lastDotIndex <> -1) then
-            name <- name + urlPath.Substring(lastDotIndex)
+        if urlPath.EndsWith(".jpg", true, null) then
+            name <- name + ".jpg"
         name
         
