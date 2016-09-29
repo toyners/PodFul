@@ -55,11 +55,26 @@
     <Compile Include="ImageResolver_IntegrationTests.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
-    <EmbeddedResource Include="Image.jpg" />
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
-    <EmbeddedResource Include="Feed.rss" />
     <Compile Include="Feed_IntegrationTests.fs" />
+    <Compile Include="FeedFileStorage_IntegrationTests.fs" />
+    <EmbeddedResource Include="Feed.rss" />
     <EmbeddedResource Include="RSSFile.rss" />
+    <EmbeddedResource Include="Final RSSFile.rss" />
+    <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
+    <EmbeddedResource Include="Initial RSSFile with Maximum Podcasts.rss" />
+    <EmbeddedResource Include="RSSFileWithMediaContent.rss" />
+    <EmbeddedResource Include="RSSFileLineBreaks.rss" />
+    <EmbeddedResource Include="RSSFile with Missing Image.rss" />
+    <EmbeddedResource Include="RSSFile with Empty Image 1.rss" />
+    <EmbeddedResource Include="RSSFile with Empty Image 2.rss" />
+    <EmbeddedResource Include="RSSFile with Empty URL 1.rss" />
+    <EmbeddedResource Include="RSSFile with Empty URL 2.rss" />
+    <EmbeddedResource Include="Initial RSSFile.rss" />
+    <EmbeddedResource Include="One Podcast.rss" />
+    <EmbeddedResource Include="No Podcasts.rss" />
+    <EmbeddedResource Include="RSS with valid Images.rss" />
+    <EmbeddedResource Include="Image.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">

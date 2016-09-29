@@ -14,52 +14,83 @@ type FeedFunctions_IntergrationTests() =
     let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\";
 
     let feedFileName = "Feed.rss"
+    let rssFileName = "RSSFile.rss"
+    let initialRSSFileName = "Initial RSSFile.rss"
+    let finalRSSFileName = "Final RSSFile.rss"
+    let initialRSSWithMaximumPodcastsFileName = "Initial RSSFile with Maximum Podcasts.rss"
+    let finalRSSWithMaximumPodcastsFileName = "Final RSSFile with Maximum Podcasts.rss"
+    let rssWithNoPodcasts = "No Podcasts.rss"
+    let rssWithOnePodcast = "One Podcast.rss"
+    let rssWithValidImages = "RSS with valid Images.rss"
+    //let rssWithNoImages = "RSSFile with no Images.rss"
+
+    let feedTitle = "Feed Title"
+    let feedDescription = "Feed Description"
+    let feedWebsite = "Feed Website"
+    let feedImageFileName = "Feed Image"
+
+    let firstPodcastTitle = "Podcast #1 Title"
+    let firstPodcastDescription = "Podcast #1 Description"
+    let firstPodcastURL = "Podcast1.mp3"
+    let firstPodcastFileSize = 1L
+    let firstPodcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
+    let firstPodcastImageURL = "Podcast #1 Image"
+
+    let secondPodcastTitle = "Podcast #2 Title"
+    let secondPodcastDescription = "Podcast #2 Description"
+    let secondPodcastURL = "Podcast2.mp3"
+    let secondPodcastFileSize = 2L
+    let secondPodcastPubDate = new DateTime(2015, 3, 4, 10, 11, 12)
+
+    let thirdPodcastTitle = "Podcast #3 Title"
+    let thirdPodcastURL = "Podcast3.mp3"
+    let thirdPodcastFileSize = 3L
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
 
-(*    [<Test>]
+    [<Test>]
     member public this.``Create Feed from RSS url``() =
         let inputPath = workingDirectory + rssFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
         let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
 
         Assert.AreNotEqual(null, feed)
-        feed.Title |> should equal feedTitle
-        feed.Description |> should equal feedDescription
-        feed.Website |> should equal feedWebsite
-        feed.Directory |> should equal "DirectoryPath"
-        feed.URL |> should equal inputPath
-        feed.ImageURL |> should equal feedImageFileName
-        feed.ImageFileName |> should equal ""
+        Assert.AreEqual(feedTitle, feed.Title)
+        Assert.AreEqual(feedDescription, feed.Description)
+        Assert.AreEqual(feedWebsite, feed.Website)
+        Assert.AreEqual("DirectoryPath", feed.Directory)
+        Assert.AreEqual(inputPath, feed.URL)
+        Assert.AreEqual(feedImageFileName, feed.ImageURL)
+        Assert.AreEqual("", feed.ImageFileName)
 
-        feed.Podcasts |> should not' (be null)
-        feed.Podcasts.Length |> should equal 3
+        Assert.AreNotEqual(null, feed.Podcasts)
+        Assert.AreEqual(3, feed.Podcasts.Length)
 
-        feed.Podcasts.[0].Title |> should equal firstPodcastTitle
-        feed.Podcasts.[0].Description |> should equal firstPodcastDescription
-        feed.Podcasts.[0].URL |> should equal firstPodcastURL
-        feed.Podcasts.[0].ImageURL |> should equal firstPodcastImageURL
-        feed.Podcasts.[0].FileDetails.FileSize |> should equal firstPodcastFileSize
-        feed.Podcasts.[0].PubDate |> should equal firstPodcastPubDate
-        feed.Podcasts.[0].FileDetails.ImageFileName |> should equal String.Empty
+        Assert.AreEqual(firstPodcastTitle, feed.Podcasts.[0].Title)
+        Assert.AreEqual(firstPodcastDescription, feed.Podcasts.[0].Description)
+        Assert.AreEqual(firstPodcastURL, feed.Podcasts.[0].URL)
+        Assert.AreEqual(firstPodcastImageURL, feed.Podcasts.[0].ImageURL)
+        Assert.AreEqual(firstPodcastFileSize, feed.Podcasts.[0].FileDetails.FileSize)
+        Assert.AreEqual(firstPodcastPubDate, feed.Podcasts.[0].PubDate)
+        Assert.AreEqual(String.Empty, feed.Podcasts.[0].FileDetails.ImageFileName)
 
-        feed.Podcasts.[1].Title |> should equal secondPodcastTitle
-        feed.Podcasts.[1].Description |> should equal secondPodcastDescription
-        feed.Podcasts.[1].URL |> should equal secondPodcastURL
-        feed.Podcasts.[1].ImageURL |> should equal String.Empty
-        feed.Podcasts.[1].FileDetails.FileSize |> should equal secondPodcastFileSize
-        feed.Podcasts.[1].PubDate |> should equal secondPodcastPubDate
-        feed.Podcasts.[1].FileDetails.ImageFileName |> should equal String.Empty
+        Assert.AreEqual(secondPodcastTitle, feed.Podcasts.[1].Title)
+        Assert.AreEqual(secondPodcastDescription, feed.Podcasts.[1].Description)
+        Assert.AreEqual(secondPodcastURL, feed.Podcasts.[1].URL)
+        Assert.AreEqual(String.Empty, feed.Podcasts.[1].ImageURL)
+        Assert.AreEqual(secondPodcastFileSize, feed.Podcasts.[1].FileDetails.FileSize)
+        Assert.AreEqual(secondPodcastPubDate, feed.Podcasts.[1].PubDate)
+        Assert.AreEqual(String.Empty, feed.Podcasts.[1].FileDetails.ImageFileName)
 
-        feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
-        feed.Podcasts.[2].Description |> should equal String.Empty
-        feed.Podcasts.[2].URL |> should equal thirdPodcastURL
-        feed.Podcasts.[2].ImageURL |> should equal String.Empty
-        feed.Podcasts.[2].FileDetails.FileSize |> should equal -1
-        feed.Podcasts.[2].PubDate |> should equal FeedFunctions.NoDateTime
-        feed.Podcasts.[2].FileDetails.ImageFileName |> should equal String.Empty
+        Assert.AreEqual(thirdPodcastTitle, feed.Podcasts.[2].Title)
+        Assert.AreEqual(String.Empty, feed.Podcasts.[2].Description)
+        Assert.AreEqual(thirdPodcastURL, feed.Podcasts.[2].URL)
+        Assert.AreEqual(String.Empty, feed.Podcasts.[2].ImageURL)
+        Assert.AreEqual(-1, feed.Podcasts.[2].FileDetails.FileSize)
+        Assert.AreEqual(FeedFunctions.NoDateTime, feed.Podcasts.[2].PubDate)
+        Assert.AreEqual(String.Empty, feed.Podcasts.[2].FileDetails.ImageFileName)
 
     [<Test>]
     member public this.``Create RSS Feed that contains media content tags``() =
@@ -67,27 +98,27 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileWithMediaContent.rss", inputPath)
         let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
 
-        feed |> should not' (equal null)
-        feed.Title |> should equal feedTitle
-        feed.Description |> should equal feedDescription
-        feed.Website |> should equal feedWebsite
-        feed.Directory |> should equal "DirectoryPath"
-        feed.URL |> should equal inputPath
+        Assert.AreNotEqual(null, feed)
+        Assert.AreEqual(feedTitle, feed.Title)
+        Assert.AreEqual(feedDescription, feed.Description)
+        Assert.AreEqual(feedWebsite, feed.Website)
+        Assert.AreEqual("DirectoryPath", feed.Directory)
+        Assert.AreEqual(inputPath, feed.URL)
 
-        feed.Podcasts |> should not' (be null)
-        feed.Podcasts.Length |> should equal 3
+        Assert.AreNotEqual(null, feed.Podcasts)
+        Assert.AreEqual(3, feed.Podcasts.Length)
 
-        feed.Podcasts.[0].Title |> should equal firstPodcastTitle
-        feed.Podcasts.[0].URL |> should equal firstPodcastURL
-        feed.Podcasts.[0].FileDetails.FileSize |> should equal firstPodcastFileSize
+        Assert.AreEqual(firstPodcastTitle, feed.Podcasts.[0].Title)
+        Assert.AreEqual(firstPodcastURL, feed.Podcasts.[0].URL)
+        Assert.AreEqual(firstPodcastFileSize, feed.Podcasts.[0].FileDetails.FileSize)
 
-        feed.Podcasts.[1].Title |> should equal secondPodcastTitle
-        feed.Podcasts.[1].URL |> should equal secondPodcastURL
-        feed.Podcasts.[1].FileDetails.FileSize |> should equal secondPodcastFileSize
+        Assert.AreEqual(secondPodcastTitle, feed.Podcasts.[1].Title)
+        Assert.AreEqual(secondPodcastURL, feed.Podcasts.[1].URL)
+        Assert.AreEqual(secondPodcastFileSize, feed.Podcasts.[1].FileDetails.FileSize)
 
-        feed.Podcasts.[2].Title |> should equal thirdPodcastTitle
-        feed.Podcasts.[2].URL |> should equal thirdPodcastURL
-        feed.Podcasts.[2].FileDetails.FileSize |> should equal thirdPodcastFileSize
+        Assert.AreEqual(thirdPodcastTitle, feed.Podcasts.[2].Title)
+        Assert.AreEqual(thirdPodcastURL, feed.Podcasts.[2].URL)
+        Assert.AreEqual(thirdPodcastFileSize, feed.Podcasts.[2].FileDetails.FileSize)
 
     [<Test>]
     [<TestCase("RSSFile with Missing Image.rss")>]
@@ -100,7 +131,7 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
         let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
 
-        feed.ImageFileName |> should equal String.Empty
+        Assert.AreEqual(String.Empty, feed.ImageFileName)
 
     [<Test>]
     member public this.``Update feed from RSS file``() =
@@ -120,11 +151,11 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
         let finalFeed = TestingSupport.updateTestFeed initialFeed
 
-        finalFeed |> should equal initialFeed
-        finalFeed.Podcasts.Length |> should equal 3
+        Assert.AreEqual(initialFeed, finalFeed)
+        Assert.AreEqual(3, finalFeed.Podcasts.Length)
 
-        finalFeed.Podcasts.[1].FileDetails.DownloadDate |> should equal firstPodcast.FileDetails.DownloadDate
-        finalFeed.Podcasts.[2].FileDetails.DownloadDate |> should equal secondPodcast.FileDetails.DownloadDate
+        Assert.AreEqual(firstPodcast.FileDetails.DownloadDate, finalFeed.Podcasts.[1].FileDetails.DownloadDate)
+        Assert.AreEqual(secondPodcast.FileDetails.DownloadDate, finalFeed.Podcasts.[2].FileDetails.DownloadDate)
 
     [<Test>]
     member public this.``Update feed from RSS file with maximum number of podcasts``() =
@@ -144,11 +175,11 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSWithMaximumPodcastsFileName, initialInputPath)
         let finalFeed = TestingSupport.updateTestFeed initialFeed
 
-        finalFeed |> should equal initialFeed
-        finalFeed.Podcasts.Length |> should equal 3
+        Assert.AreEqual(initialFeed, finalFeed)
+        Assert.AreEqual(3, finalFeed.Podcasts.Length)
 
-        finalFeed.Podcasts.[1].FileDetails.DownloadDate |> should equal firstPodcast.FileDetails.DownloadDate
-        finalFeed.Podcasts.[2].FileDetails.DownloadDate |> should equal secondPodcast.FileDetails.DownloadDate
+        Assert.AreEqual(firstPodcast.FileDetails.DownloadDate, finalFeed.Podcasts.[1].FileDetails.DownloadDate)
+        Assert.AreEqual(secondPodcast.FileDetails.DownloadDate, finalFeed.Podcasts.[2].FileDetails.DownloadDate)
 
     [<Test>]
     member public this.``Update feed with no podcasts from RSS file with no podcasts``() =
@@ -160,8 +191,8 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
         let finalFeed = TestingSupport.updateTestFeed initialFeed
 
-        finalFeed |> should equal initialFeed
-        finalFeed.Podcasts.Length |> should equal 0
+        Assert.AreEqual(initialFeed, finalFeed)
+        Assert.AreEqual(0, finalFeed.Podcasts.Length)
 
     [<Test>]
     member public this.``Update feed with no podcasts from RSS file with podcasts``() =
@@ -173,8 +204,8 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithOnePodcast, initialInputPath)
         let finalFeed = TestingSupport.updateTestFeed initialFeed
 
-        finalFeed |> should equal initialFeed
-        finalFeed.Podcasts.Length |> should equal 1*)
+        Assert.AreEqual(initialFeed, finalFeed)
+        Assert.AreEqual(1, finalFeed.Podcasts.Length)
 
     [<Test>]
     member public this.``Update feed with local image paths set``() =

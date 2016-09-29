@@ -52,8 +52,6 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="TestingSupport.fs" />
-    <Compile Include="FeedFileStorage_IntegrationTests.fs" />
     <EmbeddedResource Include="Final RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
     <EmbeddedResource Include="Initial RSSFile with Maximum Podcasts.rss" />
