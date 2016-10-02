@@ -25,15 +25,16 @@ type FileDownloader() =
         use stream = response.GetResponseStream()
         use writer = new FileStream(filePath, FileMode.Create, FileAccess.Write)
         let buffer = Array.zeroCreate 8192
-        let rec copyTo () = 
-            let read = stream.Read(buffer, 0, buffer.Length)
-            if read > 0 && not (cancelToken.IsCancellationRequested) then
-                writer.Write(buffer, 0, read)
-                if updateProgressFn <> null then
-                    updateProgressFn.Invoke read |> ignore
-                copyTo ()
+        let mutable continueLooping = true
 
-        copyTo ()
+        while continueLooping do
+            let count = stream.Read(buffer, 0, buffer.Length)
+            match (count) with
+            | 0 -> continueLooping <- false
+            | _ -> 
+                writer.Write(buffer, 0, count)
+                if updateProgressFn <> null then
+                    updateProgressFn.Invoke count |> ignore
 
     let download (url: string) filePath (cancelToken: CancellationToken) (updateProgressFn: Action<int>) =
         getResponseFromURL url |> 
