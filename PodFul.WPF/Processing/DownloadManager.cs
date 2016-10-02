@@ -134,6 +134,15 @@ namespace PodFul.WPF.Processing
         {
           this.ProcessException(t.Exception, podcast);
         }
+        else if (t.IsCanceled)
+        {
+          if (File.Exists(podcast.FilePath))
+          {
+            File.Delete(podcast.FilePath);
+          }
+
+          podcast.DownloadCanceled();
+        }
         else
         {
           var fileInfo = new FileInfo(podcast.FilePath);

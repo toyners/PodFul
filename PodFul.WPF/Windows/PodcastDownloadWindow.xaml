@@ -60,7 +60,7 @@
                 </StackPanel>
                 <!--</Border>
                 <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">-->
-                  <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                  <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
                           IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click">
                     <Image Source="..\cancel.png" Width="15" Height="15"/>
                   </Button>

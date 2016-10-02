@@ -24,6 +24,8 @@ namespace PodFul.WPF.Processing
     #region Fields
     private Boolean cancellationCanBeRequested = true;
 
+    private Visibility cancellationVisibility = Visibility.Visible;
+
     private CancellationTokenSource cancellationTokenSource;
 
     private String exceptionMessage;
@@ -74,6 +76,12 @@ namespace PodFul.WPF.Processing
     {
       get { return this.cancellationCanBeRequested; }
       set { this.SetField(ref this.cancellationCanBeRequested, value); }
+    }
+
+    public Visibility CancellationVisibility
+    {
+      get { return this.cancellationVisibility; }
+      set { this.SetField(ref this.cancellationVisibility, value); }
     }
 
     public CancellationToken CancellationToken { get; private set; }
@@ -189,8 +197,17 @@ namespace PodFul.WPF.Processing
       {
         this.cancellationTokenSource.Cancel();
       }
+    }
 
-      this.Status = StatusTypes.Canceled;
+    public void DownloadCanceled()
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.ProgressValue = 0;
+        this.ProgressMajorSize = this.ProgressMinorSize = this.ProgressUnit = String.Empty;
+        this.CancellationVisibility = Visibility.Hidden;
+        this.Status = StatusTypes.Canceled;
+      });
     }
 
     public void DownloadCompleted()
