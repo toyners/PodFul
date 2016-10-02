@@ -28,6 +28,10 @@ type FileDownloader() =
         let mutable continueLooping = true
 
         while continueLooping do
+
+            if (cancelToken.IsCancellationRequested) then
+                cancelToken.ThrowIfCancellationRequested()
+
             let count = stream.Read(buffer, 0, buffer.Length)
             match (count) with
             | 0 -> continueLooping <- false
