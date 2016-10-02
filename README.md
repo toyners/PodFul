@@ -82,3 +82,6 @@
 ## 2.6.2 (1.7)
 1. **Fixed:** Bug where updating the feed trashed any local image paths.
 2. **Changed:** Can now cancel scanning when images are being downloaded.
+
+## 2.6.3 (1.7)
+1. **Fixed:** Bug where illegal file name characters are not cleaned up.

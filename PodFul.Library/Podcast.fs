@@ -1,6 +1,8 @@
 ﻿namespace PodFul.Library
 
 open System
+open System.Collections.Generic
+open Jabberwocky.Toolkit.String
 
 [<CustomEquality; CustomComparison>]
 type Podcast =
@@ -14,6 +16,20 @@ type Podcast =
     }
 
     with
+
+        member private this.fileNameSubstitutions = Dictionary<string, string>(dict
+                                                        [
+                                                            ( "\\", "-bs-" );
+                                                            ( "/", "-fs-" );
+                                                            ( ":", "-c-" );
+                                                            ( "*", "-a-" );
+                                                            ( "?", "-q-" );
+                                                            ( "\"", "-qu-" );
+                                                            ( "<", "-lt-" );
+                                                            ( ">", "-gt-" );
+                                                            ( "|", "-b-" )
+                                                        ])
+
         member this.FileName 
             with get() = 
                 match(String.IsNullOrEmpty(this.URL)) with
@@ -24,7 +40,7 @@ type Podcast =
                     if index = 0 then
                         index <- this.URL.LastIndexOf('\\') + 1
 
-                    this.URL.Substring(index)
+                    this.URL.Substring(index).Substitute(this.fileNameSubstitutions)
 
         member this.SetAllFileDetails fileSize downloadDate imageFileName =
             if this.FileDetails.FileSize <> fileSize ||
