@@ -29,8 +29,7 @@ type FileDownloader() =
 
         while continueLooping do
 
-            if (cancelToken.IsCancellationRequested) then
-                cancelToken.ThrowIfCancellationRequested()
+            cancelToken.ThrowIfCancellationRequested()
 
             let count = stream.Read(buffer, 0, buffer.Length)
             match (count) with
