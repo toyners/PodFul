@@ -7,9 +7,14 @@ namespace PodFul.WPF
   using System.Windows;
   using Jabberwocky.Toolkit.String;
   using Library;
+  using Processing;
 
+  /// <summary>
+  /// Scans a list of feeds and collects a list of podcasts to be downloaded. Feeds with new podcasts are updated.
+  /// </summary>
   public class FeedScanner : FeedProcessor
   {
+    #region Construction
     public FeedScanner(
       FeedCollection feedCollection,
       Queue<Int32> feedIndexes,
@@ -18,7 +23,13 @@ namespace PodFul.WPF
       ILogger log) : base(feedCollection, feedIndexes, imageResolver, fileDeliverer, log)
     {
     }
+    #endregion
 
+    #region Properties
+    public List<PodcastMonitor> Podcasts { get; private set; }
+    #endregion
+
+    #region Methods
     public override void Process()
     {
       var feedTotal = (UInt32)this.indexes.Count;
@@ -174,5 +185,6 @@ namespace PodFul.WPF
 
       }, cancelToken);
     }
+    #endregion
   }
 }
