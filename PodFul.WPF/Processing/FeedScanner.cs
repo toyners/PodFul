@@ -38,7 +38,7 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      var podcastDownload = this.InitialisePodcastDownload(cancelToken);
+      this.Podcasts = new List<PodcastMonitor>();
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -144,19 +144,12 @@ namespace PodFul.WPF
             if (downloadPodcasts)
             {
               podcastIndexes.Reverse();
-              var podcastQueue = new Queue<Int32>(podcastIndexes);
-              var isCancelled = !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastQueue);
 
-              Application.Current.Dispatcher.Invoke(() =>
+              foreach (var index in podcastIndexes)
               {
-                this.feedCollection.UpdateFeed(feedIndex, newFeed);
-              });
-
-              if (isCancelled)
-              {
-                this.log.Message("\r\nCANCELLED");
-                this.SetCancelButtonStateEvent?.Invoke(false);
-                return;
+                var podcast = newFeed.Podcasts[index];
+                var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, newFeed.Directory);
+                this.Podcasts.Add(podcastMonitor);
               }
             }
 
