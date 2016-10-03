@@ -26,7 +26,7 @@ namespace PodFul.WPF
     #endregion
 
     #region Properties
-    public List<PodcastMonitor> Podcasts { get; private set; }
+    public List<PodcastMonitor> PodcastMonitors { get; private set; }
     #endregion
 
     #region Methods
@@ -38,7 +38,7 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      this.Podcasts = new List<PodcastMonitor>();
+      this.PodcastMonitors = new List<PodcastMonitor>();
 
       Task task = Task.Factory.StartNew(() =>
       {
@@ -149,7 +149,7 @@ namespace PodFul.WPF
               {
                 var podcast = newFeed.Podcasts[index];
                 var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, newFeed.Directory);
-                this.Podcasts.Add(podcastMonitor);
+                this.PodcastMonitors.Add(podcastMonitor);
               }
             }
 
