@@ -3,6 +3,7 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
+  using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
   using Jabberwocky.Toolkit.String;
@@ -14,6 +15,8 @@ namespace PodFul.WPF
   /// </summary>
   public class FeedScanner : FeedProcessor
   {
+    private DownloadManager downloadManager;
+
     #region Construction
     public FeedScanner(
       FeedCollection feedCollection,
@@ -26,7 +29,6 @@ namespace PodFul.WPF
     #endregion
 
     #region Properties
-    public List<PodcastMonitor> PodcastMonitors { get; private set; }
     #endregion
 
     #region Methods
@@ -38,9 +40,10 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      this.PodcastMonitors = new List<PodcastMonitor>();
+      Queue<PodcastMonitor> jobs = new Queue<PodcastMonitor>();
+      var isScanning = true;
 
-      Task task = Task.Factory.StartNew(() =>
+      Task scanningTask = Task.Factory.StartNew(() =>
       {
         this.SetCancelButtonStateEvent?.Invoke(true);
         var podcastIndexes = new List<Int32>();
@@ -149,7 +152,7 @@ namespace PodFul.WPF
               {
                 var podcast = newFeed.Podcasts[index];
                 var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, newFeed.Directory);
-                this.PodcastMonitors.Add(podcastMonitor);
+                jobs.Enqueue(podcastMonitor);
               }
             }
 
@@ -174,8 +177,27 @@ namespace PodFul.WPF
           this.log.Message("Scan Report\r\n" + scanReport);
         }
 
+        isScanning = false;
         this.SetCancelButtonStateEvent?.Invoke(false);
 
+      }, cancelToken);
+
+      Task downloadingTask = Task.Factory.StartNew(() =>
+      {
+        while (isScanning || jobs.Count > 0 || downloadManager.IsProcessingJob)
+        {
+          Application.Current.Dispatcher.Invoke(() =>
+          {
+            // Add to podcast list control
+            //this.feedCollection.UpdateFeed(feedIndex, newFeed);
+            //this.log.Message("Completed.");
+          });
+
+          Thread.Sleep(30); // Sleep while the UI thread completes adding the new job to the list.
+
+          var job = jobs.Dequeue();
+          downloadManager.AddJob(job);
+        }
       }, cancelToken);
     }
     #endregion

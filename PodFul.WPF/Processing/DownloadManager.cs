@@ -51,6 +51,7 @@ namespace PodFul.WPF.Processing
 
     #region Properties
     public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } //TODO - no adding or removing so could just use a list<T> instead
+    public Boolean IsProcessingJob { get; internal set; }
     #endregion
 
     public Action AllDownloadsCompleted;
@@ -190,6 +191,11 @@ namespace PodFul.WPF.Processing
         podcast.Status = PodcastMonitor.StatusTypes.Failed;
         podcast.ExceptionMessage = e.Message;
       });
+    }
+
+    internal void AddJob(PodcastMonitor job)
+    {
+      throw new NotImplementedException();
     }
     #endregion
   }

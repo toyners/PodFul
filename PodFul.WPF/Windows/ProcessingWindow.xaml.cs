@@ -61,11 +61,11 @@ namespace PodFul.WPF
     {
       new Task(() =>
       {
-        this.Progress.Value = 0;
+        /*this.Progress.Value = 0;
         this.ProgressMajorSize.Text = majorSize;
         this.ProgressMinorSize.Text = minorSize;
         this.ProgressUnit.Text = unit;
-        this.Progress.IsIndeterminate = isIndeterminate;
+        this.Progress.IsIndeterminate = isIndeterminate;*/
       }).Start(this.mainTaskScheduler);
     }
 
@@ -73,11 +73,11 @@ namespace PodFul.WPF
     {
       new Task(() =>
       {
-        this.Progress.Value = 0;
+        /*this.Progress.Value = 0;
         this.ProgressMajorSize.Text = String.Empty;
         this.ProgressMinorSize.Text = String.Empty;
         this.ProgressUnit.Text = String.Empty;
-        this.Progress.IsIndeterminate = false;
+        this.Progress.IsIndeterminate = false;*/
       }).Start(this.mainTaskScheduler);
     }
 
@@ -85,14 +85,14 @@ namespace PodFul.WPF
     {
       new Task(() =>
       {
-        this.ProgressMajorSize.Text = majorSize;
+        /*this.ProgressMajorSize.Text = majorSize;
         this.ProgressMinorSize.Text = minorSize;
         if (this.Progress.IsIndeterminate)
         {         
           return;
         }
         
-        this.Progress.Value = value;
+        this.Progress.Value = value;*/
 
       }).Start(this.mainTaskScheduler);
     }
@@ -121,6 +121,16 @@ namespace PodFul.WPF
         this.feedProcessor.Process();
         this.isLoaded = true;
       }
+    }
+
+    private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+
+    }
+
+    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
+    {
+
     }
   }
 }
