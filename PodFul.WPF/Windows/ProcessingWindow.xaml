@@ -18,19 +18,73 @@
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,0,5">
       <Grid>
-        <ProgressBar Name="Progress" Margin="5" Height="50" />
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-          <TextBlock Name="ProgressMajorSize" FontSize="24" FontWeight="Bold"/>
-          <TextBlock Name="ProgressMinorSize" FontSize="14" Margin="0,11,0,0" FontWeight="Bold"/>
-          <TextBlock Name="ProgressUnit" FontSize="14" Margin="0,11,0,0" FontWeight="Bold"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,5">
+          <ScrollViewer Name="FeedbackScroller" VerticalScrollBarVisibility="Visible" Margin="5">
+            <TextBlock Name="Feedback" TextWrapping="Wrap" />
+          </ScrollViewer>
+        </Border>
+
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1">
+          <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseWheel="FeedList_MouseWheel">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Grid Margin="0,0">
+                  <ProgressBar Margin="0,0" Height="50" Value="{Binding ProgressValue}" IsIndeterminate="{Binding FileSizeNotKnown}" />
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="8.5*"/>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                      <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                      </Grid.RowDefinitions>
+
+                      <!--<Border BorderBrush="Black" BorderThickness="1">-->
+                      <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                      <!--</Border>-->
+
+                      <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="7*"/>
+                        </Grid.ColumnDefinitions>
+                        <!--<Border BorderBrush="Black" BorderThickness="1">-->
+                        <TextBlock Text="{Binding StatusMessage}" FontSize="14" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <!--</Border>-->
+                        <!--<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">-->
+                        <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" Height="14" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <!--</Border>-->
+                      </Grid>
+                    </Grid>
+                    <!--<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">-->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                      <TextBlock Text="{Binding ProgressMajorSize}" FontSize="24" FontWeight="Bold"/>
+                      <TextBlock Text="{Binding ProgressMinorSize}" FontSize="14" Margin="0,11,0,0" FontWeight="Bold"/>
+                      <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,11,0,0" FontWeight="Bold"/>
+                    </StackPanel>
+                    <!--</Border>
+                <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1">-->
+                    <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
+                          IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click">
+                      <Image Source="..\cancel.png" Width="15" Height="15"/>
+                    </Button>
+                    <!--</Border>-->
+                  </Grid>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Border>
       </Grid>
-    </Border>
-    
-    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
-      <ScrollViewer Name="FeedbackScroller" VerticalScrollBarVisibility="Visible" Margin="5">
-        <TextBlock Name="Feedback" TextWrapping="Wrap" />
-      </ScrollViewer>
     </Border>
   </DockPanel>
 </Window>
