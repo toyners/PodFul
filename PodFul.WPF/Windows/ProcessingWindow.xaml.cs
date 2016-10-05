@@ -5,6 +5,7 @@ namespace PodFul.WPF
   using System.Threading.Tasks;
   using System.Windows;
   using Library;
+  using Processing;
 
   /// <summary>
   /// Interaction logic for ProcessingWindow.xaml
@@ -131,6 +132,11 @@ namespace PodFul.WPF
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void JobAddedEventHandler(PodcastMonitor job)
+    {
+      // Add the job to the list
     }
   }
 }

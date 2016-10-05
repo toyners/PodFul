@@ -59,10 +59,14 @@ namespace PodFul.WPF.Processing
 
     public Action AllDownloadsCompleted;
 
+    public Action<PodcastMonitor> JobAdded; 
+
     #region Methods
     public void AddJob(PodcastMonitor job)
     {
       this.podcasts.Enqueue(job);
+
+      this.JobAdded?.Invoke(job);
     }
 
     public void CancelAllDownloads()
