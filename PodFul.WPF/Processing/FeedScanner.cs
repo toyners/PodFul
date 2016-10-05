@@ -40,7 +40,6 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
-      Queue<PodcastMonitor> jobs = new Queue<PodcastMonitor>();
       var isScanning = true;
 
       Task scanningTask = Task.Factory.StartNew(() =>
@@ -152,7 +151,7 @@ namespace PodFul.WPF
               {
                 var podcast = newFeed.Podcasts[index];
                 var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, newFeed.Directory);
-                jobs.Enqueue(podcastMonitor);
+                this.downloadManager.AddJob(podcastMonitor);
               }
             }
 
@@ -184,19 +183,9 @@ namespace PodFul.WPF
 
       Task downloadingTask = Task.Factory.StartNew(() =>
       {
-        while (isScanning || jobs.Count > 0 || downloadManager.IsProcessingJob)
+        while (isScanning || downloadManager.HasIncompleteJobs)
         {
-          Application.Current.Dispatcher.Invoke(() =>
-          {
-            // Add to podcast list control
-            //this.feedCollection.UpdateFeed(feedIndex, newFeed);
-            //this.log.Message("Completed.");
-          });
-
-          Thread.Sleep(30); // Sleep while the UI thread completes adding the new job to the list.
-
-          var job = jobs.Dequeue();
-          downloadManager.AddJob(job);
+          downloadManager.StartDownloads();
         }
       }, cancelToken);
     }

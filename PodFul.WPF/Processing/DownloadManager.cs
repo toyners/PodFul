@@ -51,12 +51,20 @@ namespace PodFul.WPF.Processing
 
     #region Properties
     public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } //TODO - no adding or removing so could just use a list<T> instead
+
     public Boolean IsProcessingJob { get; internal set; }
+
+    public Boolean HasIncompleteJobs { get { return this.podcasts.Count > 0; } }
     #endregion
 
     public Action AllDownloadsCompleted;
 
     #region Methods
+    public void AddJob(PodcastMonitor job)
+    {
+      this.podcasts.Enqueue(job);
+    }
+
     public void CancelAllDownloads()
     {
       foreach (var podcast in this.Podcasts)
@@ -74,7 +82,7 @@ namespace PodFul.WPF.Processing
 
     public void StartDownloads()
     {
-      for (UInt32 i = 0; i < this.concurrentDownloads; i++)
+      while (this.currentDownloads < this.concurrentDownloads)
       {
         StartDownload();
       }
@@ -191,11 +199,6 @@ namespace PodFul.WPF.Processing
         podcast.Status = PodcastMonitor.StatusTypes.Failed;
         podcast.ExceptionMessage = e.Message;
       });
-    }
-
-    internal void AddJob(PodcastMonitor job)
-    {
-      throw new NotImplementedException();
     }
     #endregion
   }
