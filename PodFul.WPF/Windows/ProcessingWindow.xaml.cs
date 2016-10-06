@@ -36,10 +36,10 @@ namespace PodFul.WPF
     {
       this.feedProcessor = feedProcessor;
 
-      InitializeComponent();
+      this.InitializeComponent();
     }
     #endregion
-
+    
     public void SetWindowTitleEventHandler(String title)
     {
       new Task(() =>

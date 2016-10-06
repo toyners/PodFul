@@ -27,9 +27,9 @@ namespace PodFul.WPF
       this.downloadManager = downloadManager;
       this.downloadManager.AllDownloadsCompleted = DownloadCompleted;
 
-      this.PodcastList.ItemsSource = downloadManager.Podcasts;
+      this.PodcastList.ItemsSource = downloadManager.Jobs;
 
-      this.Title = "Downloading " + downloadManager.Podcasts.Count + " Podcast".Pluralize((UInt32)downloadManager.Podcasts.Count);
+      this.Title = "Downloading " + downloadManager.Jobs.Count + " Podcast".Pluralize((UInt32)downloadManager.Jobs.Count);
     }
     #endregion
 

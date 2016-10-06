@@ -3,7 +3,7 @@ namespace PodFul.WPF
 {
   using System;
   using System.Collections.Generic;
-  using System.Threading;
+  using System.Collections.ObjectModel;
   using System.Threading.Tasks;
   using System.Windows;
   using Jabberwocky.Toolkit.String;
@@ -29,6 +29,7 @@ namespace PodFul.WPF
     #endregion
 
     #region Properties
+    public ObservableCollection<PodcastMonitor> Jobs { get { return this.downloadManager.Jobs; } }
     #endregion
 
     #region Methods
@@ -183,7 +184,7 @@ namespace PodFul.WPF
 
       Task downloadingTask = Task.Factory.StartNew(() =>
       {
-        while (isScanning || downloadManager.HasIncompleteJobs)
+        while (isScanning || downloadManager.GotIncompleteJobs)
         {
           downloadManager.StartDownloads();
         }

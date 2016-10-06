@@ -19,7 +19,7 @@ namespace PodFul.WPF.Processing
     private ILogger logger;
     private IImageResolver imageResolver;
 
-    private Queue<PodcastMonitor> podcasts;
+    private Queue<PodcastMonitor> waitingJobs;
 
     private UInt32 concurrentDownloads = 1;
 
@@ -42,19 +42,18 @@ namespace PodFul.WPF.Processing
       this.logger = logger;
       this.concurrentDownloads = concurrentDownloads;
 
-      this.podcasts = new Queue<PodcastMonitor>();
-      this.Podcasts = new ObservableCollection<PodcastMonitor>();
+      this.waitingJobs = new Queue<PodcastMonitor>();
+
+      this.Jobs = new ObservableCollection<PodcastMonitor>();
 
       this.LoadPodcastMonitors(podcastIndexes);
     }
     #endregion
 
     #region Properties
-    public ObservableCollection<PodcastMonitor> Podcasts { get; private set; } //TODO - no adding or removing so could just use a list<T> instead
+    public ObservableCollection<PodcastMonitor> Jobs { get; private set; }
 
-    public Boolean IsProcessingJob { get; internal set; }
-
-    public Boolean HasIncompleteJobs { get { return this.podcasts.Count > 0; } }
+    public Boolean GotIncompleteJobs { get { return this.waitingJobs.Count > 0; } }
     #endregion
 
     public Action AllDownloadsCompleted;
@@ -64,14 +63,15 @@ namespace PodFul.WPF.Processing
     #region Methods
     public void AddJob(PodcastMonitor job)
     {
-      this.podcasts.Enqueue(job);
+      this.waitingJobs.Enqueue(job);
+      this.Jobs.Add(job);
 
       this.JobAdded?.Invoke(job);
     }
 
     public void CancelAllDownloads()
     {
-      foreach (var podcast in this.Podcasts)
+      foreach (var podcast in this.Jobs)
       {
         podcast.CancelDownload();
       }
@@ -99,14 +99,14 @@ namespace PodFul.WPF.Processing
         var podcast = feed.Podcasts[index];
         var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, feed.Directory);
 
-        this.podcasts.Enqueue(podcastMonitor);
-        this.Podcasts.Add(podcastMonitor);
+        this.waitingJobs.Enqueue(podcastMonitor);
+        this.Jobs.Add(podcastMonitor);
       }
     }
 
     private void StartDownload()
     {
-      if (this.podcasts.Count == 0)
+      if (this.waitingJobs.Count == 0)
       {
         // No more podcasts queued so do not start another download.
 
@@ -122,7 +122,7 @@ namespace PodFul.WPF.Processing
       this.currentDownloads++;
 
       Task task = null;
-      var podcast = this.podcasts.Dequeue();
+      var podcast = this.waitingJobs.Dequeue();
       podcast.InitialiseBeforeDownload();
       try
       {
