@@ -91,7 +91,6 @@
       <DependentUpon>PodcastPropertiesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TextTruncator.cs" />
-    <Compile Include="Processing\FeedDownload.cs" />
     <Compile Include="Processing\FeedScanner.cs" />
     <Compile Include="Logging\GUILogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
