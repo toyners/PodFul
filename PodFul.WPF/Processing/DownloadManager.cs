@@ -58,7 +58,9 @@ namespace PodFul.WPF.Processing
 
     public Action AllDownloadsCompleted;
 
-    public Action<PodcastMonitor> JobAdded; 
+    public Action<PodcastMonitor> JobAdded;
+
+    public Action JobsAdded;
 
     #region Methods
     public void AddJob(PodcastMonitor job)
@@ -67,6 +69,16 @@ namespace PodFul.WPF.Processing
       this.Jobs.Add(job);
 
       this.JobAdded?.Invoke(job);
+    }
+
+    public void AddJobs(IEnumerable<PodcastMonitor> jobs)
+    {
+      foreach (var job in jobs)
+      {
+        this.podcasts.Enqueue(job);
+      }
+
+      this.JobsAdded?.Invoke();
     }
 
     public void CancelAllDownloads()
