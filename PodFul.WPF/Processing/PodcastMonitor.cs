@@ -10,7 +10,7 @@ namespace PodFul.WPF.Processing
   using System.Windows;
   using Library;
 
-  public class PodcastMonitor : INotifyPropertyChanged
+  public class DownloadJob : INotifyPropertyChanged
   {
     public enum StatusTypes
     {
@@ -48,7 +48,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public PodcastMonitor(Podcast podcast, Int64 fileSize, String feedDirectory)
+    public DownloadJob(Podcast podcast, Int64 fileSize, String feedDirectory)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;

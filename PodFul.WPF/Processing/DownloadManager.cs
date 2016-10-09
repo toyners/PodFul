@@ -19,7 +19,7 @@ namespace PodFul.WPF.Processing
     private ILogger logger;
     private IImageResolver imageResolver;
 
-    private Queue<PodcastMonitor> waitingJobs;
+    private Queue<DownloadJob> waitingJobs;
 
     private UInt32 concurrentDownloads = 1;
 
@@ -42,28 +42,28 @@ namespace PodFul.WPF.Processing
       this.logger = logger;
       this.concurrentDownloads = concurrentDownloads;
 
-      this.waitingJobs = new Queue<PodcastMonitor>();
+      this.waitingJobs = new Queue<DownloadJob>();
 
-      this.Jobs = new ObservableCollection<PodcastMonitor>();
+      this.Jobs = new ObservableCollection<DownloadJob>();
 
       this.LoadPodcastMonitors(podcastIndexes);
     }
     #endregion
 
     #region Properties
-    public ObservableCollection<PodcastMonitor> Jobs { get; private set; }
+    public ObservableCollection<DownloadJob> Jobs { get; private set; }
 
     public Boolean GotIncompleteJobs { get { return this.waitingJobs.Count > 0; } }
     #endregion
 
     public Action AllDownloadsCompleted;
 
-    public Action<PodcastMonitor> JobAdded;
+    public Action<DownloadJob> JobAdded;
 
     public Action JobsAdded;
 
     #region Methods
-    public void AddJob(PodcastMonitor job)
+    public void AddJob(DownloadJob job)
     {
       this.waitingJobs.Enqueue(job);
       this.Jobs.Add(job);
@@ -71,7 +71,7 @@ namespace PodFul.WPF.Processing
       this.JobAdded?.Invoke(job);
     }
 
-    public void AddJobs(IEnumerable<PodcastMonitor> jobs)
+    public void AddJobs(IEnumerable<DownloadJob> jobs)
     {
       foreach (var job in jobs)
       {
@@ -92,7 +92,7 @@ namespace PodFul.WPF.Processing
     public void CancelDownload(Object dataContext)
     {
       dataContext.VerifyThatObjectIsNotNull("Parameter 'dataContext' is null.");
-      var podcast = (PodcastMonitor)dataContext;
+      var podcast = (DownloadJob)dataContext;
       podcast.CancelDownload();
     }
 
@@ -109,10 +109,10 @@ namespace PodFul.WPF.Processing
       foreach (var index in podcastIndexes)
       {
         var podcast = feed.Podcasts[index];
-        var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, feed.Directory);
+        var downloadJob = new DownloadJob(podcast, podcast.FileDetails.FileSize, feed.Directory);
 
-        this.waitingJobs.Enqueue(podcastMonitor);
-        this.Jobs.Add(podcastMonitor);
+        this.waitingJobs.Enqueue(downloadJob);
+        this.Jobs.Add(downloadJob);
       }
     }
 
@@ -195,7 +195,7 @@ namespace PodFul.WPF.Processing
       });
     }
 
-    private void ProcessException(Exception exception, PodcastMonitor podcast)
+    private void ProcessException(Exception exception, DownloadJob podcast)
     {
       Exception e = exception;
       if (exception is AggregateException)
@@ -212,7 +212,7 @@ namespace PodFul.WPF.Processing
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        podcast.Status = PodcastMonitor.StatusTypes.Failed;
+        podcast.Status = DownloadJob.StatusTypes.Failed;
         podcast.ExceptionMessage = e.Message;
       });
     }

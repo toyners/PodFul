@@ -134,7 +134,7 @@ namespace PodFul.WPF
 
     }
 
-    private void JobAddedEventHandler(PodcastMonitor job)
+    private void JobAddedEventHandler(DownloadJob job)
     {
       // Add the job to the list
     }

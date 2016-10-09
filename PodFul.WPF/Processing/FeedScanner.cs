@@ -29,7 +29,7 @@ namespace PodFul.WPF
     #endregion
 
     #region Properties
-    public ObservableCollection<PodcastMonitor> Jobs { get { return this.downloadManager.Jobs; } }
+    public ObservableCollection<DownloadJob> Jobs { get { return this.downloadManager.Jobs; } }
     #endregion
 
     #region Methods
@@ -151,7 +151,7 @@ namespace PodFul.WPF
               foreach (var index in podcastIndexes)
               {
                 var podcast = newFeed.Podcasts[index];
-                var podcastMonitor = new PodcastMonitor(podcast, podcast.FileDetails.FileSize, newFeed.Directory);
+                var podcastMonitor = new DownloadJob(podcast, podcast.FileDetails.FileSize, newFeed.Directory);
                 this.downloadManager.AddJob(podcastMonitor);
               }
             }
