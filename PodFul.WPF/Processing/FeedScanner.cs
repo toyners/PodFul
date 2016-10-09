@@ -151,8 +151,8 @@ namespace PodFul.WPF
               foreach (var index in podcastIndexes)
               {
                 var podcast = newFeed.Podcasts[index];
-                var podcastMonitor = new DownloadJob(podcast, podcast.FileDetails.FileSize, newFeed.Directory);
-                this.downloadManager.AddJob(podcastMonitor);
+                var downloadJob = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
+                this.downloadManager.AddJob(downloadJob);
               }
             }
 

@@ -13,11 +13,7 @@ namespace PodFul.WPF.Processing
   public class DownloadManager
   {
     #region Fields
-    private Feed feed;
-    private FeedCollection feedCollection; //TODO: Is this needed? Maybe only the feed
-    private IFileDeliverer fileDeliverer;
     private ILogger logger;
-    private IImageResolver imageResolver;
 
     private Queue<DownloadJob> waitingJobs;
 
@@ -27,26 +23,16 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public DownloadManager(FeedCollection feedCollection, Feed feed, List<Int32> podcastIndexes, IImageResolver imageResolver, IFileDeliverer fileDeliverer, ILogger logger, UInt32 concurrentDownloads)
+    public DownloadManager(ILogger logger, UInt32 concurrentDownloads)
     {
-      feedCollection.VerifyThatObjectIsNotNull("Parameter 'feedCollection' is null.");
-      feed.VerifyThatObjectIsNotNull("Parameter 'feed' is null.");
-      podcastIndexes.VerifyThatObjectIsNotNull("Parameter 'podcastIndexes' is null.");
-      imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
 
-      this.feedCollection = feedCollection;
-      this.feed = feed;
-      this.imageResolver = imageResolver;
-      this.fileDeliverer = fileDeliverer;
       this.logger = logger;
       this.concurrentDownloads = concurrentDownloads;
 
       this.waitingJobs = new Queue<DownloadJob>();
 
       this.Jobs = new ObservableCollection<DownloadJob>();
-
-      this.LoadPodcastMonitors(podcastIndexes);
     }
     #endregion
 
@@ -104,7 +90,7 @@ namespace PodFul.WPF.Processing
       }
     }
 
-    private void LoadPodcastMonitors(List<Int32> podcastIndexes)
+    /*private void LoadPodcastMonitors(List<Int32> podcastIndexes)
     {
       foreach (var index in podcastIndexes)
       {
@@ -114,7 +100,7 @@ namespace PodFul.WPF.Processing
         this.waitingJobs.Enqueue(downloadJob);
         this.Jobs.Add(downloadJob);
       }
-    }
+    }*/
 
     private void StartDownload()
     {
@@ -161,31 +147,17 @@ namespace PodFul.WPF.Processing
         }
         else if (t.IsCanceled)
         {
-          if (File.Exists(podcast.FilePath))
-          {
-            File.Delete(podcast.FilePath);
-          }
-
           podcast.DownloadCanceled();
         }
         else
         {
-          var fileInfo = new FileInfo(podcast.FilePath);
-          if (!fileInfo.Exists)
+          try
           {
-            this.ProcessException(new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", podcast.FilePath)), podcast);
-          }
-          else
-          {
-            podcast.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
-            if (this.fileDeliverer != null)
-            {
-              podcast.DeliverPodcastFile(this.fileDeliverer, fileInfo.FullName);
-            }
-
             podcast.DownloadCompleted();
-
-            this.feedCollection.UpdateFeed(feed);
+          }
+          catch (Exception e)
+          {
+            this.ProcessException(e, podcast);
           }
         }
 

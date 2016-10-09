@@ -30,6 +30,14 @@ namespace PodFul.WPF.Processing
 
     private String exceptionMessage;
 
+    private Feed feed;
+
+    private FeedCollection feedCollection;
+
+    private IFileDeliverer fileDeliverer;
+
+    private IImageResolver imageResolver;
+
     private Int64 podcastSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
@@ -48,24 +56,32 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public DownloadJob(Podcast podcast, Int64 fileSize, String feedDirectory)
+    public DownloadJob(Podcast podcast, Feed feed, FeedCollection feedCollection, IFileDeliverer fileDeliverer, IImageResolver imageResolver)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
 
       this.exceptionMessage = String.Empty;
 
-      this.podcastSize = fileSize;
+      this.podcastSize = podcast.FileDetails.FileSize;
 
       this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
       
       this.percentageStepSize = this.podcastSize / 100;
 
-      this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
+      this.FilePath = Path.Combine(feed.Directory, podcast.FileName);
 
       this.status = StatusTypes.Waiting;
 
       this.podcast = podcast;
+
+      this.feed = feed;
+
+      this.feedCollection = feedCollection;
+
+      this.fileDeliverer = fileDeliverer;
+
+      this.imageResolver = imageResolver;
     }
     #endregion
 
@@ -201,6 +217,11 @@ namespace PodFul.WPF.Processing
 
     public void DownloadCanceled()
     {
+      if (File.Exists(this.FilePath))
+      {
+        File.Delete(this.FilePath);
+      }
+
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressValue = 0;
@@ -212,6 +233,20 @@ namespace PodFul.WPF.Processing
 
     public void DownloadCompleted()
     {
+      var fileInfo = new FileInfo(this.FilePath);
+      if (!fileInfo.Exists)
+      {
+        throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
+      }
+
+      this.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
+      if (this.fileDeliverer != null)
+      {
+        this.DeliverPodcastFile(this.fileDeliverer, this.FilePath);
+      }
+
+      this.feedCollection.UpdateFeed(this.feed);
+
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressValue = 0;
