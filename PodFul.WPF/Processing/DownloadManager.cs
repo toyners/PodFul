@@ -75,7 +75,7 @@ namespace PodFul.WPF.Processing
     {
       foreach (var job in jobs)
       {
-        this.podcasts.Enqueue(job);
+        this.waitingJobs.Enqueue(job);
       }
 
       this.JobsAdded?.Invoke();
