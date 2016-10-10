@@ -187,7 +187,8 @@ namespace PodFul.WPF
         feedIndexes.Enqueue(i);
       }
 
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
+      var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
       var processingWindow = ProcessingWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       processingWindow.ShowDialog();
     }
@@ -302,7 +303,10 @@ namespace PodFul.WPF
     {
       var feedIndexes = new Queue<Int32>();
       feedIndexes.Enqueue(this.FeedList.Items.IndexOf(this.currentFeed));
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger);
+
+      var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
+
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
       var processingWindow = ProcessingWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       processingWindow.ShowDialog();
     }

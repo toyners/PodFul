@@ -23,8 +23,10 @@ namespace PodFul.WPF
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
-      ILogger log) : base(feedCollection, feedIndexes, imageResolver, fileDeliverer, log)
+      ILogger logger,
+      DownloadManager downloadManager) : base(feedCollection, feedIndexes, imageResolver, fileDeliverer, logger)
     {
+      this.downloadManager = downloadManager;
     }
     #endregion
 
