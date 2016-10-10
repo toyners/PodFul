@@ -42,20 +42,19 @@ namespace PodFul.WPF
     
     public void SetWindowTitleEventHandler(String title)
     {
-      new Task(() =>
+      Application.Current.Dispatcher.Invoke(() =>
       {
         this.Title = title;
-
-      }).Start(this.mainTaskScheduler);
+      });
     }
 
     public void PostMessage(String message)
     {
-      new Task(() =>
+      Application.Current.Dispatcher.Invoke(() =>
       {
         this.Feedback.Text += message;
         this.FeedbackScroller.ScrollToBottom();
-      }).Start(this.mainTaskScheduler);
+      });
     }
 
     public void InitialiseProgressEventHandler(String majorSize, String minorSize, String unit, Boolean isIndeterminate)
@@ -100,11 +99,11 @@ namespace PodFul.WPF
 
     public void SetCancelButtonStateEventHandler(Boolean state)
     {
-      new Task(() =>
+      Application.Current.Dispatcher.Invoke(() =>
       {
         this.Cancel.IsEnabled = state;
         this.Cancel.Content = "Cancel";
-      }).Start(this.mainTaskScheduler);
+      });
     }
 
     private void Cancel_Click(Object sender, RoutedEventArgs e)
