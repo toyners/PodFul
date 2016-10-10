@@ -245,8 +245,24 @@ namespace PodFul.WPF
       selectedIndexes.Sort((x, y) => { return y - x; });
 
       var podcastDownloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
+      podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
+
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
       podcastDownloadWindow.ShowDialog();
+    }
+
+    private IEnumerable<DownloadJob> CreateDownloadJobs(List<Int32> podcastIndexes)
+    {
+      List<DownloadJob> jobs = new List<DownloadJob>();
+      foreach (var index in podcastIndexes)
+      {
+        var podcast = this.currentFeed.Podcasts[index];
+        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
+
+        jobs.Add(downloadJob);
+      }
+
+      return jobs;
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)

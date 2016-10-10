@@ -4,7 +4,6 @@ namespace PodFul.WPF.Processing
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
-  using System.IO;
   using System.Threading.Tasks;
   using System.Windows;
   using Jabberwocky.Toolkit.Object;
@@ -89,18 +88,6 @@ namespace PodFul.WPF.Processing
         StartDownload();
       }
     }
-
-    /*private void LoadPodcastMonitors(List<Int32> podcastIndexes)
-    {
-      foreach (var index in podcastIndexes)
-      {
-        var podcast = feed.Podcasts[index];
-        var downloadJob = new DownloadJob(podcast, podcast.FileDetails.FileSize, feed.Directory);
-
-        this.waitingJobs.Enqueue(downloadJob);
-        this.Jobs.Add(downloadJob);
-      }
-    }*/
 
     private void StartDownload()
     {
