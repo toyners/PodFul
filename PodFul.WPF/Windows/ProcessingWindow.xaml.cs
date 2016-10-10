@@ -12,29 +12,25 @@ namespace PodFul.WPF
   /// </summary>
   public partial class ProcessingWindow : Window
   {
-    private TaskScheduler mainTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-    private FeedProcessor feedProcessor;
+    private FeedScanner feedScanner;
     private Boolean isLoaded;
 
     #region Construction   
-    public static ProcessingWindow CreateWindow(FeedProcessor feedProcessor, GUILogger logger, IImageResolver imageResolver)
+    public static ProcessingWindow CreateWindow(FeedScanner feedScanner, GUILogger logger, IImageResolver imageResolver)
     {
-      var processingWindow = new ProcessingWindow(feedProcessor);
+      var processingWindow = new ProcessingWindow(feedScanner);
 
       logger.PostMessage = processingWindow.PostMessage;
       imageResolver.PostMessage = processingWindow.PostMessage;
-      feedProcessor.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
-      feedProcessor.InitialiseProgressEvent = processingWindow.InitialiseProgressEventHandler;
-      feedProcessor.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-      feedProcessor.SetProgressEvent = processingWindow.SetProgressEventHandler;
-      feedProcessor.ResetProgressEvent = processingWindow.ResetProgressEventHandler;
+      feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
+      feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
 
       return processingWindow;
     }
 
-    public ProcessingWindow(FeedProcessor feedProcessor)
+    public ProcessingWindow(FeedScanner feedScanner)
     {
-      this.feedProcessor = feedProcessor;
+      this.feedScanner = feedScanner;
 
       this.InitializeComponent();
     }
@@ -57,46 +53,6 @@ namespace PodFul.WPF
       });
     }
 
-    public void InitialiseProgressEventHandler(String majorSize, String minorSize, String unit, Boolean isIndeterminate)
-    {
-      new Task(() =>
-      {
-        /*this.Progress.Value = 0;
-        this.ProgressMajorSize.Text = majorSize;
-        this.ProgressMinorSize.Text = minorSize;
-        this.ProgressUnit.Text = unit;
-        this.Progress.IsIndeterminate = isIndeterminate;*/
-      }).Start(this.mainTaskScheduler);
-    }
-
-    public void ResetProgressEventHandler()
-    {
-      new Task(() =>
-      {
-        /*this.Progress.Value = 0;
-        this.ProgressMajorSize.Text = String.Empty;
-        this.ProgressMinorSize.Text = String.Empty;
-        this.ProgressUnit.Text = String.Empty;
-        this.Progress.IsIndeterminate = false;*/
-      }).Start(this.mainTaskScheduler);
-    }
-
-    public void SetProgressEventHandler(String majorSize, String minorSize, Int32 value)
-    {
-      new Task(() =>
-      {
-        /*this.ProgressMajorSize.Text = majorSize;
-        this.ProgressMinorSize.Text = minorSize;
-        if (this.Progress.IsIndeterminate)
-        {         
-          return;
-        }
-        
-        this.Progress.Value = value;*/
-
-      }).Start(this.mainTaskScheduler);
-    }
-
     public void SetCancelButtonStateEventHandler(Boolean state)
     {
       Application.Current.Dispatcher.Invoke(() =>
@@ -110,7 +66,7 @@ namespace PodFul.WPF
     {
       this.Cancel.IsEnabled = false;
       this.Cancel.Content = "Cancelling";
-      this.feedProcessor.Cancel();
+      this.feedScanner.Cancel();
     }
 
     private void Window_Loaded(Object sender, RoutedEventArgs e)
@@ -118,7 +74,7 @@ namespace PodFul.WPF
       if (!this.isLoaded)
       {
         // Ensure this is only called once.
-        this.feedProcessor.Process();
+        this.feedScanner.Process();
         this.isLoaded = true;
       }
     }

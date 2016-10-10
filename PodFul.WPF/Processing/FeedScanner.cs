@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
+  using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
   using Jabberwocky.Toolkit.String;
@@ -13,9 +14,21 @@ namespace PodFul.WPF
   /// <summary>
   /// Scans a list of feeds and collects a list of podcasts to be downloaded. Feeds with new podcasts are updated.
   /// </summary>
-  public class FeedScanner : FeedProcessor
+  public class FeedScanner /*: FeedProcessor*/
   {
+    private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
     private DownloadManager downloadManager;
+
+    private FeedCollection feedCollection;
+
+    private IFileDeliverer fileDeliverer;
+
+    private IImageResolver imageResolver;
+
+    private Queue<Int32> indexes;
+
+    private ILogger log;
 
     #region Construction
     public FeedScanner(
@@ -24,8 +37,13 @@ namespace PodFul.WPF
       IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
       ILogger logger,
-      DownloadManager downloadManager) : base(feedCollection, feedIndexes, imageResolver, fileDeliverer, logger)
+      DownloadManager downloadManager) //: base(feedCollection, feedIndexes, imageResolver, fileDeliverer, logger)
     {
+      this.feedCollection = feedCollection;
+      this.indexes = feedIndexes;
+      this.imageResolver = imageResolver;
+      this.fileDeliverer = fileDeliverer;
+      this.log = logger;
       this.downloadManager = downloadManager;
     }
     #endregion
@@ -34,8 +52,17 @@ namespace PodFul.WPF
     public ObservableCollection<DownloadJob> Jobs { get { return this.downloadManager.Jobs; } }
     #endregion
 
+    public Action<String> SetWindowTitleEvent;
+
+    public Action<Boolean> SetCancelButtonStateEvent;
+
     #region Methods
-    public override void Process()
+    public void Cancel()
+    {
+      this.cancellationTokenSource.Cancel();
+    }
+
+    public void Process()
     {
       var feedTotal = (UInt32)this.indexes.Count;
       var title = "Scanning " + feedTotal + " feed".Pluralize(feedTotal);

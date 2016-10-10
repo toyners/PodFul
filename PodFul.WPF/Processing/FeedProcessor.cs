@@ -25,12 +25,6 @@ namespace PodFul.WPF
 
     public Action<Boolean> SetCancelButtonStateEvent;
 
-    public Action<String, String, String, Boolean> InitialiseProgressEvent;
-
-    public Action ResetProgressEvent;
-
-    public Action<String, String, Int32> SetProgressEvent;
-
     protected FeedProcessor(
       FeedCollection feedCollection,
       Queue<Int32> indexes,
@@ -52,32 +46,6 @@ namespace PodFul.WPF
 
     public abstract void Process();
 
-    protected void InitialiseProgress(Int64 expectedFileSize = -1)
-    {
-      this.fileSizeNotKnown = (expectedFileSize <= 0);
-      String progressMajorSize;
-      String progressMinorSize;
-      String progressUnit;
-      if (expectedFileSize > 0)
-      {
-        progressMajorSize = "0";
-        progressMinorSize = ".0";
-        progressUnit = "%";
-      }
-      else if (expectedFileSize == 0)
-      {
-        progressMajorSize = "0";
-        progressMinorSize = ".0";
-        progressUnit = "MB";
-      }
-      else
-      {
-        progressMajorSize = progressMinorSize = progressUnit = String.Empty;
-      }
-
-      this.InitialiseProgressEvent?.Invoke(progressMajorSize, progressMinorSize, progressUnit, this.fileSizeNotKnown);
-    }
-
     protected PodcastDownload InitialisePodcastDownload(CancellationToken cancelToken)
     {
       var podcastDownload = new PodcastDownload(cancelToken, this.UpdateProgessEventHandler, this.imageResolver);
@@ -87,7 +55,6 @@ namespace PodFul.WPF
         this.fileSize = podcast.FileDetails.FileSize;
         this.percentageStepSize = this.fileSize / 100;
         this.downloadedSize = 0;
-        this.InitialiseProgress(podcast.FileDetails.FileSize);
         this.log.Message(String.Format("Downloading \"{0}\" ... ", podcast.Title), false);
       };
 
@@ -108,8 +75,6 @@ namespace PodFul.WPF
 
         this.log.Exception(e.Message);
       };
-
-      podcastDownload.OnFinish += () => this.ResetProgressEvent?.Invoke();
 
       return podcastDownload;
     }
@@ -150,8 +115,6 @@ namespace PodFul.WPF
           this.GetMajorMinorComponentsOfSize(percentageValue, out majorSize, out minorSize);
         }
       }
-
-      this.SetProgressEvent?.Invoke(majorSize, minorSize, (Int32)value);
     }
 
     private void GetMajorMinorComponentsOfSize(Double value, out String majorSize, out String minorSize)
