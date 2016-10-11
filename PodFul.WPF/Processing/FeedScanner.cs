@@ -74,6 +74,8 @@ namespace PodFul.WPF
 
       var cancelToken = this.cancellationTokenSource.Token;
 
+      // Set this outside of the scanning task because there is no guarantee that the scanning task
+      // will start before the downloading taks.
       var isScanning = true;
 
       Task scanningTask = Task.Factory.StartNew(() =>
@@ -169,11 +171,7 @@ namespace PodFul.WPF
 
             this.logger.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
 
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-              this.feedCollection.UpdateFeed(feedIndex, newFeed);
-              this.logger.Message("Completed.");
-            });
+            this.FeedScanCompleted(feedIndex, newFeed);
 
             if (downloadPodcasts)
             {
@@ -188,7 +186,6 @@ namespace PodFul.WPF
             }
 
             this.logger.Message(String.Empty);
-
           }
           catch (Exception exception)
           {
@@ -220,6 +217,15 @@ namespace PodFul.WPF
           downloadManager.StartDownloads();
         }
       }, cancelToken);
+    }
+
+    private void FeedScanCompleted(Int32 feedIndex, Feed feed)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.feedCollection.UpdateFeed(feedIndex, feed);
+        this.logger.Message("Completed.");
+      });
     }
     #endregion
   }
