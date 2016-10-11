@@ -181,16 +181,30 @@ namespace PodFul.WPF
 
     private void Scan_Click(Object sender, RoutedEventArgs e)
     {
+      var feedIndexes = this.GetIndexesForAllFeeds();
+
+      var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
+      var processingWindow = ProcessingWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
+      processingWindow.ShowDialog();
+    }
+
+    private Queue<Int32> GetIndexForCurrentFeed()
+    {
+      var feedIndexes = new Queue<Int32>();
+      feedIndexes.Enqueue(this.FeedList.Items.IndexOf(this.currentFeed));
+      return feedIndexes;
+    }
+
+    private Queue<Int32> GetIndexesForAllFeeds()
+    {
       var feedIndexes = new Queue<Int32>();
       for (Int32 i = 0; i < this.feedCollection.Feeds.Count; i++)
       {
         feedIndexes.Enqueue(i);
       }
 
-      var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
-      var processingWindow = ProcessingWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
-      processingWindow.ShowDialog();
+      return feedIndexes;
     }
 
     private void Podcasts_Click(Object sender, RoutedEventArgs e)
@@ -301,8 +315,7 @@ namespace PodFul.WPF
 
     private void ScanFeed_Click(Object sender, RoutedEventArgs e)
     {
-      var feedIndexes = new Queue<Int32>();
-      feedIndexes.Enqueue(this.FeedList.Items.IndexOf(this.currentFeed));
+      var feedIndexes = this.GetIndexForCurrentFeed();
 
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
 

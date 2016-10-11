@@ -39,7 +39,7 @@ namespace PodFul.WPF
       IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
       ILogger logger,
-      DownloadManager downloadManager) //: base(feedCollection, feedIndexes, imageResolver, fileDeliverer, logger)
+      DownloadManager downloadManager)
     {
       this.feedCollection = feedCollection;
       this.indexes = feedIndexes;
