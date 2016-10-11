@@ -86,14 +86,13 @@ namespace PodFul.WPF
         {
           Int32 feedIndex = indexes.Dequeue();
 
-          title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed" + (feedTotal != 1 ? "s" : String.Empty);
+          title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
           this.SetWindowTitleEvent?.Invoke(title);
 
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
             this.logger.Message("\r\nCANCELLED");
-            this.SetCancelButtonStateEvent?.Invoke(false);
-            return;
+            break;
           }
 
           var feed = this.feedCollection.Feeds[feedIndex];
@@ -108,8 +107,7 @@ namespace PodFul.WPF
             if (this.cancellationTokenSource.IsCancellationRequested)
             {
               this.logger.Message("CANCELLED");
-              this.SetCancelButtonStateEvent?.Invoke(false);
-              return;
+              break;
             }
 
             this.logger.Message("Comparing podcasts ... ", false);
