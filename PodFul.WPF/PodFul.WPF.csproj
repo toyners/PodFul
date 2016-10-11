@@ -80,7 +80,6 @@
     <Compile Include="Converters\GeneralDateTimeConverter.cs" />
     <Compile Include="Converters\DownloadDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
-    <Compile Include="Processing\FeedProcessor.cs" />
     <Compile Include="Windows\FeedPropertiesWindow.xaml.cs">
       <DependentUpon>FeedPropertiesWindow.xaml</DependentUpon>
     </Compile>

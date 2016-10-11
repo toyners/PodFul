@@ -14,8 +14,9 @@ namespace PodFul.WPF
   /// <summary>
   /// Scans a list of feeds and collects a list of podcasts to be downloaded. Feeds with new podcasts are updated.
   /// </summary>
-  public class FeedScanner /*: FeedProcessor*/
+  public class FeedScanner
   {
+    #region Fields
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
     private DownloadManager downloadManager;
@@ -28,7 +29,8 @@ namespace PodFul.WPF
 
     private Queue<Int32> indexes;
 
-    private ILogger log;
+    private ILogger logger;
+    #endregion
 
     #region Construction
     public FeedScanner(
@@ -43,7 +45,7 @@ namespace PodFul.WPF
       this.indexes = feedIndexes;
       this.imageResolver = imageResolver;
       this.fileDeliverer = fileDeliverer;
-      this.log = logger;
+      this.logger = logger;
       this.downloadManager = downloadManager;
     }
     #endregion
@@ -52,9 +54,11 @@ namespace PodFul.WPF
     public ObservableCollection<DownloadJob> Jobs { get { return this.downloadManager.Jobs; } }
     #endregion
 
+    #region Events
     public Action<String> SetWindowTitleEvent;
 
     public Action<Boolean> SetCancelButtonStateEvent;
+    #endregion
 
     #region Methods
     public void Cancel()
@@ -87,14 +91,14 @@ namespace PodFul.WPF
 
           if (this.cancellationTokenSource.IsCancellationRequested)
           {
-            this.log.Message("\r\nCANCELLED");
+            this.logger.Message("\r\nCANCELLED");
             this.SetCancelButtonStateEvent?.Invoke(false);
             return;
           }
 
           var feed = this.feedCollection.Feeds[feedIndex];
 
-          this.log.Message("Scanning \"" + feed.Title + "\".");
+          this.logger.Message("Scanning \"" + feed.Title + "\".");
 
           Feed newFeed = null;
           try
@@ -103,12 +107,12 @@ namespace PodFul.WPF
 
             if (this.cancellationTokenSource.IsCancellationRequested)
             {
-              this.log.Message("CANCELLED");
+              this.logger.Message("CANCELLED");
               this.SetCancelButtonStateEvent?.Invoke(false);
               return;
             }
 
-            this.log.Message("Comparing podcasts ... ", false);
+            this.logger.Message("Comparing podcasts ... ", false);
 
             podcastIndexes.Clear();
             if (feed.Podcasts.Length == 0)
@@ -137,7 +141,7 @@ namespace PodFul.WPF
               if (continuingDownloading == MessageBoxResult.Cancel)
               {
                 var feedReport = podcastIndexes.Count + " podcasts found";
-                this.log.Message(feedReport + " (Scan cancelled).\r\n");
+                this.logger.Message(feedReport + " (Scan cancelled).\r\n");
                 scanReport += feedReport + " for \"" + feed.Title + "\" (Scan cancelled).";
                 break;
               }
@@ -163,14 +167,14 @@ namespace PodFul.WPF
               scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
             }
 
-            this.log.Message(message);
+            this.logger.Message(message);
 
-            this.log.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
+            this.logger.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
 
             Application.Current.Dispatcher.Invoke(() =>
             {
               this.feedCollection.UpdateFeed(feedIndex, newFeed);
-              this.log.Message("Completed.");
+              this.logger.Message("Completed.");
             });
 
             if (downloadPodcasts)
@@ -185,25 +189,25 @@ namespace PodFul.WPF
               }
             }
 
-            this.log.Message(String.Empty);
+            this.logger.Message(String.Empty);
 
           }
           catch (Exception exception)
           {
             var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
             scanReport += exceptionReport;
-            this.log.Message(exceptionReport);
+            this.logger.Message(exceptionReport);
           }
         }
 
         // Display the final scan report.
         if (scanReport == null)
         {
-          this.log.Message("Nothing to report.");
+          this.logger.Message("Nothing to report.");
         }
         else
         {
-          this.log.Message("Scan Report\r\n" + scanReport);
+          this.logger.Message("Scan Report\r\n" + scanReport);
         }
 
         isScanning = false;
