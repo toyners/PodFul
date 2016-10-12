@@ -77,13 +77,13 @@ namespace PodFul.WPF
       // Set this outside of the scanning task because there is no guarantee that the scanning task
       // will start before the downloading taks.
       var isScanning = true;
+      String scanReport = null;
 
       Task scanningTask = Task.Factory.StartNew(() =>
       {
         this.SetCancelButtonStateEvent?.Invoke(true);
         var podcastIndexes = new List<Int32>();
-        String scanReport = null;
-
+        
         while (indexes.Count > 0)
         {
           Int32 feedIndex = indexes.Dequeue();
@@ -180,8 +180,8 @@ namespace PodFul.WPF
               foreach (var index in podcastIndexes)
               {
                 var podcast = newFeed.Podcasts[index];
-                var downloadJob = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
-                this.downloadManager.AddJob(downloadJob);
+                var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
+                this.downloadManager.AddJob(job);
               }
             }
 
@@ -195,18 +195,7 @@ namespace PodFul.WPF
           }
         }
 
-        // Display the final scan report.
-        if (scanReport == null)
-        {
-          this.logger.Message("Nothing to report.");
-        }
-        else
-        {
-          this.logger.Message("Scan Report\r\n" + scanReport);
-        }
-
         isScanning = false;
-        this.SetCancelButtonStateEvent?.Invoke(false);
 
       }, cancelToken);
 
@@ -217,6 +206,19 @@ namespace PodFul.WPF
           downloadManager.StartDownloads();
           Thread.Sleep(50);
         }
+
+        // Display the final scan report.
+        if (scanReport == null)
+        {
+          this.logger.Message("Nothing to report.");
+        }
+        else
+        {
+          this.logger.Message("Scan Report\r\n" + scanReport);
+        }
+
+        this.SetCancelButtonStateEvent?.Invoke(false);
+
       }, cancelToken);
     }
 
