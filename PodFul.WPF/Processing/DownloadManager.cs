@@ -41,19 +41,19 @@ namespace PodFul.WPF.Processing
     public Boolean GotIncompleteJobs { get { return this.waitingJobs.Count > 0 || this.currentDownloads > 0; } }
     #endregion
 
-    public Action AllDownloadsCompleted;
-
-    public Action<DownloadJob> JobAdded;
-
-    public Action JobsAdded;
+    #region Events
+    public Action AllDownloadsCompletedEvent;
+    #endregion
 
     #region Methods
     public void AddJob(DownloadJob job)
     {
       this.waitingJobs.Enqueue(job);
-      this.Jobs.Add(job);
 
-      this.JobAdded?.Invoke(job);
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.Jobs.Add(job);
+      });
     }
 
     public void AddJobs(IEnumerable<DownloadJob> jobs)
@@ -62,8 +62,6 @@ namespace PodFul.WPF.Processing
       {
         this.waitingJobs.Enqueue(job);
       }
-
-      this.JobsAdded?.Invoke();
     }
 
     public void CancelAllDownloads()
@@ -98,7 +96,7 @@ namespace PodFul.WPF.Processing
         if (this.currentDownloads == 0)
         {
           // All current downloads have finished so nothing more to do.
-          AllDownloadsCompleted?.Invoke();
+          AllDownloadsCompletedEvent?.Invoke();
         }
 
         return;

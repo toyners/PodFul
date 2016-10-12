@@ -25,7 +25,7 @@ namespace PodFul.WPF
       InitializeComponent();
 
       this.downloadManager = downloadManager;
-      this.downloadManager.AllDownloadsCompleted = DownloadCompleted;
+      this.downloadManager.AllDownloadsCompletedEvent = DownloadCompleted;
 
       this.PodcastList.ItemsSource = downloadManager.Jobs;
 

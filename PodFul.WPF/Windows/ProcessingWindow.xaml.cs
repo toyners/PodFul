@@ -2,7 +2,6 @@
 namespace PodFul.WPF
 {
   using System;
-  using System.Threading.Tasks;
   using System.Windows;
   using Library;
   using Processing;
@@ -30,9 +29,10 @@ namespace PodFul.WPF
 
     public ProcessingWindow(FeedScanner feedScanner)
     {
-      this.feedScanner = feedScanner;
-
       this.InitializeComponent();
+
+      this.feedScanner = feedScanner;
+      this.PodcastList.ItemsSource = feedScanner.Jobs;
     }
     #endregion
     

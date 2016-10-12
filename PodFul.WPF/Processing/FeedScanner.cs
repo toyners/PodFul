@@ -215,6 +215,7 @@ namespace PodFul.WPF
         while (isScanning || downloadManager.GotIncompleteJobs)
         {
           downloadManager.StartDownloads();
+          Thread.Sleep(50);
         }
       }, cancelToken);
     }
