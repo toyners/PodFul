@@ -133,7 +133,16 @@ namespace PodFul.WPF
               }
             }
 
-            Boolean downloadPodcasts = (podcastIndexes.Count > 0);
+            var downloadConfirmation = this.ConfirmGoForDownload(podcastIndexes);
+            if (downloadConfirmation == DownloadStatus.CancelScanning)
+            {
+              var feedReport = podcastIndexes.Count + " podcasts found";
+              this.logger.Message(feedReport + " (Scan cancelled).\r\n");
+              scanReport += feedReport + " for \"" + feed.Title + "\" (Scan cancelled).";
+              break;
+            }
+
+            /*Boolean downloadPodcasts = (podcastIndexes.Count > 0);
             if (podcastIndexes.Count > 5)
             {
               var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
@@ -150,7 +159,7 @@ namespace PodFul.WPF
               {
                 downloadPodcasts = false;
               }
-            }
+            }*/
 
             String message = "Complete - ";
             if (podcastIndexes.Count == 0)
@@ -162,7 +171,7 @@ namespace PodFul.WPF
               newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
               var feedReport = podcastIndexes.Count + " podcast" +
                 (podcastIndexes.Count != 1 ? "s" : String.Empty) + " found";
-              var downloadingReport = (downloadPodcasts ? String.Empty : " (Downloading skipped)");
+              var downloadingReport = (downloadConfirmation == DownloadStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
               message += feedReport + downloadingReport + ".";
               scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
             }
@@ -173,19 +182,21 @@ namespace PodFul.WPF
 
             this.FeedScanCompleted(feedIndex, newFeed);
 
-            if (downloadPodcasts)
-            {
-              podcastIndexes.Reverse();
+            this.logger.Message(String.Empty);
 
-              foreach (var index in podcastIndexes)
-              {
-                var podcast = newFeed.Podcasts[index];
-                var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
-                this.downloadManager.AddJob(job);
-              }
+            if (downloadConfirmation == DownloadStatus.SkipDownloading)
+            {
+              continue;
             }
 
-            this.logger.Message(String.Empty);
+            podcastIndexes.Reverse();
+
+            foreach (var index in podcastIndexes)
+            {
+              var podcast = newFeed.Podcasts[index];
+              var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
+              this.downloadManager.AddJob(job);
+            }
           }
           catch (Exception exception)
           {
@@ -229,6 +240,38 @@ namespace PodFul.WPF
         this.feedCollection.UpdateFeed(feedIndex, feed);
         this.logger.Message("Completed.");
       });
+    }
+
+    private enum DownloadStatus
+    {
+      CancelScanning,
+      ContinueDownloading,
+      SkipDownloading,
+    }
+
+    private DownloadStatus ConfirmGoForDownload(List<Int32> podcastIndexes)
+    {
+      if (podcastIndexes.Count == 0)
+      {
+        return DownloadStatus.SkipDownloading;
+      }
+
+      if (podcastIndexes.Count > 5)
+      {
+        var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
+        var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
+        if (continuingDownloading == MessageBoxResult.Cancel)
+        {
+          return DownloadStatus.CancelScanning;
+        }
+
+        if (continuingDownloading == MessageBoxResult.No)
+        {
+          return DownloadStatus.SkipDownloading;
+        }
+      }
+
+      return DownloadStatus.ContinueDownloading;
     }
     #endregion
   }
