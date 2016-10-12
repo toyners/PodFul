@@ -61,6 +61,7 @@ namespace PodFul.WPF.Processing
       foreach (var job in jobs)
       {
         this.waitingJobs.Enqueue(job);
+        this.Jobs.Add(job);
       }
     }
 
