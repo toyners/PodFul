@@ -185,8 +185,8 @@ namespace PodFul.WPF
 
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
-      var processingWindow = ProcessingWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
-      processingWindow.ShowDialog();
+      var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
+      scanningWindow.ShowDialog();
     }
 
     private Queue<Int32> GetIndexForCurrentFeed()
@@ -320,7 +320,7 @@ namespace PodFul.WPF
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
 
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
-      var processingWindow = ProcessingWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
+      var processingWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       processingWindow.ShowDialog();
     }
 

@@ -7,17 +7,17 @@ namespace PodFul.WPF
   using Processing;
 
   /// <summary>
-  /// Interaction logic for ProcessingWindow.xaml
+  /// Interaction logic for ScanningWindow.xaml
   /// </summary>
-  public partial class ProcessingWindow : Window
+  public partial class ScanningWindow : Window
   {
     private FeedScanner feedScanner;
     private Boolean isLoaded;
 
     #region Construction   
-    public static ProcessingWindow CreateWindow(FeedScanner feedScanner, GUILogger logger, IImageResolver imageResolver)
+    public static ScanningWindow CreateWindow(FeedScanner feedScanner, GUILogger logger, IImageResolver imageResolver)
     {
-      var processingWindow = new ProcessingWindow(feedScanner);
+      var processingWindow = new ScanningWindow(feedScanner);
 
       logger.PostMessage = processingWindow.PostMessage;
       imageResolver.PostMessage = processingWindow.PostMessage;
@@ -27,7 +27,7 @@ namespace PodFul.WPF
       return processingWindow;
     }
 
-    public ProcessingWindow(FeedScanner feedScanner)
+    public ScanningWindow(FeedScanner feedScanner)
     {
       this.InitializeComponent();
 

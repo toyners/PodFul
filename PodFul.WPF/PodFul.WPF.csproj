@@ -95,8 +95,8 @@
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\FileLogger.cs" />
     <Compile Include="PodcastDownload.cs" />
-    <Compile Include="Windows\ProcessingWindow.xaml.cs">
-      <DependentUpon>ProcessingWindow.xaml</DependentUpon>
+    <Compile Include="Windows\ScanningWindow.xaml.cs">
+      <DependentUpon>ScanningWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\PodcastsWindow.xaml.cs">
       <DependentUpon>PodcastsWindow.xaml</DependentUpon>
@@ -136,7 +136,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\ProcessingWindow.xaml">
+    <Page Include="Windows\ScanningWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
