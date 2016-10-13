@@ -11,8 +11,10 @@ namespace PodFul.WPF
   /// </summary>
   public partial class ScanningWindow : Window
   {
+    #region Fields
     private FeedScanner feedScanner;
     private Boolean isLoaded;
+    #endregion
 
     #region Construction   
     public static ScanningWindow CreateWindow(FeedScanner feedScanner, GUILogger logger, IImageResolver imageResolver)
@@ -35,7 +37,8 @@ namespace PodFul.WPF
       this.PodcastList.ItemsSource = feedScanner.Jobs;
     }
     #endregion
-    
+
+    #region Methods
     public void SetWindowTitleEventHandler(String title)
     {
       Application.Current.Dispatcher.Invoke(() =>
@@ -81,17 +84,11 @@ namespace PodFul.WPF
 
     private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
     {
-
     }
 
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
-
     }
-
-    private void JobAddedEventHandler(DownloadJob job)
-    {
-      // Add the job to the list
-    }
+    #endregion
   }
 }

@@ -6,9 +6,8 @@ namespace PodFul.WPF
   public class GUILogger : ILogger
   {
     #region Members
-    public Action<String> PostMessage;
-
     private const String lineBreakText = "\r\n";
+
     private readonly FileLogger fileLogger;
     #endregion
 
@@ -17,6 +16,10 @@ namespace PodFul.WPF
     {
       this.fileLogger = logger;
     }
+    #endregion
+
+    #region Events
+    public Action<String> PostMessage;
     #endregion
 
     #region Methods
