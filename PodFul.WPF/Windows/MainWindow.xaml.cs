@@ -11,6 +11,7 @@ namespace PodFul.WPF
   using System.Windows.Controls;
   using Jabberwocky.Toolkit.Assembly;
   using Jabberwocky.Toolkit.IO;
+  using Logging;
   using PodFul.Library;
   using PodFul.WPF.Processing;
 
@@ -26,6 +27,7 @@ namespace PodFul.WPF
     private Feed currentFeed;
     private FileLogger fileLogger;
     private GUILogger guiLogger;
+    private StringLogger stringLogger;
     private Timer contextMenuTimer;
     private Settings settings;
 
@@ -33,6 +35,7 @@ namespace PodFul.WPF
     {
       this.fileLogger = new FileLogger();
       this.guiLogger = new GUILogger(this.fileLogger);
+      this.stringLogger = new StringLogger(this.fileLogger);
 
       InitializeComponent();
 
@@ -64,7 +67,7 @@ namespace PodFul.WPF
 
       this.FeedList.Focus();
 
-      this.settings = new Settings(this.guiLogger);
+      this.settings = new Settings(this.stringLogger);
       this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
 
       this.fileLogger.Message("Main Window instantiated.");
