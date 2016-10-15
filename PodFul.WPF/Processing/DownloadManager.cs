@@ -106,44 +106,44 @@ namespace PodFul.WPF.Processing
       this.currentDownloads++;
 
       Task task = null;
-      var podcast = this.waitingJobs.Dequeue();
-      podcast.InitialiseBeforeDownload();
+      var job = this.waitingJobs.Dequeue();
+      job.InitialiseBeforeDownload();
       try
       {
         task = Task.Factory.StartNew(() =>
         {
           var downloader = new FileDownloader();
-          downloader.Download(podcast.URL, podcast.FilePath, podcast.CancellationToken, podcast.ProgressEventHandler);
-        }, podcast.CancellationToken);
+          downloader.Download(job.URL, job.FilePath, job.CancellationToken, job.ProgressEventHandler);
+        }, job.CancellationToken);
       }
       catch (Exception e)
       {
         // Catch any exceptions regarding the setup of the task. May not be necessary
-        this.ProcessException(e, podcast);
+        this.ProcessException(e, job);
         return;
       }
 
       task.ContinueWith(t =>
       {
-        Application.Current.Dispatcher.Invoke(() => { podcast.CancellationCanBeRequested = false; });
+        Application.Current.Dispatcher.Invoke(() => { job.CancellationCanBeRequested = false; });
 
         if (t.Exception != null)
         {
-          this.ProcessException(t.Exception, podcast);
+          this.ProcessException(t.Exception, job);
         }
         else if (t.IsCanceled)
         {
-          podcast.DownloadCanceled();
+          job.DownloadCanceled();
         }
         else
         {
           try
           {
-            podcast.DownloadCompleted();
+            job.DownloadCompleted();
           }
           catch (Exception e)
           {
-            this.ProcessException(e, podcast);
+            this.ProcessException(e, job);
           }
         }
 
