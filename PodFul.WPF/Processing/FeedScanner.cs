@@ -73,7 +73,7 @@ namespace PodFul.WPF
 
     public Action<Boolean> SetCancelButtonStateEvent;
 
-    public Action<Feed, Feed, List<Int32>> ConfirmPodcastsForDownloadEvent;
+    public Func<Feed, Feed, List<Int32>, Boolean?> ConfirmPodcastsForDownloadEvent;
     #endregion
 
     #region Methods
@@ -99,7 +99,6 @@ namespace PodFul.WPF
       () =>
       {
         this.SetCancelButtonStateEvent?.Invoke(true);
-        var podcastIndexes = new List<Int32>();
         
         while (indexes.Count > 0)
         {
@@ -131,24 +130,7 @@ namespace PodFul.WPF
 
             this.logger.Message("Comparing podcasts ... ", false);
 
-            podcastIndexes.Clear();
-            if (feed.Podcasts.Length == 0)
-            {
-              for (Int32 i = 0; i < newFeed.Podcasts.Length; i++)
-              {
-                podcastIndexes.Add(i);
-              }
-            }
-            else
-            {
-              Int32 podcastIndex = 0;
-              var firstPodcast = feed.Podcasts[0];
-              while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
-              {
-                podcastIndexes.Add(podcastIndex);
-                podcastIndex++;
-              }
-            }
+            var podcastIndexes = this.BuildPodcastList(feed, newFeed);
 
             var downloadConfirmation = this.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
@@ -243,23 +225,46 @@ namespace PodFul.WPF
 
     }
 
-    private DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
+    private List<Int32> BuildPodcastList(Feed oldFeed, Feed newFeed)
     {
-      if (podcastIndexes.Count == 0)
+      var podcastIndexes = new List<Int32>();
+      if (oldFeed.Podcasts.Length == 0)
       {
-        return DownloadConfirmationStatus.SkipDownloading;
+        for (Int32 i = 0; i < newFeed.Podcasts.Length; i++)
+        {
+          podcastIndexes.Add(i);
+        }
+      }
+      else
+      {
+        Int32 podcastIndex = 0;
+        var firstPodcast = oldFeed.Podcasts[0];
+        while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
+        {
+          podcastIndexes.Add(podcastIndex);
+          podcastIndex++;
+        }
       }
 
+      return podcastIndexes;
+    }
+
+    private DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
+    {
       if (podcastIndexes.Count > 5)
       {
-        if (this.ConfirmPodcastsForDownloadEvent != null)
-        {
-          this.ConfirmPodcastsForDownloadEvent(oldFeed, newFeed, podcastIndexes);
-        }
-        else
+        if (this.ConfirmPodcastsForDownloadEvent == null)
         {
           throw new Exception("No ConfirmPodcastsForDownloadEvent handler set.");
         }
+
+        var cancelScan = this.ConfirmPodcastsForDownloadEvent(oldFeed, newFeed, podcastIndexes);
+        
+      }
+
+      if (podcastIndexes.Count == 0)
+      {
+        return DownloadConfirmationStatus.SkipDownloading;
       }
 
       return DownloadConfirmationStatus.ContinueDownloading;

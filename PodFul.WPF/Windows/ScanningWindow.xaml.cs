@@ -66,19 +66,21 @@ namespace PodFul.WPF
       });
     }
 
-    public void ConfirmPodcastsForDownloadEventHandler(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
+    public Boolean? ConfirmPodcastsForDownloadEventHandler(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
     {
       var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
       var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
-      /*if (continuingDownloading == MessageBoxResult.Cancel)
+      if (continuingDownloading == MessageBoxResult.Cancel)
       {
-        return DownloadConfirmationStatus.CancelScanning;
+        return null;
       }
 
       if (continuingDownloading == MessageBoxResult.No)
       {
-        return DownloadConfirmationStatus.SkipDownloading;
-      }*/
+        return false;
+      }
+
+      return true;
     }
 
     private void Cancel_Click(Object sender, RoutedEventArgs e)
