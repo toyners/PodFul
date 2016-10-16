@@ -131,6 +131,7 @@ namespace PodFul.WPF
             this.logger.Message("Comparing podcasts ... ", false);
 
             var podcastIndexes = this.BuildPodcastList(feed, newFeed);
+            var updateFeed = (podcastIndexes.Count > 0);
 
             var downloadConfirmation = this.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
@@ -141,6 +142,11 @@ namespace PodFul.WPF
               break;
             }
 
+            if (updateFeed)
+            {
+              newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
+            }
+
             String message = "Complete - ";
             if (podcastIndexes.Count == 0)
             {
@@ -148,7 +154,6 @@ namespace PodFul.WPF
             }
             else
             {
-              newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
               var feedReport = podcastIndexes.Count + " podcast" +
                 (podcastIndexes.Count != 1 ? "s" : String.Empty) + " found";
               var downloadingReport = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
