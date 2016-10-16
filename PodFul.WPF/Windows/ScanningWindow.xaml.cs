@@ -2,6 +2,7 @@
 namespace PodFul.WPF
 {
   using System;
+  using System.Collections.Generic;
   using System.Windows;
   using Library;
   using Processing;
@@ -25,7 +26,7 @@ namespace PodFul.WPF
       imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-
+      feedScanner.ConfirmPodcastsForDownloadEvent = processingWindow.ConfirmPodcastsForDownloadEventHandler;
       return processingWindow;
     }
 
@@ -63,6 +64,21 @@ namespace PodFul.WPF
         this.Cancel.IsEnabled = state;
         this.Cancel.Content = "Cancel";
       });
+    }
+
+    public void ConfirmPodcastsForDownloadEventHandler(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
+    {
+      var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
+      var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
+      /*if (continuingDownloading == MessageBoxResult.Cancel)
+      {
+        return DownloadConfirmationStatus.CancelScanning;
+      }
+
+      if (continuingDownloading == MessageBoxResult.No)
+      {
+        return DownloadConfirmationStatus.SkipDownloading;
+      }*/
     }
 
     private void Cancel_Click(Object sender, RoutedEventArgs e)

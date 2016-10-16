@@ -72,6 +72,8 @@ namespace PodFul.WPF
     public Action<String> SetWindowTitleEvent;
 
     public Action<Boolean> SetCancelButtonStateEvent;
+
+    public Action<Feed, Feed, List<Int32>> ConfirmPodcastsForDownloadEvent;
     #endregion
 
     #region Methods
@@ -148,7 +150,7 @@ namespace PodFul.WPF
               }
             }
 
-            var downloadConfirmation = this.ConfirmPodcastsForDownload(podcastIndexes);
+            var downloadConfirmation = this.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
             {
               var feedReport = podcastIndexes.Count + " podcasts found";
@@ -241,7 +243,7 @@ namespace PodFul.WPF
 
     }
 
-    private DownloadConfirmationStatus ConfirmPodcastsForDownload(List<Int32> podcastIndexes)
+    private DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
     {
       if (podcastIndexes.Count == 0)
       {
@@ -250,16 +252,13 @@ namespace PodFul.WPF
 
       if (podcastIndexes.Count > 5)
       {
-        var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
-        var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
-        if (continuingDownloading == MessageBoxResult.Cancel)
+        if (this.ConfirmPodcastsForDownloadEvent != null)
         {
-          return DownloadConfirmationStatus.CancelScanning;
+          this.ConfirmPodcastsForDownloadEvent(oldFeed, newFeed, podcastIndexes);
         }
-
-        if (continuingDownloading == MessageBoxResult.No)
+        else
         {
-          return DownloadConfirmationStatus.SkipDownloading;
+          throw new Exception("No ConfirmPodcastsForDownloadEvent handler set.");
         }
       }
 
