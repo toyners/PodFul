@@ -38,7 +38,9 @@ namespace PodFul.WPF.Processing
     #region Properties
     public ObservableCollection<DownloadJob> Jobs { get; private set; }
 
-    public Boolean GotIncompleteJobs { get { return this.waitingJobs.Count > 0 || this.currentDownloads > 0; } }
+    public Boolean GotWaitingJobs { get { return this.waitingJobs.Count > 0; } }
+
+    public Boolean GotIncompleteJobs { get { return this.GotWaitingJobs || this.currentDownloads > 0; } }
     #endregion
 
     #region Events
@@ -80,9 +82,12 @@ namespace PodFul.WPF.Processing
       podcast.CancelDownload();
     }
 
+    /// <summary>
+    /// Will start any waiting jobs up to the concurrent maximum
+    /// </summary>
     public void StartDownloads()
     {
-      while (this.currentDownloads < this.concurrentDownloads)
+      while (this.GotWaitingJobs && this.currentDownloads < this.concurrentDownloads)
       {
         StartDownload();
       }

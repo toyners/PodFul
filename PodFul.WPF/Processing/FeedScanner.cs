@@ -87,8 +87,9 @@ namespace PodFul.WPF
       // will start before the downloading taks.
       var isScanning = true;
       String scanReport = null;
-
-      Task scanningTask = Task.Factory.StartNew(() =>
+      
+      Task scanningTask = Task.Factory.StartNew(
+      () =>
       {
         this.SetCancelButtonStateEvent?.Invoke(true);
         var podcastIndexes = new List<Int32>();
@@ -200,7 +201,8 @@ namespace PodFul.WPF
 
       }, cancelToken);
 
-      Task downloadingTask = Task.Factory.StartNew(() =>
+      Task downloadingTask = Task.Factory.StartNew(
+      () =>
       {
         while (isScanning || downloadManager.GotIncompleteJobs)
         {
@@ -208,6 +210,11 @@ namespace PodFul.WPF
           Thread.Sleep(50);
         }
 
+      }, cancelToken);
+
+      var completionTask = Task.Factory.ContinueWhenAll(new[] { scanningTask, downloadingTask },
+      (tasks) =>
+      {
         // Display the final scan report.
         if (scanReport == null)
         {
@@ -219,8 +226,8 @@ namespace PodFul.WPF
         }
 
         this.SetCancelButtonStateEvent?.Invoke(false);
-
       }, cancelToken);
+
     }
 
     private DownloadConfirmationStatus ConfirmPodcastsForDownload(List<Int32> podcastIndexes)
