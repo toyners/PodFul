@@ -9,6 +9,7 @@ namespace PodFul.WPF
   using System.Windows;
   using Jabberwocky.Toolkit.String;
   using Library;
+  using Logging;
   using Processing;
 
   /// <summary>
@@ -34,6 +35,8 @@ namespace PodFul.WPF
 
     private IFileDeliverer fileDeliverer;
 
+    private FileDeliveryLogger fileDeliveryLogger;
+
     private IImageResolver imageResolver;
 
     private Queue<Int32> indexes;
@@ -47,6 +50,7 @@ namespace PodFul.WPF
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
       IFileDeliverer fileDeliverer,
+      FileDeliveryLogger fileDeliveryLogger,
       ILogger logger,
       DownloadManager downloadManager)
     {
@@ -54,6 +58,7 @@ namespace PodFul.WPF
       this.indexes = feedIndexes;
       this.imageResolver = imageResolver;
       this.fileDeliverer = fileDeliverer;
+      this.fileDeliveryLogger = fileDeliveryLogger;
       this.logger = logger;
       this.downloadManager = downloadManager;
     }
@@ -215,6 +220,12 @@ namespace PodFul.WPF
       var completionTask = Task.Factory.ContinueWhenAll(new[] { scanningTask, downloadingTask },
       (tasks) =>
       {
+        // Collate the file delivery status
+        foreach (var deliveryLine in this.fileDeliveryLogger)
+        {
+          scanReport += deliveryLine + "\r\n";
+        }
+
         // Display the final scan report.
         if (scanReport == null)
         {

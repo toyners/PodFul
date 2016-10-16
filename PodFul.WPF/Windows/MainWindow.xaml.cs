@@ -27,7 +27,7 @@ namespace PodFul.WPF
     private Feed currentFeed;
     private FileLogger fileLogger;
     private GUILogger guiLogger;
-    private StringLogger stringLogger;
+    private FileDeliveryLogger fileDeliveryLogger;
     private Timer contextMenuTimer;
     private Settings settings;
 
@@ -35,7 +35,7 @@ namespace PodFul.WPF
     {
       this.fileLogger = new FileLogger();
       this.guiLogger = new GUILogger(this.fileLogger);
-      this.stringLogger = new StringLogger(this.fileLogger);
+      this.fileDeliveryLogger = new FileDeliveryLogger();
 
       InitializeComponent();
 
@@ -67,7 +67,7 @@ namespace PodFul.WPF
 
       this.FeedList.Focus();
 
-      this.settings = new Settings(this.stringLogger);
+      this.settings = new Settings(this.fileDeliveryLogger);
       this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
 
       this.fileLogger.Message("Main Window instantiated.");
@@ -187,7 +187,7 @@ namespace PodFul.WPF
       var feedIndexes = this.GetIndexesForAllFeeds();
 
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, downloadManager);
       var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       scanningWindow.ShowDialog();
     }
@@ -322,7 +322,7 @@ namespace PodFul.WPF
 
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
 
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.guiLogger, downloadManager);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, downloadManager);
       var processingWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       processingWindow.ShowDialog();
     }
