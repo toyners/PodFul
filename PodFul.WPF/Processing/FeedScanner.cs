@@ -73,7 +73,7 @@ namespace PodFul.WPF
 
     public Action<Boolean> SetCancelButtonStateEvent;
 
-    public Func<Feed, Feed, List<Int32>, Boolean?> ConfirmPodcastsForDownloadEvent;
+    public Action<Feed, Feed, List<Int32>, Action<Boolean, List<Int32>>> ConfirmPodcastsForDownloadEvent;
     #endregion
 
     #region Methods
@@ -263,8 +263,23 @@ namespace PodFul.WPF
           throw new Exception("No ConfirmPodcastsForDownloadEvent handler set.");
         }
 
-        var cancelScan = this.ConfirmPodcastsForDownloadEvent(oldFeed, newFeed, podcastIndexes);
+        Boolean? confirmationResult = null;
+        Action<Boolean, List<Int32>> callback = (cancelScan, confirmedIndexes) =>
+        {
+          confirmationResult = cancelScan;
+          podcastIndexes.Clear();
+          if (!cancelScan && confirmedIndexes != null)
+          {
+            podcastIndexes.AddRange(confirmedIndexes);
+          }
+        };
+
+        this.ConfirmPodcastsForDownloadEvent(oldFeed, newFeed, podcastIndexes, callback);
         
+        while (confirmationResult == null)
+        {
+          Thread.Sleep(100);
+        }
       }
 
       if (podcastIndexes.Count == 0)
