@@ -6,6 +6,7 @@ namespace PodFul.WPF
   using System.Windows;
   using Library;
   using Processing;
+  using Windows;
 
   /// <summary>
   /// Interaction logic for ScanningWindow.xaml
@@ -70,21 +71,25 @@ namespace PodFul.WPF
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
-        var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
-        if (continuingDownloading == MessageBoxResult.Cancel)
+        //var text = String.Format("{0} new podcasts found during feed scan.\r\n\r\nYes to continue with downloading.\r\nNo to skip downloading (feed will still be updated).\r\nCancel to stop scanning (feed will not be updated).", podcastIndexes.Count);
+        //var continuingDownloading = MessageBox.Show(text, "Multiple podcasts found.", MessageBoxButton.YesNoCancel);
+
+        var window = new DownloadConfirmation(oldFeed, newFeed, podcastIndexes);
+        window.ShowDialog();
+        var result = window.Result;
+        if (result == MessageBoxResult.Cancel)
         {
           callback(false, null);
           return;
         }
 
-        if (continuingDownloading == MessageBoxResult.No)
+        if (result == MessageBoxResult.No)
         {
           callback(true, null);
           return;
         }
 
-        callback(true, podcastIndexes);
+        callback(true, window.PodcastIndexes);
       });
     }
 

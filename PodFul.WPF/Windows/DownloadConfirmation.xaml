@@ -1,0 +1,15 @@
+﻿<Window x:Class="PodFul.WPF.Windows.DownloadConfirmation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PodFul.WPF.Windows"
+        mc:Ignorable="d"
+        Title="Confirm Podcast Downloads" Height="250" Width="800"
+        Icon="baggage_cart_box_tE4_icon.ico">
+    <StackPanel>
+      <Button Height="60" Margin="5" Click="Cancel">Cancel Scanning</Button>
+      <Button Height="60" Margin="5" Click="Skip_Click">Skip Downloading</Button>
+      <Button Height="60" Margin="5" Click="Download_Click">Download</Button>
+  </StackPanel>
+</Window>

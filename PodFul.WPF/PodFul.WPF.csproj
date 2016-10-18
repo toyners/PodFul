@@ -81,6 +81,9 @@
     <Compile Include="Converters\GeneralDateTimeConverter.cs" />
     <Compile Include="Converters\DownloadDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
+    <Compile Include="Windows\DownloadConfirmation.xaml.cs">
+      <DependentUpon>DownloadConfirmation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\FeedPropertiesWindow.xaml.cs">
       <DependentUpon>FeedPropertiesWindow.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddFeedWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DownloadConfirmation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
