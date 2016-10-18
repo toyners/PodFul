@@ -67,7 +67,7 @@ namespace PodFul.WPF
       });
     }
 
-    public void ConfirmPodcastsForDownloadEventHandler(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes, Action<Boolean, List<Int32>> callback)
+    public static void ConfirmPodcastsForDownloadEventHandler(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes, Action<Boolean, List<Int32>> callback)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {

@@ -9,17 +9,8 @@ namespace PodFul.WPF.Processing
   using System.Threading.Tasks;
   using Library;
 
-  public class PodcastDownloadConfirmer
+  public class PodcastDownloadConfirmer : IPodcastDownloadConfirmer
   {
-    #region Enums
-    public enum DownloadConfirmationStatus
-    {
-      CancelScanning,
-      ContinueDownloading,
-      SkipDownloading,
-    }
-    #endregion
-
     public delegate void ConfirmPodcastsForDownloadDelegate(Feed oldFeed, Feed newFeed, List<Int32> indexes, Action<Boolean, List<Int32>> callback);
 
     private Int32 confirmPodcastDownloadThreshold;

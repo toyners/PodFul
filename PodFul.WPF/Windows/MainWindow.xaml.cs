@@ -30,6 +30,7 @@ namespace PodFul.WPF
     private FileDeliveryLogger fileDeliveryLogger;
     private Timer contextMenuTimer;
     private Settings settings;
+    private IPodcastDownloadConfirmer podcastDownloadConfirmer;
 
     public MainWindow()
     {
@@ -69,6 +70,8 @@ namespace PodFul.WPF
 
       this.settings = new Settings(this.fileDeliveryLogger);
       this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
+
+      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings, ScanningWindow.ConfirmPodcastsForDownloadEventHandler);
 
       this.fileLogger.Message("Main Window instantiated.");
     }

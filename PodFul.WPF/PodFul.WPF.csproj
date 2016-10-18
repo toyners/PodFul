@@ -74,6 +74,7 @@
     <Compile Include="PodcastSynchroniser.cs" />
     <Compile Include="Processing\DownloadManager.cs" />
     <Compile Include="Processing\DownloadJob.cs" />
+    <Compile Include="Processing\IPodcastDownloadConfirmer.cs" />
     <Compile Include="Processing\PodcastDownloadConfirmer.cs" />
     <Compile Include="Windows\AddDeliveryPointWindow.xaml.cs">
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
