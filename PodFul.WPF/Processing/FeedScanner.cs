@@ -276,9 +276,14 @@ namespace PodFul.WPF
 
         this.ConfirmPodcastsForDownloadEvent(oldFeed, newFeed, podcastIndexes, callback);
         
-        while (confirmationResult == null)
+        while (!confirmationResult.HasValue)
         {
           Thread.Sleep(100);
+        }
+
+        if (!confirmationResult.Value)
+        {
+          return DownloadConfirmationStatus.CancelScanning;
         }
       }
 
