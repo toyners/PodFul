@@ -109,10 +109,12 @@ namespace PodFul.WPF
 
     private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
     {
+      // TODO: Scroll podcast download list.
     }
 
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
+      // TODO: Complete cancellation.
     }
     #endregion
   }
