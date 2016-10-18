@@ -182,16 +182,6 @@ namespace PodFul.WPF
       settingsWindow.ShowDialog();  
     }
 
-    private void Scan_Click(Object sender, RoutedEventArgs e)
-    {
-      var feedIndexes = this.GetIndexesForAllFeeds();
-
-      var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, downloadManager);
-      var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
-      scanningWindow.ShowDialog();
-    }
-
     private Queue<Int32> GetIndexForCurrentFeed()
     {
       var feedIndexes = new Queue<Int32>();
@@ -316,15 +306,12 @@ namespace PodFul.WPF
       e.Handled = true;
     }
 
-    private void ScanFeed_Click(Object sender, RoutedEventArgs e)
+    private void PerformScan(Queue<Int32> feedIndexes)
     {
-      var feedIndexes = this.GetIndexForCurrentFeed();
-
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
-
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, downloadManager);
-      var processingWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
-      processingWindow.ShowDialog();
+      var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
+      scanningWindow.ShowDialog();
     }
 
     private void Properties_Click(Object sender, RoutedEventArgs e)
@@ -333,10 +320,14 @@ namespace PodFul.WPF
       propertiesWindow.ShowDialog();
     }
 
-    private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
+    private void Scan_Click(Object sender, RoutedEventArgs e)
     {
-      this.FeedList_Scroller.ScrollToVerticalOffset(this.FeedList_Scroller.VerticalOffset - e.Delta);
-      e.Handled = true;
+      this.PerformScan(this.GetIndexesForAllFeeds());
+    }
+
+    private void ScanFeed_Click(Object sender, RoutedEventArgs e)
+    {
+      this.PerformScan(this.GetIndexForCurrentFeed());
     }
 
     private void Synchronise_Click(Object sender, RoutedEventArgs e)
@@ -352,6 +343,12 @@ namespace PodFul.WPF
       {
         MessageBox.Show("No files synchronised", "Synchronisation completed");
       }
+    }
+
+    private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+      this.FeedList_Scroller.ScrollToVerticalOffset(this.FeedList_Scroller.VerticalOffset - e.Delta);
+      e.Handled = true;
     }
   }
 }
