@@ -85,3 +85,8 @@
 
 ## 2.6.3 (1.7)
 1. **Fixed:** Bug where illegal file name characters are not cleaned up.
+
+## 2.7 (1.7)
+1. **Changed:** Scanning feeds now uses mult-threading to download podcasts while scanning continues.
+2. **Changed:** Cancel icon now available for each podcast download.
+3. **Fixed:** Cancelling downloads now working as expected.
