@@ -2,11 +2,8 @@
 namespace PodFul.WPF
 {
   using System;
-  using System.Collections.Generic;
   using System.Windows;
   using Library;
-  using Processing;
-  using Windows;
 
   /// <summary>
   /// Interaction logic for ScanningWindow.xaml
@@ -27,7 +24,6 @@ namespace PodFul.WPF
       imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-      feedScanner.ConfirmPodcastsForDownloadEvent = ScanningWindow.ConfirmPodcastsForDownloadEventHandler;
       return processingWindow;
     }
 
@@ -64,29 +60,6 @@ namespace PodFul.WPF
       {
         this.Cancel.IsEnabled = state;
         this.Cancel.Content = "Cancel";
-      });
-    }
-
-    public static void ConfirmPodcastsForDownloadEventHandler(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes, Action<Boolean, List<Int32>> callback)
-    {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        var window = new DownloadConfirmation(oldFeed, newFeed, podcastIndexes);
-        window.ShowDialog();
-        var result = window.Result;
-        if (result == MessageBoxResult.Cancel)
-        {
-          callback(false, null);
-          return;
-        }
-
-        if (result == MessageBoxResult.No)
-        {
-          callback(true, null);
-          return;
-        }
-
-        callback(true, window.PodcastIndexes);
       });
     }
 

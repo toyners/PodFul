@@ -17,15 +17,6 @@ namespace PodFul.WPF
   /// </summary>
   public class FeedScanner
   {
-    #region Enums
-    private enum DownloadConfirmationStatus
-    {
-      CancelScanning,
-      ContinueDownloading,
-      SkipDownloading,
-    }
-    #endregion
-
     #region Fields
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -42,6 +33,8 @@ namespace PodFul.WPF
     private Queue<Int32> indexes;
 
     private ILogger logger;
+
+    private IPodcastDownloadConfirmer podcastDownloadConfirmer;
     #endregion
 
     #region Construction
@@ -52,6 +45,7 @@ namespace PodFul.WPF
       IFileDeliverer fileDeliverer,
       FileDeliveryLogger fileDeliveryLogger,
       ILogger logger,
+      IPodcastDownloadConfirmer podcastDownloadConfirmer,
       DownloadManager downloadManager)
     {
       this.feedCollection = feedCollection;
@@ -60,6 +54,7 @@ namespace PodFul.WPF
       this.fileDeliverer = fileDeliverer;
       this.fileDeliveryLogger = fileDeliveryLogger;
       this.logger = logger;
+      this.podcastDownloadConfirmer = podcastDownloadConfirmer;
       this.downloadManager = downloadManager;
     }
     #endregion
@@ -72,8 +67,6 @@ namespace PodFul.WPF
     public Action<String> SetWindowTitleEvent;
 
     public Action<Boolean> SetCancelButtonStateEvent;
-
-    public Action<Feed, Feed, List<Int32>, Action<Boolean, List<Int32>>> ConfirmPodcastsForDownloadEvent;
     #endregion
 
     #region Methods
@@ -133,7 +126,7 @@ namespace PodFul.WPF
             var podcastIndexes = this.BuildPodcastList(feed, newFeed);
             var updateFeed = (podcastIndexes.Count > 0);
 
-            var downloadConfirmation = this.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
+            var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
             {
               var feedReport = podcastIndexes.Count + " podcasts found";
@@ -252,47 +245,6 @@ namespace PodFul.WPF
       }
 
       return podcastIndexes;
-    }
-
-    private DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
-    {
-      if (podcastIndexes.Count > 5)
-      {
-        if (this.ConfirmPodcastsForDownloadEvent == null)
-        {
-          throw new Exception("No ConfirmPodcastsForDownloadEvent handler set.");
-        }
-
-        Boolean? confirmationResult = null;
-        Action<Boolean, List<Int32>> callback = (cancelScan, confirmedIndexes) =>
-        {
-          confirmationResult = cancelScan;
-          podcastIndexes.Clear();
-          if (!cancelScan && confirmedIndexes != null)
-          {
-            podcastIndexes.AddRange(confirmedIndexes);
-          }
-        };
-
-        this.ConfirmPodcastsForDownloadEvent(oldFeed, newFeed, podcastIndexes, callback);
-        
-        while (!confirmationResult.HasValue)
-        {
-          Thread.Sleep(100);
-        }
-
-        if (!confirmationResult.Value)
-        {
-          return DownloadConfirmationStatus.CancelScanning;
-        }
-      }
-
-      if (podcastIndexes.Count == 0)
-      {
-        return DownloadConfirmationStatus.SkipDownloading;
-      }
-
-      return DownloadConfirmationStatus.ContinueDownloading;
     }
 
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)

@@ -71,7 +71,7 @@ namespace PodFul.WPF
       this.settings = new Settings(this.fileDeliveryLogger);
       this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
 
-      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings, ScanningWindow.ConfirmPodcastsForDownloadEventHandler);
+      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings);
 
       this.fileLogger.Message("Main Window instantiated.");
     }
@@ -312,7 +312,7 @@ namespace PodFul.WPF
     private void PerformScan(Queue<Int32> feedIndexes)
     {
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, downloadManager);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       scanningWindow.ShowDialog();
     }

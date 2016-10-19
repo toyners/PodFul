@@ -10,18 +10,11 @@ namespace PodFul.WPF.Processing
 
   public class PodcastDownloadConfirmer : IPodcastDownloadConfirmer
   {
-    public delegate void ConfirmPodcastsForDownloadDelegate(Feed oldFeed, Feed newFeed, List<Int32> indexes, Action<Boolean, List<Int32>> callback);
-
     private Int32 confirmPodcastDownloadThreshold;
 
-    private List<Int32> indexes;
-
-    private ConfirmPodcastsForDownloadDelegate confirmPodcastsForDownloadEvent;
-
-    public PodcastDownloadConfirmer(Settings settings, ConfirmPodcastsForDownloadDelegate confirmPodcastsForDownloadEventHandler)
+    public PodcastDownloadConfirmer(Settings settings)
     {
       this.confirmPodcastDownloadThreshold = settings.ConfirmPodcastDownloadThreshold;
-      this.confirmPodcastsForDownloadEvent = confirmPodcastsForDownloadEventHandler;
     }
 
     public DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
