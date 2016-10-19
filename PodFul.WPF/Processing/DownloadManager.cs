@@ -12,13 +12,13 @@ namespace PodFul.WPF.Processing
   public class DownloadManager
   {
     #region Fields
+    private UInt32 concurrentDownloads = 1;
+
+    private Int32 currentDownloads;
+
     private ILogger logger;
 
     private Queue<DownloadJob> waitingJobs;
-
-    private UInt32 concurrentDownloads = 1;
-
-    private Int32 currentDownloads = 0;
     #endregion
 
     #region Construction
@@ -36,15 +36,29 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
+    public Int32 CancelledJobsCount { get; private set; }
+
+    public Int32 CompletedJobsCount { get; private set; }
+
+    public Int32 FailedJobsCount { get; private set; }
+
+    public Boolean GotIncompleteJobs { get { return this.GotWaitingJobs || this.ProcessingJobsCount > 0; } }
+
+    public Boolean GotWaitingJobs { get { return this.WaitingJobsCount > 0; } }
+
     public ObservableCollection<DownloadJob> Jobs { get; private set; }
 
-    public Boolean GotWaitingJobs { get { return this.waitingJobs.Count > 0; } }
+    public Int32 ProcessingJobsCount { get { return this.currentDownloads; } }
 
-    public Boolean GotIncompleteJobs { get { return this.GotWaitingJobs || this.currentDownloads > 0; } }
+    public Int32 WaitingJobsCount { get { return this.waitingJobs.Count; } }
     #endregion
 
     #region Events
     public Action AllDownloadsCompletedEvent;
+
+    public Action JobFinishedEvent;
+
+    public Action JobStartedEvent;
     #endregion
 
     #region Methods
@@ -93,6 +107,28 @@ namespace PodFul.WPF.Processing
       }
     }
 
+    private void ProcessException(Exception exception, DownloadJob podcast)
+    {
+      Exception e = exception;
+      if (exception is AggregateException)
+      {
+        e = ((AggregateException)exception).Flatten();
+      }
+
+      if (e.InnerException != null)
+      {
+        e = e.InnerException;
+      }
+
+      this.logger.Exception(e.Message);
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        podcast.Status = DownloadJob.StatusTypes.Failed;
+        podcast.ExceptionMessage = e.Message;
+      });
+    }
+
     private void StartDownload()
     {
       if (this.waitingJobs.Count == 0)
@@ -109,6 +145,8 @@ namespace PodFul.WPF.Processing
       }
 
       this.currentDownloads++;
+
+      this.JobStartedEvent?.Invoke();
 
       Task task = null;
       var job = this.waitingJobs.Dequeue();
@@ -135,16 +173,19 @@ namespace PodFul.WPF.Processing
         if (t.Exception != null)
         {
           this.ProcessException(t.Exception, job);
+          this.FailedJobsCount++;
         }
         else if (t.IsCanceled)
         {
           job.DownloadCanceled();
+          this.CancelledJobsCount++;
         }
         else
         {
           try
           {
             job.DownloadCompleted();
+            this.CompletedJobsCount++;
           }
           catch (Exception e)
           {
@@ -154,29 +195,9 @@ namespace PodFul.WPF.Processing
 
         this.currentDownloads--;
 
+        this.JobFinishedEvent?.Invoke();
+
         this.StartDownload();
-      });
-    }
-
-    private void ProcessException(Exception exception, DownloadJob podcast)
-    {
-      Exception e = exception;
-      if (exception is AggregateException)
-      {
-        e = ((AggregateException)exception).Flatten();
-      }
-
-      if (e.InnerException != null)
-      {
-        e = e.InnerException;
-      }
-
-      this.logger.Exception(e.Message);
-
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        podcast.Status = DownloadJob.StatusTypes.Failed;
-        podcast.ExceptionMessage = e.Message;
       });
     }
     #endregion
