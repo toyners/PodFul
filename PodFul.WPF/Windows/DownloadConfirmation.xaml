@@ -7,9 +7,19 @@
         mc:Ignorable="d"
         Title="Confirm Podcast Downloads" Height="250" Width="800"
         Icon="baggage_cart_box_tE4_icon.ico">
-    <StackPanel>
-      <Button Height="60" Margin="5" Click="Cancel">Cancel Scanning</Button>
-      <Button Height="60" Margin="5" Click="Skip_Click">Skip Downloading</Button>
-      <Button Height="60" Margin="5" Click="Download_Click">Download</Button>
-  </StackPanel>
+  <DockPanel>
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Height="30" Width="80" Margin="5" Padding="5" Click="Cancel" >Cancel</Button>
+        <Button Height="30" Width="80" Margin="5" Padding="5" Click="Skip_Click">Skip</Button>
+        <Button Height="30" Width="80" Margin="5" Padding="5" Click="Download_Click">Download</Button>
+      </StackPanel>
+    </Border>
+
+    <Border BorderBrush="Black" BorderThickness="1">
+      <ListBox DockPanel.Dock="Top">
+
+      </ListBox>
+    </Border>
+  </DockPanel>
 </Window>
