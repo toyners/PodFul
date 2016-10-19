@@ -27,7 +27,7 @@ namespace PodFul.WPF
       imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-      feedScanner.ConfirmPodcastsForDownloadEvent = processingWindow.ConfirmPodcastsForDownloadEventHandler;
+      feedScanner.ConfirmPodcastsForDownloadEvent = ScanningWindow.ConfirmPodcastsForDownloadEventHandler;
       return processingWindow;
     }
 
