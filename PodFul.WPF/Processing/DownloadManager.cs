@@ -146,11 +146,11 @@ namespace PodFul.WPF.Processing
 
       this.currentDownloads++;
 
-      this.JobStartedEvent?.Invoke();
 
-      Task task = null;
       var job = this.waitingJobs.Dequeue();
       job.InitialiseBeforeDownload();
+
+      Task task = null;
       try
       {
         task = Task.Factory.StartNew(() =>
@@ -165,6 +165,9 @@ namespace PodFul.WPF.Processing
         this.ProcessException(e, job);
         return;
       }
+
+      // Definition of 'job started' is when the thread has been created and is ready to run.
+      this.JobStartedEvent?.Invoke();
 
       task.ContinueWith(t =>
       {
