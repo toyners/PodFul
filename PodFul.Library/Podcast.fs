@@ -36,11 +36,27 @@ type Podcast =
                 | true -> 
                     failwith "Cannot get FileName: URL is null or empty."
                 | _ ->
-                    let mutable index = this.URL.LastIndexOf('/') + 1
-                    if index = 0 then
-                        index <- this.URL.LastIndexOf('\\') + 1
+                    let mutable slashIndex = this.URL.LastIndexOf('/') + 1
+                    if slashIndex = 0 then
+                        slashIndex <- this.URL.LastIndexOf('\\') + 1
 
-                    this.URL.Substring(index).Substitute(this.fileNameSubstitutions)
+                    // Handle the situation where the file name is buried in the url 
+                    // e.g. http://abc.com/filename.mp3?somekey=somevalue.
+                    // But watch out for situations where .mp3 is part of the domain 
+                    // e.g. http://abc.mp3.cpm/filename
+                    let mp3Index = this.URL.LastIndexOf(".mp3")
+
+                    let mutable name = null
+                    if mp3Index > slashIndex then
+                        name <- this.URL.Substring(slashIndex, mp3Index - slashIndex)
+                    else
+                        name <- this.URL.Substring(slashIndex)
+
+                    // Ensure that the filename extension is present.
+                    if name.EndsWith(".mp3") <> true then
+                        name <- name + ".mp3"
+
+                    name.Substitute(this.fileNameSubstitutions)
 
         member this.SetAllFileDetails fileSize downloadDate imageFileName =
             if this.FileDetails.FileSize <> fileSize ||
