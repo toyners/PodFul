@@ -47,8 +47,8 @@ type Podcast =
                     let mp3Index = this.URL.LastIndexOf(".mp3")
 
                     let mutable name = null
-                    if mp3Index > slashIndex then
-                        name <- this.URL.Substring(slashIndex, mp3Index - slashIndex)
+                    if mp3Index - slashIndex > 1 then
+                        name <- this.URL.Substring(slashIndex, mp3Index - slashIndex + ".mp3".Length)
                     else
                         name <- this.URL.Substring(slashIndex)
 
