@@ -5,7 +5,6 @@ namespace PodFul.WPF
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
-  using Jabberwocky.Toolkit.String;
   using PodFul.WPF.Processing;
 
   /// <summary>
@@ -26,12 +25,12 @@ namespace PodFul.WPF
 
       this.downloadManager = downloadManager;
       this.downloadManager.AllDownloadsCompletedEvent = DownloadCompleted;
-      this.downloadManager.JobStartedEvent = UpdateWindowTitle;
-      this.downloadManager.JobFinishedEvent = UpdateWindowTitle;
+      this.downloadManager.JobStartedEvent = UpdateCounts;
+      this.downloadManager.JobFinishedEvent = UpdateCounts;
 
       this.PodcastList.ItemsSource = downloadManager.Jobs;
 
-      this.Title = "Downloading " + downloadManager.Jobs.Count + " Podcast".Pluralize((UInt32)downloadManager.Jobs.Count);
+      this.UpdateCounts();
     }
     #endregion
 
@@ -56,30 +55,46 @@ namespace PodFul.WPF
     {
     }
 
-    private void UpdateWindowTitle()
+    private void UpdateCounts()
     {
-      Application.Current.Dispatcher.Invoke(() =>
+      var waitingJobCount = this.downloadManager.WaitingJobsCount;
+      var processingJobCount = this.downloadManager.ProcessingJobsCount;
+      var completedJobCount = this.downloadManager.CompletedJobsCount;
+      var cancelledJobCount = this.downloadManager.CancelledJobsCount;
+      var failedJobCount = this.downloadManager.FailedJobsCount;
+
+      var title = String.Format("Downloading Podcasts: {0} waiting, {1} processing, {2} completed", waitingJobCount, processingJobCount, completedJobCount);
+
+      if (cancelledJobCount > 0)
       {
-        var waitingJobCount = this.downloadManager.WaitingJobsCount;
-        var processingJobCount = this.downloadManager.ProcessingJobsCount;
-        var completedJobCount = this.downloadManager.CompletedJobsCount;
-        var cancelledJobCount = this.downloadManager.CancelledJobsCount;
-        var failedJobCount = this.downloadManager.FailedJobsCount;
+        title += ", " + cancelledJobCount + " cancelled";
+      }
 
-        var title = String.Format("Downloading Podcasts: {0} waiting, {1} processing, {2} completed", waitingJobCount, processingJobCount, completedJobCount);
+      if (failedJobCount > 0)
+      {
+        title += ", " + failedJobCount + " failed";
+      }
 
-        if (cancelledJobCount > 0)
-        {
-          title += ", " + cancelledJobCount + " cancelled";
-        }
+      var waitingJobText = "Waiting: " + waitingJobCount;
+      var processingCountText = "Processing: " + processingJobCount;
+      var completedCountText = "Completed: " + completedJobCount;
+      var cancelledCountText = (cancelledJobCount == 0 ? String.Empty : "Cancelled: " + cancelledJobCount);
+      var failedCountText = (failedJobCount == 0 ? String.Empty : "Failed: " + failedJobCount);
 
-        if (failedJobCount > 0)
-        {
-          title += ", " + failedJobCount + " failed";
-        }
+      UpdateUICountsDelegate updateUICountsDelegate = UpdateUICounts;
+      Application.Current.Dispatcher.BeginInvoke(updateUICountsDelegate, waitingJobText, processingCountText, completedCountText, cancelledCountText, failedCountText);
+    }
 
-        this.Title = title;
-      });
+    private delegate void UpdateUICountsDelegate(String windowsTitle, String waitingCountText, String processingCountText, String completedCountText, String cancelledCountText, String failedCountText);
+
+    private void UpdateUICounts(String windowsTitle, String waitingCountText, String processingCountText, String completedCountText, String cancelledCountText, String failedCountText)
+    {
+      this.Title = windowsTitle;
+      this.WaitingCount.Text = waitingCountText;
+      this.WaitingCount.Text = processingCountText;
+      this.WaitingCount.Text = completedCountText;
+      this.WaitingCount.Text = cancelledCountText;
+      this.WaitingCount.Text = failedCountText;
     }
 
     private void Window_Loaded(Object sender, RoutedEventArgs e)

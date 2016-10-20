@@ -10,20 +10,22 @@
         Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button Name="CancelAll" Margin="5" Width="60" Height="30" HorizontalAlignment="Right" Click="CancelAllDownloads_Click">
+      <Button Name="CancelAll" Margin="3" Width="60" Height="30" HorizontalAlignment="Right" Click="CancelAllDownloads_Click">
         Cancel All
       </Button>
     </Border>
 
-    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,0,5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,0,3">
       <StackPanel Orientation="Horizontal">
-        <TextBlock Name="WaitingCount">Completed count</TextBlock>
-        <TextBlock Name="ProcessingCount">Processing count</TextBlock>
-        <TextBlock Name="CompletedCount">Processing count</TextBlock>
+        <TextBlock Name="WaitingCount" Margin="3,0" >Waiting count</TextBlock>
+        <TextBlock Name="ProcessingCount" Margin="3,0" Foreground="Blue">Processing count</TextBlock>
+        <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green">Completed count</TextBlock>
+        <TextBlock Name="CancelledCount" Margin="3,0" Foreground="OrangeRed">Cancelled count</TextBlock>
+        <TextBlock Name="FailedCount" Margin="3,0" Foreground="Red">Failed count</TextBlock>
       </StackPanel>
     </Border>
 
-    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,3">
       <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseWheel="FeedList_MouseWheel">
         <ListBox.ItemTemplate>
