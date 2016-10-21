@@ -13,9 +13,9 @@ namespace PodFul.WPF
   public partial class PodcastDownloadWindow : Window
   {
     #region Fields
-    private Boolean isLoaded;
     private DownloadManager downloadManager;
-    private Int32 threadCount;
+    private Boolean isLoaded;
+    private Boolean isProcessing;
     #endregion
 
     #region Construction
@@ -24,7 +24,7 @@ namespace PodFul.WPF
       InitializeComponent();
 
       this.downloadManager = downloadManager;
-      this.downloadManager.AllDownloadsCompletedEvent = DownloadCompleted;
+      this.downloadManager.AllDownloadsCompletedEvent = WorkCompleted;
       this.downloadManager.JobStartedEvent = UpdateCounts;
       this.downloadManager.JobFinishedEvent = UpdateCounts;
 
@@ -35,20 +35,23 @@ namespace PodFul.WPF
     #endregion
 
     #region Methods
-    private void CancelAllDownloads_Click(Object sender, RoutedEventArgs e)
-    {
-      this.CancelAll.IsEnabled = false;
-      this.downloadManager.CancelAllDownloads();      
-    }
-
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
       this.downloadManager.CancelDownload((sender as Button).DataContext);
     }
 
-    private void DownloadCompleted()
+    private void CommandButton_Click(Object sender, RoutedEventArgs e)
     {
-      Application.Current.Dispatcher.Invoke(() => { this.CancelAll.IsEnabled = false; });
+      if (this.isProcessing)
+      {
+        this.CommandButton.Content = "Cancelling";
+        this.CommandButton.IsEnabled = false;
+        this.downloadManager.CancelAllDownloads();
+      }
+      else
+      {
+        this.Close();
+      }
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
@@ -101,12 +104,23 @@ namespace PodFul.WPF
     {
       if (!this.isLoaded)
       {
-        this.CancelAll.IsEnabled = true;
+        this.isProcessing = true;
+        this.CommandButton.Content = "Cancel";
         this.downloadManager.StartDownloads();
         
         // Ensure this functionality is only called once.
         this.isLoaded = true;
       }
+    }
+
+    private void WorkCompleted()
+    {
+      this.isProcessing = false;
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.CommandButton.Content = "Close";
+        this.CommandButton.IsEnabled = true;
+      });
     }
     #endregion
   }
