@@ -36,6 +36,8 @@ namespace PodFul.WPF.Processing
 
     private IFileDeliverer fileDeliverer;
 
+    private Boolean fileSizeNotKnown;
+
     private IImageResolver imageResolver;
 
     private Int64 podcastSize;
@@ -110,7 +112,11 @@ namespace PodFul.WPF.Processing
 
     public String FilePath { get; private set; }
 
-    public Boolean FileSizeNotKnown { get; private set; }
+    public Boolean FileSizeNotKnown
+    {
+      get { return this.fileSizeNotKnown; }
+      set { this.SetField(ref this.fileSizeNotKnown, value); }
+    }
 
     public String Name { get { return this.podcast.Title; } }
 

@@ -146,7 +146,6 @@ namespace PodFul.WPF.Processing
 
       this.currentDownloads++;
 
-
       var job = this.waitingJobs.Dequeue();
       job.InitialiseBeforeDownload();
 
@@ -171,7 +170,13 @@ namespace PodFul.WPF.Processing
 
       task.ContinueWith(t =>
       {
-        Application.Current.Dispatcher.Invoke(() => { job.CancellationCanBeRequested = false; });
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          job.CancellationCanBeRequested = false;
+          // If this is job had an unknown file size and so the progress bar was marque then
+          // the marque effect needs to be turned off regardless of the job status.
+          job.FileSizeNotKnown = true;
+        });
 
         if (t.Exception != null)
         {
