@@ -25,11 +25,20 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
               </Grid.ColumnDefinitions>
 
-              <TextBlock Text="{Binding OldTitle}" />
-              <TextBlock Grid.Column="1" Text="{Binding NewTitle}" />
-              <CheckBox Grid.Column="2" />
+              <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+              </Grid.RowDefinitions>
+
+              <TextBlock Text="{Binding Number}" Margin="5,0,0,0" />
+              <TextBlock Grid.Column="1" Text="{Binding OldTitle}" Margin="5,0,0,0" />
+              <TextBlock Grid.Column="2" Text="{Binding NewTitle}" Margin="5,0,0,0" />
+              <CheckBox Grid.Column="3" Margin="5,0,0,0" />
+              <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding OldPubDate}" Margin="5,0,0,0" />
+              <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding NewPubDate}" Margin="5,0,0,0" />
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

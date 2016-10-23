@@ -5,30 +5,29 @@ namespace PodFul.WPF.Windows
   using System.Collections.Generic;
   using System.Windows;
   using Library;
+  using Processing;
 
   /// <summary>
   /// Interaction logic for DownloadConfirmation.xaml
   /// </summary>
   public partial class DownloadConfirmation : Window
   {
+    #region Fields
     public MessageBoxResult Result = MessageBoxResult.None;
 
     public List<Int32> PodcastIndexes { get; private set; }
+    #endregion
 
+    #region Construction
     public DownloadConfirmation(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
     {
       InitializeComponent();
 
-      var podcastComparison = new PodcastComparison();
-      podcastComparison.OldTitle = oldFeed.Podcasts[0].Title;
-      podcastComparison.NewTitle = newFeed.Podcasts[0].Title;
-
-      var list = new List<PodcastComparison>();
-      list.Add(podcastComparison);
-
-      this.PodcastList.ItemsSource = list;
+      this.PodcastList.ItemsSource = this.CreatePodcastComparisonList(oldFeed, newFeed);
     }
+    #endregion
 
+    #region Methods
     private void Cancel(Object sender, RoutedEventArgs e)
     {
       this.PodcastIndexes = null;
@@ -36,17 +35,23 @@ namespace PodFul.WPF.Windows
       this.Close();
     }
 
-    private void Skip_Click(Object sender, RoutedEventArgs e)
+    private List<PodcastComparison> CreatePodcastComparisonList(Feed oldFeed, Feed newFeed)
     {
-      this.PodcastIndexes = null;
-      this.Result = MessageBoxResult.No;
-      this.Close();
+      var list = new List<PodcastComparison>(newFeed.Podcasts.Length);
+      return list;
     }
 
     private void Download_Click(Object sender, RoutedEventArgs e)
     {
       this.PodcastIndexes = new List<Int32>();
       this.Result = MessageBoxResult.Yes;
+      this.Close();
+    }
+
+    private void Skip_Click(Object sender, RoutedEventArgs e)
+    {
+      this.PodcastIndexes = null;
+      this.Result = MessageBoxResult.No;
       this.Close();
     }
 
@@ -58,12 +63,6 @@ namespace PodFul.WPF.Windows
         this.PodcastIndexes = null;
       }
     }
-  }
-
-  public class PodcastComparison
-  {
-    public String OldTitle { get; set; }
-
-    public String NewTitle { get; set; }
+    #endregion
   }
 }
