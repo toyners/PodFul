@@ -54,7 +54,7 @@ namespace PodFul.WPF.Processing
         }
       }
 
-      if (podcastIndexes.Count == 0)
+      if (podcastIndexes == null)
       {
         return DownloadConfirmationStatus.SkipDownloading;
       }
