@@ -173,9 +173,9 @@ namespace PodFul.WPF.Processing
         Application.Current.Dispatcher.Invoke(() =>
         {
           job.CancellationCanBeRequested = false;
-          // If this is job had an unknown file size and so the progress bar was marque then
-          // the marque effect needs to be turned off regardless of the job status.
-          job.FileSizeNotKnown = true;
+          // If this job had an unknown file size then the progress bar was marque.
+          // Regardless, ensure that the marque effect is turned off.
+          job.FileSizeNotKnown = false;
         });
 
         if (t.Exception != null)
