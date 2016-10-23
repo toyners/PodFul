@@ -10,7 +10,7 @@ namespace PodFul.WPF.Logging
     #region Fields
     private List<String> messages = new List<String>();
 
-    private Int32 enumeratorIndex;
+    private Int32 enumeratorIndex = -1;
     #endregion
 
     #region Properties
@@ -47,7 +47,7 @@ namespace PodFul.WPF.Logging
 
     public void Reset()
     {
-      this.enumeratorIndex = 0;
+      this.enumeratorIndex = -1;
     }
 
     public IEnumerator GetEnumerator()
