@@ -26,6 +26,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
               </Grid.ColumnDefinitions>
 
               <Grid.RowDefinitions>
@@ -33,12 +34,49 @@
                 <RowDefinition />
               </Grid.RowDefinitions>
 
-              <TextBlock Text="{Binding Number}" Margin="5,0,0,0" />
+              <TextBlock Text="{Binding OldNumber}" Margin="5,0,0,0" />
               <TextBlock Grid.Column="1" Text="{Binding OldTitle}" Margin="5,0,0,0" />
-              <TextBlock Grid.Column="2" Text="{Binding NewTitle}" Margin="5,0,0,0" />
-              <CheckBox Grid.Column="3" Margin="5,0,0,0" />
-              <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding OldPubDate}" Margin="5,0,0,0" />
-              <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding NewPubDate}" Margin="5,0,0,0" />
+              <TextBlock Grid.Column="2" Text="{Binding NewNumber}" Margin="5,0,0,0" />
+              <TextBlock Grid.Column="3" Text="{Binding NewTitle}" Margin="5,0,0,0" />
+              <CheckBox Grid.Column="4" Margin="5,0,0,0" />
+
+              <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+
+                  <TextBlock Text="{Binding OldPubDate}" Margin="5,0,0,0" />
+                  <TextBlock Grid.Column="1" Text="{Binding OldFileSize}" Margin="5,0,0,0" />
+                </Grid>
+                
+                <TextBlock Grid.Row="1" Text="{Binding OldURL}" Margin="5,0,0,0" />
+              </Grid>
+
+              <Grid Grid.Row="1" Grid.Column="3">
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+
+                  <TextBlock Text="{Binding NewPubDate}" Margin="5,0,0,0" />
+                  <TextBlock Grid.Column="1" Text="{Binding NewFileSize}" Margin="5,0,0,0" />
+                </Grid>
+
+                <TextBlock Grid.Row="1" Text="{Binding NewURL}" Margin="5,0,0,0" />
+              </Grid>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>
