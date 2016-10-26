@@ -54,16 +54,27 @@ namespace PodFul.WPF.Processing
         }
         else
         {
-          this.FileSize = podcast.FileDetails.FileSize.ToString();
+          if (podcast.FileDetails.FileSize == -1)
+          {
+            this.FileSize = "File size: (unknown)";
+          }
+          else
+          {
+            this.FileSize = "File size: " + podcast.FileDetails.FileSize.ToString();
+          }
+
           this.Number = number.ToString();
-          this.PubDate = "PubDate: " + podcast.PubDate.ToString();
+          this.DownloadDate = "Download date: " + podcast.FileDetails.DownloadDate.ToString();
+          this.PubDate = "Publishing date: " + podcast.PubDate.ToString();
           this.Title = podcast.Title;
-          this.URL = podcast.URL;
+          this.URL = "URL: " + podcast.URL;
         }
       }
       #endregion
 
       #region Properties
+      public String DownloadDate { get; private set; }
+
       public String FileSize { get; private set; }
 
       public String Number { get; private set; }

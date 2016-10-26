@@ -23,9 +23,9 @@
             <Grid>
               <Grid.ColumnDefinitions>
                 <ColumnDefinition />
+                <ColumnDefinition MinWidth="100" />
                 <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition MinWidth="100"/>
                 <ColumnDefinition />
               </Grid.ColumnDefinitions>
 
@@ -50,10 +50,12 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <TextBlock FontSize="8" Text="{Binding OldPubDate}" Margin="5,0,0,0" />
-                  <TextBlock Grid.Column="1" Text="{Binding OldFileSize}" Margin="5,0,0,0" />
+                  <TextBlock Text="{Binding OldPubDate}" Margin="5,0,0,0" />
+                  <TextBlock Grid.Column="1" Text="{Binding OldDownloadDate}" Margin="5,0,0,0" />
+                  <TextBlock Grid.Column="2" Text="{Binding OldFileSize}" Margin="5,0,0,0" />
                 </Grid>
 
                 <TextBlock Grid.Row="1" Text="{Binding OldURL}" Margin="5,0,0,0" />
@@ -69,10 +71,12 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
                   <TextBlock Text="{Binding NewPubDate}" Margin="5,0,0,0" />
-                  <TextBlock Grid.Column="1" Text="{Binding NewFileSize}" Margin="5,0,0,0" />
+                  <TextBlock Grid.Column="1" Text="{Binding NewDownloadDate}" Margin="5,0,0,0" />
+                  <TextBlock Grid.Column="2" Text="{Binding NewFileSize}" Margin="5,0,0,0" />
                 </Grid>
 
                 <TextBlock Grid.Row="1" Text="{Binding NewURL}" Margin="5,0,0,0" />
