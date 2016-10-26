@@ -48,11 +48,15 @@ namespace PodFul.WPF.Processing
       #region Construction
       public Data(Int32 number, Podcast podcast)
       {
-        if (podcast != null)
+        if (podcast == null)
+        {
+          this.Title = "(no match)";
+        }
+        else
         {
           this.FileSize = podcast.FileDetails.FileSize.ToString();
           this.Number = number.ToString();
-          this.PubDate = podcast.PubDate.ToString();
+          this.PubDate = "PubDate: " + podcast.PubDate.ToString();
           this.Title = podcast.Title;
           this.URL = podcast.URL;
         }

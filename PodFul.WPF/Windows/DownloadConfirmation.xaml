@@ -35,9 +35,9 @@
               </Grid.RowDefinitions>
 
               <TextBlock Text="{Binding OldNumber}" Margin="5,0,0,0" />
-              <TextBlock Grid.Column="1" Text="{Binding OldTitle}" Margin="5,0,0,0" />
+              <TextBlock Grid.Column="1" Text="{Binding OldTitle}" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
               <TextBlock Grid.Column="2" Text="{Binding NewNumber}" Margin="5,0,0,0" />
-              <TextBlock Grid.Column="3" Text="{Binding NewTitle}" Margin="5,0,0,0" />
+              <TextBlock Grid.Column="3" Text="{Binding NewTitle}" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
               <CheckBox Grid.Column="4" Margin="5,0,0,0" />
 
               <Grid Grid.Row="1" Grid.Column="1">
@@ -52,10 +52,10 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <TextBlock Text="{Binding OldPubDate}" Margin="5,0,0,0" />
+                  <TextBlock FontSize="8" Text="{Binding OldPubDate}" Margin="5,0,0,0" />
                   <TextBlock Grid.Column="1" Text="{Binding OldFileSize}" Margin="5,0,0,0" />
                 </Grid>
-                
+
                 <TextBlock Grid.Row="1" Text="{Binding OldURL}" Margin="5,0,0,0" />
               </Grid>
 
