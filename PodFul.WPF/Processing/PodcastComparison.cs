@@ -54,7 +54,7 @@ namespace PodFul.WPF.Processing
         }
         else
         {
-          if (podcast.FileDetails.FileSize == -1)
+          if (podcast.FileDetails.FileSize <= 0)
           {
             this.FileSize = "File size: (unknown)";
           }
