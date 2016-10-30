@@ -63,17 +63,17 @@ type FeedFunctions_UnitTests() =
         Assert.AreEqual(result, "abc")
 
     [<Test>]
-    member public this.``Create feed with bad url returns retry exception``() =
+    member public this.``Create feed with bad url returns exception``() =
         let guid = Guid.NewGuid()
         let badURL = "http://" + guid.ToString() + ".com"
         let directory = @"C:\directory\"
 
         let mutable testSuccessful = false
-        try
+        try 
             FeedFunctions.CreateFeed badURL directory null System.Threading.CancellationToken.None |> ignore
         with
         | _ as e ->
-            let r = e :? FeedFunctions.RetryException
+            let r = e :? System.Net.WebException
             Assert.AreEqual(r, true)
             
             testSuccessful <- true

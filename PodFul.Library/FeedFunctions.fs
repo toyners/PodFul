@@ -151,8 +151,6 @@ module public FeedFunctions =
                 }
           ] |> List.toArray
 
-    exception RetryException of Exception
-
     let tryDownloadDocument (webClient : WebClient) (uri : Uri) retryCount : XDocument =
         
         let mutable retryCount = retryCount
@@ -166,7 +164,7 @@ module public FeedFunctions =
             | _ as ex ->
                     retryCount <- retryCount - 1
                     if retryCount = 0 then
-                        raise (RetryException ex)
+                        reraise()
 
         document
 
@@ -182,25 +180,17 @@ module public FeedFunctions =
             tryDownloadDocument webClient uri 5
             
         with
-        | :? RetryException as retryex ->
-            if retryex.InnerException = null then
+        | :? System.Net.WebException as webex ->
+            match webex.Response with
+            | null -> reraise()
+            | _ -> 
+                use streamReader = new StreamReader(webex.Response.GetResponseStream())
+                let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
+                use streamWriter = new StreamWriter(errorLogFilePath)
+                let responseText = streamReader.ReadToEnd()
+                streamWriter.Write(responseText)
+                let message = webex.Message + ". Error log written to '" + errorLogFilePath + "'."
                 reraise()
-                
-            match (retryex.InnerException :? System.Net.WebException) with
-            | false -> 
-                reraise()
-            | _ ->
-                let webex = retryex.InnerException :?> System.Net.WebException
-                match webex.Response with
-                | null -> reraise()
-                | _ -> 
-                    use streamReader = new StreamReader(webex.Response.GetResponseStream())
-                    let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
-                    use streamWriter = new StreamWriter(errorLogFilePath)
-                    let responseText = streamReader.ReadToEnd()
-                    streamWriter.Write(responseText)
-                    let message = webex.Message + ". Error log written to '" + errorLogFilePath + "'."
-                    raise (RetryException (new System.Net.WebException(message)))
             
     let private mergeFeeds (oldFeed : Feed) (newFeed : Feed) : Feed =
 
