@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
-        Title="Confirm Podcast Downloads" Height="700" Width="920"
-        Icon="baggage_cart_box_tE4_icon.ico" Closing="Window_Closing">
+        Title="Confirm Podcast Downloads" Height="700" Width="923"
+        Icon="baggage_cart_box_tE4_icon.ico" Closing="Window_Closing" ResizeMode="NoResize">
   <DockPanel>
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
