@@ -58,6 +58,7 @@
     <Compile Include="TextTruncator_UnitTests.fs" />
     <Compile Include="DownloadDateTimeConverter_UnitTests.fs" />
     <Compile Include="FileSizeConverter_UnitTests.fs" />
+    <Compile Include="PodcastComparisonListCreator_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">
@@ -81,6 +82,11 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
+      <Name>PodFul.Library</Name>
+      <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\PodFul.WPF\PodFul.WPF.csproj">
       <Name>PodFul.WPF</Name>
       <Project>{acc61fe2-7dcb-4b41-9c2d-3de3016dcf69}</Project>
