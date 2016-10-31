@@ -21,15 +21,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
-    public String OldFileSize { get { return this.oldPodcastData.FileSize; } }
-
-    public String OldNumber { get { return this.oldPodcastData.Number; } }
-
-    public String OldPubDate { get { return this.oldPodcastData.PubDate; } }
-
-    public String OldTitle { get { return this.oldPodcastData.Title; } }
-
-    public String OldURL { get { return this.oldPodcastData.URL; } }
+    public String NewDownloadDate { get { return this.newPodcastData.DownloadDate; } }
 
     public String NewFileSize { get { return this.newPodcastData.FileSize; } }
 
@@ -40,6 +32,18 @@ namespace PodFul.WPF.Processing
     public String NewTitle { get { return this.newPodcastData.Title; } }
 
     public String NewURL { get { return this.newPodcastData.URL; } }
+
+    public String OldDownloadDate { get { return this.oldPodcastData.DownloadDate; } }
+
+    public String OldFileSize { get { return this.oldPodcastData.FileSize; } }
+
+    public String OldNumber { get { return this.oldPodcastData.Number; } }
+
+    public String OldPubDate { get { return this.oldPodcastData.PubDate; } }
+
+    public String OldTitle { get { return this.oldPodcastData.Title; } }
+
+    public String OldURL { get { return this.oldPodcastData.URL; } }
     #endregion
 
     #region Classes

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
-        Title="Confirm Podcast Downloads" Height="700" Width="800"
+        Title="Confirm Podcast Downloads" Height="700" Width="920"
         Icon="baggage_cart_box_tE4_icon.ico" Closing="Window_Closing">
   <DockPanel>
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
@@ -20,68 +20,70 @@
       <ListBox Name="PodcastList" DockPanel.Dock="Top">
         <ListBox.ItemTemplate>
           <DataTemplate>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="400" />
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="400" />
-                <ColumnDefinition Width="30"/>
-              </Grid.ColumnDefinitions>
+            <Border BorderBrush="Black" BorderThickness="1">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="20"/>
+                  <ColumnDefinition Width="400" />
+                  <ColumnDefinition Width="20"/>
+                  <ColumnDefinition Width="400" />
+                  <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
 
-              <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-              </Grid.RowDefinitions>
-
-              <TextBlock Text="{Binding OldNumber}" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
-              <TextBlock Grid.Column="1" Text="{Binding OldTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
-              <TextBlock Grid.Column="2" Text="{Binding NewNumber}" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
-              <TextBlock Grid.Column="3" Text="{Binding NewTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
-              <CheckBox Grid.Column="4" Margin="5,0,0,0" />
-
-              <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.RowDefinitions>
                   <RowDefinition />
                   <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                  </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding OldNumber}" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+                <TextBlock Grid.Column="1" Text="{Binding OldTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+                <TextBlock Grid.Column="2" Text="{Binding NewNumber}" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+                <TextBlock Grid.Column="3" Text="{Binding NewTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+                <CheckBox Grid.Column="4" Margin="5,0,0,0" />
 
-                  <TextBlock Text="{Binding OldPubDate}" Margin="5,0,0,0" />
-                  <TextBlock Grid.Column="1" Text="{Binding OldDownloadDate}" Margin="5,0,0,0" />
-                  <TextBlock Grid.Column="2" Text="{Binding OldFileSize}" Margin="5,0,0,0" />
+                <Grid Grid.Row="1" Grid.Column="1">
+                  <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                  </Grid.RowDefinitions>
+
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition />
+                      <ColumnDefinition />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding OldPubDate}" Margin="5,0,0,0" />
+                    <TextBlock Grid.Column="1" Text="{Binding OldDownloadDate}" Margin="5,0,0,0" />
+                    <TextBlock Grid.Column="2" Text="{Binding OldFileSize}" Margin="5,0,0,0" />
+                  </Grid>
+
+                  <TextBlock Grid.Row="1" Text="{Binding OldURL}" TextWrapping="Wrap" Margin="5,0,0,0" />
                 </Grid>
 
-                <TextBlock Grid.Row="1" Text="{Binding OldURL}" TextWrapping="Wrap" Margin="5,0,0,0" />
-              </Grid>
+                <Grid Grid.Row="1" Grid.Column="3">
+                  <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                  </Grid.RowDefinitions>
 
-              <Grid Grid.Row="1" Grid.Column="3">
-                <Grid.RowDefinitions>
-                  <RowDefinition />
-                  <RowDefinition />
-                </Grid.RowDefinitions>
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition />
+                      <ColumnDefinition />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                  </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding NewPubDate}" Margin="5,0,0,0" />
+                    <TextBlock Grid.Column="1" Text="{Binding NewDownloadDate}" Margin="5,0,0,0" />
+                    <TextBlock Grid.Column="2" Text="{Binding NewFileSize}" Margin="5,0,0,0" />
+                  </Grid>
 
-                  <TextBlock Text="{Binding NewPubDate}" Margin="5,0,0,0" />
-                  <TextBlock Grid.Column="1" Text="{Binding NewDownloadDate}" Margin="5,0,0,0" />
-                  <TextBlock Grid.Column="2" Text="{Binding NewFileSize}" Margin="5,0,0,0" />
+                  <TextBlock Grid.Row="1" Text="{Binding NewURL}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="5,0,0,0" />
                 </Grid>
-
-                <TextBlock Grid.Row="1" Text="{Binding NewURL}" TextWrapping="Wrap" VerticalAlignment="Top" Margin="5,0,0,0" />
               </Grid>
-            </Grid>
+            </Border>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
