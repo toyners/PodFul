@@ -83,7 +83,7 @@ type Podcast =
 
         // Used by other languages to perform equality test on objects of type Podcast
         static member op_Equality (x : Podcast, y : Podcast) =
-            (x.Title = y.Title)
+            x.Equals y
 
         override x.GetHashCode() = hash x.URL
 

@@ -9,31 +9,40 @@ namespace PodFul.WPF.Processing
   {
     public static List<PodcastComparison> Create(Podcast[] oldPodcasts, Podcast[] newPodcasts)
     {
-      var firstOldPodcast = oldPodcasts[0];
+      var oldIndex = 0;
+      var newIndex = 0;
+      var list = new List<PodcastComparison>();
 
-      // Find the first new podcast that matches the first old podcast
-      Int32 firstMatchIndex = 0;
-      for(; firstMatchIndex < newPodcasts.Length; firstMatchIndex++)
+      while (oldIndex < oldPodcasts.Length && newIndex < newPodcasts.Length)
       {
-        if (firstOldPodcast == newPodcasts[firstMatchIndex])
+        if (newIndex == newPodcasts.Length)
         {
-          break;
+          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), null, 0));
+          oldIndex++;
+          continue;
+        }
+
+        if (oldIndex == oldPodcasts.Length)
+        {
+          list.Add(new PodcastComparison(null, 0, newPodcasts[newIndex], (newIndex + 1)));
+          newIndex++;
+          continue;
+        }
+
+        if (oldPodcasts[oldIndex] == newPodcasts[newIndex])
+        {
+          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
+          oldIndex++;
+          newIndex++;
+        }
+        else
+        {
+          list.Add(new PodcastComparison(null, 0, newPodcasts[newIndex], (newIndex + 1)));
+          newIndex++;
         }
       }
 
-      var lastNewPodcast = newPodcasts[newPodcasts.Length - 1];
-
-      // Find the last new podcast that matches the last old podcast
-      Int32 lastMatchIndex = oldPodcasts.Length;
-      for (; lastMatchIndex >= 0; lastMatchIndex--)
-      {
-        if (lastNewPodcast.Equals(oldPodcasts[lastMatchIndex]))
-        {
-          break;
-        }
-      }
-
-      throw new NotImplementedException();
+      return list;
     }
   }
 }
