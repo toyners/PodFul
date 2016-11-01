@@ -33,12 +33,35 @@ type PodcastComparisonListCreator_UnitTests() =
         let oldPodcasts = this.CreatePodcastList [| "C"; "D"; "E" |]
         let newPodcasts = this.CreatePodcastList [| "A"; "B"; "C"; "D"|]
 
+        // Act
         let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
-        Assert.AreEqual(5, list.Count)
-
-        let podcastComparison = list.[0]
         
+        // Assert
+        Assert.AreEqual(5, list.Count)
         Assert.AreEqual("(nothing)", list.[0].OldTitle)
         Assert.AreEqual("A", list.[0].NewTitle)
         Assert.AreEqual("(nothing)", list.[1].OldTitle)
         Assert.AreEqual("B", list.[1].NewTitle)
+        Assert.AreEqual("C", list.[2].OldTitle)
+        Assert.AreEqual("C", list.[2].NewTitle)
+        Assert.AreEqual("D", list.[3].OldTitle)
+        Assert.AreEqual("D", list.[3].NewTitle)
+        Assert.AreEqual("E", list.[4].OldTitle)
+        Assert.AreEqual("(nothing)", list.[4].NewTitle)
+
+    [<Test>]
+    member public this.``New Podcast list has one more podcasts only.``() =
+        let oldPodcasts = this.CreatePodcastList [| "B"; "C" |]
+        let newPodcasts = this.CreatePodcastList [| "A"; "B"; "C" |]
+
+        // Act
+        let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
+        
+        // Assert
+        Assert.AreEqual(3, list.Count)
+        Assert.AreEqual("(nothing)", list.[0].OldTitle)
+        Assert.AreEqual("A", list.[0].NewTitle)
+        Assert.AreEqual("B", list.[1].OldTitle)
+        Assert.AreEqual("B", list.[1].NewTitle)
+        Assert.AreEqual("C", list.[2].OldTitle)
+        Assert.AreEqual("C", list.[2].NewTitle)

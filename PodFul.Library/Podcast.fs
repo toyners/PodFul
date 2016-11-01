@@ -81,6 +81,10 @@ type Podcast =
             | :? Podcast as y -> (x.Title = y.Title)
             | _ -> false
 
+        // Used by other languages to perform equality test on objects of type Podcast
+        static member op_Equality (x : Podcast, y : Podcast) =
+            (x.Title = y.Title)
+
         override x.GetHashCode() = hash x.URL
 
         interface System.IComparable with
