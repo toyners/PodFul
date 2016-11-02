@@ -13,6 +13,20 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
+    public PodcastComparison(Podcast podcast, Int32 number, Boolean isNew)
+    {
+      if (isNew)
+      {
+        this.oldPodcastData = new Data();
+        this.newPodcastData = new Data(number, podcast);
+      }
+      else
+      {
+        this.oldPodcastData = new Data(number, podcast);
+        this.newPodcastData = new Data();
+      }
+    }
+
     public PodcastComparison(Podcast oldPodcast, Int32 oldNumber, Podcast newPodcast, Int32 newNumber)
     {
       this.newPodcastData = new Data(newNumber, newPodcast);
@@ -50,29 +64,27 @@ namespace PodFul.WPF.Processing
     private class Data
     {
       #region Construction
+      public Data()
+      {
+        this.Title = "(no match)";
+      }
+
       public Data(Int32 number, Podcast podcast)
       {
-        if (podcast == null)
+        if (podcast.FileDetails.FileSize <= 0)
         {
-          this.Title = "(no match)";
+          this.FileSize = "File size: (unknown)";
         }
         else
         {
-          if (podcast.FileDetails.FileSize <= 0)
-          {
-            this.FileSize = "File size: (unknown)";
-          }
-          else
-          {
-            this.FileSize = "File size: " + podcast.FileDetails.FileSize.ToString();
-          }
-
-          this.Number = number.ToString();
-          this.DownloadDate = "Download date: " + podcast.FileDetails.DownloadDate.ToString();
-          this.PubDate = "Publishing date: " + podcast.PubDate.ToString();
-          this.Title = podcast.Title;
-          this.URL = "URL: " + podcast.URL;
+          this.FileSize = "File size: " + podcast.FileDetails.FileSize.ToString();
         }
+
+        this.Number = number.ToString();
+        this.DownloadDate = "Download date: " + podcast.FileDetails.DownloadDate.ToString();
+        this.PubDate = "Publishing date: " + podcast.PubDate.ToString();
+        this.Title = podcast.Title;
+        this.URL = "URL: " + podcast.URL;
       }
       #endregion
 

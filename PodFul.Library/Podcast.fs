@@ -81,7 +81,8 @@ type Podcast =
             | :? Podcast as y -> (x.Title = y.Title)
             | _ -> false
 
-        // Used by other languages to perform equality test on objects of type Podcast
+        // Can be used by other languages to perform equality test on objects of type Podcast
+        // This does not work with null references in C# because it is a record (struct) type
         static member op_Equality (x : Podcast, y : Podcast) =
             x.Equals y
 

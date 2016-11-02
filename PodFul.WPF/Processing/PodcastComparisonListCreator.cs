@@ -17,14 +17,14 @@ namespace PodFul.WPF.Processing
       {
         if (newIndex == newPodcasts.Length)
         {
-          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), null, 0));
+          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), false));
           oldIndex++;
           continue;
         }
 
         if (oldIndex == oldPodcasts.Length)
         {
-          list.Add(new PodcastComparison(null, 0, newPodcasts[newIndex], (newIndex + 1)));
+          list.Add(new PodcastComparison(newPodcasts[newIndex], (newIndex + 1), true));
           newIndex++;
           continue;
         }
@@ -37,7 +37,7 @@ namespace PodFul.WPF.Processing
         }
         else
         {
-          list.Add(new PodcastComparison(null, 0, newPodcasts[newIndex], (newIndex + 1)));
+          list.Add(new PodcastComparison(newPodcasts[newIndex], (newIndex + 1), true));
           newIndex++;
         }
       }

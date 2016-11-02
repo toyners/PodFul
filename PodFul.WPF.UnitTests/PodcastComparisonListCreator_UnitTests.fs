@@ -38,16 +38,16 @@ type PodcastComparisonListCreator_UnitTests() =
         
         // Assert
         Assert.AreEqual(5, list.Count)
-        Assert.AreEqual("(nothing)", list.[0].OldTitle)
+        Assert.AreEqual("(no match)", list.[0].OldTitle)
         Assert.AreEqual("A", list.[0].NewTitle)
-        Assert.AreEqual("(nothing)", list.[1].OldTitle)
+        Assert.AreEqual("(no match)", list.[1].OldTitle)
         Assert.AreEqual("B", list.[1].NewTitle)
         Assert.AreEqual("C", list.[2].OldTitle)
         Assert.AreEqual("C", list.[2].NewTitle)
         Assert.AreEqual("D", list.[3].OldTitle)
         Assert.AreEqual("D", list.[3].NewTitle)
         Assert.AreEqual("E", list.[4].OldTitle)
-        Assert.AreEqual("(nothing)", list.[4].NewTitle)
+        Assert.AreEqual("(no match)", list.[4].NewTitle)
 
     [<Test>]
     member public this.``New Podcast list has one more podcasts only.``() =
@@ -59,7 +59,7 @@ type PodcastComparisonListCreator_UnitTests() =
         
         // Assert
         Assert.AreEqual(3, list.Count)
-        Assert.AreEqual("(nothing)", list.[0].OldTitle)
+        Assert.AreEqual("(no match)", list.[0].OldTitle)
         Assert.AreEqual("A", list.[0].NewTitle)
         Assert.AreEqual("B", list.[1].OldTitle)
         Assert.AreEqual("B", list.[1].NewTitle)
