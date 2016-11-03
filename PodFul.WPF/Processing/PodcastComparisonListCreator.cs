@@ -5,38 +5,51 @@ namespace PodFul.WPF.Processing
   using System.Collections.Generic;
   using Library;
 
+  /// <summary>
+  /// Creates the list of podcast comparison objects.
+  /// </summary>
   public static class PodcastComparisonListCreator
   {
-    public static List<PodcastComparison> Create(Podcast[] oldPodcasts, Podcast[] newPodcasts)
+    /// <summary>
+    /// Create a list of podcast comparison objects.
+    /// </summary>
+    /// <param name="currentPodcasts">List of current podcasts.</param>
+    /// <param name="newPodcasts">List of new podcasts</param>
+    /// <returns></returns>
+    public static List<PodcastComparison> Create(Podcast[] currentPodcasts, Podcast[] newPodcasts)
     {
-      var oldIndex = 0;
+      var currentIndex = 0;
       var newIndex = 0;
       var list = new List<PodcastComparison>();
 
-      while (oldIndex < oldPodcasts.Length && newIndex < newPodcasts.Length)
+      while (currentIndex < currentPodcasts.Length || newIndex < newPodcasts.Length)
       {
         if (newIndex == newPodcasts.Length)
         {
-          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), false));
-          oldIndex++;
+          // No more new podcasts so add a one-side comparison with a current podcast.
+          list.Add(new PodcastComparison(currentPodcasts[currentIndex], (currentIndex + 1), false));
+          currentIndex++;
           continue;
         }
 
-        if (oldIndex == oldPodcasts.Length)
+        if (currentIndex == currentPodcasts.Length)
         {
+          // No more current podcasts so add a one-side comparison with a new podcast.
           list.Add(new PodcastComparison(newPodcasts[newIndex], (newIndex + 1), true));
           newIndex++;
           continue;
         }
 
-        if (oldPodcasts[oldIndex] == newPodcasts[newIndex])
+        if (currentPodcasts[currentIndex] == newPodcasts[newIndex])
         {
-          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
-          oldIndex++;
+          // Podcasts are equal so build comparison with both podcasts.
+          list.Add(new PodcastComparison(currentPodcasts[currentIndex], (currentIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
+          currentIndex++;
           newIndex++;
         }
         else
         {
+          // Podcasts not equal so add a one-side comparison with a new podcast.
           list.Add(new PodcastComparison(newPodcasts[newIndex], (newIndex + 1), true));
           newIndex++;
         }

@@ -23,8 +23,8 @@ namespace PodFul.WPF.Windows
     {
       InitializeComponent();
 
-      this.PodcastList.ItemsSource = this.CreatePodcastComparisonList(oldFeed.Podcasts, newFeed.Podcasts);
-    }
+      this.PodcastList.ItemsSource =  PodcastComparisonListCreator.Create(oldFeed.Podcasts, newFeed.Podcasts);
+    } 
     #endregion
 
     #region Methods
@@ -33,49 +33,6 @@ namespace PodFul.WPF.Windows
       this.PodcastIndexes = null;
       this.Result = MessageBoxResult.Cancel;
       this.Close();
-    }
-
-    private List<PodcastComparison> CreatePodcastComparisonList(Podcast[] oldPodcasts, Podcast[] newPodcasts)
-    {
-      var podcastComparisonLength = Math.Max(oldPodcasts.Length, newPodcasts.Length);
-      var list = new List<PodcastComparison>(podcastComparisonLength);
-
-      if (oldPodcasts.Length > newPodcasts.Length)
-      {
-        var oldIndex = 0;
-        var oldCount = oldPodcasts.Length - newPodcasts.Length;
-
-        while (oldCount-- > 0)
-        {
-          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), null, 0));
-          oldIndex++;
-        }
-
-        for (var newIndex = 0; newIndex < newPodcasts.Length; newIndex++)
-        {
-          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
-          oldIndex++;
-        }
-      }
-      else
-      {
-        var newIndex = 0;
-        var newCount = newPodcasts.Length - oldPodcasts.Length;
-
-        while (newCount-- > 0)
-        {
-          list.Add(new PodcastComparison(null, 0, newPodcasts[newIndex], (newIndex + 1)));
-          newIndex++;
-        }
-
-        for (var oldIndex = 0; oldIndex < oldPodcasts.Length; oldIndex++)
-        {
-          list.Add(new PodcastComparison(oldPodcasts[oldIndex], (oldIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
-          newIndex++;
-        }
-      }
-
-      return list;
     }
 
     private void Download_Click(Object sender, RoutedEventArgs e)
