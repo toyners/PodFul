@@ -8,6 +8,13 @@
         Title="Confirm Podcast Downloads" Height="700" Width="923"
         Icon="baggage_cart_box_tE4_icon.ico" Closing="Window_Closing" ResizeMode="NoResize">
   <DockPanel>
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
+      <StackPanel Orientation="Horizontal" >
+        <Label>Current Podcasts</Label>
+        <Label>New Podcasts</Label>
+      </StackPanel>
+    </Border>
+    
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
         <Button Height="30" Width="80" Margin="5" Padding="5" Click="Cancel" >Cancel</Button>
@@ -88,5 +95,6 @@
         </ListBox.ItemTemplate>
       </ListBox>
     </Border>
+
   </DockPanel>
 </Window>
