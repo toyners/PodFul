@@ -7,6 +7,8 @@ namespace PodFul.WPF.Processing
   public class PodcastComparison
   {
     #region Fields
+    public const String NoMatch = "(no match)";
+
     private Data oldPodcastData;
 
     private Data newPodcastData;
@@ -66,7 +68,7 @@ namespace PodFul.WPF.Processing
       #region Construction
       public Data()
       {
-        this.Title = "(no match)";
+        this.Title = PodcastComparison.NoMatch;
       }
 
       public Data(Int32 number, Podcast podcast)
