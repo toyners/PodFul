@@ -23,7 +23,8 @@ namespace PodFul.WPF.Windows
     {
       InitializeComponent();
 
-      this.PodcastList.ItemsSource =  PodcastComparisonListCreator.Create(oldFeed.Podcasts, newFeed.Podcasts);
+      var podcastComparisons = PodcastComparisonListCreator.Create(oldFeed.Podcasts, newFeed.Podcasts);
+      this.PodcastList.ItemsSource = podcastComparisons;
     } 
     #endregion
 
