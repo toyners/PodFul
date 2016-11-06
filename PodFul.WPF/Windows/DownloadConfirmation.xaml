@@ -83,7 +83,6 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="{Binding NewPubDate}" Margin="5,0,0,0" />
-                    <TextBlock Grid.Column="1" Text="{Binding NewDownloadDate}" Margin="5,0,0,0" />
                     <TextBlock Grid.Column="2" Text="{Binding NewFileSize}" Margin="5,0,0,0" />
                   </Grid>
 
