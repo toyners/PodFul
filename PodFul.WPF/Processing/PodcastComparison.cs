@@ -15,7 +15,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public PodcastComparison(Podcast podcast, Int32 number, Boolean isNew)
+    private PodcastComparison(Podcast podcast, Int32 number, Boolean isNew)
     {
       if (isNew)
       {
@@ -29,7 +29,7 @@ namespace PodFul.WPF.Processing
       }
     }
 
-    public PodcastComparison(Podcast oldPodcast, Int32 oldNumber, Podcast newPodcast, Int32 newNumber)
+    private PodcastComparison(Podcast oldPodcast, Int32 oldNumber, Podcast newPodcast, Int32 newNumber)
     {
       this.newPodcastData = new Data(newNumber, newPodcast);
       this.oldPodcastData = new Data(oldNumber, oldPodcast);
@@ -54,6 +54,23 @@ namespace PodFul.WPF.Processing
     public String OldTitle { get { return this.oldPodcastData.Title; } }
 
     public String OldURL { get { return this.oldPodcastData.URL; } }
+    #endregion
+
+    #region Methods
+    public static PodcastComparison CreatePodcastComparisonWithNewPodcast(Podcast podcast, Int32 number)
+    {
+      return new PodcastComparison(podcast, number, true);
+    }
+
+    public static PodcastComparison CreatePodcastComparisonWithCurrentPodcast(Podcast podcast, Int32 number)
+    {
+      return new PodcastComparison(podcast, number, false);
+    }
+
+    public static PodcastComparison CreatePodcastComparisonWithBothPodcasts(Podcast oldPodcast, Int32 oldNumber, Podcast newPodcast, Int32 newNumber)
+    {
+      return new PodcastComparison(oldPodcast, oldNumber, newPodcast, newNumber);
+    }
     #endregion
 
     #region Classes
