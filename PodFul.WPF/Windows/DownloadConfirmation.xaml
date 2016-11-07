@@ -19,9 +19,9 @@
 
     <Border BorderBrush="Black" BorderThickness="1">
 
-      <DataGrid Name="PodcastList" IsReadOnly="True">
+      <DataGrid Name="PodcastList" IsReadOnly="True" CanUserResizeColumns="False" AutoGenerateColumns="False">
         <DataGrid.Columns>
-          <DataGridTemplateColumn>
+          <DataGridTemplateColumn Header="Current Podcasts" MinWidth="430" MaxWidth="430">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel>
@@ -31,7 +31,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn>
+          <DataGridTemplateColumn Header="New Podcasts" MinWidth="430" MaxWidth="430">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel>
@@ -40,6 +40,10 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
+
+          <DataGridCheckBoxColumn MinWidth="35" MaxWidth="35">
+            
+          </DataGridCheckBoxColumn>
         </DataGrid.Columns>
       </DataGrid>
 
