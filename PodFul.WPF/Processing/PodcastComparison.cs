@@ -37,11 +37,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
-    public String NewDownloadDate { get { return this.newPodcastData.DownloadDate; } }
-
     public String NewFileSize { get { return this.newPodcastData.FileSize; } }
-
-    public String NewNumber { get { return this.newPodcastData.Number; } }
 
     public String NewPubDate { get { return this.newPodcastData.PubDate; } }
 
@@ -52,8 +48,6 @@ namespace PodFul.WPF.Processing
     public String OldDownloadDate { get { return this.oldPodcastData.DownloadDate; } }
 
     public String OldFileSize { get { return this.oldPodcastData.FileSize; } }
-
-    public String OldNumber { get { return this.oldPodcastData.Number; } }
 
     public String OldPubDate { get { return this.oldPodcastData.PubDate; } }
 
@@ -82,10 +76,9 @@ namespace PodFul.WPF.Processing
           this.FileSize = "File size: " + podcast.FileDetails.FileSize.ToString();
         }
 
-        this.Number = number.ToString();
         this.DownloadDate = "Download date: " + podcast.FileDetails.DownloadDate.ToString();
         this.PubDate = "Publishing date: " + podcast.PubDate.ToString();
-        this.Title = podcast.Title;
+        this.Title = number + ". " + podcast.Title;
         this.URL = "URL: " + podcast.URL;
       }
       #endregion
@@ -94,8 +87,6 @@ namespace PodFul.WPF.Processing
       public String DownloadDate { get; private set; }
 
       public String FileSize { get; private set; }
-
-      public String Number { get; private set; }
 
       public String PubDate { get; private set; }
 

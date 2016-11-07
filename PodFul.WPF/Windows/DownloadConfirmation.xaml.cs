@@ -29,28 +29,43 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Methods
-    private void Cancel(Object sender, RoutedEventArgs e)
+    private void CancelClick(Object sender, RoutedEventArgs e)
     {
       this.PodcastIndexes = null;
       this.Result = MessageBoxResult.Cancel;
       this.Close();
     }
 
-    private void Download_Click(Object sender, RoutedEventArgs e)
+    private void DownloadClick(Object sender, RoutedEventArgs e)
     {
       this.PodcastIndexes = new List<Int32>();
       this.Result = MessageBoxResult.Yes;
       this.Close();
     }
 
-    private void Skip_Click(Object sender, RoutedEventArgs e)
+    private void SelectAllClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SelectNewClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SelectNoneClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SkipClick(Object sender, RoutedEventArgs e)
     {
       this.PodcastIndexes = null;
       this.Result = MessageBoxResult.No;
       this.Close();
     }
 
-    private void Window_Closing(Object sender, System.ComponentModel.CancelEventArgs e)
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
       if (this.Result == MessageBoxResult.None)
       {

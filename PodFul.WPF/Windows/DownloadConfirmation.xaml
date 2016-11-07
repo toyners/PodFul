@@ -6,15 +6,36 @@
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
         Title="Confirm Podcast Downloads" Height="700" Width="923"
-        Icon="baggage_cart_box_tE4_icon.ico" Closing="Window_Closing" ResizeMode="NoResize">
+        Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing" ResizeMode="NoResize">
   <DockPanel>
+    <DockPanel.Resources>
+      <Style x:Key="ButtonStyle">
+        <Setter Property="Button.Height" Value="30" />
+        <Setter Property="Button.Width" Value="80" />
+        <Setter Property="Button.Padding" Value="5" />
+        <Setter Property="Button.Margin" Value="5" />
+      </Style>
+    </DockPanel.Resources>
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-        <Button Height="30" Width="80" Margin="5" Padding="5" Click="Cancel" >Cancel</Button>
-        <Button Height="30" Width="80" Margin="5" Padding="5" Click="Skip_Click">Skip</Button>
-        <Button Height="30" Width="80" Margin="5" Padding="5" Click="Download_Click">Download</Button>
-      </StackPanel>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+          <Button Style="{StaticResource ButtonStyle}" Click="SelectAllClick">Select All</Button>
+          <Button Style="{StaticResource ButtonStyle}" Click="SelectNoneClick">Select None</Button>
+          <Button Style="{StaticResource ButtonStyle}" Click="SelectNewClick">Select New</Button>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Style="{StaticResource ButtonStyle}" Click="CancelClick" >Cancel</Button>
+          <Button Style="{StaticResource ButtonStyle}" Click="SkipClick">Skip</Button>
+          <Button Style="{StaticResource ButtonStyle}" Click="DownloadClick">Download</Button>
+        </StackPanel>
+      </Grid>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1">
@@ -25,7 +46,11 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel>
-                  <TextBlock Text="{Binding OldTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+                  <TextBlock Text="{Binding OldTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" />
+                  <TextBlock Text="{Binding OldFileSize}" />
+                  <TextBlock Text="{Binding OldPubDate}" />
+                  <TextBlock Text="{Binding OldURL}" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding OldDownloadDate}" />
                 </StackPanel>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -35,13 +60,16 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel>
-                  <TextBlock Text="{Binding NewTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" Margin="5,0,0,0" />
+                  <TextBlock Text="{Binding NewTitle}" TextWrapping="Wrap" FontSize="12" FontWeight="Bold" />
+                  <TextBlock Text="{Binding NewFileSize}" />
+                  <TextBlock Text="{Binding NewPubDate}" />
+                  <TextBlock Text="{Binding NewURL}" TextWrapping="Wrap" />
                 </StackPanel>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridCheckBoxColumn MinWidth="35" MaxWidth="35">
+          <DataGridCheckBoxColumn MinWidth="25" MaxWidth="25">
             
           </DataGridCheckBoxColumn>
         </DataGrid.Columns>
