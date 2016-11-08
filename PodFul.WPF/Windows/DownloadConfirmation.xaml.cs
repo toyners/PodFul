@@ -45,17 +45,17 @@ namespace PodFul.WPF.Windows
 
     private void SelectAllClick(Object sender, RoutedEventArgs e)
     {
-
+      this.PodcastList.SelectAllCells();
     }
 
     private void SelectNewClick(Object sender, RoutedEventArgs e)
     {
-
+      
     }
 
     private void SelectNoneClick(Object sender, RoutedEventArgs e)
     {
-
+      this.PodcastList.UnselectAllCells();
     }
 
     private void SkipClick(Object sender, RoutedEventArgs e)
