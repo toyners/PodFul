@@ -39,9 +39,14 @@ namespace PodFul.WPF.Windows
     #region Methods
     private void CancelClick(Object sender, RoutedEventArgs e)
     {
+      this.Cancel();
+      this.Close();
+    }
+
+    private void Cancel()
+    {
       this.PodcastIndexes = null;
       this.Result = MessageBoxResult.Cancel;
-      this.Close();
     }
 
     private void DownloadClick(Object sender, RoutedEventArgs e)
@@ -152,8 +157,7 @@ namespace PodFul.WPF.Windows
     {
       if (this.Result == MessageBoxResult.None)
       {
-        this.Result = MessageBoxResult.Cancel;
-        this.PodcastIndexes = null;
+        this.Cancel();
       }
     }
 
