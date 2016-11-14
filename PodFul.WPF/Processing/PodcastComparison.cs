@@ -19,6 +19,7 @@ namespace PodFul.WPF.Processing
     {
       if (isNew)
       {
+        this.IsNewOnly = true;
         this.oldPodcastData = new Data();
         this.newPodcastData = new Data(number, podcast);
       }
@@ -54,6 +55,8 @@ namespace PodFul.WPF.Processing
     public String OldTitle { get { return this.oldPodcastData.Title; } }
 
     public String OldURL { get { return this.oldPodcastData.URL; } }
+
+    public Boolean IsNewOnly { get; private set; }
     #endregion
 
     #region Methods

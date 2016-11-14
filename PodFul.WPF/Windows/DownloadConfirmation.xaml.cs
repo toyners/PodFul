@@ -16,9 +16,7 @@ namespace PodFul.WPF.Windows
   public partial class DownloadConfirmation : Window
   {
     #region Fields
-    public MessageBoxResult Result = MessageBoxResult.None;
-
-    public List<Int32> PodcastIndexes { get; private set; }
+    private List<PodcastComparison> podcastComparisons;
     #endregion
 
     #region Construction
@@ -26,9 +24,16 @@ namespace PodFul.WPF.Windows
     {
       InitializeComponent();
 
-      var podcastComparisons = PodcastComparisonListCreator.Create(oldFeed.Podcasts, newFeed.Podcasts);
+      this.podcastComparisons = PodcastComparisonListCreator.Create(oldFeed.Podcasts, newFeed.Podcasts);
       this.PodcastList.ItemsSource = podcastComparisons;
-    } 
+      this.Result = MessageBoxResult.None;
+    }
+    #endregion
+
+    #region Properties
+    public MessageBoxResult Result { get; private set; }
+
+    public List<Int32> PodcastIndexes { get; private set; }
     #endregion
 
     #region Methods
@@ -54,24 +59,26 @@ namespace PodFul.WPF.Windows
       {
         var item = this.PodcastList.Items[i];
         this.PodcastList.SelectedItems.Add(item);
+      }
 
-        DataGridRow row = this.PodcastList.ItemContainerGenerator.ContainerFromIndex(i) as DataGridRow;
-        if (row != null)
+      this.DownloadButton.IsEnabled = true;
+
+      DataGridRow row = this.PodcastList.ItemContainerGenerator.ContainerFromIndex(0) as DataGridRow;
+      if (row != null)
+      {
+        DataGridCellsPresenter presenter = FindInVisualTree<DataGridCellsPresenter>(row);
+        if (presenter != null)
         {
-          DataGridCellsPresenter presenter = FindVisualTree<DataGridCellsPresenter>(row);
-          if (presenter != null)
+          DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(0) as DataGridCell;
+          if (cell != null)
           {
-            DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(0) as DataGridCell;
-            if (cell != null)
-            {
-              cell.Focus();
-            }
+            cell.Focus();
           }
         }
       }
     }
 
-    private static T FindVisualTree<T>(DependencyObject obj) where T : DependencyObject
+    private static T FindInVisualTree<T>(DependencyObject obj) where T : DependencyObject
     {
       var count = VisualTreeHelper.GetChildrenCount(obj);
       for (Int32 i = 0; i < count; i++)
@@ -82,14 +89,12 @@ namespace PodFul.WPF.Windows
         {
           return (T)child;
         }
-        else
-        {
-          child = FindVisualTree<T>(child);
 
-          if (child != null)
-          {
-            return (T)child;
-          }
+        child = FindInVisualTree<T>(child);
+
+        if (child != null)
+        {
+          return (T)child;
         }
       }
 
@@ -98,12 +103,42 @@ namespace PodFul.WPF.Windows
 
     private void SelectNewClick(Object sender, RoutedEventArgs e)
     {
-      
+      this.SelectNone();
+
+      Int32 index = 0;
+      while (index < this.podcastComparisons.Count && this.podcastComparisons[index].IsNewOnly)
+      {
+        var item = this.PodcastList.Items[index];
+        this.PodcastList.SelectedItems.Add(item);
+
+        DataGridRow row = this.PodcastList.ItemContainerGenerator.ContainerFromIndex(index) as DataGridRow;
+        if (row != null)
+        {
+          DataGridCellsPresenter presenter = FindInVisualTree<DataGridCellsPresenter>(row);
+          if (presenter != null)
+          {
+            DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(0) as DataGridCell;
+            if (cell != null)
+            {
+              cell.Focus();
+            }
+          }
+        }
+
+        index++;
+        this.DownloadButton.IsEnabled = true;
+      }
     }
 
     private void SelectNoneClick(Object sender, RoutedEventArgs e)
     {
+      this.SelectNone();
+    }
+
+    private void SelectNone()
+    {
       this.PodcastList.UnselectAllCells();
+      this.DownloadButton.IsEnabled = false;
     }
 
     private void SkipClick(Object sender, RoutedEventArgs e)
@@ -120,6 +155,11 @@ namespace PodFul.WPF.Windows
         this.Result = MessageBoxResult.Cancel;
         this.PodcastIndexes = null;
       }
+    }
+
+    private void PodcastListSelectionChanged(Object sender, SelectionChangedEventArgs e)
+    {
+      DownloadButton.IsEnabled = (this.PodcastList.SelectedItems.Count > 0);
     }
     #endregion
   }

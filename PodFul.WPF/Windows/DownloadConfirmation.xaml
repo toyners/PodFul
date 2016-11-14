@@ -33,13 +33,13 @@
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
           <Button Style="{StaticResource ButtonStyle}" Click="CancelClick" >Cancel</Button>
           <Button Style="{StaticResource ButtonStyle}" Click="SkipClick">Skip</Button>
-          <Button Style="{StaticResource ButtonStyle}" Click="DownloadClick">Download</Button>
+          <Button Name="DownloadButton" Style="{StaticResource ButtonStyle}" IsEnabled="False" Click="DownloadClick">Download</Button>
         </StackPanel>
       </Grid>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1">
-      <DataGrid Name="PodcastList" IsReadOnly="True" AutoGenerateColumns="False">
+      <DataGrid Name="PodcastList" IsReadOnly="True" AutoGenerateColumns="False" SelectionChanged="PodcastListSelectionChanged">
         <DataGrid.Columns>
           <DataGridTemplateColumn Header="Current Podcasts" MinWidth="430" MaxWidth="430">
             <DataGridTemplateColumn.CellTemplate>
