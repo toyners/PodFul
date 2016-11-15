@@ -35,7 +35,7 @@ namespace PodFul.WPF.Processing
 
         Application.Current.Dispatcher.Invoke(() =>
         {
-          var window = new DownloadConfirmation(oldFeed, newFeed, podcastIndexes);
+          var window = new DownloadConfirmation(oldFeed, newFeed);
           window.ShowDialog();
           
           confirmationResult = (window.Result != MessageBoxResult.Cancel);

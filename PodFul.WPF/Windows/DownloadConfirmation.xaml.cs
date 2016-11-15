@@ -16,11 +16,13 @@ namespace PodFul.WPF.Windows
   public partial class DownloadConfirmation : Window
   {
     #region Fields
+    private Boolean windowLoaded;
+
     private List<PodcastComparison> podcastComparisons;
     #endregion
 
     #region Construction
-    public DownloadConfirmation(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
+    public DownloadConfirmation(Feed oldFeed, Feed newFeed)
     {
       InitializeComponent();
 
@@ -52,6 +54,9 @@ namespace PodFul.WPF.Windows
     private void DownloadClick(Object sender, RoutedEventArgs e)
     {
       this.PodcastIndexes = new List<Int32>();
+
+
+
       this.Result = MessageBoxResult.Yes;
       this.Close();
     }
@@ -109,7 +114,11 @@ namespace PodFul.WPF.Windows
     private void SelectNewClick(Object sender, RoutedEventArgs e)
     {
       this.SelectNone();
+      this.SelectNew();
+    }
 
+    private void SelectNew()
+    {
       Int32 index = 0;
       while (index < this.podcastComparisons.Count && this.podcastComparisons[index].IsNewOnly)
       {
@@ -164,6 +173,17 @@ namespace PodFul.WPF.Windows
     private void PodcastListSelectionChanged(Object sender, SelectionChangedEventArgs e)
     {
       DownloadButton.IsEnabled = (this.PodcastList.SelectedItems.Count > 0);
+    }
+
+    private void WindowLoaded(Object sender, RoutedEventArgs e)
+    {
+      if (this.windowLoaded)
+      {
+        return;
+      }
+
+      this.windowLoaded = true;
+      this.SelectNew();
     }
     #endregion
   }

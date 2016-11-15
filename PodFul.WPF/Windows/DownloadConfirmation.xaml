@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
         Title="Confirm Podcast Downloads" Height="700" Width="923"
-        Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing" ResizeMode="NoResize">
+        Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing" ResizeMode="NoResize"
+        Loaded="WindowLoaded">
   <DockPanel>
     <DockPanel.Resources>
       <Style x:Key="ButtonStyle">
