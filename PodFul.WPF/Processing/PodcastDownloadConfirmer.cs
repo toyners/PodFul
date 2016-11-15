@@ -39,6 +39,16 @@ namespace PodFul.WPF.Processing
           window.ShowDialog();
           
           confirmationResult = (window.Result != MessageBoxResult.Cancel);
+
+          if (window.Result == MessageBoxResult.No)
+          {
+            podcastIndexes = null;
+          }
+          else if (window.Result == MessageBoxResult.Yes)
+          {
+            podcastIndexes.Clear();
+            podcastIndexes.AddRange(window.PodcastIndexes);
+          }
         });
 
         // Loop here until the confirmationResult is set on the other thread. This indicates that
@@ -52,11 +62,11 @@ namespace PodFul.WPF.Processing
         {
           return DownloadConfirmationStatus.CancelScanning;
         }
-      }
 
-      if (podcastIndexes == null)
-      {
-        return DownloadConfirmationStatus.SkipDownloading;
+        if (podcastIndexes == null)
+        {
+          return DownloadConfirmationStatus.SkipDownloading;
+        }
       }
 
       return DownloadConfirmationStatus.ContinueDownloading;
