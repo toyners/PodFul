@@ -53,9 +53,12 @@ namespace PodFul.WPF.Windows
 
     private void DownloadClick(Object sender, RoutedEventArgs e)
     {
-      this.PodcastIndexes = new List<Int32>();
+      this.PodcastIndexes = new List<Int32>(this.PodcastList.SelectedItems.Count);
 
-
+      foreach (var selectedItem in this.PodcastList.SelectedItems)
+      {
+        this.PodcastIndexes.Add(this.PodcastList.Items.IndexOf(selectedItem));
+      }
 
       this.Result = MessageBoxResult.Yes;
       this.Close();
