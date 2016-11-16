@@ -13,7 +13,7 @@ namespace PodFul.WPF.Windows
   /// <summary>
   /// Interaction logic for DownloadConfirmation.xaml
   /// </summary>
-  public partial class DownloadConfirmation : Window
+  public partial class DownloadConfirmationWindow : Window
   {
     #region Fields
     private Boolean windowLoaded;
@@ -22,7 +22,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction
-    public DownloadConfirmation(Feed oldFeed, Feed newFeed)
+    public DownloadConfirmationWindow(Feed oldFeed, Feed newFeed)
     {
       InitializeComponent();
 

@@ -28,45 +28,44 @@ namespace PodFul.WPF.Processing
     #region Methods
     public DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
     {
-      if (podcastIndexes.Count >= this.confirmPodcastDownloadThreshold)
+      if (podcastIndexes.Count < this.confirmPodcastDownloadThreshold)
       {
-        // Breached the threshold of new podcasts in the feed so query the user on what to do.
-        Boolean? confirmationResult = null;
+        return DownloadConfirmationStatus.ContinueDownloading;
+      }
 
-        Application.Current.Dispatcher.Invoke(() =>
+      // Breached the threshold of new podcasts in the feed so query the user on what to do.
+      Boolean gotResult = false;
+      MessageBoxResult result = MessageBoxResult.Cancel;
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        var window = new DownloadConfirmationWindow(oldFeed, newFeed);
+        window.ShowDialog();
+        gotResult = true;  
+
+        result = window.Result;
+        if (result == MessageBoxResult.Yes)
         {
-          var window = new DownloadConfirmation(oldFeed, newFeed);
-          window.ShowDialog();
-          
-          confirmationResult = (window.Result != MessageBoxResult.Cancel);
-
-          if (window.Result == MessageBoxResult.No)
-          {
-            podcastIndexes = null;
-          }
-          else if (window.Result == MessageBoxResult.Yes)
-          {
-            podcastIndexes.Clear();
-            podcastIndexes.AddRange(window.PodcastIndexes);
-          }
-        });
-
-        // Loop here until the confirmationResult is set on the other thread. This indicates that
-        // the user has made their choice.
-        while (!confirmationResult.HasValue)
-        {
-          Thread.Sleep(100);
+          podcastIndexes.Clear();
+          podcastIndexes.AddRange(window.PodcastIndexes);
         }
+      });
 
-        if (!confirmationResult.Value)
-        {
-          return DownloadConfirmationStatus.CancelScanning;
-        }
+      // Loop here until the gotResult is set on the other thread. This indicates that
+      // the user has made their choice.
+      while (!gotResult)
+      {
+        Thread.Sleep(100);
+      }
 
-        if (podcastIndexes == null)
-        {
-          return DownloadConfirmationStatus.SkipDownloading;
-        }
+      if (result == MessageBoxResult.Cancel)
+      {
+        return DownloadConfirmationStatus.CancelScanning;
+      }
+
+      if (result == MessageBoxResult.No)
+      {
+        return DownloadConfirmationStatus.SkipDownloading;
       }
 
       return DownloadConfirmationStatus.ContinueDownloading;
