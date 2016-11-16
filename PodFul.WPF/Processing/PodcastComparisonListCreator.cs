@@ -27,7 +27,7 @@ namespace PodFul.WPF.Processing
         if (newIndex == newPodcasts.Length)
         {
           // No more new podcasts so add a one-side comparison with a current podcast.
-          list.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcast(currentPodcasts[currentIndex], (currentIndex + 1)));
+          list.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[currentIndex], (currentIndex + 1)));
           currentIndex++;
           continue;
         }
@@ -35,7 +35,7 @@ namespace PodFul.WPF.Processing
         if (currentIndex == currentPodcasts.Length)
         {
           // No more current podcasts so add a one-side comparison with a new podcast.
-          list.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcast(newPodcasts[newIndex], (newIndex + 1)));
+          list.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[newIndex], (newIndex + 1)));
           newIndex++;
           continue;
         }
@@ -50,7 +50,7 @@ namespace PodFul.WPF.Processing
         else
         {
           // Podcasts not equal so add a one-side comparison with a new podcast.
-          list.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcast(newPodcasts[newIndex], (newIndex + 1)));
+          list.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[newIndex], (newIndex + 1)));
           newIndex++;
         }
       }

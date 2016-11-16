@@ -60,12 +60,12 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Methods
-    public static PodcastComparison CreatePodcastComparisonWithNewPodcast(Podcast podcast, Int32 number)
+    public static PodcastComparison CreatePodcastComparisonWithNewPodcastOnly(Podcast podcast, Int32 number)
     {
       return new PodcastComparison(podcast, number, true);
     }
 
-    public static PodcastComparison CreatePodcastComparisonWithCurrentPodcast(Podcast podcast, Int32 number)
+    public static PodcastComparison CreatePodcastComparisonWithCurrentPodcastOnly(Podcast podcast, Int32 number)
     {
       return new PodcastComparison(podcast, number, false);
     }

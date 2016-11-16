@@ -39,14 +39,18 @@ type PodcastComparisonListCreator_UnitTests() =
         // Assert
         Assert.AreEqual(5, list.Count)
         Assert.AreEqual(PodcastComparison.NoMatch, list.[0].OldTitle)
-        Assert.AreEqual("A", list.[0].NewTitle)
+        Assert.AreEqual("1. A", list.[0].NewTitle)
+
         Assert.AreEqual(PodcastComparison.NoMatch, list.[1].OldTitle)
-        Assert.AreEqual("B", list.[1].NewTitle)
-        Assert.AreEqual("C", list.[2].OldTitle)
-        Assert.AreEqual("C", list.[2].NewTitle)
-        Assert.AreEqual("D", list.[3].OldTitle)
-        Assert.AreEqual("D", list.[3].NewTitle)
-        Assert.AreEqual("E", list.[4].OldTitle)
+        Assert.AreEqual("2. B", list.[1].NewTitle)
+
+        Assert.AreEqual("1. C", list.[2].OldTitle)
+        Assert.AreEqual("3. C", list.[2].NewTitle)
+
+        Assert.AreEqual("2. D", list.[3].OldTitle)
+        Assert.AreEqual("4. D", list.[3].NewTitle)
+
+        Assert.AreEqual("3. E", list.[4].OldTitle)
         Assert.AreEqual(PodcastComparison.NoMatch, list.[4].NewTitle)
 
     [<Test>]
@@ -60,8 +64,8 @@ type PodcastComparisonListCreator_UnitTests() =
         // Assert
         Assert.AreEqual(3, list.Count)
         Assert.AreEqual(PodcastComparison.NoMatch, list.[0].OldTitle)
-        Assert.AreEqual("A", list.[0].NewTitle)
-        Assert.AreEqual("B", list.[1].OldTitle)
-        Assert.AreEqual("B", list.[1].NewTitle)
-        Assert.AreEqual("C", list.[2].OldTitle)
-        Assert.AreEqual("C", list.[2].NewTitle)
+        Assert.AreEqual("1. A", list.[0].NewTitle)
+        Assert.AreEqual("1. B", list.[1].OldTitle)
+        Assert.AreEqual("2. B", list.[1].NewTitle)
+        Assert.AreEqual("2. C", list.[2].OldTitle)
+        Assert.AreEqual("3. C", list.[2].NewTitle)
