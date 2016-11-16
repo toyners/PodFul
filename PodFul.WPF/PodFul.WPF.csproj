@@ -71,6 +71,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logging\FileDeliveryLogger.cs" />
+    <Compile Include="Miscellaneous\RowSelector.cs" />
+    <Compile Include="Miscellaneous\VisualTreeLocator.cs" />
     <Compile Include="PodcastSynchroniser.cs" />
     <Compile Include="Processing\DownloadManager.cs" />
     <Compile Include="Processing\DownloadJob.cs" />

@@ -8,6 +8,7 @@ namespace PodFul.WPF.Windows
   using System.Windows.Controls.Primitives;
   using System.Windows.Media;
   using Library;
+  using Miscellaneous;
   using Processing;
 
   /// <summary>
@@ -74,44 +75,9 @@ namespace PodFul.WPF.Windows
         this.PodcastList.SelectedItems.Add(item);
       }
 
+      RowSelector.Select(this.PodcastList, 0);
+
       this.DownloadButton.IsEnabled = true;
-
-      DataGridRow row = this.PodcastList.ItemContainerGenerator.ContainerFromIndex(0) as DataGridRow;
-      if (row != null)
-      {
-        DataGridCellsPresenter presenter = FindInVisualTree<DataGridCellsPresenter>(row);
-        if (presenter != null)
-        {
-          DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(0) as DataGridCell;
-          if (cell != null)
-          {
-            cell.Focus();
-          }
-        }
-      }
-    }
-
-    private static T FindInVisualTree<T>(DependencyObject obj) where T : DependencyObject
-    {
-      var count = VisualTreeHelper.GetChildrenCount(obj);
-      for (Int32 i = 0; i < count; i++)
-      {
-        var child = VisualTreeHelper.GetChild(obj, i);
-
-        if (child is T)
-        {
-          return (T)child;
-        }
-
-        child = FindInVisualTree<T>(child);
-
-        if (child != null)
-        {
-          return (T)child;
-        }
-      }
-
-      return null;
     }
 
     private void SelectNewClick(Object sender, RoutedEventArgs e)
@@ -128,19 +94,7 @@ namespace PodFul.WPF.Windows
         var item = this.PodcastList.Items[index];
         this.PodcastList.SelectedItems.Add(item);
 
-        DataGridRow row = this.PodcastList.ItemContainerGenerator.ContainerFromIndex(index) as DataGridRow;
-        if (row != null)
-        {
-          DataGridCellsPresenter presenter = FindInVisualTree<DataGridCellsPresenter>(row);
-          if (presenter != null)
-          {
-            DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(0) as DataGridCell;
-            if (cell != null)
-            {
-              cell.Focus();
-            }
-          }
-        }
+        RowSelector.Select(this.PodcastList, index);
 
         index++;
         this.DownloadButton.IsEnabled = true;
