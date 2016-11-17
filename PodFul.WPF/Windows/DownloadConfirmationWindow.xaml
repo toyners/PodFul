@@ -42,11 +42,11 @@
     <Border BorderBrush="Black" BorderThickness="1">
       <DataGrid Name="PodcastList" IsReadOnly="True" AutoGenerateColumns="False" SelectionChanged="PodcastListSelectionChanged">
 
-        <!-- Row will be disabled if the CanBeDownloaded property is false -->
+        <!-- Row will be disabled if the HasNewPodcast property is false -->
         <DataGrid.RowStyle>
           <Style TargetType="{x:Type DataGridRow}">
             <Style.Triggers>
-              <DataTrigger Binding="{Binding CanBeDownloaded}" Value="False">
+              <DataTrigger Binding="{Binding HasNewPodcast}" Value="False">
                 <Setter Property="IsEnabled" Value="False" />
               </DataTrigger>
             </Style.Triggers>
