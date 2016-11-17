@@ -67,15 +67,21 @@ namespace PodFul.WPF.Windows
 
     private void SelectAllClick(Object sender, RoutedEventArgs e)
     {
-      this.PodcastList.SelectedItems.Clear();
+      this.SelectNone();
 
-      for (Int32 i = 0; i < this.PodcastList.Items.Count; i++)
+      this.PodcastList.ScrollIntoView(this.PodcastList.Items[0]);
+
+      var index = 0;
+      while (index < this.podcastComparisons.Count && this.podcastComparisons[index].CanBeDownloaded)
       {
-        var item = this.PodcastList.Items[i];
+        var item = this.PodcastList.Items[index];
         this.PodcastList.SelectedItems.Add(item);
-      }
 
-      RowSelector.Select(this.PodcastList, 0);
+        RowSelector.Select(this.PodcastList, index);
+
+        index++;
+        this.DownloadButton.IsEnabled = true;
+      }
 
       this.DownloadButton.IsEnabled = true;
     }
@@ -88,6 +94,8 @@ namespace PodFul.WPF.Windows
 
     private void SelectNew()
     {
+      this.PodcastList.ScrollIntoView(this.PodcastList.Items[0]);
+
       Int32 index = 0;
       while (index < this.podcastComparisons.Count && this.podcastComparisons[index].IsNewOnly)
       {
@@ -99,6 +107,8 @@ namespace PodFul.WPF.Windows
         index++;
         this.DownloadButton.IsEnabled = true;
       }
+
+      this.PodcastList.ScrollIntoView(this.PodcastList.Items[0]);
     }
 
     private void SelectNoneClick(Object sender, RoutedEventArgs e)

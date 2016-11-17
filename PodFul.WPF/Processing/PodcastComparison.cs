@@ -20,6 +20,7 @@ namespace PodFul.WPF.Processing
       if (isNew)
       {
         this.IsNewOnly = true;
+        this.CanBeDownloaded = true;
         this.oldPodcastData = new Data();
         this.newPodcastData = new Data(number, podcast);
       }
@@ -32,12 +33,15 @@ namespace PodFul.WPF.Processing
 
     private PodcastComparison(Podcast oldPodcast, Int32 oldNumber, Podcast newPodcast, Int32 newNumber)
     {
+      this.CanBeDownloaded = true;
       this.newPodcastData = new Data(newNumber, newPodcast);
       this.oldPodcastData = new Data(oldNumber, oldPodcast);
     }
     #endregion
 
     #region Properties
+    public Boolean CanBeDownloaded { get; private set; }
+
     public String NewFileSize { get { return this.newPodcastData.FileSize; } }
 
     public String NewPubDate { get { return this.newPodcastData.PubDate; } }
