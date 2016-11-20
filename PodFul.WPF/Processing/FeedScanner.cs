@@ -56,6 +56,8 @@ namespace PodFul.WPF
       this.logger = logger;
       this.podcastDownloadConfirmer = podcastDownloadConfirmer;
       this.downloadManager = downloadManager;
+      this.downloadManager.JobStartedEvent = this.UpdateCounts;
+      this.downloadManager.JobFinishedEvent = this.UpdateCounts;
     }
     #endregion
 
@@ -254,6 +256,11 @@ namespace PodFul.WPF
         this.feedCollection.UpdateFeed(feedIndex, feed);
         this.logger.Message("Completed.");
       });
+    }
+
+    private void UpdateCounts()
+    {
+      throw new NotImplementedException();
     }
     #endregion
   }
