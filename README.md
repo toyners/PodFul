@@ -90,3 +90,17 @@
 1. **Changed:** Scanning feeds now uses mult-threading to download podcasts while scanning continues.
 2. **Changed:** Cancel icon now available for each podcast download.
 3. **Fixed:** Cancelling downloads now working as expected.
+
+## 2.8 (1.8)
+1. **Changed:** During scanning, when a feed has more than a certain number of new podcasts then the user will be presented with a comparison window. 
+This window shows the podcasts of the feed both before and after updating.
+The user can:
+a) Cancel scanning (current feed will not be updated)
+b) Skip downloading podcasts (feed will be updated)
+c) Choose what podcasts to download (all, new only or an arbitary selection)
+2. **Changed:** Minor update to close\cancel button on scanning window.
+3. **Changed:** Updated UI so that numbers of waiting, completed, failed download jobs displayed on manual download window.
+4. **Fixed:** Now file names based on bad urls are cleaned up e.g. someurl.mp3dest=1672 becomes someurl.mp3
+5. **Fixed:** Minor bug in marque progress bar when download is completed.
+6. **Fixed:** Minor issue where scan report did display all the podcasts that were added to winamp during scanning.
+7. **Fixed:** Exception messages being lost when downloading podcasts.
