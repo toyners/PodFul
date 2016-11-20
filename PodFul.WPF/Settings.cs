@@ -14,7 +14,7 @@ namespace PodFul.WPF
     {
       this.ConcurrentDownloadCount = 3;
 
-      this.ConfirmPodcastDownloadThreshold = 1;
+      this.ConfirmPodcastDownloadThreshold = 3;
 
       this.DeliveryPoints = this.CreateDeliveryPoints(log);
     }
