@@ -37,9 +37,9 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
-    public Boolean HasNewPodcast { get { return this.newPodcastData != null; } }
+    public Boolean HasNewPodcast { get { return this.newPodcastData.Title != PodcastComparison.NoMatch; } }
 
-    public Boolean HasNewPodcastOnly { get { return this.HasNewPodcast && this.oldPodcastData == null; } }
+    public Boolean HasNewPodcastOnly { get { return this.HasNewPodcast && this.oldPodcastData.Title == PodcastComparison.NoMatch; } }
 
     public String NewFileSize { get { return this.newPodcastData.FileSize; } }
 
