@@ -102,5 +102,5 @@ c) Choose what podcasts to download (all, new only or an arbitary selection)
 3. **Changed:** Updated UI so that numbers of waiting, completed, failed download jobs displayed on manual download window.
 4. **Fixed:** Now file names based on bad urls are cleaned up e.g. someurl.mp3dest=1672 becomes someurl.mp3
 5. **Fixed:** Minor bug in marque progress bar when download is completed.
-6. **Fixed:** Minor issue where scan report did display all the podcasts that were added to winamp during scanning.
+6. **Fixed:** Minor issue where scan report didn't display all the podcasts that were added to winamp during scanning.
 7. **Fixed:** Exception messages being lost when downloading podcasts.
