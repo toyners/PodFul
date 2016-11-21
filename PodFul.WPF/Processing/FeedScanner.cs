@@ -69,6 +69,8 @@ namespace PodFul.WPF
     public Action<String> SetWindowTitleEvent;
 
     public Action<Boolean> SetCancelButtonStateEvent;
+
+    public Action<Int32, Int32, Int32, Int32, Int32> UpdateCountsEvent;
     #endregion
 
     #region Methods
@@ -260,7 +262,11 @@ namespace PodFul.WPF
 
     private void UpdateCounts()
     {
-      throw new NotImplementedException();
+      this.UpdateCountsEvent?.Invoke(this.downloadManager.WaitingJobsCount, 
+        this.downloadManager.ProcessingJobsCount,
+        this.downloadManager.CompletedJobsCount,
+        this.downloadManager.CancelledJobsCount,
+        this.downloadManager.FailedJobsCount);
     }
     #endregion
   }

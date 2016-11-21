@@ -3,6 +3,7 @@ namespace PodFul.WPF
 {
   using System;
   using System.Windows;
+  using System.Windows.Input;
   using Library;
 
   /// <summary>
@@ -24,6 +25,7 @@ namespace PodFul.WPF
       imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
+      feedScanner.UpdateCountsEvent = processingWindow.UpdateCountsEventHandler;
       return processingWindow;
     }
 
@@ -70,6 +72,28 @@ namespace PodFul.WPF
       this.feedScanner.Cancel();
     }
 
+    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
+    {
+      // TODO: Complete cancellation.
+    }
+
+    private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
+    {
+      // TODO: Scroll podcast download list.
+    }
+
+    private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 processingJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.WaitingCount.Text = "Waiting: " + waitingJobsCount;
+        this.ProcessingCount.Text = "Processing: " + processingJobsCount;
+        this.CompletedCount.Text = "Completed: " + completedJobsCount;
+        this.CancelledCount.Text = (cancelledJobsCount == 0 ? String.Empty : "Cancelled: " + cancelledJobsCount);
+        this.FailedCount.Text = (failedJobsCount == 0 ? String.Empty : "Failed: " + failedJobsCount);
+      });
+    }
+
     private void Window_Loaded(Object sender, RoutedEventArgs e)
     {
       if (!this.isLoaded)
@@ -78,16 +102,6 @@ namespace PodFul.WPF
         this.feedScanner.Process();
         this.isLoaded = true;
       }
-    }
-
-    private void FeedList_MouseWheel(Object sender, System.Windows.Input.MouseWheelEventArgs e)
-    {
-      // TODO: Scroll podcast download list.
-    }
-
-    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
-    {
-      // TODO: Complete cancellation.
     }
     #endregion
   }
