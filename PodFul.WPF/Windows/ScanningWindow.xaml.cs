@@ -25,7 +25,8 @@ namespace PodFul.WPF
       imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
-      feedScanner.UpdateCountsEvent = processingWindow.UpdateCountsEventHandler;
+      feedScanner.UpdateCountsEvent += processingWindow.UpdateCountsEventHandler;
+      feedScanner.DownloadStartedEvent += processingWindow.DownloadStartedEventHandler;
       return processingWindow;
     }
 
@@ -75,6 +76,11 @@ namespace PodFul.WPF
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
       // TODO: Complete cancellation.
+    }
+
+    private void DownloadStartedEventHandler()
+    {
+      throw new NotImplementedException();
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)

@@ -70,7 +70,9 @@ namespace PodFul.WPF
 
     public Action<Boolean> SetCancelButtonStateEvent;
 
-    public Action<Int32, Int32, Int32, Int32, Int32> UpdateCountsEvent;
+    public event Action<Int32, Int32, Int32, Int32, Int32> UpdateCountsEvent;
+
+    public event Action DownloadStartedEvent;
     #endregion
 
     #region Methods
