@@ -84,20 +84,15 @@ namespace PodFul.WPF
       var cancelledCountText = (cancelledJobCount == 0 ? String.Empty : "Cancelled: " + cancelledJobCount);
       var failedCountText = (failedJobCount == 0 ? String.Empty : "Failed: " + failedJobCount);
 
-      UpdateUICountsDelegate updateUICountsDelegate = UpdateUICounts;
-      Application.Current.Dispatcher.BeginInvoke(updateUICountsDelegate, title, waitingJobText, processingCountText, completedCountText, cancelledCountText, failedCountText);
-    }
-
-    private delegate void UpdateUICountsDelegate(String windowsTitle, String waitingCountText, String processingCountText, String completedCountText, String cancelledCountText, String failedCountText);
-
-    private void UpdateUICounts(String windowsTitle, String waitingCountText, String processingCountText, String completedCountText, String cancelledCountText, String failedCountText)
-    {
-      this.Title = windowsTitle;
-      this.WaitingCount.Text = waitingCountText;
-      this.ProcessingCount.Text = processingCountText;
-      this.CompletedCount.Text = completedCountText;
-      this.CancelledCount.Text = cancelledCountText;
-      this.FailedCount.Text = failedCountText;
+      Application.Current.Dispatcher.Invoke(() => 
+      {
+        this.Title = title;
+        this.WaitingCount.Text = waitingJobText;
+        this.ProcessingCount.Text = processingCountText;
+        this.CompletedCount.Text = completedCountText;
+        this.CancelledCount.Text = cancelledCountText;
+        this.FailedCount.Text = failedCountText;
+      });
     }
 
     private void Window_Loaded(Object sender, RoutedEventArgs e)
