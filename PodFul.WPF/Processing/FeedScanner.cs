@@ -56,8 +56,8 @@ namespace PodFul.WPF
       this.logger = logger;
       this.podcastDownloadConfirmer = podcastDownloadConfirmer;
       this.downloadManager = downloadManager;
-      this.downloadManager.JobStartedEvent = this.UpdateCounts;
-      this.downloadManager.JobFinishedEvent = this.UpdateCounts;
+      this.downloadManager.JobStartedEvent += this.UpdateCounts;
+      this.downloadManager.JobFinishedEvent += this.UpdateCounts;
     }
     #endregion
 
@@ -262,7 +262,7 @@ namespace PodFul.WPF
       });
     }
 
-    private void UpdateCounts()
+    private void UpdateCounts(DownloadJob job)
     {
       this.UpdateCountsEvent?.Invoke(this.downloadManager.WaitingJobsCount, 
         this.downloadManager.ProcessingJobsCount,

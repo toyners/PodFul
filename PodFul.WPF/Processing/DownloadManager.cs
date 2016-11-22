@@ -54,11 +54,11 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Events
-    public Action AllDownloadsCompletedEvent;
+    public event Action AllDownloadsCompletedEvent;
 
-    public Action JobFinishedEvent;
+    public event Action<DownloadJob> JobFinishedEvent;
 
-    public Action JobStartedEvent;
+    public event Action<DownloadJob> JobStartedEvent;
     #endregion
 
     #region Methods
@@ -166,7 +166,7 @@ namespace PodFul.WPF.Processing
       }
 
       // Definition of 'job started' is when the thread has been created and is ready to run.
-      this.JobStartedEvent?.Invoke();
+      this.JobStartedEvent?.Invoke(job);
 
       task.ContinueWith(t =>
       {
@@ -203,7 +203,7 @@ namespace PodFul.WPF.Processing
 
         this.currentDownloads--;
 
-        this.JobFinishedEvent?.Invoke();
+        this.JobFinishedEvent?.Invoke(job);
 
         this.StartDownload();
       });

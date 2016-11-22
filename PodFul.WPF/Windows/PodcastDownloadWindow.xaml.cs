@@ -24,9 +24,9 @@ namespace PodFul.WPF
       InitializeComponent();
 
       this.downloadManager = downloadManager;
-      this.downloadManager.AllDownloadsCompletedEvent = WorkCompleted;
-      this.downloadManager.JobStartedEvent = UpdateCounts;
-      this.downloadManager.JobFinishedEvent = UpdateCounts;
+      this.downloadManager.AllDownloadsCompletedEvent += this.WorkCompleted;
+      this.downloadManager.JobStartedEvent += this.UpdateCounts;
+      this.downloadManager.JobFinishedEvent += this.UpdateCounts;
 
       this.PodcastList.ItemsSource = downloadManager.Jobs;
 
@@ -56,6 +56,11 @@ namespace PodFul.WPF
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
+    }
+
+    private void UpdateCounts(DownloadJob job)
+    {
+      this.UpdateCounts();
     }
 
     private void UpdateCounts()
