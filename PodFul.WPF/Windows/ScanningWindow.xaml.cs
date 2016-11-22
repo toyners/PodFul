@@ -5,6 +5,7 @@ namespace PodFul.WPF
   using System.Windows;
   using System.Windows.Input;
   using Library;
+  using Processing;
 
   /// <summary>
   /// Interaction logic for ScanningWindow.xaml
@@ -26,7 +27,7 @@ namespace PodFul.WPF
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
       feedScanner.UpdateCountsEvent += processingWindow.UpdateCountsEventHandler;
-      feedScanner.DownloadStartedEvent += processingWindow.DownloadStartedEventHandler;
+      feedScanner.JobStartedEvent += processingWindow.JobStartedEventHandler;
       return processingWindow;
     }
 
@@ -78,14 +79,14 @@ namespace PodFul.WPF
       // TODO: Complete cancellation.
     }
 
-    private void DownloadStartedEventHandler()
-    {
-      throw new NotImplementedException();
-    }
-
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
       // TODO: Scroll podcast download list.
+    }
+
+    private void JobStartedEventHandler(DownloadJob job)
+    {
+      this.PodcastList.ScrollIntoView(job);
     }
 
     private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 processingJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
