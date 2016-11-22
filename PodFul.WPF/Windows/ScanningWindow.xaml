@@ -31,8 +31,8 @@
         </Border>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-          <TextBlock Name="WaitingCount" Margin="3,0" >Waiting count</TextBlock>
-          <TextBlock Name="ProcessingCount" Margin="3,0" Foreground="Blue">Processing count</TextBlock>
+          <TextBlock Name="WaitingCount" Margin="3,0" Foreground="DarkSlateGray">Waiting count</TextBlock>
+          <TextBlock Name="ProcessingCount" Margin="3,0" Foreground="Black">Processing count</TextBlock>
           <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green">Completed count</TextBlock>
           <TextBlock Name="CancelledCount" Margin="3,0" Foreground="OrangeRed">Cancelled count</TextBlock>
           <TextBlock Name="FailedCount" Margin="3,0" Foreground="Red">Failed count</TextBlock>

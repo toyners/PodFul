@@ -188,8 +188,8 @@ namespace PodFul.WPF.Processing
           case StatusTypes.Completed: return "Green";
           case StatusTypes.Canceled: return "Orange";
           case StatusTypes.Failed: return "Red";
-          case StatusTypes.Running: return "Blue";
-          default: return "Gray";
+          case StatusTypes.Running: return "Black";
+          default: return "DarkSlateGray";
         }
       }
     }
