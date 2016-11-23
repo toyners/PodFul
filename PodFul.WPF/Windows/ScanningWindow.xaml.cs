@@ -86,7 +86,19 @@ namespace PodFul.WPF
 
     private void JobStartedEventHandler(DownloadJob job)
     {
-      this.PodcastList.ScrollIntoView(job);
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.PodcastList.ScrollIntoView(job);
+      });
+    }
+
+    private void InitializeCounts()
+    {
+      this.WaitingCount.Text = "Waiting: 0";
+      this.ProcessingCount.Text = "Processing: 0";
+      this.CompletedCount.Text = "Completed: 0";
+      this.CancelledCount.Text = String.Empty;
+      this.FailedCount.Text = String.Empty;
     }
 
     private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 processingJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
@@ -107,6 +119,7 @@ namespace PodFul.WPF
       {
         // Ensure this is only called once.
         this.feedScanner.Process();
+        this.InitializeCounts();
         this.isLoaded = true;
       }
     }
