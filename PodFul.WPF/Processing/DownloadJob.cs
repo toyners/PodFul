@@ -189,7 +189,7 @@ namespace PodFul.WPF.Processing
           case StatusTypes.Canceled: return "Orange";
           case StatusTypes.Failed: return "Red";
           case StatusTypes.Running: return "Black";
-          default: return "DarkSlateGray";
+          default: return "Blue";
         }
       }
     }
@@ -198,14 +198,7 @@ namespace PodFul.WPF.Processing
     {
       get
       {
-        switch (this.status)
-        {
-          case StatusTypes.Completed: return FontWeights.Bold;
-          case StatusTypes.Canceled: return FontWeights.Bold;
-          case StatusTypes.Failed: return FontWeights.Bold;
-          case StatusTypes.Running: return FontWeights.Normal;
-          default: return FontWeights.Normal;
-        }
+        return (this.status != StatusTypes.Waiting ? FontWeights.Bold : FontWeights.Normal);
       }
     } 
 
@@ -279,7 +272,7 @@ namespace PodFul.WPF.Processing
         }
         else
         {
-          this.ProgressUnit = "MB";
+          this.ProgressUnit = " MB";
           this.FileSizeNotKnown = true;
         }
 

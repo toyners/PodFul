@@ -17,8 +17,8 @@
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" Margin="0,0,0,3">
       <StackPanel Orientation="Horizontal">
-        <TextBlock Name="WaitingCount" Margin="3,0" >Waiting count</TextBlock>
-        <TextBlock Name="ProcessingCount" Margin="3,0" Foreground="Blue">Processing count</TextBlock>
+        <TextBlock Name="WaitingCount" Margin="3,0" Foreground="Blue" >Waiting count</TextBlock>
+        <TextBlock Name="ProcessingCount" Margin="3,0" Foreground="Black">Processing count</TextBlock>
         <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green">Completed count</TextBlock>
         <TextBlock Name="CancelledCount" Margin="3,0" Foreground="OrangeRed">Cancelled count</TextBlock>
         <TextBlock Name="FailedCount" Margin="3,0" Foreground="Red">Failed count</TextBlock>
@@ -46,7 +46,7 @@
                   </Grid.RowDefinitions>
 
                   <!--<Border BorderBrush="Black" BorderThickness="1">-->
-                    <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
                   <!--</Border>-->
                   
                   <Grid Grid.Row="1">
@@ -55,7 +55,7 @@
                       <ColumnDefinition Width="7*"/>
                     </Grid.ColumnDefinitions>
                     <!--<Border BorderBrush="Black" BorderThickness="1">-->
-                      <TextBlock Text="{Binding StatusMessage}" FontSize="14" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                      <TextBlock Text="{Binding StatusMessage}" Margin="3,0" FontSize="14" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <!--</Border>-->
                     <!--<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">-->
                       <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" Height="14" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
