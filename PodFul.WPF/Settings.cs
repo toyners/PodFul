@@ -7,7 +7,7 @@ namespace PodFul.WPF
   using System.Xml;
   using System.Xml.Schema;
   using System.Xml.Serialization;
-  using Newtonsoft.Json;
+  //using Newtonsoft.Json;
   using PodFul.Library;
 
   public class Settings : IXmlSerializable
@@ -22,14 +22,14 @@ namespace PodFul.WPF
             
       //Settings settings = null;
       //settings.CreateDeliveryPoints(fileDeliveryLogger);
-      var ctx = new StreamingContext(StreamingContextStates.Other, fileDeliveryLogger);
+      /*var ctx = new StreamingContext(StreamingContextStates.Other, fileDeliveryLogger);
       var serializerSettings = new JsonSerializerSettings { Context = ctx };
       var fileStream = new FileStream(filePath, FileMode.Open);
       var sr = new StreamReader(filePath);
 
       var settings = JsonConvert.DeserializeObject<Settings>(sr.ReadToEnd(), serializerSettings);
 
-      JsonConvert.SerializeObject(settings);
+      JsonConvert.SerializeObject(settings);*/
 
       throw new NotImplementedException();
     }
