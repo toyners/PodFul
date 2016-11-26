@@ -10,7 +10,7 @@ namespace PodFul.WPF
   //using Newtonsoft.Json;
   using PodFul.Library;
 
-  public class Settings : IXmlSerializable
+  public class Settings
   {
     #region Construction
     public static Settings Create(String filePath, ILogger fileDeliveryLogger)
@@ -34,13 +34,7 @@ namespace PodFul.WPF
       throw new NotImplementedException();
     }
 
-    [OnDeserializing]
-    internal void OnDeserializing(StreamingContext ctx)
-    {
-
-    }
-
-    public Settings(ILogger log)
+    public Settings(String filePath, ILogger log)
     {
       this.ConcurrentDownloadCount = 3;
 
@@ -59,19 +53,10 @@ namespace PodFul.WPF
     #endregion
 
     #region Methods
-    public XmlSchema GetSchema()
-    {
-      throw new NotImplementedException();
-    }
 
-    public void ReadXml(XmlReader reader)
+    public void Save()
     {
-      throw new NotImplementedException();
-    }
 
-    public void WriteXml(XmlWriter writer)
-    {
-      throw new NotImplementedException();
     }
 
     private Action<Podcast, String>[] CreateDeliveryPoints(ILogger log)

@@ -74,7 +74,7 @@ type FeedFunctions_UnitTests() =
         with
         | _ as e ->
             let r = e :? System.Net.WebException
-            Assert.AreEqual(r, true)
+            Assert.IsNotNull(r)
             
             testSuccessful <- true
 
