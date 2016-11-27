@@ -84,7 +84,6 @@
     <Compile Include="Processing\PodcastComparison.cs" />
     <Compile Include="Processing\PodcastComparisonListCreator.cs" />
     <Compile Include="Processing\PodcastDownloadConfirmer.cs" />
-    <Compile Include="SettingsFactory.cs" />
     <Compile Include="Windows\AddDeliveryPointWindow.xaml.cs">
       <DependentUpon>AddDeliveryPointWindow.xaml</DependentUpon>
     </Compile>

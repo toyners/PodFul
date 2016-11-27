@@ -2,14 +2,9 @@
 namespace PodFul.WPF
 {
   using System;
-  using System.Collections.Generic;
   using System.IO;
-  using System.Runtime.Serialization;
-  using System.Xml;
-  using System.Xml.Schema;
   using System.Xml.Serialization;
   using Jabberwocky.Toolkit.Object;
-  //using Newtonsoft.Json;
   using PodFul.Library;
 
   public class Settings
