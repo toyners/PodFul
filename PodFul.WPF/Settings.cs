@@ -87,7 +87,6 @@ namespace PodFul.WPF
     #endregion
 
     #region Methods
-
     public void Save()
     {
       var serializer = new XmlSerializer(typeof(SettingsData));
