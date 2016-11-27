@@ -20,6 +20,17 @@ namespace PodFul.WPF
 
     public String FeedURL { get { return this.URL.Text; } }
 
+    private void DirectorySelectionButtonClick(Object sender, RoutedEventArgs e)
+    {
+      var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+      if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+      {
+        return;
+      }
+
+      this.DirectoryPath.Text = folderBrowserDialog.SelectedPath;
+    }
+
     private void okButton_Click(Object sender, RoutedEventArgs e)
     {
       this.FeedDirectory = this.DirectoryPath.Text;

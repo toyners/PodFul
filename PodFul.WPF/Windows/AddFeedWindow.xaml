@@ -38,7 +38,8 @@
 
       <Label Margin="0" Grid.Row="1" VerticalAlignment="Center">Directory Path:</Label>
       <TextBox Name="DirectoryPath" Margin="0,0,2.5,0" Grid.Row="1" Grid.Column="1" Height="21" TextChanged="textChanged"/>
-      <Button Padding="3" Margin="2.5,0,0,0" Grid.Row="1" Grid.Column="2" Height="21" VerticalAlignment="Center">...</Button>
+      <Button Padding="3" Margin="2.5,0,0,0" Grid.Row="1" 
+              Grid.Column="2" Height="21" VerticalAlignment="Center" Click="DirectorySelectionButtonClick">...</Button>
     </Grid>
   </DockPanel>
 </Window>
