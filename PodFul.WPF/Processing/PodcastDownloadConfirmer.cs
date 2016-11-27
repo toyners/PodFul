@@ -19,9 +19,9 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public PodcastDownloadConfirmer(Settings settings)
+    public PodcastDownloadConfirmer(Int32 confirmPodcastDownloadThreshold)
     {
-      this.confirmPodcastDownloadThreshold = settings.ConfirmPodcastDownloadThreshold;
+      this.confirmPodcastDownloadThreshold = confirmPodcastDownloadThreshold;
     }
     #endregion
 

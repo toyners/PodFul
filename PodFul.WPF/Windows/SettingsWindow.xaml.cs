@@ -54,6 +54,7 @@ namespace PodFul.WPF
     private void close_Click(Object sender, RoutedEventArgs e)
     {
       this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
+      this.settings.Save();
     }
   }
 

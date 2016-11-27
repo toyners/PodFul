@@ -42,7 +42,7 @@ namespace PodFul.WPF
 
       this.DisplayTitle();
 
-      this.settings = Settings.Create(ConfigurationManager.AppSettings["SettingsPath"], this.fileDeliveryLogger);
+      this.settings = new Settings(ConfigurationManager.AppSettings["SettingsPath"], this.fileDeliveryLogger);
       
       var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
       DirectoryOperations.EnsureDirectoryExists(feedDirectory);
@@ -72,7 +72,7 @@ namespace PodFul.WPF
 
       this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
 
-      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings);
+      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings.ConfirmPodcastDownloadThreshold);
 
       this.fileLogger.Message("Main Window instantiated.");
     }

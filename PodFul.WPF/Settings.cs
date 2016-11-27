@@ -9,32 +9,13 @@ namespace PodFul.WPF
 
   public class Settings
   {
+    #region Fields
     private String filePath;
 
     private SettingsData settingsData;
+    #endregion
 
     #region Construction
-    public static Settings Create(String filePath, ILogger fileDeliveryLogger)
-    {
-      /*var settingsPath = ConfigurationManager.AppSettings["SettingsPath"];
-      XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-      FileStream stream = new FileStream(settingsPath, FileMode.Open);
-      this.settings = (Settings)serializer.Deserialize(stream);*/
-            
-      //Settings settings = null;
-      //settings.CreateDeliveryPoints(fileDeliveryLogger);
-      /*var ctx = new StreamingContext(StreamingContextStates.Other, fileDeliveryLogger);
-      var serializerSettings = new JsonSerializerSettings { Context = ctx };
-      var fileStream = new FileStream(filePath, FileMode.Open);
-      var sr = new StreamReader(filePath);
-
-      var settings = JsonConvert.DeserializeObject<Settings>(sr.ReadToEnd(), serializerSettings);
-
-      JsonConvert.SerializeObject(settings);*/
-
-      throw new NotImplementedException();
-    }
-
     public Settings(String filePath, ILogger fileDeliveryLogger)
     {
       fileDeliveryLogger.VerifyThatObjectIsNotNull("Parameter 'fileDeliveryLogger' is null.");
