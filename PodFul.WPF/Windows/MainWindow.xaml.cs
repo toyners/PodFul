@@ -7,6 +7,7 @@ namespace PodFul.WPF
   using System.IO;
   using System.Reflection;
   using System.Threading;
+  using System.Threading.Tasks;
   using System.Windows;
   using System.Windows.Controls;
   using Jabberwocky.Toolkit.Assembly;
@@ -100,19 +101,26 @@ namespace PodFul.WPF
         return;
       }
 
-      // Create the feed and add to storage.
       Feed feed = null;
-      try
+
+      CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+      var cancelToken = cancellationTokenSource.Token;
+
+      Task addFeedTask = Task.Factory.StartNew(() =>
       {
-        feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, CancellationToken.None);
-        this.fileLogger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
-      }
-      catch (Exception exception)
-      {
-        MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + exception.Message, "Exception occurred.");
-        this.fileLogger.Exception("Trying to create new feed: " + exception.Message);
-        return;
-      }
+        // Create the feed and add to storage.
+        try
+        {
+          feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, CancellationToken.None);
+          this.fileLogger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
+        }
+        catch (Exception exception)
+        {
+          MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + exception.Message, "Exception occurred.");
+          this.fileLogger.Exception("Trying to create new feed: " + exception.Message);
+          return;
+        }
+      });
 
       var fileCount = GetCountOfExistingMediaFilesForFeed(feed);
       if (fileCount > 0 &&

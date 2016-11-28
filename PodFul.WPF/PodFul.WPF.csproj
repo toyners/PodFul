@@ -92,6 +92,9 @@
     <Compile Include="Converters\GeneralDateTimeConverter.cs" />
     <Compile Include="Converters\DownloadDateTimeConverter.cs" />
     <Compile Include="FeedCollection.cs" />
+    <Compile Include="Windows\AddFeedProgressWindow.xaml.cs">
+      <DependentUpon>AddFeedProgressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\DownloadConfirmationWindow.xaml.cs">
       <DependentUpon>DownloadConfirmationWindow.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\AddDeliveryPointWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddFeedProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
