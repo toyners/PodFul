@@ -40,6 +40,11 @@ namespace PodFul.WPF
       addDeliveryPointWindow.ShowDialog();
     }
 
+    private void CloseButtonClick(Object sender, RoutedEventArgs e)
+    {
+      this.Close();
+    }
+
     private void editButton_Click(Object sender, RoutedEventArgs e)
     {
 
@@ -49,13 +54,18 @@ namespace PodFul.WPF
     {
 
     }
-    #endregion
 
-    private void close_Click(Object sender, RoutedEventArgs e)
+    private void UpdateSettings()
     {
       this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
       this.settings.Save();
     }
+
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      this.UpdateSettings();
+    }
+    #endregion
   }
 
   public abstract class DeliveryPointSetup

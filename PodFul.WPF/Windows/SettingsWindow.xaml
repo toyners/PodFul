@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="600"
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico">
+        Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing">
   <DockPanel Margin="5">
     <DockPanel.Resources>
       <Style TargetType="Button">
@@ -20,7 +20,7 @@
     </DockPanel.Resources>
 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button HorizontalAlignment="Right" IsDefault="True" Click="close_Click">Close</Button>
+      <Button HorizontalAlignment="Right" IsDefault="True" Click="CloseButtonClick" >Close</Button>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
