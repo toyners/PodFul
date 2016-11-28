@@ -57,8 +57,16 @@ namespace PodFul.WPF
 
     private void UpdateSettings()
     {
-      this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
-      this.settings.Save();
+      try
+      {
+        this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
+        this.settings.Save();
+      }
+      catch (Exception exception)
+      {
+        var message = String.Format("Exception has occurred while saving settings to file. Message is:\r\n\r\n{0}", exception.Message);
+        MessageBox.Show(message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
     }
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
