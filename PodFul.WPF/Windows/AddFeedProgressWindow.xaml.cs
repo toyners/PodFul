@@ -48,6 +48,8 @@ namespace PodFul.WPF.Windows
       InitializeComponent();
     }
 
+    public Feed Feed { get; set; }
+
     private void CancelButtonClick(Object sender, RoutedEventArgs e)
     {
       this.cancellationTokenSource.Cancel();
@@ -58,28 +60,17 @@ namespace PodFul.WPF.Windows
       this.ProgressBar.IsIndeterminate = true;
       var cancelToken = cancellationTokenSource.Token;
 
-      Feed feed = null;
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
         // Create the feed and add to storage.
-        try
-        {
-          feed = FeedFunctions.CreateFeed(this.feedURL, this.feedPath, this.imageResolver, CancellationToken.None);
-          this.fileLogger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
-        }
-        catch (Exception exception)
-        {
-          MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + exception.Message, "Exception occurred.");
-          this.fileLogger.Exception("Trying to create new feed: " + exception.Message);
-          return;
-        }
+        this.Feed = FeedFunctions.CreateFeed(this.feedURL, this.feedPath, this.imageResolver, cancelToken);
       });
 
       Task feedAddedTask = addFeedTask.ContinueWith((task) =>
       {
         if (task.IsCompleted)
         {
-          this.fileLogger.Message("'" + feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
+          this.fileLogger.Message("'" + this.Feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
         }
         else if (task.IsCanceled)
         {
@@ -88,8 +79,23 @@ namespace PodFul.WPF.Windows
         else if (task.IsFaulted)
         {
           this.fileLogger.Exception("Trying to create new feed: " + task.Exception.Message);
+          Application.Current.Dispatcher.Invoke(() =>
+          {
+            MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + task.Exception.Message, "Exception occurred.");
+          });
         }
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          this.ProgressBar.IsIndeterminate = false; // Turn marque effect
+          this.Close();
+        });
       });
+    }
+
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      this.cancellationTokenSource.Cancel();
     }
 
     private void WindowLoaded(Object sender, RoutedEventArgs e)

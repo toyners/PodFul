@@ -15,6 +15,7 @@ namespace PodFul.WPF
   using Logging;
   using PodFul.Library;
   using PodFul.WPF.Processing;
+  using Windows;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -95,32 +96,17 @@ namespace PodFul.WPF
     private void AddFeed_Click(Object sender, RoutedEventArgs e)
     {
       var addFeedWindow = new AddFeedWindow();
+      addFeedWindow.Owner = this;
       var dialogResult = addFeedWindow.ShowDialog();
       if (!dialogResult.HasValue || !dialogResult.Value)
       {
         return;
       }
 
-      Feed feed = null;
-
-      CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-      var cancelToken = cancellationTokenSource.Token;
-
-      Task addFeedTask = Task.Factory.StartNew(() =>
-      {
-        // Create the feed and add to storage.
-        try
-        {
-          feed = FeedFunctions.CreateFeed(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, CancellationToken.None);
-          this.fileLogger.Message("'" + feed.Title + "' added. Podcasts stored in '" + feed.Directory + "'");
-        }
-        catch (Exception exception)
-        {
-          MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + exception.Message, "Exception occurred.");
-          this.fileLogger.Exception("Trying to create new feed: " + exception.Message);
-          return;
-        }
-      });
+      var addFeedProgressWindow = new AddFeedProgressWindow(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, this.fileLogger);
+      addFeedProgressWindow.Owner = this;
+      addFeedProgressWindow.ShowDialog();
+      Feed feed = addFeedProgressWindow.Feed;
 
       var fileCount = GetCountOfExistingMediaFilesForFeed(feed);
       if (fileCount > 0 &&
