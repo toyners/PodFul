@@ -10,7 +10,7 @@
         Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button Name="Cancel" Margin="5" Width="60" 
+      <Button Name="CommandButton" Margin="5" Width="60" 
             Height="50" HorizontalAlignment="Right" Click="Cancel_Click">
         Cancel
       </Button>

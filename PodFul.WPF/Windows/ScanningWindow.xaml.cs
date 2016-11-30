@@ -26,6 +26,7 @@ namespace PodFul.WPF
       imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
       feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
+      feedScanner.ScanCompletedEvent += processingWindow.ScanCompletedEventHandler; 
       feedScanner.UpdateCountsEvent += processingWindow.UpdateCountsEventHandler;
       feedScanner.JobStartedEvent += processingWindow.JobStartedEventHandler;
       return processingWindow;
@@ -62,15 +63,15 @@ namespace PodFul.WPF
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.Cancel.IsEnabled = state;
-        this.Cancel.Content = "Cancel";
+        this.CommandButton.IsEnabled = state;
+        this.CommandButton.Content = "Cancel";
       });
     }
 
     private void Cancel_Click(Object sender, RoutedEventArgs e)
     {
-      this.Cancel.IsEnabled = false;
-      this.Cancel.Content = "Cancelling";
+      this.CommandButton.IsEnabled = false;
+      this.CommandButton.Content = "Cancelling";
       this.feedScanner.Cancel();
     }
 
@@ -99,6 +100,11 @@ namespace PodFul.WPF
       this.CompletedCount.Text = "Completed: 0";
       this.CancelledCount.Text = String.Empty;
       this.FailedCount.Text = String.Empty;
+    }
+
+    private void ScanCompletedEventHandler()
+    {
+      throw new NotImplementedException();
     }
 
     private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 processingJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)

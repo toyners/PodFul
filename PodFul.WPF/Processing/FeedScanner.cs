@@ -71,6 +71,8 @@ namespace PodFul.WPF
 
     public Action<Boolean> SetCancelButtonStateEvent;
 
+    public event Action ScanCompletedEvent;
+
     public event Action<Int32, Int32, Int32, Int32, Int32> UpdateCountsEvent;
 
     public event Action<DownloadJob> JobStartedEvent;
@@ -222,7 +224,7 @@ namespace PodFul.WPF
           this.logger.Message("\r\nCANCELLED");
         }
 
-        this.SetCancelButtonStateEvent?.Invoke(false);
+        this.ScanCompletedEvent?.Invoke();
       }, cancelToken);
 
     }
