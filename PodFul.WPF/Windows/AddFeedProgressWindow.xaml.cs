@@ -66,7 +66,7 @@ namespace PodFul.WPF.Windows
         this.Feed = FeedFunctions.CreateFeed(this.feedURL, this.feedPath, this.imageResolver, cancelToken);
       }, cancelToken);
 
-      addFeedTask.ContinueWith((task) =>
+      addFeedTask.ContinueWith(task =>
       {
         if (task.IsFaulted)
         {

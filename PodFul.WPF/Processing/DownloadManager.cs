@@ -149,10 +149,10 @@ namespace PodFul.WPF.Processing
       var job = this.waitingJobs.Dequeue();
       job.InitialiseBeforeDownload();
 
-      Task task = null;
+      Task downloadTask = null;
       try
       {
-        task = Task.Factory.StartNew(() =>
+        downloadTask = Task.Factory.StartNew(() =>
         {
           var downloader = new FileDownloader();
           downloader.Download(job.URL, job.FilePath, job.CancellationToken, job.ProgressEventHandler);
@@ -168,7 +168,7 @@ namespace PodFul.WPF.Processing
       // Definition of 'job started' is when the thread has been created and is ready to run.
       this.JobStartedEvent?.Invoke(job);
 
-      task.ContinueWith(t =>
+      downloadTask.ContinueWith(task =>
       {
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -178,12 +178,12 @@ namespace PodFul.WPF.Processing
           job.FileSizeNotKnown = false;
         });
 
-        if (t.Exception != null)
+        if (task.IsFaulted)
         {
-          this.ProcessException(t.Exception, job);
+          this.ProcessException(task.Exception, job);
           this.FailedJobsCount++;
         }
-        else if (t.IsCanceled)
+        else if (task.IsCanceled)
         {
           job.DownloadCanceled();
           this.CancelledJobsCount++;
