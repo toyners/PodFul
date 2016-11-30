@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Add Feed" Height="150" Width="600" ResizeMode="NoResize" Icon="baggage_cart_box_tE4_icon.ico">
+        Title="Add Feed" Height="150" Width="600" ResizeMode="NoResize" Icon="baggage_cart_box_tE4_icon.ico"
+        WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"  HorizontalAlignment="Right">
       <StackPanel.Resources>

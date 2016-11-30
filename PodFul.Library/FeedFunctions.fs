@@ -228,7 +228,7 @@ module public FeedFunctions =
              UpdatedDateTime = NoDateTime
         }
 
-    let private resolveImages (imageResolver : IImageResolver) (cancellationToken : CancellationToken) (feed : Feed) : Feed =
+    let private resolveImages (imageResolver : IImageResolver) (cancelToken : CancellationToken) (feed : Feed) : Feed =
 
       match (imageResolver) with
       | null -> feed
@@ -241,10 +241,9 @@ module public FeedFunctions =
           if localImagePath <> podcast.FileDetails.ImageFileName then
             podcast.SetImageFileName localImagePath
         
-          if cancellationToken.IsCancellationRequested then
-            index <- feed.Podcasts.Length
-          else
-            index <- index + 1
+          cancelToken.ThrowIfCancellationRequested()
+          
+          index <- index + 1
 
         let localImagePath = imageResolver.GetName feed.ImageFileName feed.ImageURL  
         if (localImagePath <> feed.ImageFileName) then
@@ -252,14 +251,14 @@ module public FeedFunctions =
         else
             feed
 
-    let public CreateFeed url directoryPath imageResolver cancellationToken = 
+    let public CreateFeed url directoryPath imageResolver cancelToken = 
         downloadDocument url |> 
         createFeedRecord url directoryPath String.Empty DateTime.Now |>
-        resolveImages imageResolver cancellationToken
+        resolveImages imageResolver cancelToken
 
-    let public UpdateFeed feed imageResolver cancellationToken : Feed = 
+    let public UpdateFeed feed imageResolver cancelToken : Feed = 
         downloadDocument feed.URL |> 
         createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |>  
         Feed.SetUpdatedDate feed.UpdatedDateTime |> 
         mergeFeeds feed |>
-        resolveImages imageResolver cancellationToken
+        resolveImages imageResolver cancelToken

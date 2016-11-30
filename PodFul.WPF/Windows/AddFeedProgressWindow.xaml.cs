@@ -64,25 +64,25 @@ namespace PodFul.WPF.Windows
       {
         // Create the feed and add to storage.
         this.Feed = FeedFunctions.CreateFeed(this.feedURL, this.feedPath, this.imageResolver, cancelToken);
-      });
+      }, cancelToken);
 
-      Task feedAddedTask = addFeedTask.ContinueWith((task) =>
+      addFeedTask.ContinueWith((task) =>
       {
-        if (task.IsCompleted)
-        {
-          this.fileLogger.Message("'" + this.Feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
-        }
-        else if (task.IsCanceled)
-        {
-          this.fileLogger.Message("Adding feed from '" + this.feedURL + "' was cancelled.");
-        }
-        else if (task.IsFaulted)
+        if (task.IsFaulted)
         {
           this.fileLogger.Exception("Trying to create new feed: " + task.Exception.Message);
           Application.Current.Dispatcher.Invoke(() =>
           {
             MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + task.Exception.Message, "Exception occurred.");
           });
+        }
+        else if (task.IsCanceled)
+        {
+          this.fileLogger.Message("Adding feed from '" + this.feedURL + "' was cancelled.");
+        }
+        else
+        {
+          this.fileLogger.Message("'" + this.Feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
         }
 
         Application.Current.Dispatcher.Invoke(() =>

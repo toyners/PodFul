@@ -107,6 +107,11 @@ namespace PodFul.WPF
       addFeedProgressWindow.Owner = this;
       addFeedProgressWindow.ShowDialog();
       Feed feed = addFeedProgressWindow.Feed;
+      if (feed == null)
+      {
+        // Cancelled or Faulted - nothing more to be done.
+        return;
+      }
 
       var fileCount = GetCountOfExistingMediaFilesForFeed(feed);
       if (fileCount > 0 &&
@@ -120,7 +125,7 @@ namespace PodFul.WPF
 
       var imagePath = this.imageResolver.GetName(feed.ImageFileName, feed.ImageURL);
       feed = Feed.SetImageFileName(feed, imagePath);
-
+      
       try
       {
         this.feedCollection.AddFeed(feed);
