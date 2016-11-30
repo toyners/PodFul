@@ -107,12 +107,6 @@ namespace PodFul.WPF
           title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
           this.SetWindowTitleEvent?.Invoke(title);
 
-          if (this.cancellationTokenSource.IsCancellationRequested)
-          {
-            this.logger.Message("\r\nCANCELLED");
-            break;
-          }
-
           var feed = this.feedCollection.Feeds[feedIndex];
 
           this.logger.Message("Scanning \"" + feed.Title + "\".");
@@ -121,12 +115,6 @@ namespace PodFul.WPF
           try
           {
             newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver, cancelToken);
-
-            if (this.cancellationTokenSource.IsCancellationRequested)
-            {
-              this.logger.Message("CANCELLED");
-              break;
-            }
 
             this.logger.Message("Comparing podcasts ... ", false);
 
@@ -139,6 +127,8 @@ namespace PodFul.WPF
               var feedReport = podcastIndexes.Count + " podcasts found";
               this.logger.Message(feedReport + " (Scan cancelled).\r\n");
               scanReport += feedReport + " for \"" + feed.Title + "\" (Scan cancelled).";
+              this.cancellationTokenSource.Cancel();
+
               break;
             }
 
@@ -202,6 +192,8 @@ namespace PodFul.WPF
         {
           downloadManager.StartDownloads();
           Thread.Sleep(50);
+
+          cancelToken.ThrowIfCancellationRequested();
         }
 
       }, cancelToken);
@@ -223,6 +215,11 @@ namespace PodFul.WPF
         else
         {
           this.logger.Message("Scan Report\r\n" + scanReport);
+        }
+
+        if (tasks[0].IsCanceled || tasks[1].IsCanceled)
+        {
+          this.logger.Message("\r\nCANCELLED");
         }
 
         this.SetCancelButtonStateEvent?.Invoke(false);
