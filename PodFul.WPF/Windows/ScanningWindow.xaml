@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="ProcessingWindow" Height="600" Width="800"
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded">
+        Icon="baggage_cart_box_tE4_icon.ico" Loaded="WindowLoaded" Closing="WindowClosing">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Button Name="CommandButton" Margin="5" Width="60" 
-            Height="50" HorizontalAlignment="Right" Click="Cancel_Click">
+            Height="50" HorizontalAlignment="Right" Click="CommandButtonClick">
         Cancel
       </Button>
     </Border>

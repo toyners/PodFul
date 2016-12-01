@@ -69,8 +69,6 @@ namespace PodFul.WPF
     #region Events
     public Action<String> SetWindowTitleEvent;
 
-    public Action<Boolean> SetCancelButtonStateEvent;
-
     public event Action ScanCompletedEvent;
 
     public event Action<Int32, Int32, Int32, Int32, Int32> UpdateCountsEvent;
@@ -100,8 +98,6 @@ namespace PodFul.WPF
       Task scanningTask = Task.Factory.StartNew(
       () =>
       {
-        this.SetCancelButtonStateEvent?.Invoke(true);
-        
         while (indexes.Count > 0)
         {
           Int32 feedIndex = indexes.Dequeue();

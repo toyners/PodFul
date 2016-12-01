@@ -15,6 +15,8 @@ namespace PodFul.WPF
     #region Fields
     private FeedScanner feedScanner;
     private Boolean isLoaded;
+    private Boolean isProcessing;
+    private Boolean closeAfterScan;
     #endregion
 
     #region Construction   
@@ -25,7 +27,6 @@ namespace PodFul.WPF
       logger.PostMessage = processingWindow.PostMessage;
       imageResolver.PostMessage = processingWindow.PostMessage;
       feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
-      feedScanner.SetCancelButtonStateEvent = processingWindow.SetCancelButtonStateEventHandler;
       feedScanner.ScanCompletedEvent += processingWindow.ScanCompletedEventHandler; 
       feedScanner.UpdateCountsEvent += processingWindow.UpdateCountsEventHandler;
       feedScanner.JobStartedEvent += processingWindow.JobStartedEventHandler;
@@ -59,20 +60,23 @@ namespace PodFul.WPF
       });
     }
 
-    public void SetCancelButtonStateEventHandler(Boolean state)
-    {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.CommandButton.IsEnabled = state;
-        this.CommandButton.Content = "Cancel";
-      });
-    }
-
-    private void Cancel_Click(Object sender, RoutedEventArgs e)
+    private void CancelScanning()
     {
       this.CommandButton.IsEnabled = false;
       this.CommandButton.Content = "Cancelling";
       this.feedScanner.Cancel();
+    }
+
+    private void CommandButtonClick(Object sender, RoutedEventArgs e)
+    {
+      if (this.isProcessing)
+      {
+        this.CancelScanning();
+      }
+      else
+      {
+        this.Close();
+      }
     }
 
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
@@ -104,7 +108,18 @@ namespace PodFul.WPF
 
     private void ScanCompletedEventHandler()
     {
-      throw new NotImplementedException();
+      this.isProcessing = false;
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.CommandButton.IsEnabled = true;
+        this.CommandButton.Content = "Close";
+
+        if (this.closeAfterScan)
+        {
+          this.Close();
+        }
+      });
     }
 
     private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 processingJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
@@ -119,14 +134,25 @@ namespace PodFul.WPF
       });
     }
 
-    private void Window_Loaded(Object sender, RoutedEventArgs e)
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      if (!this.closeAfterScan)
+      {
+        e.Cancel = true;
+        this.closeAfterScan = true;
+        this.CancelScanning();
+      }
+    }
+
+    private void WindowLoaded(Object sender, RoutedEventArgs e)
     {
       if (!this.isLoaded)
       {
         // Ensure this is only called once.
-        this.feedScanner.Process();
         this.InitializeCounts();
         this.isLoaded = true;
+        this.isProcessing = true;
+        this.feedScanner.Process();
       }
     }
     #endregion
