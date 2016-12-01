@@ -225,7 +225,10 @@ namespace PodFul.WPF
         }
 
         this.ScanCompletedEvent?.Invoke();
-      }, cancelToken);
+      });
+      // No cancel token since we want this task to always run regardless
+      // of what happens to the other tasks. Cancelling a task will stop any
+      // continuation tasks from being scheduled (and hence started)
 
     }
 
