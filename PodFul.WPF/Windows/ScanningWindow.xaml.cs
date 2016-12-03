@@ -3,6 +3,7 @@ namespace PodFul.WPF
 {
   using System;
   using System.Windows;
+  using System.Windows.Controls;
   using System.Windows.Input;
   using Library;
   using Processing;
@@ -81,7 +82,7 @@ namespace PodFul.WPF
 
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
-      // TODO: Complete cancellation.
+      this.feedScanner.CancelDownload((sender as Button).DataContext);
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)

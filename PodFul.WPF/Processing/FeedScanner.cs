@@ -7,6 +7,7 @@ namespace PodFul.WPF
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
+  using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.String;
   using Library;
   using Logging;
@@ -80,6 +81,14 @@ namespace PodFul.WPF
     public void Cancel()
     {
       this.cancellationTokenSource.Cancel();
+      this.downloadManager.CancelAllDownloads();
+    }
+
+    public void CancelDownload(Object dataContext)
+    {
+      dataContext.VerifyThatObjectIsNotNull("Parameter 'dataContext' is null.");
+      var podcast = (DownloadJob)dataContext;
+      podcast.CancelDownload();
     }
 
     public void Process()
@@ -124,7 +133,7 @@ namespace PodFul.WPF
             {
               var feedReport = podcastIndexes.Count + " podcasts found";
               this.logger.Message(feedReport + " (Scan cancelled).\r\n");
-              scanReport += feedReport + " for \"" + feed.Title + "\" (Scan cancelled).";
+              scanReport += feedReport + " for \"" + feed.Title + "\".";
               this.cancellationTokenSource.Cancel();
 
               break;
@@ -171,6 +180,11 @@ namespace PodFul.WPF
               this.downloadManager.AddJob(job);
             }
           }
+          catch (OperationCanceledException)
+          {
+            // Do not handle here - rethrow so that operation is canceled.
+            throw;
+          }
           catch (Exception exception)
           {
             var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
@@ -205,6 +219,11 @@ namespace PodFul.WPF
           scanReport += deliveryLine + "\r\n";
         }
 
+        if (tasks[0].IsCanceled || tasks[1].IsCanceled)
+        {
+          scanReport += "\r\nCANCELLED";
+        }
+
         // Display the final scan report.
         if (scanReport == null)
         {
@@ -213,11 +232,6 @@ namespace PodFul.WPF
         else
         {
           this.logger.Message("Scan Report\r\n" + scanReport);
-        }
-
-        if (tasks[0].IsCanceled || tasks[1].IsCanceled)
-        {
-          this.logger.Message("\r\nCANCELLED");
         }
 
         this.ScanCompletedEvent?.Invoke();
