@@ -36,47 +36,57 @@ namespace PodFul.WPF
 
     public MainWindow()
     {
-      this.fileLogger = new FileLogger();
-      this.guiLogger = new GUILogger(this.fileLogger);
-      this.fileDeliveryLogger = new FileDeliveryLogger();
-
-      InitializeComponent();
-
-      this.DisplayTitle();
-
-      this.settings = new Settings(ConfigurationManager.AppSettings["SettingsPath"], this.fileDeliveryLogger);
-      
-      var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
-      DirectoryOperations.EnsureDirectoryExists(feedDirectory);
-      var feedStorage = new JSONFileStorage(feedDirectory);
-      this.feedCollection = new FeedCollection(feedStorage);
-
-      var imageDirectory = Path.Combine(feedDirectory, "Images");
-      DirectoryOperations.EnsureDirectoryExists(imageDirectory);
-
-      String defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
-      if (!File.Exists(defaultImagePath))
+      try
       {
-        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, defaultImagePath);
+        this.fileLogger = new FileLogger();
+        this.guiLogger = new GUILogger(this.fileLogger);
+        this.fileDeliveryLogger = new FileDeliveryLogger();
+
+        InitializeComponent();
+
+        this.DisplayTitle();
+
+        this.settings = new Settings(ConfigurationManager.AppSettings["SettingsPath"], this.fileDeliveryLogger);
+
+        var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
+        DirectoryOperations.EnsureDirectoryExists(feedDirectory);
+        var feedStorage = new JSONFileStorage(feedDirectory);
+        this.feedCollection = new FeedCollection(feedStorage);
+
+        var imageDirectory = Path.Combine(feedDirectory, "Images");
+        DirectoryOperations.EnsureDirectoryExists(imageDirectory);
+
+        String defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
+        if (!File.Exists(defaultImagePath))
+        {
+          Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, defaultImagePath);
+        }
+
+        this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath, true);
+
+        this.FeedList.ItemsSource = feedCollection.Feeds;
+        if (this.feedCollection.Feeds.Count > 0)
+        {
+          this.FeedList.SelectedIndex = 0;
+          this.currentFeed = this.feedCollection.Feeds[0];
+          this.ScanButton.IsEnabled = true;
+        }
+
+        this.FeedList.Focus();
+
+        this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
+
+        this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings.ConfirmPodcastDownloadThreshold);
+
+        this.fileLogger.Message("Main Window instantiated.");
       }
-
-      this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath, true);
-
-      this.FeedList.ItemsSource = feedCollection.Feeds;
-      if (this.feedCollection.Feeds.Count > 0)
+      catch (Exception exception)
       {
-        this.FeedList.SelectedIndex = 0;
-        this.currentFeed = this.feedCollection.Feeds[0];
-        this.ScanButton.IsEnabled = true;
+        this.fileLogger.Exception(exception.Message + ": " + exception.StackTrace);
+        var message = String.Format("Exception occurred during startup. Exception message is\r\n{0}\r\n\r\nPodFul will close.", exception.Message);
+        MessageBox.Show(message, "PodFul Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+        throw;
       }
-
-      this.FeedList.Focus();
-
-      this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
-
-      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings.ConfirmPodcastDownloadThreshold);
-
-      this.fileLogger.Message("Main Window instantiated.");
     }
 
     private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
