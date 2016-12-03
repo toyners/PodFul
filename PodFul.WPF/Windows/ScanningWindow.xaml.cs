@@ -136,7 +136,7 @@ namespace PodFul.WPF
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
-      if (!this.closeAfterScan)
+      if (this.isProcessing && !this.closeAfterScan)
       {
         e.Cancel = true;
         this.closeAfterScan = true;
