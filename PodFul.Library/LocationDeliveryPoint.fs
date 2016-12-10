@@ -3,7 +3,7 @@
 open System
 open System.IO
 
-type LocationDeliveryPoint(directoryPath, postMessage : Action<string>) =
+type LLocationDeliveryPoint(directoryPath, postMessage : Action<string>) =
 
     let directoryPath = directoryPath
     let postMessage = postMessage

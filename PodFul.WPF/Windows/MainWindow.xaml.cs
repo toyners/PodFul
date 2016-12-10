@@ -13,6 +13,7 @@ namespace PodFul.WPF
   using Jabberwocky.Toolkit.IO;
   using Logging;
   using Miscellaneous;
+  using PodFul.FileDelivery;
   using PodFul.Library;
   using PodFul.WPF.Processing;
   using Windows;
@@ -276,9 +277,10 @@ namespace PodFul.WPF
     {
       List<DownloadJob> jobs = new List<DownloadJob>();
       foreach (var index in podcastIndexes)
-      {
+      { 
         var podcast = this.currentFeed.Podcasts[index];
-        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
+        // No file delivery for manual downloading so file deliverer parameter is null.
+        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, null, this.imageResolver);
 
         jobs.Add(downloadJob);
       }

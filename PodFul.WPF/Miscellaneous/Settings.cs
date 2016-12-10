@@ -4,6 +4,7 @@ namespace PodFul.WPF.Miscellaneous
   using System;
   using System.IO;
   using System.Xml.Serialization;
+  using FileDelivery;
   using Jabberwocky.Toolkit.Object;
   using PodFul.Library;
 
@@ -61,6 +62,12 @@ namespace PodFul.WPF.Miscellaneous
             {
               Name = "Winamp",
               Location = @"C:\Program Files (x86)\Winamp\winamp.exe"
+            },
+
+            new SettingsData.DeliveryPointData
+            {
+              Name = "Single",
+              Location = @"C:\Users\toyne\Music\Podcasts\Daily"
             }
           }
         };
@@ -83,7 +90,7 @@ namespace PodFul.WPF.Miscellaneous
       set { this.settingsData.ConcurrentDownloadCount = value; }
     }
 
-    public Action<Podcast, String>[] DeliveryPoints { get; private set; }
+    public IDeliveryPoint[] DeliveryPoints { get; private set; }
     #endregion
 
     #region Methods
@@ -96,16 +103,18 @@ namespace PodFul.WPF.Miscellaneous
       }
     }
 
-    private Action<Podcast, String>[] CreateDeliveryPoints(SettingsData.DeliveryPointData[] deliveryPointData, ILogger log)
+    private IDeliveryPoint[] CreateDeliveryPoints(SettingsData.DeliveryPointData[] deliveryPointData, ILogger log)
     {
-      Action<Podcast, String>[] deliveryPoints = new Action<Podcast, String>[deliveryPointData.Length];
+      var deliveryPoints = new IDeliveryPoint[deliveryPointData.Length];
       var index = 0;
 
       foreach (var data in deliveryPointData)
       {
         switch (data.Name)
         {
-          case "Winamp": deliveryPoints[index] = new WinampDeliveryPoint(data.Location, log.Message, log.Exception).DeliverToWinamp;
+          case "Winamp": deliveryPoints[index] = new WinampDeliveryPoint(data.Location, log.Message, log.Exception);
+          break;
+          case "Single": deliveryPoints[index] = new FileDeliveryPoint(data.Location, log.Message, log.Exception);
           break;
           default: throw new NotImplementedException("Delivery point '" + data.Name + "' not recognised");
         }
@@ -124,9 +133,12 @@ namespace PodFul.WPF.Miscellaneous
         this.settingsData = (SettingsData)serializer.Deserialize(fileStream);
       }
 
-      this.settingsData.DeliveryData = new SettingsData.DeliveryPointData[1];
+      this.settingsData.DeliveryData = new SettingsData.DeliveryPointData[2];
       this.settingsData.DeliveryData[0].Name = "Winamp";
       this.settingsData.DeliveryData[0].Location = @"C:\Program Files (x86)\Winamp\winamp.exe";
+
+      this.settingsData.DeliveryData[1].Name = "Single";
+      this.settingsData.DeliveryData[1].Location = @"C:\Users\toyne\Music\Podcasts\Daily";
     }
     #endregion
 

@@ -10,6 +10,7 @@ namespace PodFul.WPF.Processing
   using System.Windows;
   using Library;
   using Miscellaneous;
+  using PodFul.FileDelivery;
 
   public class DownloadJob : INotifyPropertyChanged
   {
@@ -240,10 +241,8 @@ namespace PodFul.WPF.Processing
       }
 
       this.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
-      if (this.fileDeliverer != null)
-      {
-        this.DeliverPodcastFile(this.fileDeliverer, this.FilePath);
-      }
+
+      this.fileDeliverer?.DeliverFileToDeliveryPoints(this.FilePath, this.podcast.Title);
 
       this.feedCollection.UpdateFeed(this.feed);
 
@@ -252,11 +251,6 @@ namespace PodFul.WPF.Processing
         this.ProgressValue = 0;
         this.Status = StatusTypes.Completed;
       });
-    }
-
-    public void DeliverPodcastFile(IFileDeliverer fileDeliver, String filePath)
-    {
-      fileDeliver?.Deliver(this.podcast, filePath);
     }
 
     public void InitialiseBeforeDownload()

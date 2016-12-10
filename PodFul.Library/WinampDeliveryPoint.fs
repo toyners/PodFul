@@ -3,7 +3,7 @@
 open System
 open System.IO
 
-type WinampDeliveryPoint(winampExePath : string, postMessage : Action<string>, postException : Action<string>) =
+type WWinampDeliveryPoint(winampExePath : string, postMessage : Action<string>, postException : Action<string>) =
 
     let winampExePath = winampExePath //@"C:\Program Files (x86)\Winamp\winamp.exe"
     let postMessage = postMessage

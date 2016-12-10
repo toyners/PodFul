@@ -2,6 +2,6 @@
 
 open System
 
-type IFileDeliverer =
+type IIFileDeliverer =
 
     abstract member Deliver : Podcast -> string -> unit

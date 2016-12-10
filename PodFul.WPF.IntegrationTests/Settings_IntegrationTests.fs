@@ -9,6 +9,7 @@ open NUnit.Framework
 open PodFul.Library
 open PodFul.WPF.Logging
 open PodFul.WPF.Miscellaneous
+open PodFul.FileDelivery
 
 type Settings_IntegrationTests() =
 

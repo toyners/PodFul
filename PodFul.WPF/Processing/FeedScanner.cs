@@ -7,6 +7,7 @@ namespace PodFul.WPF
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
+  using FileDelivery;
   using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.String;
   using Library;
@@ -108,6 +109,9 @@ namespace PodFul.WPF
       Task scanningTask = Task.Factory.StartNew(
       () =>
       {
+
+        this.fileDeliverer.InitialiseDeliverypoints();
+
         while (indexes.Count > 0)
         {
           Int32 feedIndex = indexes.Dequeue();
