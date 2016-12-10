@@ -3,51 +3,79 @@ namespace PodFul.FileDelivery
 {
   using System;
   using System.IO;
+  using Jabberwocky.Toolkit.IO;
+  using Jabberwocky.Toolkit.String;
 
+  /// <summary>
+  /// Copies files from different locations to one central location.
+  /// </summary>
   public class FileDeliveryPoint : IDeliveryPoint
   {
-    private String directoryPath;
+    private String baseDirectoryPath;
 
-    private String destinationPath;
+    private String directoryPath;
 
     private Action<String> postMessageMethod;
 
     private Action<String> postExceptionMethod;
 
-    public FileDeliveryPoint(String directoryPath, Action<String> postMessageMethod, Action<String> postExceptionMethod)
+    /// <summary>
+    /// Creates a new instance of the FileDeliveryPoint class.
+    /// </summary>
+    /// <param name="baseDirectoryPath">Base directory path to create the destination directory within.</param>
+    /// <param name="postMessageMethod">Method used to post file delivery success message. Can be null.</param>
+    /// <param name="postExceptionMethod">Method used to post exception messages. Can be null.</param>
+    public FileDeliveryPoint(String baseDirectoryPath, Action<String> postMessageMethod, Action<String> postExceptionMethod)
     {
-      this.directoryPath = directoryPath;
+      baseDirectoryPath.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'baseDirectoryPath' is null or empty.");
+      this.baseDirectoryPath = baseDirectoryPath;
       this.postMessageMethod = postMessageMethod;
       this.postExceptionMethod = postExceptionMethod;
     }
 
+    /// <summary>
+    /// Delivers (copies) a file to a single destination directory that is created during Initialise method. 
+    /// </summary>
+    /// <param name="filePath">Full path to file to be delivered to destination directory.</param>
+    /// <param name="title">Title used when posting success messages or exceptions.</param>
     public void Deliver(String filePath, String title)
     {
       try
       {
-        File.Copy(filePath, this.destinationPath);
+        var fileName = filePath.Substring(filePath.LastIndexOf('\\') + 1);
+        var destinationFilePath = Path.Combine(this.directoryPath, fileName);
 
-        var message = String.Format("Added '{0}' to '{1}'.", title, destinationPath);
-        this.postMessageMethod.Invoke(message);
+        File.Copy(filePath, destinationFilePath);
+
+        var message = String.Format("Added '{0}' to '{1}'.", title, directoryPath);
+        this.postMessageMethod?.Invoke(message);
       }
       catch (Exception exception)
       {
-        var message = String.Format("Failed to add '{0}' to '{1}': {2}", title, destinationPath, exception.Message);
-        this.postExceptionMethod(message);
+        var message = String.Format("Failed to add '{0}' to '{1}': {2}", title, directoryPath, exception.Message);
+        this.postExceptionMethod?.Invoke(message);
       }
     }
 
+    /// <summary>
+    /// Initialises the destination directory for file delivery. Destination directory is based on base directory path set during
+    /// construction and a date timestamp. Simple counter is appended to destination directory name in case of duplicates. 
+    /// </summary>
     public void Initialise()
     {
       var count = 1;
       var destinationPath = String.Empty;
       var directoryName = String.Empty;
+      var today = DateTime.Today.ToString("dd-MM-yyyy");
       do
       {
-
+        directoryName = today + "_" + (count++);
+        destinationPath = Path.Combine(this.baseDirectoryPath, directoryName);
       }
       while (Directory.Exists(destinationPath));
-      //this.destinationPath = Path.Combine(this.directoryPath, DateTime.Now )
+
+      this.directoryPath = destinationPath;
+      DirectoryOperations.EnsureDirectoryExists(this.directoryPath);
     }
   }
 }

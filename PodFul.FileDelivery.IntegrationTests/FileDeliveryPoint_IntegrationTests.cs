@@ -22,7 +22,7 @@ namespace PodFul.FileDelivery.IntegrationTests
     }
 
     [Test]
-    public void Test()
+    public void Deliver_DeliveringFileToDirectory_FileExists()
     {
       // Arrange
       var fileName = Path.GetRandomFileName();
@@ -32,10 +32,10 @@ namespace PodFul.FileDelivery.IntegrationTests
       fileStream.Close();
 
       var destinationPath = Path.Combine(workingDirectory);
-      var expectedDestinationFilePath = Path.Combine(destinationPath, DateTime.Now.ToString("dd-mm-yyyy") + "_1");
+      var expectedDestinationFilePath = Path.Combine(destinationPath, DateTime.Now.ToString("dd-MM-yyyy") + "_1");
       expectedDestinationFilePath = Path.Combine(expectedDestinationFilePath, fileName);
 
-      var fileDeliveryPoint = new FileDeliveryPoint(destinationPath, this.PostMessage, this.PostException);
+      var fileDeliveryPoint = new FileDeliveryPoint(destinationPath, null, null);
 
       // Act
       fileDeliveryPoint.Initialise();
@@ -44,10 +44,6 @@ namespace PodFul.FileDelivery.IntegrationTests
       // Assert
       File.Exists(expectedDestinationFilePath).ShouldBeTrue();
     }
-
-    private void PostMessage(String message) { }
-
-    private void PostException(String message) { }
     #endregion 
   }
 }
