@@ -11,6 +11,7 @@ namespace PodFul.FileDelivery
   /// </summary>
   public class FileDeliveryPoint : IDeliveryPoint
   {
+    #region Fields
     private String baseDirectoryPath;
 
     private String directoryPath;
@@ -18,7 +19,9 @@ namespace PodFul.FileDelivery
     private Action<String> postMessageMethod;
 
     private Action<String> postExceptionMethod;
+    #endregion
 
+    #region Construction
     /// <summary>
     /// Creates a new instance of the FileDeliveryPoint class.
     /// </summary>
@@ -32,7 +35,9 @@ namespace PodFul.FileDelivery
       this.postMessageMethod = postMessageMethod;
       this.postExceptionMethod = postExceptionMethod;
     }
+    #endregion
 
+    #region Methods
     /// <summary>
     /// Delivers (copies) a file to a single destination directory that is created during Initialise method. 
     /// </summary>
@@ -77,5 +82,6 @@ namespace PodFul.FileDelivery
       this.directoryPath = destinationPath;
       DirectoryOperations.EnsureDirectoryExists(this.directoryPath);
     }
+    #endregion
   }
 }
