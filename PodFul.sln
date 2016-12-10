@@ -24,6 +24,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.Library.UnitTests", 
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.WPF.IntegrationTests", "PodFul.WPF.IntegrationTests\PodFul.WPF.IntegrationTests.fsproj", "{2F56777A-074C-4255-9076-16BA1AF519EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.FileDelivery", "PodFul.FileDelivery\PodFul.FileDelivery.csproj", "{DC45D73B-1D7A-43D4-ADE5-42EC1E19078C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.FileDelivery.IntegrationTests", "PodFul.FileDelivery.IntegrationTests\PodFul.FileDelivery.IntegrationTests.csproj", "{142463BE-1618-499A-BC9B-81609502E413}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,14 @@ Global
 		{2F56777A-074C-4255-9076-16BA1AF519EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F56777A-074C-4255-9076-16BA1AF519EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F56777A-074C-4255-9076-16BA1AF519EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC45D73B-1D7A-43D4-ADE5-42EC1E19078C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC45D73B-1D7A-43D4-ADE5-42EC1E19078C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC45D73B-1D7A-43D4-ADE5-42EC1E19078C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC45D73B-1D7A-43D4-ADE5-42EC1E19078C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{142463BE-1618-499A-BC9B-81609502E413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{142463BE-1618-499A-BC9B-81609502E413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{142463BE-1618-499A-BC9B-81609502E413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{142463BE-1618-499A-BC9B-81609502E413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
