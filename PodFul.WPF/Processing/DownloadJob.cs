@@ -9,6 +9,7 @@ namespace PodFul.WPF.Processing
   using System.Threading;
   using System.Windows;
   using Library;
+  using Miscellaneous;
 
   public class DownloadJob : INotifyPropertyChanged
   {

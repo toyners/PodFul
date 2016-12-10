@@ -1,12 +1,14 @@
 ﻿namespace PodFul.WPF.IntegrationTests
 
 open System
+open System.Windows.Controls;
+open System.Windows.Controls.Primitives;
 open System.IO
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
-open PodFul.WPF
 open PodFul.WPF.Logging
+open PodFul.WPF.Miscellaneous
 
 type Settings_IntegrationTests() =
 

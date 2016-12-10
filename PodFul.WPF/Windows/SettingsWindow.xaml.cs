@@ -3,6 +3,7 @@ namespace PodFul.WPF
 {
   using System;
   using System.Windows;
+  using Miscellaneous;
 
   /// <summary>
   /// Interaction logic for SettingsWindow.xaml

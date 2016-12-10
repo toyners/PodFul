@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.WPF
+namespace PodFul.WPF.Miscellaneous
 {
   using System;
   using System.IO;

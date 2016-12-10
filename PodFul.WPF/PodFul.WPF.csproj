@@ -78,7 +78,7 @@
     <Compile Include="Logging\FileDeliveryLogger.cs" />
     <Compile Include="Miscellaneous\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\VisualTreeLocator.cs" />
-    <Compile Include="PodcastSynchroniser.cs" />
+    <Compile Include="Miscellaneous\PodcastSynchroniser.cs" />
     <Compile Include="Processing\DownloadManager.cs" />
     <Compile Include="Processing\DownloadJob.cs" />
     <Compile Include="Processing\IPodcastDownloadConfirmer.cs" />
@@ -91,7 +91,7 @@
     <Compile Include="Converters\FileSizeConverter.cs" />
     <Compile Include="Converters\GeneralDateTimeConverter.cs" />
     <Compile Include="Converters\DownloadDateTimeConverter.cs" />
-    <Compile Include="FeedCollection.cs" />
+    <Compile Include="Miscellaneous\FeedCollection.cs" />
     <Compile Include="Windows\AddFeedProgressWindow.xaml.cs">
       <DependentUpon>AddFeedProgressWindow.xaml</DependentUpon>
     </Compile>
@@ -118,7 +118,7 @@
     <Compile Include="Windows\PodcastsWindow.xaml.cs">
       <DependentUpon>PodcastsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
+    <Compile Include="Miscellaneous\Settings.cs" />
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -217,6 +217,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PodFul.FileDelivery\PodFul.FileDelivery.csproj">
+      <Project>{dc45d73b-1d7a-43d4-ade5-42ec1e19078c}</Project>
+      <Name>PodFul.FileDelivery</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
       <Name>PodFul.Library</Name>

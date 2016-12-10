@@ -7,12 +7,12 @@ namespace PodFul.WPF
   using System.IO;
   using System.Reflection;
   using System.Threading;
-  using System.Threading.Tasks;
   using System.Windows;
   using System.Windows.Controls;
   using Jabberwocky.Toolkit.Assembly;
   using Jabberwocky.Toolkit.IO;
   using Logging;
+  using Miscellaneous;
   using PodFul.Library;
   using PodFul.WPF.Processing;
   using Windows;

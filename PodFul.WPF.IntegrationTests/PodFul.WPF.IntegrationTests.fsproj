@@ -68,9 +68,11 @@
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
