@@ -38,20 +38,20 @@ namespace PodFul.FileDelivery
     /// Delivers a file to winamp playlist.
     /// </summary>
     /// <param name="filePath">Full path to file to be delivered.</param>
-    /// <param name="title">Title used when posting success messages or exceptions.</param>
-    public void Deliver(String filePath, String title)
+    /// <param name="fileTitle">Title used when posting success messages or exceptions.</param>
+    public void Deliver(String filePath, String fileTitle)
     {
       try
       {
         var arguments = String.Format("/ADD \"{0}\"", filePath);
         System.Diagnostics.Process.Start(this.winampExePath, arguments);
 
-        var message = String.Format("Added '{0}' to Winamp.", title);
+        var message = String.Format("Added '{0}' to Winamp.", fileTitle);
         this.postMessageMethod.Invoke(message);
       }
       catch (Exception exception)
       {
-        var message = String.Format("Failed to add '{0}' to Winamp: {1}", title, exception.Message);
+        var message = String.Format("Failed to add '{0}' to Winamp: {1}", fileTitle, exception.Message);
         this.postExceptionMethod(message);
       }
     }

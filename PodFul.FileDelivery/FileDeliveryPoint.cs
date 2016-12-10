@@ -42,8 +42,8 @@ namespace PodFul.FileDelivery
     /// Delivers (copies) a file to a single destination directory that is created during Initialise method. 
     /// </summary>
     /// <param name="filePath">Full path to file to be delivered to destination directory.</param>
-    /// <param name="title">Title used when posting success messages or exceptions.</param>
-    public void Deliver(String filePath, String title)
+    /// <param name="fileTitle">Title used when posting success messages or exceptions.</param>
+    public void Deliver(String filePath, String fileTitle)
     {
       try
       {
@@ -52,12 +52,12 @@ namespace PodFul.FileDelivery
 
         File.Copy(filePath, destinationFilePath);
 
-        var message = String.Format("Added '{0}' to '{1}'.", title, directoryPath);
+        var message = String.Format("Added '{0}' to '{1}'.", fileTitle, directoryPath);
         this.postMessageMethod?.Invoke(message);
       }
       catch (Exception exception)
       {
-        var message = String.Format("Failed to add '{0}' to '{1}': {2}", title, directoryPath, exception.Message);
+        var message = String.Format("Failed to add '{0}' to '{1}': {2}", fileTitle, directoryPath, exception.Message);
         this.postExceptionMethod?.Invoke(message);
       }
     }
