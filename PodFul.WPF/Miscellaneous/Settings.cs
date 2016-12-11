@@ -78,7 +78,7 @@ namespace PodFul.WPF.Miscellaneous
     #endregion
 
     #region Properties
-    public Int32 ConfirmPodcastDownloadThreshold
+    public UInt32 ConfirmPodcastDownloadThreshold
     {
       get { return this.settingsData.ConfirmPodcastDownloadThreshold; }
       set { this.settingsData.ConfirmPodcastDownloadThreshold = value; }
@@ -145,7 +145,7 @@ namespace PodFul.WPF.Miscellaneous
     #region Structures
     public struct SettingsData
     {
-      public Int32 ConfirmPodcastDownloadThreshold;
+      public UInt32 ConfirmPodcastDownloadThreshold;
 
       public UInt32 ConcurrentDownloadCount;
 

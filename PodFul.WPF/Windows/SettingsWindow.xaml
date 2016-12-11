@@ -30,6 +30,13 @@
       </StackPanel>
     </Border>
 
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Margin="6,2">Confirm Download Threshold:</TextBlock>
+        <TextBox Name="ConfirmPodcastDownloadThreshold" Margin="2,2">3</TextBox>
+      </StackPanel>
+    </Border>
+
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" Visibility="Hidden">
       <DockPanel>
         <TextBlock DockPanel.Dock="Top" Margin="6,2">Delivery points:</TextBlock>

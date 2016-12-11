@@ -20,6 +20,7 @@ namespace PodFul.WPF
       InitializeComponent();
       this.settings = settings;
       this.ConcurrentDownloadCount.Text = this.settings.ConcurrentDownloadCount.ToString();
+      this.ConfirmPodcastDownloadThreshold.Text = this.settings.ConfirmPodcastDownloadThreshold.ToString();
     }
     #endregion
 
@@ -61,6 +62,7 @@ namespace PodFul.WPF
       try
       {
         this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
+        this.settings.ConfirmPodcastDownloadThreshold = UInt32.Parse(this.ConfirmPodcastDownloadThreshold.Text);
         this.settings.Save();
       }
       catch (Exception exception)

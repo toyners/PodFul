@@ -15,11 +15,11 @@ namespace PodFul.WPF.Processing
   public class PodcastDownloadConfirmer : IPodcastDownloadConfirmer
   {
     #region Fields
-    private Int32 confirmPodcastDownloadThreshold;
+    private UInt32 confirmPodcastDownloadThreshold;
     #endregion
 
     #region Construction
-    public PodcastDownloadConfirmer(Int32 confirmPodcastDownloadThreshold)
+    public PodcastDownloadConfirmer(UInt32 confirmPodcastDownloadThreshold)
     {
       this.confirmPodcastDownloadThreshold = confirmPodcastDownloadThreshold;
     }
