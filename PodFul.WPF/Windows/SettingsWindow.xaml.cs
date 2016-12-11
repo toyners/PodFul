@@ -24,17 +24,6 @@ namespace PodFul.WPF
     }
     #endregion
 
-    #region Properties
-    public DeliveryPointSetup[] GetDeliveryPointSetups
-    {
-      get
-      {
-        var winampDeliveryPoint = new WinampDeliveryPointSetup(@"C:\Program Files (x86)\Winamp\winamp.exe");
-        return new[] { winampDeliveryPoint };
-      }
-    }
-    #endregion
-
     #region Methods
     private void addButton_Click(Object sender, RoutedEventArgs e)
     {
@@ -77,18 +66,5 @@ namespace PodFul.WPF
       this.UpdateSettings();
     }
     #endregion
-  }
-
-  public abstract class DeliveryPointSetup
-  { }
-
-  public class WinampDeliveryPointSetup : DeliveryPointSetup
-  {
-    public WinampDeliveryPointSetup(String winampExePath)
-    {
-      this.WinampExePath = winampExePath;
-    }
-
-    public String WinampExePath { get; private set; }
   }
 }
