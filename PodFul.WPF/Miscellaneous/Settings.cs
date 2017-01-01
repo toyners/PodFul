@@ -132,13 +132,6 @@ namespace PodFul.WPF.Miscellaneous
       {
         this.settingsData = (SettingsData)serializer.Deserialize(fileStream);
       }
-
-      this.settingsData.DeliveryData = new SettingsData.DeliveryPointData[2];
-      this.settingsData.DeliveryData[0].Name = "Winamp";
-      this.settingsData.DeliveryData[0].Location = @"C:\Program Files (x86)\Winamp\winamp.exe";
-
-      this.settingsData.DeliveryData[1].Name = "Single";
-      this.settingsData.DeliveryData[1].Location = @"C:\Users\toyne\Music\Podcasts\Daily";
     }
     #endregion
 
