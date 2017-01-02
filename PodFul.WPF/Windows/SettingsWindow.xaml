@@ -67,7 +67,7 @@
                 <Grid Margin="0,0">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition Width="19" />
+                    <ColumnDefinition Width="19pt" />
                   </Grid.ColumnDefinitions>
 
                   <Grid>
@@ -77,17 +77,17 @@
                     </Grid.RowDefinitions>
 
                     <Border BorderBrush="Black" BorderThickness="1">
-                      <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold" />
+                      <TextBlock Text="{Binding Name}" />
                     </Border>
                     <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-                      <TextBlock Text="{Binding Location}" FontSize="14" />
+                      <TextBlock Text="{Binding Location}" />
                     </Border>
                   </Grid>
 
                   <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
-                      <Button Height="15" Width="15" Margin="2"/>
-                      <Button Height="15" Width="15" />
+                      <Button Height="15" Width="15" Margin="2" />
+                      <Button Height="15" Width="15" Margin="2" />
                     </StackPanel>
                   </Border>
                 </Grid>

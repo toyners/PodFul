@@ -148,9 +148,9 @@ namespace PodFul.WPF.Miscellaneous
 
       public struct DeliveryPointData
       {
-        public String Name;
+        public String Name { get; set; }
 
-        public String Location;
+        public String Location { get; set; }
       }
     }
     #endregion
