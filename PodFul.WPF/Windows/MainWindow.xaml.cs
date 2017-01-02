@@ -193,6 +193,7 @@ namespace PodFul.WPF
     private void Settings_Click(Object sender, RoutedEventArgs e)
     {
       var settingsWindow = new SettingsWindow(this.settings);
+      settingsWindow.Owner = this;
       settingsWindow.ShowDialog();  
     }
 
