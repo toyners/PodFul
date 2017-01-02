@@ -37,19 +37,51 @@
       </StackPanel>
     </Border>
 
-    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" Visibility="Hidden">
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5">
       <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Margin="6,2">Delivery points:</TextBlock>
+        <TextBlock DockPanel.Dock="Top" Margin="6,2">Delivery Points:</TextBlock>
 
         <DockPanel>
           <StackPanel DockPanel.Dock="Right" Margin="0,-5">
-            <Button Click="addButton_Click" IsEnabled="False">Add</Button>
+            <Button Click="addButton_Click">Add</Button>
             <Button Click="editButton_Click" IsEnabled="False">Edit</Button>
             <Button Click="removeButton_Click" IsEnabled="False">Remove</Button>
           </StackPanel>
           
           <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch" >
-            <ListBoxItem IsEnabled="false">Winamp: "C:\Program Files (x86)\Winamp\winamp.exe"</ListBoxItem>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Grid Margin="0,0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition />
+                      <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!--<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">-->
+                    <TextBlock Text="{Binding DeliveryPointType}" FontSize="24" FontWeight="Bold" />
+                    <!--</Border>-->
+                    <!--<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">-->
+                    <TextBlock Text="{Binding DeliveryPointDetails}" FontSize="14" />
+                    <!--</Border>-->
+                  </Grid>
+
+                  <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                    <StackPanel>
+                      <Button>
+                        <![CDATA[>]]>
+                      </Button>
+                      <Button>...</Button>
+                    </StackPanel>
+                  </Border>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
           </ListBox>
         </DockPanel>
       </DockPanel>
