@@ -2,7 +2,9 @@
 namespace PodFul.WPF
 {
   using System;
+  using System.Collections.ObjectModel;
   using System.Windows;
+  using System.Windows.Controls;
   using Miscellaneous;
 
   /// <summary>
@@ -12,6 +14,8 @@ namespace PodFul.WPF
   {
     #region Fields
     private Settings settings;
+
+    private ObservableCollection<Settings.SettingsData.DeliveryPointData> deliveryPoints;
     #endregion
 
     #region Construction
@@ -21,29 +25,46 @@ namespace PodFul.WPF
       this.settings = settings;
       this.ConcurrentDownloadCount.Text = this.settings.ConcurrentDownloadCount.ToString();
       this.ConfirmPodcastDownloadThreshold.Text = this.settings.ConfirmPodcastDownloadThreshold.ToString();
+
+      this.deliveryPoints = new ObservableCollection<Settings.SettingsData.DeliveryPointData>(this.settings.DeliveryPointData);
+      this.DeliveryPointList.ItemsSource = deliveryPoints;
     }
     #endregion
 
     #region Methods
-    private void addButton_Click(Object sender, RoutedEventArgs e)
+    private void AddButtonClick(Object sender, RoutedEventArgs e)
     {
-      var addDeliveryPointWindow = new AddDeliveryPointWindow();
-      addDeliveryPointWindow.ShowDialog();
+      var button = sender as Button;
+      button.ContextMenu.IsEnabled = true;
+      button.ContextMenu.PlacementTarget = button;
+      button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+      button.ContextMenu.IsOpen = true;
+    }
+
+    private void AddSingleDeliveryPointClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void AddWinampDeliveryPointClick(Object sender, RoutedEventArgs e)
+    {
+      var addWinampDeliveryPointWindow = new WinampDeliveryPointWindow();
+      addWinampDeliveryPointWindow.Title = "Add Winamp Delivery Point";
+      addWinampDeliveryPointWindow.Owner = this;
+
+      var result = addWinampDeliveryPointWindow.ShowDialog();
+
+      if (!result.HasValue || !result.Value)
+      {
+        return;
+      }
+
+      this.deliveryPoints.Add(new Settings.SettingsData.DeliveryPointData { Name = "Winamp", Location = addWinampDeliveryPointWindow.FilePath.Text });
     }
 
     private void CloseButtonClick(Object sender, RoutedEventArgs e)
     {
       this.Close();
-    }
-
-    private void editButton_Click(Object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void removeButton_Click(Object sender, RoutedEventArgs e)
-    {
-
     }
 
     private void UpdateSettings()
@@ -64,6 +85,13 @@ namespace PodFul.WPF
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
       this.UpdateSettings();
+    }
+    #endregion
+
+    #region Classes
+    private class DeliveryPointData
+    {
+
     }
     #endregion
   }

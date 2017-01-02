@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="600"
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing">
+        Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing"
+        ResizeMode="NoResize">
   <DockPanel Margin="5">
     <DockPanel.Resources>
       <Style TargetType="Button">
@@ -43,7 +44,20 @@
 
         <DockPanel>
           <StackPanel DockPanel.Dock="Right" Margin="0,-5">
-            <Button Click="addButton_Click">Add</Button>
+            <Button Click="AddButtonClick">
+              <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="Add" />
+                  <Path x:Name="BtnArrow" Margin="4" VerticalAlignment="Center" Width="10" Fill="Black" Stretch="Uniform" HorizontalAlignment="Right" Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z "/>
+                </StackPanel>
+              </Button.Content>
+              <Button.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="Winamp" Click="AddWinampDeliveryPointClick" />
+                  <MenuItem Header="Single" Click="AddSingleDeliveryPointClick" />
+                </ContextMenu>
+              </Button.ContextMenu>
+            </Button>
           </StackPanel>
           
           <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch" >
@@ -65,7 +79,7 @@
                     <TextBlock Text="{Binding DeliveryPointType}" FontSize="24" FontWeight="Bold" />
                     <!--</Border>-->
                     <!--<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">-->
-                    <TextBlock Text="{Binding DeliveryPointDetails}" FontSize="14" />
+                    <TextBlock Text="{Binding Name}" FontSize="14" />
                     <!--</Border>-->
                   </Grid>
 

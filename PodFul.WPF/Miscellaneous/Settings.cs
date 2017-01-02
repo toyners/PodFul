@@ -90,6 +90,8 @@ namespace PodFul.WPF.Miscellaneous
       set { this.settingsData.ConcurrentDownloadCount = value; }
     }
 
+    public SettingsData.DeliveryPointData[] DeliveryPointData { get { return this.settingsData.DeliveryData; } }
+
     public IDeliveryPoint[] DeliveryPoints { get; private set; }
     #endregion
 
