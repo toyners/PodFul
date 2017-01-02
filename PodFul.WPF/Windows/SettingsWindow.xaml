@@ -44,8 +44,6 @@
         <DockPanel>
           <StackPanel DockPanel.Dock="Right" Margin="0,-5">
             <Button Click="addButton_Click">Add</Button>
-            <Button Click="editButton_Click" IsEnabled="False">Edit</Button>
-            <Button Click="removeButton_Click" IsEnabled="False">Remove</Button>
           </StackPanel>
           
           <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch" >
