@@ -9,6 +9,9 @@
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
+  <Window.Resources>
+    <ImageBrush x:Key="DeleteBrush" ImageSource="..\delete.png" />
+  </Window.Resources>
   <DockPanel Margin="5">
     <DockPanel.Resources>
       <Style TargetType="Button">
@@ -77,17 +80,20 @@
                     </Grid.RowDefinitions>
 
                     <Border BorderBrush="Black" BorderThickness="1">
-                      <TextBlock Text="{Binding Name}" />
+                      <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                     </Border>
                     <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-                      <TextBlock Text="{Binding Location}" />
+                      <TextBlock Text="{Binding Location}" VerticalAlignment="Center" />
                     </Border>
                   </Grid>
 
                   <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
                     <StackPanel>
-                      <Button Height="15" Width="15" Margin="2" />
-                      <Button Height="15" Width="15" Margin="2" />
+                      <Button Width="15" Height="15" Margin="2" Background="{StaticResource DeleteBrush}" />
+
+                      <Button Height="15" Width="15" Click="DeleteDeliveryPointClick">
+                        
+                      </Button>
                     </StackPanel>
                   </Border>
                 </Grid>

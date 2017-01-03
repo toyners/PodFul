@@ -67,6 +67,11 @@ namespace PodFul.WPF
       this.Close();
     }
 
+    private void DeleteDeliveryPointClick(Object sender, RoutedEventArgs e)
+    {
+      var i = 0;
+    }
+
     private void UpdateSettings()
     {
       try
