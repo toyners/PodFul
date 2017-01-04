@@ -9,10 +9,6 @@
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
-  <Window.Resources>
-    <ImageBrush x:Key="DeleteBrush" ImageSource="..\delete.png" />
-    <ImageBrush x:Key="EditImage" ImageSource="..\edit.png" />
-  </Window.Resources>
   <DockPanel Margin="5">
     <DockPanel.Resources>
       <Style TargetType="Button">
