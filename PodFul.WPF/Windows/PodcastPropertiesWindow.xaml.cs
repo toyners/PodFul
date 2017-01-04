@@ -11,6 +11,7 @@ namespace PodFul.WPF
   /// </summary>
   public partial class PodcastPropertiesWindow : Window
   {
+    #region Construction
     public PodcastPropertiesWindow(Podcast podcast, String feedDirectory)
     {
       InitializeComponent();
@@ -35,16 +36,21 @@ namespace PodFul.WPF
 
       this.DataContext = this;  
     }
+    #endregion
 
+    #region Properties
     public Podcast Podcast { get; private set; }
 
     public String FilePath { get; private set; }
 
     public String FileSize { get; private set; }
+    #endregion
 
+    #region Methods
     private void CloseButton_Click(Object sender, RoutedEventArgs e)
     {
       this.Close();
     }
+    #endregion
   }
 }
