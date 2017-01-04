@@ -41,25 +41,30 @@ namespace PodFul.WPF
       button.ContextMenu.IsOpen = true;
     }
 
-    private void AddSingleDeliveryPointClick(Object sender, RoutedEventArgs e)
+    private void AddDirectoryDeliveryPointClick(Object sender, RoutedEventArgs e)
     {
-
+      this.AddDeliveryPoint(Settings.SettingsData.DeliveryPointData.Types.Directory, "Add Directory Delivery Point");
     }
 
     private void AddWinampDeliveryPointClick(Object sender, RoutedEventArgs e)
     {
-      var addWinampDeliveryPointWindow = new WinampDeliveryPointWindow();
-      addWinampDeliveryPointWindow.Title = "Add Winamp Delivery Point";
-      addWinampDeliveryPointWindow.Owner = this;
+      this.AddDeliveryPoint(Settings.SettingsData.DeliveryPointData.Types.Winamp, "Add Winamp Delivery Point");
+    }
 
-      var result = addWinampDeliveryPointWindow.ShowDialog();
+    private void AddDeliveryPoint(Settings.SettingsData.DeliveryPointData.Types type, String title)
+    {
+      var addDeliveryPointWindow = new WinampDeliveryPointWindow(type, title);
+      addDeliveryPointWindow.Owner = this;
+
+      var result = addDeliveryPointWindow.ShowDialog();
 
       if (!result.HasValue || !result.Value)
       {
         return;
       }
 
-      this.deliveryPoints.Add(new Settings.SettingsData.DeliveryPointData { Name = "Winamp", Location = addWinampDeliveryPointWindow.FilePath.Text });
+      var fullPath = addDeliveryPointWindow.FullPath.Text;
+      this.deliveryPoints.Add(new Settings.SettingsData.DeliveryPointData { Type = type, Location = fullPath });
     }
 
     private void CloseButtonClick(Object sender, RoutedEventArgs e)

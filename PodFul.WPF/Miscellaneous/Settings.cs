@@ -56,20 +56,7 @@ namespace PodFul.WPF.Miscellaneous
         {
           ConcurrentDownloadCount = 3,
           ConfirmPodcastDownloadThreshold = 3,
-          DeliveryData = new[]
-          {
-            new SettingsData.DeliveryPointData
-            {
-              Name = "Winamp",
-              Location = @"C:\Program Files (x86)\Winamp\winamp.exe"
-            },
-
-            new SettingsData.DeliveryPointData
-            {
-              Name = "Single",
-              Location = @"C:\Users\toyne\Music\Podcasts\Daily"
-            }
-          }
+          DeliveryData = new SettingsData.DeliveryPointData[] { }
         };
       }
 
@@ -112,13 +99,16 @@ namespace PodFul.WPF.Miscellaneous
 
       foreach (var data in deliveryPointData)
       {
-        switch (data.Name)
+        switch (data.Type)
         {
-          case "Winamp": deliveryPoints[index] = new WinampDeliveryPoint(data.Location, log.Message, log.Exception);
+          case SettingsData.DeliveryPointData.Types.Winamp:
+          deliveryPoints[index] = new WinampDeliveryPoint(data.Location, log.Message, log.Exception);
           break;
-          case "Single": deliveryPoints[index] = new FileDeliveryPoint(data.Location, log.Message, log.Exception);
+          case SettingsData.DeliveryPointData.Types.Directory:
+          deliveryPoints[index] = new FileDeliveryPoint(data.Location, log.Message, log.Exception);
           break;
-          default: throw new NotImplementedException("Delivery point '" + data.Name + "' not recognised");
+          default:
+          throw new NotImplementedException("Delivery point '" + data.Type + "' not recognised");
         }
 
         index++;
@@ -148,7 +138,13 @@ namespace PodFul.WPF.Miscellaneous
 
       public struct DeliveryPointData
       {
-        public String Name { get; set; }
+        public enum Types
+        {
+          Directory,
+          Winamp
+        }
+
+        public Types Type { get; set; }
 
         public String Location { get; set; }
       }

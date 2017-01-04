@@ -55,7 +55,7 @@
               <Button.ContextMenu>
                 <ContextMenu>
                   <MenuItem Header="Winamp" Click="AddWinampDeliveryPointClick" />
-                  <MenuItem Header="Single" Click="AddSingleDeliveryPointClick" />
+                  <MenuItem Header="Directory" Click="AddDirectoryDeliveryPointClick" />
                 </ContextMenu>
               </Button.ContextMenu>
             </Button>
