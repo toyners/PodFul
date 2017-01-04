@@ -72,6 +72,11 @@ namespace PodFul.WPF
       var i = 0;
     }
 
+    private void EditDeliveryPointClick(Object sender, RoutedEventArgs e)
+    {
+      var i = 0;
+    }
+
     private void UpdateSettings()
     {
       try
@@ -90,13 +95,6 @@ namespace PodFul.WPF
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
       this.UpdateSettings();
-    }
-    #endregion
-
-    #region Classes
-    private class DeliveryPointData
-    {
-
     }
     #endregion
   }

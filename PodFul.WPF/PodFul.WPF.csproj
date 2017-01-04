@@ -199,6 +199,7 @@
     </EmbeddedResource>
     <Resource Include="cancel.png" />
     <Resource Include="delete.png" />
+    <Resource Include="edit.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

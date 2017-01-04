@@ -11,6 +11,7 @@
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
   <Window.Resources>
     <ImageBrush x:Key="DeleteBrush" ImageSource="..\delete.png" />
+    <ImageBrush x:Key="EditImage" ImageSource="..\edit.png" />
   </Window.Resources>
   <DockPanel Margin="5">
     <DockPanel.Resources>
@@ -29,7 +30,7 @@
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
       <StackPanel Orientation="Horizontal">
-        <TextBlock Margin="6,2">Concurrent Download Count: </TextBlock>
+        <TextBlock Margin="6,2">Concurrent Download Count:</TextBlock>
         <TextBox Name="ConcurrentDownloadCount" Margin="2,2">3</TextBox>
       </StackPanel>
     </Border>
@@ -63,40 +64,39 @@
               </Button.ContextMenu>
             </Button>
           </StackPanel>
-          
+
           <ListBox Name="DeliveryPointList" HorizontalContentAlignment="Stretch" >
             <ListBox.ItemTemplate>
               <DataTemplate>
-                <Grid Margin="0,0">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="19pt" />
-                  </Grid.ColumnDefinitions>
+                <Border BorderBrush="Gray" BorderThickness="1">
+                  <Grid Margin="0,0">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition />
+                      <ColumnDefinition Width="19pt" />
+                    </Grid.ColumnDefinitions>
 
-                  <Grid>
-                    <Grid.RowDefinitions>
-                      <RowDefinition />
-                      <RowDefinition />
-                    </Grid.RowDefinitions>
+                    <Grid>
+                      <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                      </Grid.RowDefinitions>
 
-                    <Border BorderBrush="Black" BorderThickness="1">
-                      <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-                    </Border>
-                    <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-                      <TextBlock Text="{Binding Location}" VerticalAlignment="Center" />
-                    </Border>
-                  </Grid>
+                      <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontWeight="SemiBold" />
+                      <TextBlock Grid.Row="1" Text="{Binding Location}" VerticalAlignment="Center" />
+                    </Grid>
 
-                  <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
-                    <StackPanel>
-                      <Button Width="15" Height="15" Margin="2" Background="{StaticResource DeleteBrush}" />
+                    <StackPanel Grid.Column="1">
+                      <Button Width="17" Height="17" Click="EditDeliveryPointClick" Margin="2" >
+                        <Image Source="..\edit.png" />
+                      </Button>
 
-                      <Button Height="15" Width="15" Click="DeleteDeliveryPointClick">
-                        
+                      <Button Width="17" Height="17" Click="DeleteDeliveryPointClick" Margin="2">
+                        <Image Source="..\delete.png" />
                       </Button>
                     </StackPanel>
-                  </Border>
-                </Grid>
+
+                  </Grid>
+                </Border>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
