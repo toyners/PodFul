@@ -74,22 +74,40 @@ namespace PodFul.WPF
 
     private void DeleteDeliveryPointClick(Object sender, RoutedEventArgs e)
     {
-      var i = 0;
+      var deliveryPointData = (Settings.SettingsData.DeliveryPointData)((Button)sender).DataContext;
+      this.settings.DeliveryPointData.Remove(deliveryPointData);
     }
 
     private void EditDeliveryPointClick(Object sender, RoutedEventArgs e)
     {
-      var deliveryPointData = (Settings.SettingsData.DeliveryPointData)sender;
+      var deliveryPointData = (Settings.SettingsData.DeliveryPointData)((Button)sender).DataContext;
 
+      var title = "";
       if (deliveryPointData.Type == Settings.SettingsData.DeliveryPointData.Types.Winamp)
       {
-        this.EditWinampDeliveryPoint(deliveryPointData);
+        title = "Edit Winamp Delivery Point";
       }
+      else
+      {
+        title = "Edit Directory Delivery Point";
+      }
+
+      this.EditDeliveryPoint(deliveryPointData, title);
     }
 
-    private void EditWinampDeliveryPoint(Settings.SettingsData.DeliveryPointData deliveryPointData)
+    private void EditDeliveryPoint(Settings.SettingsData.DeliveryPointData deliveryPointData, String title)
     {
+      var editDeliveryPointWindow = new DeliveryPointWindow(deliveryPointData.Type, title, deliveryPointData.Location);
+      editDeliveryPointWindow.Owner = this;
 
+      var result = editDeliveryPointWindow.ShowDialog();
+
+      if (!result.HasValue || !result.Value)
+      {
+        return;
+      }
+
+      deliveryPointData.Location = editDeliveryPointWindow.FullPath.Text;
     }
 
     private void UpdateSettings()

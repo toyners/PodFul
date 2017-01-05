@@ -2,11 +2,11 @@
 namespace PodFul.WPF.Miscellaneous
 {
   using System;
+  using System.Collections.Generic;
   using System.IO;
   using System.Xml.Serialization;
   using FileDelivery;
   using Jabberwocky.Toolkit.Object;
-  using PodFul.Library;
 
   public class Settings
   {
@@ -56,7 +56,7 @@ namespace PodFul.WPF.Miscellaneous
         {
           ConcurrentDownloadCount = 3,
           ConfirmPodcastDownloadThreshold = 3,
-          DeliveryData = new SettingsData.DeliveryPointData[] { }
+          DeliveryData = new List<SettingsData.DeliveryPointData>()
         };
       }
 
@@ -77,7 +77,7 @@ namespace PodFul.WPF.Miscellaneous
       set { this.settingsData.ConcurrentDownloadCount = value; }
     }
 
-    public SettingsData.DeliveryPointData[] DeliveryPointData { get { return this.settingsData.DeliveryData; } }
+    public List<SettingsData.DeliveryPointData> DeliveryPointData { get { return this.settingsData.DeliveryData; } }
 
     public IDeliveryPoint[] DeliveryPoints { get; private set; }
     #endregion
@@ -92,9 +92,9 @@ namespace PodFul.WPF.Miscellaneous
       }
     }
 
-    private IDeliveryPoint[] CreateDeliveryPoints(SettingsData.DeliveryPointData[] deliveryPointData, ILogger log)
+    private IDeliveryPoint[] CreateDeliveryPoints(List<SettingsData.DeliveryPointData> deliveryPointData, ILogger log)
     {
-      var deliveryPoints = new IDeliveryPoint[deliveryPointData.Length];
+      var deliveryPoints = new IDeliveryPoint[deliveryPointData.Count];
       var index = 0;
 
       foreach (var data in deliveryPointData)
@@ -127,14 +127,14 @@ namespace PodFul.WPF.Miscellaneous
     }
     #endregion
 
-    #region Structures
+    #region Classes
     public class SettingsData
     {
       public UInt32 ConfirmPodcastDownloadThreshold;
 
       public UInt32 ConcurrentDownloadCount;
 
-      public DeliveryPointData[] DeliveryData;
+      public List<DeliveryPointData> DeliveryData;
 
       public class DeliveryPointData
       {
