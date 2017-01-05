@@ -128,7 +128,7 @@ namespace PodFul.WPF.Miscellaneous
     #endregion
 
     #region Structures
-    public struct SettingsData
+    public class SettingsData
     {
       public UInt32 ConfirmPodcastDownloadThreshold;
 
@@ -136,7 +136,7 @@ namespace PodFul.WPF.Miscellaneous
 
       public DeliveryPointData[] DeliveryData;
 
-      public struct DeliveryPointData
+      public class DeliveryPointData
       {
         public enum Types
         {
