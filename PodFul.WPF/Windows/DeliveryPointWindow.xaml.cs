@@ -51,5 +51,15 @@ namespace PodFul.WPF
     {
       this.OKButton.IsEnabled = (this.FullPath.Text.Length > 0);
     }
+
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+
+    }
+
+    private void OKButtonClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }
