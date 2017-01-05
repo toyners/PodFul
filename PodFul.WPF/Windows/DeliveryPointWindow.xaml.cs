@@ -6,13 +6,13 @@ namespace PodFul.WPF
   using Miscellaneous;
 
   /// <summary>
-  /// Interaction logic for WinampDeliveryPointWindow.xaml
+  /// Interaction logic for DeliveryPointWindow.xaml
   /// </summary>
-  public partial class WinampDeliveryPointWindow : Window
+  public partial class DeliveryPointWindow : Window
   {
     private Settings.SettingsData.DeliveryPointData.Types type;
 
-    public WinampDeliveryPointWindow(Settings.SettingsData.DeliveryPointData.Types type, String title)
+    public DeliveryPointWindow(Settings.SettingsData.DeliveryPointData.Types type, String title)
     {
       InitializeComponent();
 
@@ -23,6 +23,11 @@ namespace PodFul.WPF
       {
         this.FullPathTitle.Content = "Directory Path:";
       }
+    }
+
+    public DeliveryPointWindow(Settings.SettingsData.DeliveryPointData.Types type, String title, String fullPath) : this(type, title)
+    {
+      this.FullPath.Text = fullPath;
     }
 
     private void SelectButtonClick(Object sender, RoutedEventArgs e)

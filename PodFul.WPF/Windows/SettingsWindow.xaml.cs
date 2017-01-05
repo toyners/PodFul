@@ -53,7 +53,7 @@ namespace PodFul.WPF
 
     private void AddDeliveryPoint(Settings.SettingsData.DeliveryPointData.Types type, String title)
     {
-      var addDeliveryPointWindow = new WinampDeliveryPointWindow(type, title);
+      var addDeliveryPointWindow = new DeliveryPointWindow(type, title);
       addDeliveryPointWindow.Owner = this;
 
       var result = addDeliveryPointWindow.ShowDialog();
@@ -79,7 +79,17 @@ namespace PodFul.WPF
 
     private void EditDeliveryPointClick(Object sender, RoutedEventArgs e)
     {
-      var i = 0;
+      var deliveryPointData = (Settings.SettingsData.DeliveryPointData)sender;
+
+      if (deliveryPointData.Type == Settings.SettingsData.DeliveryPointData.Types.Winamp)
+      {
+        this.EditWinampDeliveryPoint(deliveryPointData);
+      }
+    }
+
+    private void EditWinampDeliveryPoint(Settings.SettingsData.DeliveryPointData deliveryPointData)
+    {
+
     }
 
     private void UpdateSettings()
