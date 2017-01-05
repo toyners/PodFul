@@ -76,6 +76,11 @@ namespace PodFul.WPF
     {
       var deliveryPointData = (Settings.SettingsData.DeliveryPointData)((Button)sender).DataContext;
       this.settings.DeliveryPointData.Remove(deliveryPointData);
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.deliveryPoints.Remove(deliveryPointData);
+      });
     }
 
     private void EditDeliveryPointClick(Object sender, RoutedEventArgs e)

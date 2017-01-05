@@ -244,7 +244,6 @@ namespace PodFul.WPF
       // No cancel token since we want this task to always run regardless
       // of what happens to the other tasks. Cancelling a task will stop any
       // continuation tasks from being scheduled (and hence started)
-
     }
 
     private List<Int32> BuildPodcastList(Feed oldFeed, Feed newFeed)
