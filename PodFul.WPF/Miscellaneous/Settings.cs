@@ -3,7 +3,9 @@ namespace PodFul.WPF.Miscellaneous
 {
   using System;
   using System.Collections.Generic;
+  using System.ComponentModel;
   using System.IO;
+  using System.Runtime.CompilerServices;
   using System.Xml.Serialization;
   using FileDelivery;
   using Jabberwocky.Toolkit.Object;
@@ -130,24 +132,64 @@ namespace PodFul.WPF.Miscellaneous
     #region Classes
     public class SettingsData
     {
-      public UInt32 ConfirmPodcastDownloadThreshold;
+      #region Properties
+      public UInt32 ConfirmPodcastDownloadThreshold { get; set; }
 
-      public UInt32 ConcurrentDownloadCount;
+      public UInt32 ConcurrentDownloadCount { get; set; }
 
-      public List<DeliveryPointData> DeliveryData;
+      public List<DeliveryPointData> DeliveryData { get; set; }
+      #endregion
 
-      public class DeliveryPointData
+      #region Classes
+      public class DeliveryPointData : INotifyPropertyChanged
       {
+        #region Enums
         public enum Types
         {
           Directory,
           Winamp
         }
+        #endregion
 
+        #region Fields
+        private String location;
+        #endregion
+
+        #region Properties
         public Types Type { get; set; }
 
-        public String Location { get; set; }
+        public String Location
+        {
+          get { return this.location; }
+          set { this.SetField(ref this.location, value); }
+        }
+        #endregion
+
+        #region Events
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Set the field to the new value if it is different and then raises the property changed event handler.
+        /// </summary>
+        /// <typeparam name="T">Type of the field and value</typeparam>
+        /// <param name="fieldValue">The existing field value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <param name="propertyName">Name of the property being changed. Uses the name of the calling method by default.</param>
+        private void SetField<T>(ref T fieldValue, T newValue, [CallerMemberName] String propertyName = null)
+        {
+          if (EqualityComparer<T>.Default.Equals(fieldValue, newValue))
+          {
+            return;
+          }
+
+          fieldValue = newValue;
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
       }
+      #endregion
     }
     #endregion
   }
