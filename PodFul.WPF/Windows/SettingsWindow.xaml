@@ -77,7 +77,7 @@
                         <RowDefinition />
                       </Grid.RowDefinitions>
 
-                      <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding Type}" VerticalAlignment="Center" FontWeight="SemiBold" />
                       <TextBlock Grid.Row="1" Text="{Binding Location}" VerticalAlignment="Center" />
                     </Grid>
 
