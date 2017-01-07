@@ -49,22 +49,28 @@ namespace PodFul.WPF
         this.FullPath.Text += '\\';
       }
 
-      if (!Directory.Exists(this.FullPath.Text))
+      if (this.type == Settings.SettingsData.DeliveryPointData.Types.Directory && !Directory.Exists(this.FullPath.Text))
       {
         var message = "Directory does not exist. Create it now?\r\n\r\n(Warning: Not creating the directory now may cause file creation issues later on).";
         var result = MessageBox.Show(message, "Create Directory?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Yes);
 
-        if (result == MessageBoxResult.Yes)
+        if (result == MessageBoxResult.Cancel)
+        {
+          return;
+        }
+        else if (result == MessageBoxResult.Yes)
         {
           Directory.CreateDirectory(this.FullPath.Text);
         }
-
-        if (result != MessageBoxResult.Cancel)
-        {
-          this.DialogResult = true;
-          this.Close();
-        }
       }
+      else if (this.type == Settings.SettingsData.DeliveryPointData.Types.Winamp && !File.Exists(this.FullPath.Text))
+      {
+        MessageBox.Show("Winamp executable file does not exist. Please check the file selection.", "File does not Exist", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+
+      this.DialogResult = true;
+      this.Close();
     }
 
     private void SelectButtonClick(Object sender, RoutedEventArgs e)

@@ -32,11 +32,17 @@
       </Grid.RowDefinitions>
 
       <Border BorderBrush="Black" BorderThickness="1">
-        <StackPanel Orientation="Horizontal">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.25*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="0.45*" />
+          </Grid.ColumnDefinitions>
+
           <Label Name="FullPathTitle" VerticalAlignment="Center">Executable Path:</Label>
-          <TextBox Name="FullPath" HorizontalAlignment="Stretch" Width="445" Height="21" TextChanged="FullPathTextChanged"/>
-          <Button Name="SelectButton" Width="30" Height="21" Click="SelectButtonClick">...</Button>
-        </StackPanel>
+          <TextBox Name="FullPath" Grid.Column="1"  Height="21" TextChanged="FullPathTextChanged" VerticalContentAlignment="Center"/>
+          <Button Name="SelectButton" Grid.Column="2" Width="25" HorizontalAlignment="Right" Height="21" Click="SelectButtonClick" Content="..." />
+        </Grid>
       </Border>
     </Grid>
   </DockPanel>
