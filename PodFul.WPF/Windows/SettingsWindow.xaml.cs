@@ -64,7 +64,9 @@ namespace PodFul.WPF
       }
 
       var fullPath = addDeliveryPointWindow.FullPath.Text;
-      this.deliveryPoints.Add(new Settings.SettingsData.DeliveryPointData { Type = type, Location = fullPath });
+      var deliveryPointData = new Settings.SettingsData.DeliveryPointData { Type = type, Location = fullPath };
+      this.settings.DeliveryPointData.Add(deliveryPointData);
+      this.deliveryPoints.Add(deliveryPointData);
     }
 
     private void CloseButtonClick(Object sender, RoutedEventArgs e)
@@ -76,6 +78,7 @@ namespace PodFul.WPF
     {
       var deliveryPointData = (Settings.SettingsData.DeliveryPointData)((Button)sender).DataContext;
       this.settings.DeliveryPointData.Remove(deliveryPointData);
+      this.deliveryPoints.Remove(deliveryPointData);
     }
 
     private void EditDeliveryPointClick(Object sender, RoutedEventArgs e)
