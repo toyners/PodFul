@@ -37,7 +37,7 @@ namespace PodFul.WPF.Miscellaneous
 
       if (File.Exists(this.filePath))
       {
-        this.LoadFromFile(fileDeliveryLogger);
+        this.LoadFromFile();
       }
       else
       {
@@ -119,7 +119,7 @@ namespace PodFul.WPF.Miscellaneous
       return deliveryPoints;
     }
 
-    private void LoadFromFile(ILogger fileDeliveryLogger)
+    private void LoadFromFile()
     {
       XmlSerializer serializer = new XmlSerializer(typeof(SettingsData));
       using (var fileStream = new FileStream(this.filePath, FileMode.Open))
