@@ -24,7 +24,7 @@ type Settings_IntegrationTests() =
 
         let mutable testSuccessful = false
         try
-            new Settings(null, new FileDeliveryLogger()) |> ignore
+            new Settings(null) |> ignore
         with
         | _ as e ->
             let isNullReferenceException = e :? System.NullReferenceException
@@ -42,7 +42,7 @@ type Settings_IntegrationTests() =
 
         let mutable testSuccessful = false
         try
-            new Settings(String.Empty, new FileDeliveryLogger()) |> ignore
+            new Settings(String.Empty) |> ignore
         with
         | _ as e ->
             let isArgumentException = e :? System.ArgumentException
@@ -62,7 +62,7 @@ type Settings_IntegrationTests() =
 
         let mutable testSuccessful = false
         try
-            new Settings(badFilePath, new FileDeliveryLogger()) |> ignore
+            new Settings(badFilePath) |> ignore
         with
         | _ as e ->
             let isArgumentException = e :? System.ArgumentException
@@ -83,7 +83,7 @@ type Settings_IntegrationTests() =
 
         let mutable testSuccessful = false
         try
-            new Settings(relativeFilePath, new FileDeliveryLogger()) |> ignore
+            new Settings(relativeFilePath) |> ignore
         with
         | _ as e ->
             let isArgumentException = e :? System.ArgumentException
@@ -97,29 +97,9 @@ type Settings_IntegrationTests() =
         Assert.IsTrue(testSuccessful)
 
     [<Test>]
-    member public this.``File delivery logger is null and causes a meaningful exception to be thrown``() =
-
-        let mutable testSuccessful = false
-        let filePath = workingDirectory + @"File.xml"
-        try
-            new Settings(filePath, null) |> ignore
-        with
-        | _ as e ->
-            let isNullReferenceException = e :? System.NullReferenceException
-            Assert.IsTrue(isNullReferenceException)
-
-            let nullReferenceException = e :?> System.NullReferenceException
-            Assert.AreEqual(nullReferenceException.Message, "Parameter 'fileDeliveryLogger' is null.")
-
-            testSuccessful <- true
-
-        Assert.IsTrue(testSuccessful)
-
-    [<Test>]
     member public this.``File does not exist so default properties are set on settings object``() =
         let nonExistantFilePath = workingDirectory + @"FileDoesNotExist.settings"
-        let fileDeliveryLogger = new FileDeliveryLogger()
-        let settings = new Settings(nonExistantFilePath, fileDeliveryLogger)
+        let settings = new Settings(nonExistantFilePath)
 
         Assert.IsNotNull(settings)
         Assert.AreEqual(settings.ConcurrentDownloadCount, 3)
@@ -129,10 +109,9 @@ type Settings_IntegrationTests() =
     member public this.``Saving settings results in file being created``() =
         
         // Arrange
-        let fileDeliveryLogger = new FileDeliveryLogger()
         let filePath = workingDirectory + @"Settings.settings"
         let fileExistsBeforeSave = File.Exists(filePath)
-        let settings = new Settings(filePath, fileDeliveryLogger)
+        let settings = new Settings(filePath)
         
         // Act
         settings.Save()
@@ -145,18 +124,17 @@ type Settings_IntegrationTests() =
     member public this.``Created settings object from file has same values as original settings object``() =
         
         // Arrange
-        let fileDeliveryLogger = new FileDeliveryLogger()
         let filePath = workingDirectory + @"Settings.settings"
-        let settingsA = new Settings(filePath, fileDeliveryLogger)
+        let settingsA = new Settings(filePath)
 
         settingsA.Save()
 
         // Act
-        let settingsB = new Settings(filePath, fileDeliveryLogger)
+        let settingsB = new Settings(filePath)
 
         // Assert
         Assert.AreNotSame(settingsA, settingsB)
         Assert.AreEqual(settingsA.ConcurrentDownloadCount, settingsB.ConcurrentDownloadCount)
         Assert.AreEqual(settingsA.ConfirmPodcastDownloadThreshold, settingsB.ConfirmPodcastDownloadThreshold)
-        Assert.AreEqual(settingsA.DeliveryPoints.Length, settingsB.DeliveryPoints.Length)
+        Assert.AreEqual(settingsA.DeliveryPointData.Count, settingsB.DeliveryPointData.Count)
         

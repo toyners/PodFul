@@ -7,7 +7,6 @@ namespace PodFul.WPF.Miscellaneous
   using System.IO;
   using System.Runtime.CompilerServices;
   using System.Xml.Serialization;
-  using FileDelivery;
   using Jabberwocky.Toolkit.Object;
 
   public class Settings
@@ -19,9 +18,8 @@ namespace PodFul.WPF.Miscellaneous
     #endregion
 
     #region Construction
-    public Settings(String filePath, ILogger fileDeliveryLogger)
+    public Settings(String filePath)
     {
-      fileDeliveryLogger.VerifyThatObjectIsNotNull("Parameter 'fileDeliveryLogger' is null.");
       filePath.VerifyThatObjectIsNotNull("Parameter 'filePath' is null.");
       if (filePath == String.Empty)
       {
@@ -61,8 +59,6 @@ namespace PodFul.WPF.Miscellaneous
           DeliveryData = new List<SettingsData.DeliveryPointData>()
         };
       }
-
-      this.DeliveryPoints = this.CreateDeliveryPoints(this.settingsData.DeliveryData, fileDeliveryLogger);
     }
     #endregion
 
@@ -80,8 +76,6 @@ namespace PodFul.WPF.Miscellaneous
     }
 
     public List<SettingsData.DeliveryPointData> DeliveryPointData { get { return this.settingsData.DeliveryData; } }
-
-    public IDeliveryPoint[] DeliveryPoints { get; private set; }
     #endregion
 
     #region Methods
@@ -92,31 +86,6 @@ namespace PodFul.WPF.Miscellaneous
       {
         serializer.Serialize(fileStream, this.settingsData);
       }
-    }
-
-    private IDeliveryPoint[] CreateDeliveryPoints(List<SettingsData.DeliveryPointData> deliveryPointData, ILogger log)
-    {
-      var deliveryPoints = new IDeliveryPoint[deliveryPointData.Count];
-      var index = 0;
-
-      foreach (var data in deliveryPointData)
-      {
-        switch (data.Type)
-        {
-          case SettingsData.DeliveryPointData.Types.Winamp:
-          deliveryPoints[index] = new WinampDeliveryPoint(data.Location, log.Message, log.Exception);
-          break;
-          case SettingsData.DeliveryPointData.Types.Directory:
-          deliveryPoints[index] = new FileDeliveryPoint(data.Location, log.Message, log.Exception);
-          break;
-          default:
-          throw new NotImplementedException("Delivery point '" + data.Type + "' not recognised");
-        }
-
-        index++;
-      }
-
-      return deliveryPoints;
     }
 
     private void LoadFromFile()

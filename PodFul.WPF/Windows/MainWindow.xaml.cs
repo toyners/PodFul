@@ -47,7 +47,7 @@ namespace PodFul.WPF
 
         this.DisplayTitle();
 
-        this.settings = new Settings(ConfigurationManager.AppSettings["SettingsPath"], this.fileDeliveryLogger);
+        this.settings = new Settings(ConfigurationManager.AppSettings["SettingsPath"]);
 
         var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
         DirectoryOperations.EnsureDirectoryExists(feedDirectory);
@@ -75,7 +75,7 @@ namespace PodFul.WPF
 
         this.FeedList.Focus();
 
-        this.fileDeliverer = new FileDeliverer(settings.DeliveryPoints);
+        this.fileDeliverer = new FileDeliverer(DeliveryPointCreator.CreateDeliveryPoints(settings.DeliveryPointData, this.fileDeliveryLogger));
 
         this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings.ConfirmPodcastDownloadThreshold);
 

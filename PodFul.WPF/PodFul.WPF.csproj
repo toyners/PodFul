@@ -77,6 +77,7 @@
     </ApplicationDefinition>
     <Compile Include="Logging\FileDeliveryLogger.cs" />
     <Compile Include="Miscellaneous\DataGridExtensions.cs" />
+    <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\VisualTreeLocator.cs" />
     <Compile Include="Miscellaneous\PodcastSynchroniser.cs" />
     <Compile Include="Processing\DownloadManager.cs" />
