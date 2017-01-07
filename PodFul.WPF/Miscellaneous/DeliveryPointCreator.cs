@@ -6,8 +6,17 @@ namespace PodFul.WPF.Miscellaneous
   using FileDelivery;
   using Jabberwocky.Toolkit.Object;
 
+  /// <summary>
+  /// Creates delivery point instances given delivery point data.
+  /// </summary>
   public static class DeliveryPointCreator
   {
+    /// <summary>
+    /// Creates an array of delivery point instances based on delivery point data.
+    /// </summary>
+    /// <param name="deliveryPointData">Data for the delivery points.</param>
+    /// <param name="fileDeliveryLogger">Provides logging for delivery points.</param>
+    /// <returns>Array of delivery point instances.</returns>
     public static IDeliveryPoint[] CreateDeliveryPoints(List<Settings.SettingsData.DeliveryPointData> deliveryPointData, ILogger fileDeliveryLogger)
     {
       fileDeliveryLogger.VerifyThatObjectIsNotNull("Parameter 'fileDeliveryLogger' is null.");
