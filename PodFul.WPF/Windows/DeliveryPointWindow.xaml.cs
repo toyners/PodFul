@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.IO;
   using System.Windows;
+  using Jabberwocky.Toolkit.Path;
   using Miscellaneous;
 
   /// <summary>
@@ -28,12 +29,35 @@ namespace PodFul.WPF
         this.FullPathTitle.Content = "Directory Path:";
       }
     }
-    #endregion
 
-    #region Methods
     public DeliveryPointWindow(Settings.SettingsData.DeliveryPointData.Types type, String title, String fullPath) : this(type, title)
     {
       this.FullPath.Text = fullPath;
+    }
+    #endregion
+
+    #region Methods
+    private Boolean ConfirmDirectoryPath()
+    {
+      if (Directory.Exists(this.FullPath.Text))
+      {
+        return true;
+      }
+
+      var message = "Directory does not exist. Create it now?\r\n\r\n(Warning: Not creating the directory now may cause file creation issues later on).";
+      var result = MessageBox.Show(message, "Create Directory?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Yes);
+
+      if (result == MessageBoxResult.Cancel)
+      {
+        return false;
+      }
+
+      if (result == MessageBoxResult.Yes)
+      {
+        Directory.CreateDirectory(this.FullPath.Text);
+      }
+
+      return true;
     }
 
     private void FullPathTextChanged(Object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -43,24 +67,13 @@ namespace PodFul.WPF
 
     private void OKButtonClick(Object sender, RoutedEventArgs e)
     {
-      if (this.type == Settings.SettingsData.DeliveryPointData.Types.Directory &&
-          this.FullPath.Text[this.FullPath.Text.Length - 1] != '\\')
+      if (this.type == Settings.SettingsData.DeliveryPointData.Types.Directory)
       {
-        this.FullPath.Text += '\\';
-      }
+        this.FullPath.Text = PathOperations.CompleteDirectoryPath(this.FullPath.Text);
 
-      if (this.type == Settings.SettingsData.DeliveryPointData.Types.Directory && !Directory.Exists(this.FullPath.Text))
-      {
-        var message = "Directory does not exist. Create it now?\r\n\r\n(Warning: Not creating the directory now may cause file creation issues later on).";
-        var result = MessageBox.Show(message, "Create Directory?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Yes);
-
-        if (result == MessageBoxResult.Cancel)
+        if (!this.ConfirmDirectoryPath())
         {
           return;
-        }
-        else if (result == MessageBoxResult.Yes)
-        {
-          Directory.CreateDirectory(this.FullPath.Text);
         }
       }
       else if (this.type == Settings.SettingsData.DeliveryPointData.Types.Winamp && !File.Exists(this.FullPath.Text))
