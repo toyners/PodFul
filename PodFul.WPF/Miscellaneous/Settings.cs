@@ -121,17 +121,40 @@ namespace PodFul.WPF.Miscellaneous
         #endregion
 
         #region Fields
+        private Boolean enabled;
         private String location;
         #endregion
 
         #region Properties
-        public Types Type { get; set; }
+        public Boolean Enabled
+        {
+          get { return this.enabled; }
+          set
+          {
+            this.enabled = value;
+            if (this.PropertyChanged != null)
+            {
+              PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Enabled"));
+              PropertyChanged.Invoke(this, new PropertyChangedEventArgs("TextColor"));
+            }
+          }
+        }
 
         public String Location
         {
           get { return this.location; }
           set { this.SetField(ref this.location, value); }
         }
+
+        public String TextColor
+        {
+          get
+          {
+            return (this.enabled ? "Black" : "Gray");
+          }
+        }
+
+        public Types Type { get; set; }
         #endregion
 
         #region Events

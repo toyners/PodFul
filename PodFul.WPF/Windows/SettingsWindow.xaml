@@ -77,8 +77,11 @@
                         <RowDefinition />
                       </Grid.RowDefinitions>
 
-                      <TextBlock Text="{Binding Type}" VerticalAlignment="Center" FontWeight="SemiBold" />
-                      <TextBlock Grid.Row="1" Text="{Binding Location}" VerticalAlignment="Center" />
+                      <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center" Margin="2,0,5,0" />
+                        <TextBlock Text="{Binding Type}" Foreground="{Binding TextColor}" VerticalAlignment="Center" FontWeight="SemiBold" />
+                      </StackPanel>
+                      <TextBlock Grid.Row="1" Text="{Binding Location}" Foreground="{Binding TextColor}" VerticalAlignment="Center" Margin="2,0,0,0" />
                     </Grid>
 
                     <StackPanel Grid.Column="1">
