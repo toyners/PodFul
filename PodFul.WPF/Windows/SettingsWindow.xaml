@@ -25,17 +25,23 @@
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Margin="6,2">Concurrent Download Count:</TextBlock>
-        <TextBox Name="ConcurrentDownloadCount" Margin="2,2">3</TextBox>
-      </StackPanel>
-    </Border>
+      <Grid Margin="-1,0,1,0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="17pt"/>
+          <RowDefinition Height="17pt"/>
+        </Grid.RowDefinitions>
 
-    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
-      <StackPanel Orientation="Horizontal">
-        <TextBlock Margin="6,2">Confirm Download Threshold:</TextBlock>
-        <TextBox Name="ConfirmPodcastDownloadThreshold" Margin="2,2">3</TextBox>
-      </StackPanel>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="4*"/>
+          <ColumnDefinition Width="9*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Margin="6,2" VerticalAlignment="Center">Concurrent Download Count:</TextBlock>
+        <TextBox Grid.Column="1" Name="ConcurrentDownloadCount" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
+
+        <TextBlock Grid.Row="1" Margin="6,2" VerticalAlignment="Center">Confirm Download Threshold:</TextBlock>
+        <TextBox Grid.Column="1" Grid.Row="1" Name="ConfirmPodcastDownloadThreshold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
+      </Grid>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5">
