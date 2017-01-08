@@ -59,6 +59,7 @@
     <Compile Include="DownloadDateTimeConverter_UnitTests.fs" />
     <Compile Include="FileSizeConverter_UnitTests.fs" />
     <Compile Include="PodcastComparisonListCreator_UnitTests.fs" />
+    <Compile Include="DeliveryPointCreator_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">
@@ -82,6 +83,11 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PodFul.FileDelivery\PodFul.FileDelivery.csproj">
+      <Name>PodFul.FileDelivery</Name>
+      <Project>{dc45d73b-1d7a-43d4-ade5-42ec1e19078c}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
       <Name>PodFul.Library</Name>
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>

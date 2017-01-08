@@ -75,9 +75,9 @@ namespace PodFul.WPF
 
         this.FeedList.Focus();
 
-        this.fileDeliverer = new FileDeliverer(DeliveryPointCreator.CreateDeliveryPoints(settings.DeliveryPointData, this.fileDeliveryLogger));
+        this.fileDeliverer = this.CreateFileDeliver();
 
-        this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(settings.ConfirmPodcastDownloadThreshold);
+        this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
 
         this.fileLogger.Message("Main Window instantiated.");
       }
@@ -93,6 +93,12 @@ namespace PodFul.WPF
     private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
     {
       return Directory.GetFiles(feed.Directory, "*.mp3").Length;
+    }
+
+    private IFileDeliverer CreateFileDeliver()
+    {
+      var deliveryPoints = DeliveryPointCreator.CreateDeliveryPoints(this.settings.DeliveryPointData, this.fileDeliveryLogger);
+      return new FileDeliverer(deliveryPoints);
     }
 
     private void DisplayTitle()
@@ -194,7 +200,9 @@ namespace PodFul.WPF
     {
       var settingsWindow = new SettingsWindow(this.settings);
       settingsWindow.Owner = this;
-      settingsWindow.ShowDialog();  
+      settingsWindow.ShowDialog();
+
+      this.fileDeliverer = this.CreateFileDeliver();
     }
 
     private Queue<Int32> GetIndexForCurrentFeed()

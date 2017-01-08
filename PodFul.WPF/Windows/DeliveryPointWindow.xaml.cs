@@ -5,7 +5,7 @@ namespace PodFul.WPF
   using System.IO;
   using System.Windows;
   using Jabberwocky.Toolkit.Path;
-  using Miscellaneous;
+  using PodFul.WPF.Miscellaneous;
 
   /// <summary>
   /// Interaction logic for DeliveryPointWindow.xaml

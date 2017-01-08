@@ -64,7 +64,7 @@ namespace PodFul.WPF
       }
 
       var fullPath = addDeliveryPointWindow.FullPath.Text;
-      var deliveryPointData = new Settings.SettingsData.DeliveryPointData { Type = type, Location = fullPath };
+      var deliveryPointData = new Settings.SettingsData.DeliveryPointData { Type = type, Location = fullPath, Enabled = true };
       this.settings.DeliveryPointData.Add(deliveryPointData);
       this.deliveryPoints.Add(deliveryPointData);
     }

@@ -20,27 +20,34 @@ namespace PodFul.WPF.Miscellaneous
     public static IDeliveryPoint[] CreateDeliveryPoints(List<Settings.SettingsData.DeliveryPointData> deliveryPointData, ILogger fileDeliveryLogger)
     {
       fileDeliveryLogger.VerifyThatObjectIsNotNull("Parameter 'fileDeliveryLogger' is null.");
-      var deliveryPoints = new IDeliveryPoint[deliveryPointData.Count];
-      var index = 0;
 
-      foreach (var data in deliveryPointData)
+      if (deliveryPointData == null)
       {
-        switch (data.Type)
-        {
-          case Settings.SettingsData.DeliveryPointData.Types.Winamp:
-          deliveryPoints[index] = new WinampDeliveryPoint(data.Location, fileDeliveryLogger.Message, fileDeliveryLogger.Exception);
-          break;
-          case Settings.SettingsData.DeliveryPointData.Types.Directory:
-          deliveryPoints[index] = new FileDeliveryPoint(data.Location, fileDeliveryLogger.Message, fileDeliveryLogger.Exception);
-          break;
-          default:
-          throw new NotImplementedException("Delivery point '" + data.Type + "' not recognised");
-        }
-
-        index++;
+        return new IDeliveryPoint[0];
       }
 
-      return deliveryPoints;
+      var deliveryPoints = new List<IDeliveryPoint>();
+      foreach (var deliveryPoint in deliveryPointData)
+      {
+        if (!deliveryPoint.Enabled)
+        {
+          continue;
+        }
+
+        switch (deliveryPoint.Type)
+        {
+          case Settings.SettingsData.DeliveryPointData.Types.Winamp:
+          deliveryPoints.Add(new WinampDeliveryPoint(deliveryPoint.Location, fileDeliveryLogger.Message, fileDeliveryLogger.Exception));
+          break;
+          case Settings.SettingsData.DeliveryPointData.Types.Directory:
+          deliveryPoints.Add(new FileDeliveryPoint(deliveryPoint.Location, fileDeliveryLogger.Message, fileDeliveryLogger.Exception));
+          break;
+          default:
+          throw new NotImplementedException("Delivery point '" + deliveryPoint.Type + "' not recognised");
+        }
+      }
+
+      return deliveryPoints.ToArray();
     }
   }
 }
