@@ -26,9 +26,9 @@
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,3">
-      <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch"
+      <ItemsControl Name="PodcastList" HorizontalContentAlignment="Stretch"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseWheel="FeedList_MouseWheel">
-        <ListBox.ItemTemplate>
+        <ItemsControl.ItemTemplate>
           <DataTemplate>
             <Grid Margin="0,0">
               <ProgressBar Margin="0,0" Height="50" Value="{Binding ProgressValue}" IsIndeterminate="{Binding FileSizeNotKnown}" />
@@ -78,8 +78,8 @@
               </Grid>
             </Grid>
           </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
     </Border>
   </DockPanel>
 </Window>
