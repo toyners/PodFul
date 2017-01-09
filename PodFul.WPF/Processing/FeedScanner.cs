@@ -188,8 +188,7 @@ namespace PodFul.WPF
           catch (OperationCanceledException)
           {
             // Do not handle here - rethrow so that operation is canceled.
-            title = "Scanned " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal) + " - CANCELLED";
-            this.SetWindowTitleEvent?.Invoke(title);
+            this.SetWindowTitleEvent?.Invoke(title + " - CANCELLED");
             throw;
           }
           catch (Exception exception)
@@ -200,8 +199,7 @@ namespace PodFul.WPF
           }
         }
 
-        title = "Scanned " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal) + " - COMPLETED";
-        this.SetWindowTitleEvent?.Invoke(title);
+        this.SetWindowTitleEvent?.Invoke(title + " - COMPLETED");
 
         isScanning = false;
 
