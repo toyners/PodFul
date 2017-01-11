@@ -110,7 +110,7 @@ namespace PodFul.WPF.Miscellaneous
       #endregion
 
       #region Classes
-      public class DeliveryPointData : INotifyPropertyChanged
+      public class DeliveryPointData : NotifyPropertyChangedBase, INotifyPropertyChanged
       {
         #region Enums
         public enum Types
@@ -143,7 +143,7 @@ namespace PodFul.WPF.Miscellaneous
         public String Location
         {
           get { return this.location; }
-          set { this.SetField(ref this.location, value); }
+          set { this.SetField(ref this.location, value, this.PropertyChanged); }
         }
 
         public String TextColor
@@ -159,26 +159,6 @@ namespace PodFul.WPF.Miscellaneous
 
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
-        #endregion
-
-        #region Methods
-        /// <summary>
-        /// Set the field to the new value if it is different and then raises the property changed event handler.
-        /// </summary>
-        /// <typeparam name="T">Type of the field and value</typeparam>
-        /// <param name="fieldValue">The existing field value.</param>
-        /// <param name="newValue">The new value.</param>
-        /// <param name="propertyName">Name of the property being changed. Uses the name of the calling method by default.</param>
-        private void SetField<T>(ref T fieldValue, T newValue, [CallerMemberName] String propertyName = null)
-        {
-          if (EqualityComparer<T>.Default.Equals(fieldValue, newValue))
-          {
-            return;
-          }
-
-          fieldValue = newValue;
-          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         #endregion
       }
       #endregion
