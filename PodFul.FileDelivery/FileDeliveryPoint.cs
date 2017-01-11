@@ -34,7 +34,13 @@ namespace PodFul.FileDelivery
       this.baseDirectoryPath = baseDirectoryPath;
       this.postMessageMethod = postMessageMethod;
       this.postExceptionMethod = postExceptionMethod;
+
+      this.Description = "Copies podcast files to '" + this.baseDirectoryPath + "'";
     }
+    #endregion
+
+    #region Properties
+    public String Description { get; private set; }
     #endregion
 
     #region Methods

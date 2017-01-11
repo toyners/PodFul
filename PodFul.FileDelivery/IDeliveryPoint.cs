@@ -8,6 +8,10 @@ namespace PodFul.FileDelivery
   /// </summary>
   public interface IDeliveryPoint
   {
+    #region Properties
+    String Description { get; }
+    #endregion
+
     #region Methods
     /// <summary>
     /// Delivers a file.

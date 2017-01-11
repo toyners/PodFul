@@ -30,7 +30,13 @@ namespace PodFul.FileDelivery
       this.winampExePath = winampExePath;
       this.postMessageMethod = postMessageMethod;
       this.postExceptionMethod = postExceptionMethod;
+
+      this.Description = "Adds podcast files to Winamp playlist";
     }
+    #endregion
+
+    #region Properties
+    public String Description { get; private set; }
     #endregion
 
     #region Methods
