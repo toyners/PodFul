@@ -110,7 +110,7 @@ namespace PodFul.WPF.Miscellaneous
       #endregion
 
       #region Classes
-      public class DeliveryPointData : NotifyPropertyChangedBase, INotifyPropertyChanged
+      public class DeliveryPointData : NotifyPropertyChangedBase
       {
         #region Enums
         public enum Types
@@ -143,7 +143,7 @@ namespace PodFul.WPF.Miscellaneous
         public String Location
         {
           get { return this.location; }
-          set { this.SetField(ref this.location, value, this.PropertyChanged); }
+          set { this.SetField(ref this.location, value); }
         }
 
         public String TextColor

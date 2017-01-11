@@ -2,17 +2,15 @@
 namespace PodFul.WPF.Processing
 {
   using System;
-  using System.Collections.Generic;
   using System.ComponentModel;
   using System.IO;
-  using System.Runtime.CompilerServices;
   using System.Threading;
   using System.Windows;
   using Library;
   using Miscellaneous;
   using PodFul.FileDelivery;
 
-  public class DownloadJob : INotifyPropertyChanged
+  public class DownloadJob : NotifyPropertyChangedBase
   {
     public enum StatusTypes
     {
@@ -337,24 +335,6 @@ namespace PodFul.WPF.Processing
       Int32 index = size.IndexOf('.');
       majorSize = size.Substring(0, index);
       minorSize = size.Substring(index);
-    }
-
-    /// <summary>
-    /// Set the field to the new value if it is different and then raises the property changed event handler.
-    /// </summary>
-    /// <typeparam name="T">Type of the field and value</typeparam>
-    /// <param name="fieldValue">The existing field value.</param>
-    /// <param name="newValue">The new value.</param>
-    /// <param name="propertyName">Name of the property being changed. Uses the name of the calling method by default.</param>
-    private void SetField<T>(ref T fieldValue, T newValue, [CallerMemberName] String propertyName = null)
-    {
-      if (EqualityComparer<T>.Default.Equals(fieldValue, newValue))
-      {
-        return;
-      }
-
-      fieldValue = newValue;
-      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
     #endregion
   }

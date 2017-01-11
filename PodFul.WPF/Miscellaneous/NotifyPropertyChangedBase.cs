@@ -6,8 +6,10 @@ namespace PodFul.WPF.Miscellaneous
   using System.ComponentModel;
   using System.Runtime.CompilerServices;
 
-  public class NotifyPropertyChangedBase
+  public class NotifyPropertyChangedBase : INotifyPropertyChanged
   {
+    public event PropertyChangedEventHandler PropertyChanged;
+
     /// <summary>
     /// Set the field to the new value if it is different and then raises the property changed event handler.
     /// </summary>
@@ -15,7 +17,7 @@ namespace PodFul.WPF.Miscellaneous
     /// <param name="fieldValue">The existing field value.</param>
     /// <param name="newValue">The new value.</param>
     /// <param name="propertyName">Name of the property being changed. Uses the name of the calling method by default.</param>
-    protected void SetField<T>(ref T fieldValue, T newValue, PropertyChangedEventHandler propertyChangedEventHandler, [CallerMemberName] String propertyName = null)
+    protected void SetField<T>(ref T fieldValue, T newValue, [CallerMemberName] String propertyName = null)
     {
       if (EqualityComparer<T>.Default.Equals(fieldValue, newValue))
       {
@@ -23,7 +25,7 @@ namespace PodFul.WPF.Miscellaneous
       }
 
       fieldValue = newValue;
-      propertyChangedEventHandler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
   }
 }
