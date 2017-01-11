@@ -7,6 +7,7 @@ namespace PodFul.WPF
   using System.Windows.Controls;
   using System.Windows.Input;
   using Jabberwocky.Toolkit.String;
+  using Miscellaneous;
   using PodFul.Library;
 
   /// <summary>
@@ -97,12 +98,11 @@ namespace PodFul.WPF
       this.DialogResult = true;
     }
 
-    private void PodcastList_MouseWheel(Object sender, MouseWheelEventArgs e)
+    private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
     {
-      //var scroller = this.PodcastList.GetDescendantByType<ScrollViewer>();
-      //scroller.ScrollToVerticalOffset(scroller.VerticalOffset - e.Delta);
-
-      this.PodcastList_Scroller.ScrollToVerticalOffset(this.PodcastList_Scroller.VerticalOffset - e.Delta);
+      var scroller = this.PodcastList.GetDescendantByType<ScrollViewer>();
+      var scrollValue = e.Delta < 0 ? 1 : -1;
+      scroller.ScrollToVerticalOffset(scroller.VerticalOffset + scrollValue);
       e.Handled = true;
     }
 
@@ -112,38 +112,4 @@ namespace PodFul.WPF
     }
     #endregion
   }
-
-  /*
-   * https://dzone.com/articles/virtualization-wpf
-   * http://stackoverflow.com/questions/10293236/accessing-the-scrollviewer-of-a-listbox-from-c-sharp
-   * public static class Ext
-  {
-    public static T GetDescendantByType<T>(this System.Windows.Media.Visual element) where T : class
-    {
-      if (element == null)
-      {
-        return default(T);
-      }
-
-      if (element.GetType() == typeof(T))
-      {
-        return element as T;
-      }
-      T foundElement = null;
-      if (element is FrameworkElement)
-      {
-        (element as FrameworkElement).ApplyTemplate();
-      }
-      for (var i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(element); i++)
-      {
-        var visual = System.Windows.Media.VisualTreeHelper.GetChild(element, i) as System.Windows.Media.Visual;
-        foundElement = visual.GetDescendantByType<T>();
-        if (foundElement != null)
-        {
-          break;
-        }
-      }
-      return foundElement;
-    }
-  }*/
 }
