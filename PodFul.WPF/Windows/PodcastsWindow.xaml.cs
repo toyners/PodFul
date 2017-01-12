@@ -7,6 +7,7 @@ namespace PodFul.WPF
   using System.Windows.Controls;
   using System.Windows.Input;
   using Jabberwocky.Toolkit.String;
+  using Jabberwocky.Toolkit.WPF;
   using Miscellaneous;
   using PodFul.Library;
 
@@ -15,18 +16,26 @@ namespace PodFul.WPF
   /// </summary>
   public partial class PodcastsWindow : Window
   {
+    #region Enums
     private enum SelectRowsType
     {
       None,
       All,
     }
+    #endregion
 
+    #region Fields
     private String feedDirectory;
+
+    private ScrollViewer scroller;
+    #endregion
 
     #region Construction
     public PodcastsWindow(Feed feed)
     {
       InitializeComponent();
+
+      this.scroller = this.PodcastList.GetDescendantByType<ScrollViewer>();
 
       var title = feed.Podcasts.Length + " podcast".Pluralize((UInt32)feed.Podcasts.Length);
       this.Title = title;
@@ -100,9 +109,8 @@ namespace PodFul.WPF
 
     private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
     {
-      var scroller = this.PodcastList.GetDescendantByType<ScrollViewer>();
       var scrollValue = e.Delta < 0 ? 1 : -1;
-      scroller.ScrollToVerticalOffset(scroller.VerticalOffset + scrollValue);
+      this.scroller.ScrollToVerticalOffset(this.scroller.VerticalOffset + scrollValue);
       e.Handled = true;
     }
 

@@ -4,6 +4,7 @@ namespace PodFul.WPF.Miscellaneous
   using System;
   using System.Windows.Controls;
   using System.Windows.Controls.Primitives;
+  using Jabberwocky.Toolkit.WPF;
 
   public static class DataGridExtensions
   {
@@ -20,7 +21,7 @@ namespace PodFul.WPF.Miscellaneous
         DataGridRow row = dataGrid.ItemContainerGenerator.ContainerFromIndex(index) as DataGridRow;
         if (row != null)
         {
-          DataGridCellsPresenter presenter = VisualTreeLocator.FindDataGridCellsPresenter(row);
+          DataGridCellsPresenter presenter = row.GetDescendantByType<DataGridCellsPresenter>();
           if (presenter != null)
           {
             DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(0) as DataGridCell;
