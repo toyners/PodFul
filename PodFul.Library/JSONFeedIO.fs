@@ -1,12 +1,8 @@
 ﻿namespace PodFul.Library
 
-open System
-open System.Collections.Generic
 open System.IO
-open System.Linq
 open System.Runtime.Serialization.Json
 open System.Text
-open Jabberwocky.Toolkit.String
 
 module JSONFeedIO =
 
