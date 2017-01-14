@@ -8,6 +8,7 @@ namespace PodFul.WPF.Miscellaneous
   using System.Runtime.CompilerServices;
   using System.Xml.Serialization;
   using Jabberwocky.Toolkit.Object;
+  using Jabberwocky.Toolkit.WPF;
 
   public class Settings
   {

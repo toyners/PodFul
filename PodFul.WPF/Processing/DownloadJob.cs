@@ -6,6 +6,7 @@ namespace PodFul.WPF.Processing
   using System.IO;
   using System.Threading;
   using System.Windows;
+  using Jabberwocky.Toolkit.WPF;
   using Library;
   using Miscellaneous;
   using PodFul.FileDelivery;
@@ -87,7 +88,7 @@ namespace PodFul.WPF.Processing
     }
     #endregion
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    //public event PropertyChangedEventHandler PropertyChanged;
 
     #region Properties
     public Boolean CancellationCanBeRequested
@@ -164,18 +165,11 @@ namespace PodFul.WPF.Processing
       set
       {
         this.status = value;
-        if (PropertyChanged != null)
-        {
-          // Change all status properties.
-          PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusMessage"));
-          PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusColor"));
-          PropertyChanged.Invoke(this, new PropertyChangedEventArgs("StatusWeight"));
-          
-          if (this.status == StatusTypes.Canceled)
-          {
-            this.CancellationCanBeRequested = false;
-          }
-        }
+        
+        this.TryInvokePropertyChanged(
+          new PropertyChangedEventArgs("StatusMessage"),
+          new PropertyChangedEventArgs("StatusColor"),
+          new PropertyChangedEventArgs("StatusWeight"));
       }
     }
 
