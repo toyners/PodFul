@@ -30,7 +30,7 @@
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseWheel="FeedList_MouseWheel">
         <ItemsControl.ItemTemplate>
           <DataTemplate>
-            <Grid Margin="0,2">
+            <Grid Margin="2,2">
               <ProgressBar Margin="0,0" Height="50" Value="{Binding ProgressValue}" IsIndeterminate="{Binding FileSizeNotKnown}" />
               <Grid>
                 <Grid.ColumnDefinitions>
