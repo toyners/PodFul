@@ -5,7 +5,6 @@ namespace PodFul.WPF.Miscellaneous
   using System.Collections.Generic;
   using System.ComponentModel;
   using System.IO;
-  using System.Runtime.CompilerServices;
   using System.Xml.Serialization;
   using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.WPF;
@@ -40,18 +39,7 @@ namespace PodFul.WPF.Miscellaneous
       }
       else
       {
-        try
-        {
-          var file = File.Create(this.filePath);
-          file.Close();
-        }
-        catch (ArgumentException a)
-        {
-          if (a.Message == "Illegal characters in path.")
-          {
-            throw new ArgumentException("Parameter 'filePath' contains characters that are illegal in file paths.");
-          }
-        }
+        this.ConfirmSettingsCanBeSaved();
 
         this.settingsData = new SettingsData
         {
@@ -59,6 +47,9 @@ namespace PodFul.WPF.Miscellaneous
           ConfirmPodcastDownloadThreshold = 3,
           DeliveryData = new List<SettingsData.DeliveryPointData>()
         };
+
+        // Save the initial settings to file.
+        this.Save();
       }
     }
     #endregion
@@ -86,6 +77,22 @@ namespace PodFul.WPF.Miscellaneous
       using (var fileStream = new FileStream(this.filePath, FileMode.Create))
       {
         serializer.Serialize(fileStream, this.settingsData);
+      }
+    }
+
+    private void ConfirmSettingsCanBeSaved()
+    {
+      try
+      {
+        var file = File.Create(this.filePath);
+        file.Close();
+      }
+      catch (ArgumentException a)
+      {
+        if (a.Message == "Illegal characters in path.")
+        {
+          throw new ArgumentException("Parameter 'filePath' contains characters that are illegal in file paths.");
+        }
       }
     }
 

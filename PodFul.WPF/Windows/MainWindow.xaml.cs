@@ -83,7 +83,11 @@ namespace PodFul.WPF
       }
       catch (Exception exception)
       {
-        this.fileLogger.Exception(exception.Message + ": " + exception.StackTrace);
+        if (this.fileLogger != null)
+        {
+          this.fileLogger.Exception(exception.Message + ": " + exception.StackTrace);
+        }
+
         var message = String.Format("Exception occurred during startup. Exception message is\r\n{0}\r\n\r\nPodFul will close.", exception.Message);
         MessageBox.Show(message, "PodFul Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         throw;
