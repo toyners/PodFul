@@ -39,9 +39,9 @@
         </StackPanel>
 
         <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1">
-          <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch"
-                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseWheel="FeedList_MouseWheel">
-            <ListBox.ItemTemplate>
+          <ItemsControl Name="PodcastList" HorizontalContentAlignment="Stretch"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" PreviewMouseWheel="PodcastListMouseWheel">
+            <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <Grid Margin="2">
                   <ProgressBar Margin="0" Height="30" Value="{Binding ProgressValue}" IsIndeterminate="{Binding FileSizeNotKnown}" />
@@ -84,8 +84,8 @@
                   </Grid>
                 </Grid>
               </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
         </Border>
       </Grid>
     </Border>

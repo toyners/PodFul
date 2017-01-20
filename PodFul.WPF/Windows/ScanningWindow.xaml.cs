@@ -85,17 +85,17 @@ namespace PodFul.WPF
       this.feedScanner.CancelDownload((sender as Button).DataContext);
     }
 
-    private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
+    private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
     {
       // TODO: Scroll podcast download list.
     }
 
     private void JobStartedEventHandler(DownloadJob job)
     {
-      Application.Current.Dispatcher.Invoke(() =>
+      /*Application.Current.Dispatcher.Invoke(() =>
       {
         this.PodcastList.ScrollIntoView(job);
-      });
+      });*/
     }
 
     private void InitializeCounts()
