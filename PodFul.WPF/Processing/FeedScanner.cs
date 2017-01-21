@@ -188,7 +188,6 @@ namespace PodFul.WPF
           catch (OperationCanceledException)
           {
             // Do not handle here - rethrow so that operation is canceled.
-            this.SetWindowTitleEvent?.Invoke(title + " - CANCELLED");
             throw;
           }
           catch (Exception exception)
@@ -198,8 +197,6 @@ namespace PodFul.WPF
             this.logger.Message(exceptionReport);
           }
         }
-
-        this.SetWindowTitleEvent?.Invoke(title + " - COMPLETED");
 
         isScanning = false;
 
@@ -230,6 +227,11 @@ namespace PodFul.WPF
         if (tasks[0].IsCanceled || tasks[1].IsCanceled)
         {
           scanReport += "\r\nCANCELLED";
+          this.SetWindowTitleEvent?.Invoke(title + " - CANCELLED");
+        }
+        else
+        {
+          this.SetWindowTitleEvent?.Invoke(title + " - COMPLETED");
         }
 
         // Display the final scan report.

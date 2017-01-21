@@ -1,6 +1,10 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.0.1 (1.8)
+1. **Fixed:** Minor cosmetic tweaks when scanning or downloading.
+2. **Fixed:** Bug where COMPLETED was displayed in scanning window title bar when the scanning has been cancelled.
+
 ## 3.0 (1.8)
 1. **Changed:** Added new Directory Delivery point. Podcasts downloaded during a scan (or manually) can be copied into a single directory for ease of transferring.
 2. **Changed:** Settings dialog window completed.
