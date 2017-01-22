@@ -1,6 +1,10 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.0.2 (1.8)
+1. **Changed:** All main window buttons are now standardised across the application.
+2. **Fixed:** All windows open either in the centre of the screen or the centre of their owner.
+
 ## 3.0.1 (1.8)
 1. **Fixed:** Minor cosmetic tweaks when scanning or downloading.
 2. **Fixed:** Bug where COMPLETED was displayed in scanning window title bar when the scanning has been cancelled.
