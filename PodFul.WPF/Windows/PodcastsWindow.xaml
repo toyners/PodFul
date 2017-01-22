@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="SelectionWindow" Height="600" Width="1000" 
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico">
+        Icon="baggage_cart_box_tE4_icon.ico" WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
@@ -41,7 +41,7 @@
             <ContextMenu>
               <MenuItem Header="_Download" Click="Download_Click" FontWeight="Bold" />
               <Separator />
-              <MenuItem Header="_Properties" Click="Properties_Click" />
+              <MenuItem Header="_Properties" Click="PropertiesMenuItemClick" />
             </ContextMenu>
           </ListBox.ContextMenu>
           <ListBox.ItemTemplate>

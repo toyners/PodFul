@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
         Title="Properties" Height="250" Width="800"
-        Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize">
+        Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">

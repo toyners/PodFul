@@ -114,7 +114,7 @@ namespace PodFul.WPF
         guiVersion.Build);
     }
 
-    private void AddFeed_Click(Object sender, RoutedEventArgs e)
+    private void AddFeedButtonClick(Object sender, RoutedEventArgs e)
     {
       var addFeedWindow = new AddFeedWindow();
       addFeedWindow.Owner = this;
@@ -200,7 +200,7 @@ namespace PodFul.WPF
       this.FeedList.SelectedIndex = index;
     }
 
-    private void Settings_Click(Object sender, RoutedEventArgs e)
+    private void SettingsButtonClick(Object sender, RoutedEventArgs e)
     {
       var settingsWindow = new SettingsWindow(this.settings);
       settingsWindow.Owner = this;
@@ -249,6 +249,7 @@ namespace PodFul.WPF
     private List<Int32> GetSelectedPodcasts()
     {
       var selectionWindow = new PodcastsWindow(this.currentFeed);
+      selectionWindow.Owner = this;
       var startDownloading = selectionWindow.ShowDialog();
 
       if (startDownloading == null || !startDownloading.Value)
@@ -283,6 +284,7 @@ namespace PodFul.WPF
       podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
 
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
+      podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();
     }
 
@@ -339,16 +341,19 @@ namespace PodFul.WPF
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
+      scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
     }
 
-    private void Properties_Click(Object sender, RoutedEventArgs e)
+    private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)
     {
       var propertiesWindow = new FeedPropertiesWindow(this.currentFeed);
+      propertiesWindow.Owner = this;
+
       propertiesWindow.ShowDialog();
     }
 
-    private void Scan_Click(Object sender, RoutedEventArgs e)
+    private void ScanButtonClick(Object sender, RoutedEventArgs e)
     {
       this.PerformScan(this.GetIndexesForAllFeeds());
     }

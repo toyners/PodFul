@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Confirm Podcast Downloads" Height="700" Width="923"
         Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing" ResizeMode="NoResize"
-        Loaded="WindowLoaded">
+        Loaded="WindowLoaded" WindowStartupLocation="CenterScreen">
   <DockPanel>
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>

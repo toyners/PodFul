@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000" 
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico">
+        Icon="baggage_cart_box_tE4_icon.ico" WindowStartupLocation="CenterScreen">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
@@ -17,14 +17,14 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-          <Button Width="70" Click="AddFeed_Click" Style="{StaticResource StandardButton}">Add</Button>
+          <Button Width="70" Click="AddFeedButtonClick" Style="{StaticResource StandardButton}">Add</Button>
           <Button Name="RemoveButton" Width="70" Click="RemoveFeed_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Remove</Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
-          <Button Width="70" Click="Settings_Click" Style="{StaticResource StandardButton}">Settings</Button>
+          <Button Width="70" Click="SettingsButtonClick" Style="{StaticResource StandardButton}">Settings</Button>
           <Button Name="PodcastsButton" Width="70" Click="Podcasts_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Podcasts</Button>
-          <Button Name="ScanButton" Width="70" Click="Scan_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Scan</Button>
+          <Button Name="ScanButton" Width="70" Click="ScanButtonClick" IsEnabled="False" Style="{StaticResource StandardButton}">Scan</Button>
         </StackPanel>
       </Grid>
     </Border>
@@ -46,7 +46,7 @@
                 <MenuItem Header="Scan" Click="ScanFeed_Click"/>
                 <MenuItem Header="Synchronise Podcasts" Click="Synchronise_Click" />
                 <Separator />
-                <MenuItem Header="Properties" Click="Properties_Click" />
+                <MenuItem Header="Properties" Click="PropertiesMenuItemClick" />
               </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>

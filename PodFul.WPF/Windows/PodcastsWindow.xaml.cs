@@ -79,10 +79,12 @@ namespace PodFul.WPF
       this.DialogResult = true;
     }
 
-    private void Properties_Click(Object sender, RoutedEventArgs e)
+    private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)
     {
       var podcast = PodcastList.SelectedItem as Podcast;
       var propertiesWindow = new PodcastPropertiesWindow(podcast, this.feedDirectory);
+      propertiesWindow.Owner = this;
+
       propertiesWindow.ShowDialog();
     }
 
