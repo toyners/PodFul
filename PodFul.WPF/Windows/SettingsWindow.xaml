@@ -10,18 +10,8 @@
         Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
   <DockPanel Margin="5">
-    <DockPanel.Resources>
-      <Style TargetType="Button">
-        <Setter Property="Padding" Value="2.5"/>
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Width" Value="70" />
-        <Setter Property="Height" Value="25" />
-      </Style>
-    </DockPanel.Resources>
-
-    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button HorizontalAlignment="Right" IsDefault="True" Click="CloseButtonClick" >Close</Button>
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" >
+      <Button HorizontalAlignment="Right" Width="70" IsDefault="True" Click="CloseButtonClick" Style="{StaticResource ResourceKey=StandardButton}">Close</Button>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
@@ -50,7 +40,7 @@
 
         <DockPanel>
           <StackPanel DockPanel.Dock="Right" Margin="0,-5">
-            <Button Click="AddButtonClick">
+            <Button Click="AddButtonClick" Width="70" Style="{StaticResource ResourceKey=StandardButton}">
               <Button.Content>
                 <StackPanel Orientation="Horizontal">
                   <TextBlock Text="Add" />

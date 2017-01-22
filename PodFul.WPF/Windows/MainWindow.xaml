@@ -16,23 +16,15 @@
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Grid.Resources>
-          <Style TargetType="Button">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-          </Style>
-        </Grid.Resources>
-
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-          <Button Click="AddFeed_Click">Add</Button>
-          <Button Name="RemoveButton" Click="RemoveFeed_Click" IsEnabled="False">Remove</Button>
+          <Button Width="70" Click="AddFeed_Click" Style="{StaticResource StandardButton}">Add</Button>
+          <Button Name="RemoveButton" Width="70" Click="RemoveFeed_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Remove</Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
-          <Button Click="Settings_Click">Settings</Button>
-          <Button Name="PodcastsButton" Click="Podcasts_Click" IsEnabled="False">Podcasts</Button>
-          <Button Name="ScanButton" Click="Scan_Click" IsEnabled="False">Scan</Button>
+          <Button Width="70" Click="Settings_Click" Style="{StaticResource StandardButton}">Settings</Button>
+          <Button Name="PodcastsButton" Width="70" Click="Podcasts_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Podcasts</Button>
+          <Button Name="ScanButton" Width="70" Click="Scan_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Scan</Button>
         </StackPanel>
       </Grid>
     </Border>

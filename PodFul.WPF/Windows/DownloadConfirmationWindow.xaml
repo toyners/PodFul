@@ -9,15 +9,6 @@
         Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing" ResizeMode="NoResize"
         Loaded="WindowLoaded">
   <DockPanel>
-    <DockPanel.Resources>
-      <Style x:Key="ButtonStyle">
-        <Setter Property="Button.Height" Value="30" />
-        <Setter Property="Button.Width" Value="80" />
-        <Setter Property="Button.Padding" Value="5" />
-        <Setter Property="Button.Margin" Value="5" />
-      </Style>
-    </DockPanel.Resources>
-
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -26,15 +17,15 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-          <Button Style="{StaticResource ButtonStyle}" Click="SelectAllClick">Select All</Button>
-          <Button Style="{StaticResource ButtonStyle}" Click="SelectNoneClick">Select None</Button>
-          <Button Style="{StaticResource ButtonStyle}" Click="SelectNewClick">Select New</Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectAllClick">Select All</Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectNoneClick">Select None</Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectNewClick">Select New</Button>
         </StackPanel>
         
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Style="{StaticResource ButtonStyle}" Click="CancelClick" >Cancel</Button>
-          <Button Style="{StaticResource ButtonStyle}" Click="SkipClick">Skip</Button>
-          <Button Name="DownloadButton" Style="{StaticResource ButtonStyle}" IsEnabled="False" Click="DownloadClick">Download</Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="CancelClick" >Cancel</Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SkipClick">Skip</Button>
+          <Button Name="DownloadButton" Style="{StaticResource StandardButton}" Width="70" IsEnabled="False" Click="DownloadClick">Download</Button>
         </StackPanel>
       </Grid>
     </Border>

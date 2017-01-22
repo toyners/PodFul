@@ -9,9 +9,9 @@
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" Margin="0,2.5,2.5,2.5">
-        <Button Name="CloseButton" IsDefault="True" Padding="2.5" Width="70"  
-              VerticalContentAlignment="Center" Click="CloseButton_Click">Close</Button>
+      <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+        <Button Name="CloseButton" IsDefault="True" Width="70"  
+              VerticalContentAlignment="Center" Click="CloseButton_Click" Style="{StaticResource StandardButton}">Close</Button>
       </StackPanel>
     </Border>
     

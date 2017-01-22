@@ -9,17 +9,8 @@
         WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"  HorizontalAlignment="Right">
-      <StackPanel.Resources>
-        <Style TargetType="Button">
-          <Setter Property="Padding" Value="2.5"/>
-          <Setter Property="VerticalContentAlignment" Value="Center"/>
-          <Setter Property="Width" Value="70" />
-          <Setter Property="Height" Value="25" />
-        </Style>
-      </StackPanel.Resources>
-
-      <Button Name="OkButton" IsDefault="True" IsEnabled="False" Margin="0,0,2.5,0" Click="okButton_Click">OK</Button>
-      <Button IsCancel="True" Margin="2.5,0,0,0">Cancel</Button>
+      <Button Name="OkButton" IsDefault="True" IsEnabled="False" Width="70" Click="okButton_Click" Style="{StaticResource StandardButton}">OK</Button>
+      <Button IsCancel="True" Width="70" Style="{StaticResource StandardButton}">Cancel</Button>
     </StackPanel>
 
     <Grid>

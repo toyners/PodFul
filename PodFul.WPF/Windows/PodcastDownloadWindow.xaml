@@ -10,7 +10,7 @@
         Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button Name="CommandButton" Margin="3" Width="60" Height="30" HorizontalAlignment="Right" Click="CommandButton_Click">
+      <Button Name="CommandButton" Margin="3" Width="70" HorizontalAlignment="Right" Click="CommandButton_Click" Style="{StaticResource StandardButton}">
         Close
       </Button>
     </Border>
