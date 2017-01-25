@@ -17,7 +17,6 @@
 5. **Changed:** Tidied up visual layout for podcast download jobs.
 6. **Changed:** Podcast window opens quicker for feeds with large number of podcasts.
 
-
 ## 2.9 (1.8)
 1. **Changed:** Included job counters on scanning window.
 2. **Changed:** Automatically scroll job list box when job starts downloading.
