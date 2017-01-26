@@ -238,6 +238,11 @@ namespace PodFul.WPF.Processing
 
       this.feedCollection.UpdateFeed(this.feed);
 
+      while (this.podcastSize - this.downloadedSize > 8192)
+      {
+        this.ProgressEventHandler(8192);
+      }
+
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressValue = 0;
@@ -286,7 +291,7 @@ namespace PodFul.WPF.Processing
       }
       else
       {
-        if (value == 100)
+        if (value >= 100)
         {
           majorSize = "100";
           minorSize = ".0";
