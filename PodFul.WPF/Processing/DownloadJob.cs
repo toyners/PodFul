@@ -238,13 +238,15 @@ namespace PodFul.WPF.Processing
 
       this.feedCollection.UpdateFeed(this.feed);
 
-      while (this.podcastSize - this.downloadedSize > 8192)
-      {
-        this.ProgressEventHandler(8192);
-      }
-
       Application.Current.Dispatcher.Invoke(() =>
       {
+        if (!this.FileSizeNotKnown)
+        {
+          // File size is known
+          this.ProgressMajorSize = "100";
+          this.ProgressMinorSize = ".0";
+        }
+
         this.ProgressValue = 0;
         this.Status = StatusTypes.Completed;
       });
