@@ -1,6 +1,9 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.0.3 (1.8)
+1. **Fixed:** Adding feeds now places the file in the correct feed directory.
+
 ## 3.0.2 (1.8)
 1. **Changed:** All main window buttons are now standardised across the application.
 2. **Fixed:** All windows open either in the centre of the screen or the centre of their owner.
