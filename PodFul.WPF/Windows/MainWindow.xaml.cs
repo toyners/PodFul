@@ -11,6 +11,7 @@ namespace PodFul.WPF
   using System.Windows.Controls;
   using Jabberwocky.Toolkit.Assembly;
   using Jabberwocky.Toolkit.IO;
+  using Jabberwocky.Toolkit.Path;
   using Logging;
   using Miscellaneous;
   using PodFul.FileDelivery;
@@ -49,7 +50,7 @@ namespace PodFul.WPF
 
         this.settings = new Settings(ConfigurationManager.AppSettings["SettingsPath"]);
 
-        var feedDirectory = ConfigurationManager.AppSettings["FeedDirectory"];
+        var feedDirectory = PathOperations.CompleteDirectoryPath(ConfigurationManager.AppSettings["FeedDirectory"]);
         DirectoryOperations.EnsureDirectoryExists(feedDirectory);
         var feedStorage = new JSONFileStorage(feedDirectory);
         this.feedCollection = new FeedCollection(feedStorage);
