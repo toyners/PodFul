@@ -68,7 +68,7 @@
                             <ColumnDefinition Width="7*"/>
                           </Grid.ColumnDefinitions>
                           <TextBlock Text="{Binding StatusMessage}" Margin="3,0" FontSize="10" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                          <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" Height="10" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                          <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         </Grid>
                       </Grid>
 
