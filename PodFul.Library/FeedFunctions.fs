@@ -100,7 +100,7 @@ module public FeedFunctions =
         if element = null || element.Value = null || element.Value = String.Empty then
             String.Empty
         else
-            element.Value
+            element.Value.Replace("\r", String.Empty).Replace("\n", String.Empty).Replace("\t", String.Empty)
 
     let private getImageForChannel (channel : XElement) : string =
         match channel with
