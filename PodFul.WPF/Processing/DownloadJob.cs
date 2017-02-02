@@ -39,6 +39,8 @@ namespace PodFul.WPF.Processing
 
     private Boolean fileSizeNotKnown;
 
+    private Boolean useMarqueProgressStyle;
+
     private IImageResolver imageResolver;
 
     private Int64 podcastSize;
@@ -111,11 +113,11 @@ namespace PodFul.WPF.Processing
 
     public String FilePath { get; private set; }
 
-    public Boolean FileSizeNotKnown
+    /*public Boolean FileSizeNotKnown
     {
       get { return this.fileSizeNotKnown; }
       set { this.SetField(ref this.fileSizeNotKnown, value); }
-    }
+    }*/
 
     public String Name { get { return this.podcast.Title; } }
 
@@ -195,6 +197,12 @@ namespace PodFul.WPF.Processing
     } 
 
     public String URL { get { return this.podcast.URL; } }
+
+    public Boolean UseMarqueProgressStyle
+    {
+      get { return this.useMarqueProgressStyle; }
+      set { this.SetField(ref this.useMarqueProgressStyle, value); }
+    }
     #endregion
 
     #region Methods
@@ -238,9 +246,9 @@ namespace PodFul.WPF.Processing
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        if (!this.FileSizeNotKnown)
+        if (!this.fileSizeNotKnown)
         {
-          // File size is known
+          // File size is known so set percentage to 100%
           this.ProgressMajorSize = "100";
           this.ProgressMinorSize = ".0";
         }
@@ -260,12 +268,12 @@ namespace PodFul.WPF.Processing
         if (this.podcastSize > 0)
         {
           this.ProgressUnit = "%";
-          this.FileSizeNotKnown = false;
+          this.UseMarqueProgressStyle = this.fileSizeNotKnown = false;
         }
         else
         {
           this.ProgressUnit = " MB";
-          this.FileSizeNotKnown = true;
+          this.UseMarqueProgressStyle = this.fileSizeNotKnown = true;
         }
 
         this.Status = StatusTypes.Running;
@@ -284,7 +292,7 @@ namespace PodFul.WPF.Processing
 
       String majorSize;
       String minorSize;
-      if (this.FileSizeNotKnown)
+      if (this.fileSizeNotKnown)
       {
         var downloadedSizeInMb = this.downloadedSize / 1048576.0;
         GetMajorMinorComponentsOfValue(downloadedSizeInMb, out majorSize, out minorSize);
@@ -308,7 +316,7 @@ namespace PodFul.WPF.Processing
         this.ProgressMajorSize = majorSize;
         this.ProgressMinorSize = minorSize;
 
-        if (this.FileSizeNotKnown)
+        if (this.fileSizeNotKnown)
         {
           return;
         }

@@ -175,7 +175,7 @@ namespace PodFul.WPF.Processing
           job.CancellationCanBeRequested = false;
           // If this job had an unknown file size then the progress bar was marque.
           // Regardless, ensure that the marque effect is turned off.
-          job.FileSizeNotKnown = false;
+          job.UseMarqueProgressStyle = false;
         });
 
         if (task.IsFaulted)

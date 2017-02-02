@@ -46,7 +46,7 @@
               <DataTemplate>
                 <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">
                   <Grid>
-                    <ProgressBar Margin="0" Height="30" Value="{Binding ProgressValue}" IsIndeterminate="{Binding FileSizeNotKnown}" />
+                    <ProgressBar Margin="0" Height="30" Value="{Binding ProgressValue}" IsIndeterminate="{Binding UseMarqueProgressStyle}" />
                     <Grid>
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="8.5*"/>
