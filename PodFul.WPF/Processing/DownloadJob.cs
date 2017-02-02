@@ -88,8 +88,6 @@ namespace PodFul.WPF.Processing
     }
     #endregion
 
-    //public event PropertyChangedEventHandler PropertyChanged;
-
     #region Properties
     public Boolean CancellationCanBeRequested
     {
