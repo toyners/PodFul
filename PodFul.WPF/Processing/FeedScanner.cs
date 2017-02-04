@@ -109,97 +109,104 @@ namespace PodFul.WPF
       Task scanningTask = Task.Factory.StartNew(
       () =>
       {
-
-        this.fileDeliverer.InitialiseDeliverypoints();
-
-        while (indexes.Count > 0)
+        try
         {
-          Int32 feedIndex = indexes.Dequeue();
+          this.logger.Message("Starting delivery point initialisation");
+          this.fileDeliverer.InitialiseDeliverypoints();
+          this.logger.Message("Delivery point initialisation completed.");
 
-          title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
-          this.SetWindowTitleEvent?.Invoke(title);
-
-          var feed = this.feedCollection.Feeds[feedIndex];
-
-          this.logger.Message("Scanning \"" + feed.Title + "\".");
-
-          Feed newFeed = null;
-          try
+          while (indexes.Count > 0)
           {
-            newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver, cancelToken);
+            Int32 feedIndex = indexes.Dequeue();
 
-            this.logger.Message("Comparing podcasts ... ", false);
+            title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
+            this.SetWindowTitleEvent?.Invoke(title);
 
-            var podcastIndexes = this.BuildPodcastList(feed, newFeed);
-            var updateFeed = (podcastIndexes.Count > 0);
+            var feed = this.feedCollection.Feeds[feedIndex];
 
-            var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
-            if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
+            this.logger.Message("Scanning \"" + feed.Title + "\".");
+
+            Feed newFeed = null;
+            try
             {
-              var feedReport = podcastIndexes.Count + " podcasts found";
-              this.logger.Message(feedReport + " (Scan cancelled).\r\n");
-              scanReport += feedReport + " for \"" + feed.Title + "\".";
-              this.cancellationTokenSource.Cancel();
+              newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver, cancelToken);
 
-              break;
+              this.logger.Message("Comparing podcasts ... ", false);
+
+              var podcastIndexes = this.BuildPodcastList(feed, newFeed);
+              var updateFeed = (podcastIndexes.Count > 0);
+
+              var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
+              if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
+              {
+                var feedReport = podcastIndexes.Count + " podcasts found";
+                this.logger.Message(feedReport + " (Scan cancelled).\r\n");
+                scanReport += feedReport + " for \"" + feed.Title + "\".";
+                this.cancellationTokenSource.Cancel();
+
+                break;
+              }
+
+              if (updateFeed)
+              {
+                newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
+              }
+
+              String message = "Complete - ";
+              if (podcastIndexes.Count == 0)
+              {
+                message += "No new podcasts found.";
+              }
+              else
+              {
+                var feedReport = podcastIndexes.Count + " podcast" +
+                  (podcastIndexes.Count != 1 ? "s" : String.Empty) + " found";
+                var downloadingReport = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
+                message += feedReport + downloadingReport + ".";
+                scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
+              }
+
+              this.logger.Message(message);
+
+              this.logger.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
+
+              this.FeedScanCompleted(feedIndex, newFeed);
+
+              this.logger.Message(String.Empty);
+
+              if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
+              {
+                continue;
+              }
+
+              podcastIndexes.Reverse();
+
+              foreach (var index in podcastIndexes)
+              {
+                var podcast = newFeed.Podcasts[index];
+                var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
+                this.downloadManager.AddJob(job);
+              }
             }
-
-            if (updateFeed)
+            catch (OperationCanceledException)
             {
-              newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
+              // Do not handle here - rethrow so that operation is canceled.
+              throw;
             }
-
-            String message = "Complete - ";
-            if (podcastIndexes.Count == 0)
+            catch (Exception exception)
             {
-              message += "No new podcasts found.";
-            }
-            else
-            {
-              var feedReport = podcastIndexes.Count + " podcast" +
-                (podcastIndexes.Count != 1 ? "s" : String.Empty) + " found";
-              var downloadingReport = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
-              message += feedReport + downloadingReport + ".";
-              scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
-            }
-
-            this.logger.Message(message);
-
-            this.logger.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
-
-            this.FeedScanCompleted(feedIndex, newFeed);
-
-            this.logger.Message(String.Empty);
-
-            if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
-            {
-              continue;
-            }
-
-            podcastIndexes.Reverse();
-
-            foreach (var index in podcastIndexes)
-            {
-              var podcast = newFeed.Podcasts[index];
-              var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
-              this.downloadManager.AddJob(job);
+              var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
+              scanReport += exceptionReport;
+              this.logger.Message(exceptionReport);
             }
           }
-          catch (OperationCanceledException)
-          {
-            // Do not handle here - rethrow so that operation is canceled.
-            throw;
-          }
-          catch (Exception exception)
-          {
-            var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
-            scanReport += exceptionReport;
-            this.logger.Message(exceptionReport);
-          }
+
+          isScanning = false;
         }
-
-        isScanning = false;
-
+        catch (Exception exception)
+        {
+          this.logger.Exception(exception.Message);
+        }
       }, cancelToken);
 
       Task downloadingTask = Task.Factory.StartNew(
