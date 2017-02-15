@@ -101,7 +101,7 @@ namespace PodFul.WPF
     private void InitializeCounts()
     {
       this.WaitingCount.Text = "Waiting: 0";
-      this.ProcessingCount.Text = "Processing: 0";
+      this.RunningCount.Text = "Running: 0";
       this.CompletedCount.Text = "Completed: 0";
       this.CancelledCount.Text = String.Empty;
       this.FailedCount.Text = String.Empty;
@@ -123,12 +123,12 @@ namespace PodFul.WPF
       });
     }
 
-    private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 processingJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
+    private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 runningJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.WaitingCount.Text = "Waiting: " + waitingJobsCount;
-        this.ProcessingCount.Text = "Processing: " + processingJobsCount;
+        this.RunningCount.Text = "Running: " + runningJobsCount;
         this.CompletedCount.Text = "Completed: " + completedJobsCount;
         this.CancelledCount.Text = (cancelledJobsCount == 0 ? String.Empty : "Cancelled: " + cancelledJobsCount);
         this.FailedCount.Text = (failedJobsCount == 0 ? String.Empty : "Failed: " + failedJobsCount);

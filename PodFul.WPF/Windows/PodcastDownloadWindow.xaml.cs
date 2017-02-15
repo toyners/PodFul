@@ -66,12 +66,12 @@ namespace PodFul.WPF
     private void UpdateCounts()
     {
       var waitingJobCount = this.downloadManager.WaitingJobsCount;
-      var processingJobCount = this.downloadManager.ProcessingJobsCount;
+      var runningJobCount = this.downloadManager.ProcessingJobsCount;
       var completedJobCount = this.downloadManager.CompletedJobsCount;
       var cancelledJobCount = this.downloadManager.CancelledJobsCount;
       var failedJobCount = this.downloadManager.FailedJobsCount;
 
-      var title = String.Format("Downloading Podcasts: {0} waiting, {1} processing, {2} completed", waitingJobCount, processingJobCount, completedJobCount);
+      var title = String.Format("Downloading Podcasts: {0} waiting, {1} running, {2} completed", waitingJobCount, runningJobCount, completedJobCount);
 
       if (cancelledJobCount > 0)
       {
@@ -84,7 +84,7 @@ namespace PodFul.WPF
       }
 
       var waitingJobText = "Waiting: " + waitingJobCount;
-      var processingCountText = "Processing: " + processingJobCount;
+      var processingCountText = "Running: " + runningJobCount;
       var completedCountText = "Completed: " + completedJobCount;
       var cancelledCountText = (cancelledJobCount == 0 ? String.Empty : "Cancelled: " + cancelledJobCount);
       var failedCountText = (failedJobCount == 0 ? String.Empty : "Failed: " + failedJobCount);
@@ -93,7 +93,7 @@ namespace PodFul.WPF
       {
         this.Title = title;
         this.WaitingCount.Text = waitingJobText;
-        this.ProcessingCount.Text = processingCountText;
+        this.RunningCount.Text = processingCountText;
         this.CompletedCount.Text = completedCountText;
         this.CancelledCount.Text = cancelledCountText;
         this.FailedCount.Text = failedCountText;
