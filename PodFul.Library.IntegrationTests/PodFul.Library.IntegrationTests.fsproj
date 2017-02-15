@@ -53,6 +53,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="TestingSupport.fs" />
     <Compile Include="ImageResolver_IntegrationTests.fs" />
+    <EmbeddedResource Include="One Item with Muliple Podcast files.rss" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <Compile Include="FeedFunctions_IntergrationTests.fs" />

@@ -22,7 +22,7 @@ type FeedFunctions_IntergrationTests() =
     let rssWithNoPodcasts = "No Podcasts.rss"
     let rssWithOnePodcast = "One Podcast.rss"
     let rssWithValidImages = "RSS with valid Images.rss"
-    //let rssWithNoImages = "RSSFile with no Images.rss"
+    let rssContainingOneItemWithMultiplePodcastFiles = "One Item with Muliple Podcast files.rss"
 
     let feedTitle = "Feed Title"
     let feedDescription = "Feed Description"
@@ -45,6 +45,11 @@ type FeedFunctions_IntergrationTests() =
     let thirdPodcastTitle = "Podcast #3 Title"
     let thirdPodcastURL = "Podcast3.mp3"
     let thirdPodcastFileSize = 3L
+
+    let podcastTitle = "Podcast Title"
+    let podcastDescription = "Podcast Description"
+    let podcastImageURL = "Podcast Image"
+    let podcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
@@ -223,3 +228,16 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreEqual(initialFeed, finalFeed)
         Assert.AreEqual(feedImageName, finalFeed.ImageFileName)
         Assert.AreEqual(podcastImageName, finalFeed.Podcasts.[0].FileDetails.ImageFileName)
+
+    [<Test>]
+    member public this.``Create feed with multiple podcast files per Item``() =
+        let inputPath = workingDirectory + rssContainingOneItemWithMultiplePodcastFiles
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssContainingOneItemWithMultiplePodcastFiles, inputPath)
+        let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
+
+        Assert.AreNotEqual(null, feed)
+        Assert.AreNotEqual(null, feed.Podcasts)
+        Assert.AreEqual(3, feed.Podcasts.Length)
+
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle podcastDescription firstPodcastURL podcastImageURL
+            firstPodcastFileSize podcastPubDate String.Empty
