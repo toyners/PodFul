@@ -73,29 +73,20 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreNotEqual(null, feed.Podcasts)
         Assert.AreEqual(3, feed.Podcasts.Length)
 
-        Assert.AreEqual(firstPodcastTitle, feed.Podcasts.[0].Title)
-        Assert.AreEqual(firstPodcastDescription, feed.Podcasts.[0].Description)
-        Assert.AreEqual(firstPodcastURL, feed.Podcasts.[0].URL)
-        Assert.AreEqual(firstPodcastImageURL, feed.Podcasts.[0].ImageURL)
-        Assert.AreEqual(firstPodcastFileSize, feed.Podcasts.[0].FileDetails.FileSize)
-        Assert.AreEqual(firstPodcastPubDate, feed.Podcasts.[0].PubDate)
-        Assert.AreEqual(String.Empty, feed.Podcasts.[0].FileDetails.ImageFileName)
+        TestingSupport.assertPodcastIsCorrect 
+            feed.Podcasts.[0] 
+            firstPodcastTitle firstPodcastDescription firstPodcastURL firstPodcastImageURL
+            firstPodcastFileSize firstPodcastPubDate String.Empty
 
-        Assert.AreEqual(secondPodcastTitle, feed.Podcasts.[1].Title)
-        Assert.AreEqual(secondPodcastDescription, feed.Podcasts.[1].Description)
-        Assert.AreEqual(secondPodcastURL, feed.Podcasts.[1].URL)
-        Assert.AreEqual(String.Empty, feed.Podcasts.[1].ImageURL)
-        Assert.AreEqual(secondPodcastFileSize, feed.Podcasts.[1].FileDetails.FileSize)
-        Assert.AreEqual(secondPodcastPubDate, feed.Podcasts.[1].PubDate)
-        Assert.AreEqual(String.Empty, feed.Podcasts.[1].FileDetails.ImageFileName)
+        TestingSupport.assertPodcastIsCorrect 
+            feed.Podcasts.[1] 
+            secondPodcastTitle secondPodcastDescription secondPodcastURL String.Empty
+            secondPodcastFileSize secondPodcastPubDate String.Empty
 
-        Assert.AreEqual(thirdPodcastTitle, feed.Podcasts.[2].Title)
-        Assert.AreEqual(String.Empty, feed.Podcasts.[2].Description)
-        Assert.AreEqual(thirdPodcastURL, feed.Podcasts.[2].URL)
-        Assert.AreEqual(String.Empty, feed.Podcasts.[2].ImageURL)
-        Assert.AreEqual(-1, feed.Podcasts.[2].FileDetails.FileSize)
-        Assert.AreEqual(FeedFunctions.NoDateTime, feed.Podcasts.[2].PubDate)
-        Assert.AreEqual(String.Empty, feed.Podcasts.[2].FileDetails.ImageFileName)
+        TestingSupport.assertPodcastIsCorrect 
+            feed.Podcasts.[2] 
+            thirdPodcastTitle String.Empty thirdPodcastURL String.Empty
+            -1 FeedFunctions.NoDateTime String.Empty       
 
     [<Test>]
     member public this.``Create RSS Feed that contains media content tags``() =
