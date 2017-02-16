@@ -89,7 +89,7 @@ type FeedFunctions_IntergrationTests() =
             -1 FeedFunctions.NoDateTime String.Empty       
 
     [<Test>]
-    member public this.``Create RSS Feed that contains media content tags``() =
+    member public this.``Create RSS Feed that contains mixture of media content and enclosure tags``() =
         let inputPath = workingDirectory + "RSSFileWithMediaContent.rss";
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileWithMediaContent.rss", inputPath)
         let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"

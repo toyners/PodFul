@@ -125,14 +125,39 @@ module public FeedFunctions =
         | null -> String.Empty
         | _ -> getValueFromAttribute imageElement "href"
 
+    let private getFileSizeFromEnclosureElement (enclosureElement : XElement) (attribute) =
+
+        let length = getValueFromAttribute enclosureElement "length"
+        match length with
+        | null -> -1L
+        | "" -> -1L
+        | _ -> length |> Int64.Parse
+
+    let private createPodcastFileListFromEnclosureElements (item : XElement) =
+
+        match (item?enclosure) with
+        | null -> []
+        | _ ->
+            [for enclosureElement in item.Descendants(xn "enclosure") do
+                yield {
+                    FileSize = getFilesizeForItem enclosureElement null
+                    DownloadDate = NoDateTime
+                    ImageFileName = ""
+                }
+            ]
+
+    //let private 
+
     let private createPodcastArrayFromDocument (document: XDocument) =
 
         [for element in document.Descendants(xn "item") do
             let titleElement = element?title
+            let title = getTitleForItem titleElement
+
             let enclosureElement = element?enclosure
             let contentElement = getElementUsingLocalNameAndNamespace element "content" "http://search.yahoo.com/mrss/"
 
-            let title = getTitleForItem titleElement
+            
             let url = getURLForItem enclosureElement contentElement
 
             if title <> String.Empty && url <> String.Empty then
