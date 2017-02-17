@@ -4,6 +4,7 @@ namespace PodFul.WPF
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
+  using System.IO;
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
@@ -129,7 +130,8 @@ namespace PodFul.WPF
             Feed newFeed = null;
             try
             {
-              newFeed = FeedFunctions.UpdateFeed(feed, this.imageResolver, cancelToken);
+              var feedFilePath = Path.Combine(feed.Directory, feed.Title + ".xml");
+              newFeed = FeedFunctions.UpdateFeedFromFile(feed, feedFilePath, this.imageResolver, cancelToken);
 
               this.logger.Message("Comparing podcasts ... ", false);
 

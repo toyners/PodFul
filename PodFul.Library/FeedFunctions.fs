@@ -146,8 +146,6 @@ module public FeedFunctions =
                 }
             ]
 
-    //let private 
-
     let private createPodcastArrayFromDocument (document: XDocument) =
 
         [for element in document.Descendants(xn "item") do
@@ -175,47 +173,6 @@ module public FeedFunctions =
                     }
                 }
           ] |> List.toArray
-
-    let tryDownloadDocument (webClient : WebClient) (uri : Uri) retryCount : XDocument =
-        
-        let mutable retryCount = retryCount
-        let mutable document = null
-        while retryCount > 0 do
-            try
-                let data = webClient.DownloadString(uri)
-                document <- XDocument.Parse(data)
-                retryCount <- 0
-            with
-            | _ as ex ->
-                    retryCount <- retryCount - 1
-                    if retryCount = 0 then
-                        reraise()
-
-        document
-
-    let private downloadDocument(url) : XDocument =
-
-        try
-            let webClient = new WebClient()
-            webClient.Headers.Add("user-agent", "Podful Podcatcher")
-            webClient.Encoding <- System.Text.Encoding.UTF8;
-
-            let uri = Uri(url)
-        
-            tryDownloadDocument webClient uri 5
-            
-        with
-        | :? System.Net.WebException as webex ->
-            match webex.Response with
-            | null -> reraise()
-            | _ -> 
-                use streamReader = new StreamReader(webex.Response.GetResponseStream())
-                let errorLogFilePath = Path.GetTempPath() + "PodFul.log"
-                use streamWriter = new StreamWriter(errorLogFilePath)
-                let responseText = streamReader.ReadToEnd()
-                streamWriter.Write(responseText)
-                let message = webex.Message + ". Error log written to '" + errorLogFilePath + "'."
-                reraise()
             
     let private mergeFeeds (oldFeed : Feed) (newFeed : Feed) : Feed =
 
@@ -275,15 +232,68 @@ module public FeedFunctions =
             Feed.SetImageFileName feed localImagePath
         else
             feed
+    
+    let private createWebClient : WebClient = 
+        let webClient = new WebClient()
+        webClient.Headers.Add("user-agent", "Podful Podcatcher")
+        webClient.Encoding <- System.Text.Encoding.UTF8;
+        webClient
+       
+    let private createXMLDocumentFromData data : XDocument =
+        XDocument.Parse(data)
+        
+    let private downloadFeedData url retryCount (webClient : WebClient) : string = 
+        let uri = Uri(url)
+
+        let mutable data = null
+        let mutable tryCount = retryCount
+        while tryCount > 0 do
+            try
+                data <- webClient.DownloadString(uri)
+                tryCount <- 0
+            with
+            | _ as ex ->
+                    tryCount <- tryCount - 1
+                    if retryCount = 0 then
+                        reraise()
+
+        data
+
+    let private saveToFile filePath (data : string) : string =
+        use writer = new StreamWriter(filePath, false)
+        writer.Write(data)
+        data
 
     let public CreateFeed url directoryPath imageResolver cancelToken = 
-        downloadDocument url |> 
+        createWebClient |>
+        downloadFeedData url 5 |>
+        createXMLDocumentFromData |>
+        createFeedRecord url directoryPath String.Empty DateTime.Now |>
+        resolveImages imageResolver cancelToken
+       
+    let public CreateFeedFromFile url filePath directoryPath imageResolver cancelToken : Feed =
+        createWebClient |>
+        downloadFeedData url 5 |>
+        saveToFile filePath |>
+        createXMLDocumentFromData |>
         createFeedRecord url directoryPath String.Empty DateTime.Now |>
         resolveImages imageResolver cancelToken
 
     let public UpdateFeed feed imageResolver cancelToken : Feed = 
-        downloadDocument feed.URL |> 
-        createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |>  
+        createWebClient |>
+        downloadFeedData feed.URL 5 |>
+        createXMLDocumentFromData |>
+        createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
+        Feed.SetUpdatedDate feed.UpdatedDateTime |> 
+        mergeFeeds feed |>
+        resolveImages imageResolver cancelToken
+
+    let public UpdateFeedFromFile feed filePath imageResolver cancelToken : Feed = 
+        createWebClient |>
+        downloadFeedData feed.URL 5 |>
+        saveToFile filePath |>
+        createXMLDocumentFromData |>
+        createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
         Feed.SetUpdatedDate feed.UpdatedDateTime |> 
         mergeFeeds feed |>
         resolveImages imageResolver cancelToken
