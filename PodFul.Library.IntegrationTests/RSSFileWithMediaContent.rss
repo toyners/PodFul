@@ -20,12 +20,12 @@
 	  </item>
 	  <item>
 		  <title>Podcast #2 Title</title>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast2.mp3" fileSize="2" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast2.mp3" fileSize="2" type="audio/mpeg" />
       <enclosure url="Podcast2.mp3" length="0" type="audio/mpeg" />
 	  </item>
     <item>
       <title>Podcast #3 Title</title>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast3.mp3" fileSize="3" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast3.mp3" fileSize="3" type="audio/mpeg" />
     </item>
 	</channel>
 </rss>

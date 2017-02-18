@@ -135,24 +135,16 @@ module public FeedFunctions =
     let private isAudioFile mimeType : bool =
         mimeType = "audio/mpeg3" || mimeType = "audio/mpeg"
 
-    let private getAllFileDetailsForEnclosureElements (item : XElement) =
-        [for enclosureElement in item.Descendants(xn "enclosure") do
-            if getValueFromAttribute enclosureElement "type" |> isAudioFile then
-                yield {
-                    FileSize = getFileSizeFromElement enclosureElement "length"
-                    DownloadDate = NoDateTime
-                    ImageFileName = ""
-                }
-        ]
+    let private enclourseElementName : XName = xn "enclosure"
 
-    let private getAllFileDetailsForMediaContentElements (item : XElement) () = 
-        [for contentElement in item.Descendants(XName.Get("content", "http://search.yahoo.com/mrss/")) do
-            if getValueFromAttribute contentElement "type" |> isAudioFile then
-                yield {
-                    FileSize = getFileSizeFromElement contentElement "fileSize"
-                    DownloadDate = NoDateTime
-                    ImageFileName = ""
-                }
+    let private mediaContentElementName : XName = XName.Get("content", "http://search.yahoo.com/mrss/")
+
+    let private getFileDetailsForPodcasts (item : XElement) fileSizeAttributeName nameFunc : List<string * Int64> =
+        [for enclosureElement in item.Descendants(nameFunc) do
+            if getValueFromAttribute enclosureElement "type" |> isAudioFile then
+                let url = getValueFromAttribute enclosureElement "url"
+                let fileSize = getFileSizeFromElement enclosureElement fileSizeAttributeName
+                yield url,fileSize
         ]
 
     let private createPodcastArrayFromDocument (document: XDocument) =
@@ -164,9 +156,9 @@ module public FeedFunctions =
             let enclosureElement = item?enclosure
             let contentElement = getElementUsingLocalNameAndNamespace item "content" "http://search.yahoo.com/mrss/"
 
-            let allFileDetailsForEnclosureElements = getAllFileDetailsForEnclosureElements item
+            let allFileDetailsForEnclosureElements = getFileDetailsForPodcasts item "length" enclourseElementName
 
-            let allFileDetailsForMediaContentElements = getAllFileDetailsForMediaContentElements item
+            let allFileDetailsForMediaContentElements = getFileDetailsForPodcasts item "fileSize" mediaContentElementName
             
             let url = getURLForItem enclosureElement contentElement
 
