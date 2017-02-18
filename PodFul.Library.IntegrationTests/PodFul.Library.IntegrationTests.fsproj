@@ -53,7 +53,6 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="TestingSupport.fs" />
     <Compile Include="ImageResolver_IntegrationTests.fs" />
-    <EmbeddedResource Include="One Item with Muliple Podcast files.rss" />
     <EmbeddedResource Include="RSSFileWithBadMediaContent.rss" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
@@ -74,6 +73,7 @@
     <EmbeddedResource Include="RSSFile with Empty URL 2.rss" />
     <EmbeddedResource Include="Initial RSSFile.rss" />
     <EmbeddedResource Include="One Podcast.rss" />
+    <EmbeddedResource Include="One Item with Muliple Podcast files.rss" />
     <EmbeddedResource Include="No Podcasts.rss" />
     <EmbeddedResource Include="RSS with valid Images.rss" />
     <EmbeddedResource Include="Image.jpg" />
