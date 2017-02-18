@@ -115,6 +115,7 @@ namespace PodFul.WPF
           this.logger.Message("Starting delivery point initialisation");
           this.fileDeliverer.InitialiseDeliverypoints();
           this.logger.Message("Delivery point initialisation completed.");
+          this.logger.Message(String.Empty);
 
           while (indexes.Count > 0)
           {
@@ -130,7 +131,7 @@ namespace PodFul.WPF
             Feed newFeed = null;
             try
             {
-              var feedFilePath = Path.Combine(feed.Directory, feed.Title + ".xml");
+              var feedFilePath = Path.Combine(feed.Directory, "download.rss");
               newFeed = FeedFunctions.UpdateFeedFromFile(feed, feedFilePath, this.imageResolver, cancelToken);
 
               this.logger.Message("Comparing podcasts ... ", false);
