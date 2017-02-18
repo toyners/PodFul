@@ -125,46 +125,58 @@ module public FeedFunctions =
         | null -> String.Empty
         | _ -> getValueFromAttribute imageElement "href"
 
-    let private getFileSizeFromEnclosureElement (enclosureElement : XElement) (attribute) =
-
-        let length = getValueFromAttribute enclosureElement "length"
+    let private getFileSizeFromElement (element : XElement) (attributeName : string) =
+    
+        let length = getValueFromAttribute element attributeName
         match length with
-        | null -> -1L
-        | "" -> -1L
+        | null | "" -> -1L
         | _ -> length |> Int64.Parse
 
-    let private createPodcastFileListFromEnclosureElements (item : XElement) =
+    let private isAudioFile mimeType : bool =
+        mimeType = "audio/mpeg3" || mimeType = "audio/mpeg"
 
-        match (item?enclosure) with
-        | null -> []
-        | _ ->
-            [for enclosureElement in item.Descendants(xn "enclosure") do
+    let private getAllFileDetailsForEnclosureElements (item : XElement) =
+        [for enclosureElement in item.Descendants(xn "enclosure") do
+            if getValueFromAttribute enclosureElement "type" |> isAudioFile then
                 yield {
-                    FileSize = getFilesizeForItem enclosureElement null
+                    FileSize = getFileSizeFromElement enclosureElement "length"
                     DownloadDate = NoDateTime
                     ImageFileName = ""
                 }
-            ]
+        ]
+
+    let private getAllFileDetailsForMediaContentElements (item : XElement) () = 
+        [for contentElement in item.Descendants(XName.Get("content", "http://search.yahoo.com/mrss/")) do
+            if getValueFromAttribute contentElement "type" |> isAudioFile then
+                yield {
+                    FileSize = getFileSizeFromElement contentElement "fileSize"
+                    DownloadDate = NoDateTime
+                    ImageFileName = ""
+                }
+        ]
 
     let private createPodcastArrayFromDocument (document: XDocument) =
 
-        [for element in document.Descendants(xn "item") do
-            let titleElement = element?title
+        [for item in document.Descendants(xn "item") do
+            let titleElement = item?title
             let title = getTitleForItem titleElement
 
-            let enclosureElement = element?enclosure
-            let contentElement = getElementUsingLocalNameAndNamespace element "content" "http://search.yahoo.com/mrss/"
+            let enclosureElement = item?enclosure
+            let contentElement = getElementUsingLocalNameAndNamespace item "content" "http://search.yahoo.com/mrss/"
 
+            let allFileDetailsForEnclosureElements = getAllFileDetailsForEnclosureElements item
+
+            let allFileDetailsForMediaContentElements = getAllFileDetailsForMediaContentElements item
             
             let url = getURLForItem enclosureElement contentElement
 
             if title <> String.Empty && url <> String.Empty then
                 yield {
                     Title = title
-                    Description = getDescriptionFromItem element
-                    PubDate = getPubDateFromItem element
+                    Description = getDescriptionFromItem item
+                    PubDate = getPubDateFromItem item
                     URL = url
-                    ImageURL = getImageForItem element
+                    ImageURL = getImageForItem item
                     FileDetails = 
                     {
                         FileSize = getFilesizeForItem enclosureElement contentElement
