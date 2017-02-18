@@ -23,7 +23,8 @@
 
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="4*"/>
-          <ColumnDefinition Width="9*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Margin="6,2" VerticalAlignment="Center">Concurrent Download Count:</TextBlock>
@@ -31,6 +32,8 @@
 
         <TextBlock Grid.Row="1" Margin="6,2" VerticalAlignment="Center">Confirm Download Threshold:</TextBlock>
         <TextBox Grid.Column="1" Grid.Row="1" Name="ConfirmPodcastDownloadThreshold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
+
+        <CheckBox Name="DeliverManualDownloads" Grid.Column="2" Margin="6,0" VerticalAlignment="Center" HorizontalAlignment="Right">Deliver Manual Downloads to Delivery Points</CheckBox>
       </Grid>
     </Border>
 
