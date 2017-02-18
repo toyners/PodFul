@@ -219,13 +219,13 @@ Test/
 Output/
 
 # Test directories
-PodFul.Library.IntegrationTests/FeedFunctions_IntergrationTests/
 PodFul.Library.IntegrationTests/Feed_IntergrationTests/
-PodFul.Library.IntegrationTests/ChannelFunctions_IntergrationTests/
-PodFul.Library.IntegrationTests/DownloadFunctions_IntergrationTests/
 PodFul.Library.IntegrationTests/FeedFileStorage_IntergrationTests/
+PodFul.Library.IntegrationTests/FeedFunctions_IntergrationTests/
+PodFul.Library.IntegrationTests/ImageResolver_IntergrationTests/
+PodFul.Library.IntegrationTests/Settings_IntegrationTests/
+PodFul.Library.IntegrationTests/SettingsFactory_IntegrationTests/
 
 # Installation setup inno script for PodFul
 InstallationSetup.iss
-/PodFul.Library.IntegrationTests/ImageResolver_IntergrationTests/ImageDirectory
-/PodFul.Library.IntegrationTests
+
