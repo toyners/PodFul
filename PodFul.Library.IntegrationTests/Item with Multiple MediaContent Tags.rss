@@ -8,24 +8,22 @@
 	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
 	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
   xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
-  xmlns:media="http://search.yahoo.com/mrss/"
 >
   <channel>
 	  <title>Feed Title</title>
 	  <link>Feed Website</link>
 	  <description>Feed Description</description>
-	  <item>
-		  <title>Podcast #1 Title</title>
-      <enclosure url="Podcast1.mp3" length="1" type="audio/mpeg" />
-	  </item>
-	  <item>
-		  <title>Podcast #2 Title</title>
-      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast2.mp3" fileSize="2" type="audio/mpeg" />
-      <enclosure url="Podcast2.mp3" length="2" type="audio/mpeg" />
-	  </item>
+    <image>
+      <url>Feed Image</url>
+    </image>
     <item>
-      <title>Podcast #3 Title</title>
+		  <title>Podcast Title</title>
+		  <pubDate>2 Jan 2014 01:02:03</pubDate>
+		  <description><![CDATA[Podcast Description]]></description>
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast1.mp3" fileSize="1" type="audio/mpeg" />
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast2.mp3" fileSize="2" type="audio/mpeg" />
       <media:content xmlns:media="http://search.yahoo.com/mrss/" url="Podcast3.mp3" fileSize="3" type="audio/mpeg" />
-    </item>
+      <itunes:image href="Podcast Image" />
+	  </item>
 	</channel>
 </rss>

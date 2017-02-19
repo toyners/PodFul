@@ -70,37 +70,12 @@ module public FeedFunctions =
         else
             attribute.Value
 
-    let private getURLForItem (enclosureElement : XElement) (contentElement : XElement) =
-        
-        let mutable url = String.Empty
-        if contentElement <> null then
-            url <- getValueFromAttribute contentElement "url"
-        
-        if url = String.Empty && enclosureElement <> null then
-            url <- getValueFromAttribute enclosureElement "url"
-        
-        url
-
-    let private getFilesizeForItem (enclosureElement : XElement) (contentElement : XElement) : Int64 =
-        
-        let mutable size1 = -1L
-        let mutable size2 = -1L
-        if contentElement <> null then
-            let fileSize = getValueFromAttribute contentElement "fileSize"
-            if fileSize <> String.Empty then
-                size1 <- (fileSize |> Int64.Parse)
-        else
-            let length = getValueFromAttribute enclosureElement "length"
-            if length <> String.Empty then
-                size2 <- (length |> Int64.Parse)
-
-        Math.Max(size1, size2)
-
-    let private getTitleForItem (element : XElement) : string =
-        if element = null || element.Value = null || element.Value = String.Empty then
+    let private getTitleForItem (item : XElement) : string =
+        let titleElement = item?title
+        if titleElement = null || titleElement.Value = null || titleElement.Value = String.Empty then
             String.Empty
         else
-            element.Value.Replace("\r", String.Empty).Replace("\n", String.Empty).Replace("\t", String.Empty)
+            titleElement.Value.Replace("\r", String.Empty).Replace("\n", String.Empty).Replace("\t", String.Empty)
 
     let private getImageForChannel (channel : XElement) : string =
         match channel with
@@ -140,6 +115,7 @@ module public FeedFunctions =
     let private mediaContentElementName : XName = XName.Get("content", "http://search.yahoo.com/mrss/")
 
     let private getFileDetailsForPodcasts (item : XElement) fileSizeAttributeName nameFunc : List<string * Int64> =
+        
         [for enclosureElement in item.Descendants(nameFunc) do
             if getValueFromAttribute enclosureElement "type" |> isAudioFile then
                 let url = getValueFromAttribute enclosureElement "url"
@@ -147,35 +123,45 @@ module public FeedFunctions =
                 yield url,fileSize
         ]
 
+    let private getAllFileDetailsForPodcasts item : List<string * Int64> =
+        List.append (getFileDetailsForPodcasts item "length" enclourseElementName) 
+                    (getFileDetailsForPodcasts item "fileSize" mediaContentElementName)
+
+    let private fileDetailsListWithoutDuplicates (list : List<string * Int64>) : List<string * Int64> =
+        let mutable urls = Set.empty
+        [for file in list do
+            if not <| Set.contains (fst file) urls then
+                urls <- Set.add (fst file) urls
+                yield file
+        ]
+
     let private createPodcastArrayFromDocument (document: XDocument) =
 
         [for item in document.Descendants(xn "item") do
-            let titleElement = item?title
-            let title = getTitleForItem titleElement
-
-            let enclosureElement = item?enclosure
-            let contentElement = getElementUsingLocalNameAndNamespace item "content" "http://search.yahoo.com/mrss/"
-
-            let allFileDetailsForEnclosureElements = getFileDetailsForPodcasts item "length" enclourseElementName
-
-            let allFileDetailsForMediaContentElements = getFileDetailsForPodcasts item "fileSize" mediaContentElementName
             
-            let url = getURLForItem enclosureElement contentElement
+            let title = getTitleForItem item
+            let imageURL = getImageForItem item
+            let description = getDescriptionFromItem item
+            let pubDate = getPubDateFromItem item
 
-            if title <> String.Empty && url <> String.Empty then
-                yield {
-                    Title = title
-                    Description = getDescriptionFromItem item
-                    PubDate = getPubDateFromItem item
-                    URL = url
-                    ImageURL = getImageForItem item
-                    FileDetails = 
-                    {
-                        FileSize = getFilesizeForItem enclosureElement contentElement
-                        DownloadDate = NoDateTime
-                        ImageFileName = ""
-                    }
-                }
+            if title <> String.Empty then
+                for fileDetail in getAllFileDetailsForPodcasts item |> fileDetailsListWithoutDuplicates do
+                    let url = fst fileDetail
+
+                    if url <> String.Empty then
+                        yield {
+                            Title = title
+                            Description = description
+                            PubDate = pubDate
+                            URL = url
+                            ImageURL = imageURL
+                            FileDetails =
+                            {
+                                FileSize = snd fileDetail
+                                DownloadDate = NoDateTime
+                                ImageFileName = ""
+                            }
+                        }
           ] |> List.toArray
             
     let private mergeFeeds (oldFeed : Feed) (newFeed : Feed) : Feed =

@@ -32,6 +32,7 @@
 	  </item>
     <item>
       <title>Podcast #3 Title</title>
+      <!-- Bad enclosure: missing mime type -->
       <enclosure url="Podcast3.mp3" />
     </item>
     <item>

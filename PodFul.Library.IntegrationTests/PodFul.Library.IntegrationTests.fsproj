@@ -53,14 +53,14 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="TestingSupport.fs" />
     <Compile Include="ImageResolver_IntegrationTests.fs" />
-    <EmbeddedResource Include="RSSFileWithBadMediaContent.rss" />
-    <None Include="Script.fsx" />
+    <EmbeddedResource Include="Item with Multiple MediaContent Tags.rss" />
     <Content Include="packages.config" />
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <Compile Include="Feed_IntegrationTests.fs" />
     <Compile Include="FeedFileStorage_IntegrationTests.fs" />
     <EmbeddedResource Include="Feed.rss" />
     <EmbeddedResource Include="RSSFile.rss" />
+    <EmbeddedResource Include="RSSFileWithBadMediaContent.rss" />
     <EmbeddedResource Include="Final RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
     <EmbeddedResource Include="Initial RSSFile with Maximum Podcasts.rss" />
@@ -73,10 +73,14 @@
     <EmbeddedResource Include="RSSFile with Empty URL 2.rss" />
     <EmbeddedResource Include="Initial RSSFile.rss" />
     <EmbeddedResource Include="One Podcast.rss" />
-    <EmbeddedResource Include="One Item with Muliple Podcast files.rss" />
     <EmbeddedResource Include="No Podcasts.rss" />
     <EmbeddedResource Include="RSS with valid Images.rss" />
     <EmbeddedResource Include="Image.jpg" />
+    <EmbeddedResource Include="Item with Multiple Enclosure Tags.rss" />
+    <EmbeddedResource Include="Item with Multiple Duplicate MediaContent Tags.rss" />
+    <EmbeddedResource Include="Item with Multiple Duplicate Enclosure Tags.rss" />
+    <EmbeddedResource Include="Item with Duplicate Enclosure and MediaContent Tags.rss" />
+    <EmbeddedResource Include="Item with Enclosure and MediaContent Tags.rss" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">
@@ -94,8 +98,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
       <Name>PodFul.Library</Name>
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
