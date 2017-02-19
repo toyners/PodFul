@@ -135,20 +135,32 @@ module public FeedFunctions =
                 yield file
         ]
 
+    let private getPodcastTitle baseTitle fileDetailsNumber fileDetailsCount = 
+        if fileDetailsCount = 1 then
+            baseTitle
+        else
+            baseTitle + " [" + fileDetailsNumber.ToString() + " of " + fileDetailsCount.ToString() + "]"
+
     let private createPodcastArrayFromDocument (document: XDocument) =
 
         [for item in document.Descendants(xn "item") do
             
-            let title = getTitleForItem item
+            let baseTitle = getTitleForItem item
             let imageURL = getImageForItem item
             let description = getDescriptionFromItem item
             let pubDate = getPubDateFromItem item
 
-            if title <> String.Empty then
-                for fileDetail in getAllFileDetailsForPodcasts item |> fileDetailsListWithoutDuplicates do
+            if baseTitle <> String.Empty then
+                let fileDetails = getAllFileDetailsForPodcasts item |> fileDetailsListWithoutDuplicates
+                let fileDetailsCount = List.length fileDetails
+                let mutable fileDetailsNumber = 1
+                for fileDetail in fileDetails do
                     let url = fst fileDetail
-
+                    
                     if url <> String.Empty then
+                        let title = getPodcastTitle baseTitle fileDetailsNumber fileDetailsCount
+                        fileDetailsNumber <- fileDetailsNumber + 1
+
                         yield {
                             Title = title
                             Description = description

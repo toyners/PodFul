@@ -56,6 +56,13 @@ type FeedFunctions_IntergrationTests() =
     let podcastImageURL = "Podcast Image"
     let podcastPubDate = new DateTime(2014, 1, 2, 1, 2, 3)
 
+    let podcastTitle1of2 = "Podcast Title [1 of 2]"
+    let podcastTitle2of2 = "Podcast Title [2 of 2]"
+
+    let podcastTitle1of3 = "Podcast Title [1 of 3]"
+    let podcastTitle2of3 = "Podcast Title [2 of 3]"
+    let podcastTitle3of3 = "Podcast Title [3 of 3]"
+
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
@@ -90,8 +97,9 @@ type FeedFunctions_IntergrationTests() =
 
     [<Test>]
     member public this.``Create RSS Feed that contains mixture of media content and enclosure tags``() =
-        let inputPath = workingDirectory + "RSSFileWithMediaContent.rss";
-        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("RSSFileWithMediaContent.rss", inputPath)
+        let MultipleItemsWithEnclosureAndMediaContentTags = "Multiple Items with Enclosure and MediaContent Tags.rss"
+        let inputPath = workingDirectory + MultipleItemsWithEnclosureAndMediaContentTags;
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(MultipleItemsWithEnclosureAndMediaContentTags, inputPath)
         let feed = TestingSupport.createTestFeed inputPath "DirectoryPath"
 
         Assert.AreNotEqual(null, feed)
@@ -230,13 +238,13 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreNotEqual(null, feed.Podcasts)
         Assert.AreEqual(3, feed.Podcasts.Length)
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle podcastDescription firstPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle1of3 podcastDescription firstPodcastURL podcastImageURL
             firstPodcastFileSize podcastPubDate String.Empty
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[1] podcastTitle podcastDescription secondPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[1] podcastTitle2of3 podcastDescription secondPodcastURL podcastImageURL
             secondPodcastFileSize podcastPubDate String.Empty
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[2] podcastTitle podcastDescription thirdPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[2] podcastTitle3of3 podcastDescription thirdPodcastURL podcastImageURL
             thirdPodcastFileSize podcastPubDate String.Empty
 
     [<Test>]
@@ -262,13 +270,13 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreNotEqual(null, feed.Podcasts)
         Assert.AreEqual(3, feed.Podcasts.Length)
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle podcastDescription firstPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle1of3 podcastDescription firstPodcastURL podcastImageURL
             firstPodcastFileSize podcastPubDate String.Empty
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[1] podcastTitle podcastDescription secondPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[1] podcastTitle2of3 podcastDescription secondPodcastURL podcastImageURL
             secondPodcastFileSize podcastPubDate String.Empty
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[2] podcastTitle podcastDescription thirdPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[2] podcastTitle3of3 podcastDescription thirdPodcastURL podcastImageURL
             thirdPodcastFileSize podcastPubDate String.Empty
 
     [<Test>]
@@ -294,10 +302,10 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreNotEqual(null, feed.Podcasts)
         Assert.AreEqual(2, feed.Podcasts.Length)
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle podcastDescription firstPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle1of2 podcastDescription firstPodcastURL podcastImageURL
             firstPodcastFileSize podcastPubDate String.Empty
 
-        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[1] podcastTitle podcastDescription secondPodcastURL podcastImageURL
+        TestingSupport.assertPodcastIsCorrect feed.Podcasts.[1] podcastTitle2of2 podcastDescription secondPodcastURL podcastImageURL
             secondPodcastFileSize podcastPubDate String.Empty
 
     [<Test>]

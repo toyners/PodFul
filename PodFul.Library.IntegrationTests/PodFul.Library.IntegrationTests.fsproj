@@ -60,7 +60,6 @@
     <Compile Include="FeedFileStorage_IntegrationTests.fs" />
     <EmbeddedResource Include="Feed.rss" />
     <EmbeddedResource Include="RSSFile.rss" />
-    <EmbeddedResource Include="RSSFileWithBadMediaContent.rss" />
     <EmbeddedResource Include="Final RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
     <EmbeddedResource Include="Initial RSSFile with Maximum Podcasts.rss" />
@@ -80,6 +79,7 @@
     <EmbeddedResource Include="Item with Multiple Duplicate MediaContent Tags.rss" />
     <EmbeddedResource Include="Item with Multiple Duplicate Enclosure Tags.rss" />
     <EmbeddedResource Include="Item with Duplicate Enclosure and MediaContent Tags.rss" />
+    <EmbeddedResource Include="Multiple Items with Enclosure and MediaContent Tags.rss" />
     <EmbeddedResource Include="Item with Enclosure and MediaContent Tags.rss" />
   </ItemGroup>
   <ItemGroup>
