@@ -23,11 +23,7 @@ namespace PodFul.WPF
     {
       InitializeComponent();
       this.settings = settings;
-      this.ConcurrentDownloadCount.Text = this.settings.ConcurrentDownloadCount.ToString();
-      this.ConfirmPodcastDownloadThreshold.Text = this.settings.ConfirmPodcastDownloadThreshold.ToString();
-
-      this.deliveryPoints = new ObservableCollection<Settings.SettingsData.DeliveryPointData>(this.settings.DeliveryPointData);
-      this.DeliveryPointList.ItemsSource = deliveryPoints;
+      this.LoadUIFromSettings();
     }
     #endregion
 
@@ -113,12 +109,23 @@ namespace PodFul.WPF
       deliveryPointData.Location = editDeliveryPointWindow.FullPath.Text;
     }
 
+    private void LoadUIFromSettings()
+    {
+      this.ConcurrentDownloadCount.Text = this.settings.ConcurrentDownloadCount.ToString();
+      this.ConfirmPodcastDownloadThreshold.Text = this.settings.ConfirmPodcastDownloadThreshold.ToString();
+      this.DeliverManualDownloads.IsChecked = this.settings.DeliverManualDownloadsToDeliveryPoints;
+
+      this.deliveryPoints = new ObservableCollection<Settings.SettingsData.DeliveryPointData>(this.settings.DeliveryPointData);
+      this.DeliveryPointList.ItemsSource = deliveryPoints;
+    }
+
     private void UpdateSettings()
     {
       try
       {
         this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
         this.settings.ConfirmPodcastDownloadThreshold = UInt32.Parse(this.ConfirmPodcastDownloadThreshold.Text);
+        this.settings.DeliverManualDownloadsToDeliveryPoints = (Boolean)this.DeliverManualDownloads.IsChecked;
         this.settings.Save();
       }
       catch (Exception exception)
@@ -133,11 +140,5 @@ namespace PodFul.WPF
       this.UpdateSettings();
     }
     #endregion
-
-    private void DeliveryPointActiveCheck(Object sender, RoutedEventArgs e)
-    {
-      //var deliveryPointData = (Settings.SettingsData.DeliveryPointData)((CheckBox)sender).DataContext;
-      //deliveryPointData.Enabled = !deliveryPointData.Enabled;
-    }
   }
 }

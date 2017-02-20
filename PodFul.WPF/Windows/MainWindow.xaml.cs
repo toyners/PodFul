@@ -249,7 +249,7 @@ namespace PodFul.WPF
 
     private List<Int32> GetSelectedPodcasts()
     {
-      var selectionWindow = new PodcastsWindow(this.currentFeed);
+      var selectionWindow = new PodcastsWindow(this.currentFeed, this.settings.DeliverManualDownloadsToDeliveryPoints);
       selectionWindow.Owner = this;
       var startDownloading = selectionWindow.ShowDialog();
 

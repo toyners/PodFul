@@ -33,13 +33,25 @@
         <TextBlock Grid.Row="1" Margin="6,2" VerticalAlignment="Center">Confirm Download Threshold:</TextBlock>
         <TextBox Grid.Column="1" Grid.Row="1" Name="ConfirmPodcastDownloadThreshold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
 
-        <CheckBox Name="DeliverManualDownloads" Grid.Column="2" Margin="6,0" VerticalAlignment="Center" HorizontalAlignment="Right">Deliver Manual Downloads to Delivery Points</CheckBox>
       </Grid>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5">
       <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Margin="6,2">Delivery Points:</TextBlock>
+        <Grid DockPanel.Dock="Top" >
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <Grid.RowDefinitions>
+            <RowDefinition />
+          </Grid.RowDefinitions>
+            
+          <TextBlock Margin="6,2">Delivery Points:</TextBlock>
+          <CheckBox Name="DeliverManualDownloads" Grid.Column="2" Margin="6,0" VerticalAlignment="Center" HorizontalAlignment="Right">Deliver Manual Downloads to Delivery Points</CheckBox>
+
+        </Grid>
 
         <DockPanel>
           <StackPanel DockPanel.Dock="Right" Margin="0,-5">
@@ -78,7 +90,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                          <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center" Margin="2,0,5,0" Checked="DeliveryPointActiveCheck" />
+                          <CheckBox IsChecked="{Binding Enabled}" VerticalAlignment="Center" Margin="2,0,5,0" />
                           <TextBlock Text="{Binding Type}" Foreground="{Binding TextColor}" VerticalAlignment="Center" FontWeight="SemiBold" />
                         </StackPanel>
                         <TextBlock Grid.Row="1" Text="{Binding Location}" Foreground="{Binding TextColor}" VerticalAlignment="Center" Margin="2,0,0,0" />

@@ -22,6 +22,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+          <CheckBox Name="DeliverManualDownloads" Margin="6,0" VerticalAlignment="Center" HorizontalAlignment="Right">Deliver Manual Downloads to Delivery Points</CheckBox>
           <Button Name="startButton" Width="70" IsDefault="True"
                   Click="StartButton_Click" IsEnabled="False" Style="{StaticResource StandardButton}">
             Start

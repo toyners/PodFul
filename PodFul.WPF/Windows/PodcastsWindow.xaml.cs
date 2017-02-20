@@ -31,7 +31,7 @@ namespace PodFul.WPF
     #endregion
 
     #region Construction
-    public PodcastsWindow(Feed feed)
+    public PodcastsWindow(Feed feed, Boolean deliverManualDownloads)
     {
       InitializeComponent();
 
@@ -39,6 +39,8 @@ namespace PodFul.WPF
 
       var title = feed.Podcasts.Length + " podcast".Pluralize((UInt32)feed.Podcasts.Length);
       this.Title = title;
+
+      this.DeliverManualDownloads.IsChecked = deliverManualDownloads;
 
       this.PodcastList.ItemsSource = feed.Podcasts;
       this.feedDirectory = feed.Directory;
