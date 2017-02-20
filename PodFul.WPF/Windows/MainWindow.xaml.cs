@@ -281,7 +281,10 @@ namespace PodFul.WPF
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
 
+      this.InitialiseDeliveryPoints();
+
       var podcastDownloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
+      podcastDownloadManager.JobCompletedEvent += JobCompletedEventHandler;
       podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
 
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
@@ -295,8 +298,7 @@ namespace PodFul.WPF
       foreach (var index in podcastIndexes)
       { 
         var podcast = this.currentFeed.Podcasts[index];
-        // No file delivery for manual downloading so file deliverer parameter is null.
-        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, null, this.imageResolver);
+        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, this.imageResolver);
 
         jobs.Add(downloadJob);
       }
@@ -337,10 +339,26 @@ namespace PodFul.WPF
       e.Handled = true;
     }
 
+    private void JobCompletedEventHandler(DownloadJob job)
+    {
+      this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
+    }
+
+    private void InitialiseDeliveryPoints()
+    {
+      this.guiLogger.Message("Starting delivery point initialisation");
+      this.fileDeliverer.InitialiseDeliverypoints();
+      this.guiLogger.Message("Delivery point initialisation completed.");
+      this.guiLogger.Message(String.Empty);
+    }
+
     private void PerformScan(Queue<Int32> feedIndexes)
     {
+      this.InitialiseDeliveryPoints();
+
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliverer, this.fileDeliveryLogger, this.guiLogger, this.podcastDownloadConfirmer, downloadManager);
+      downloadManager.JobCompletedEvent += JobCompletedEventHandler;
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.guiLogger, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();

@@ -149,11 +149,9 @@ namespace PodFul.WPF.Miscellaneous
           set
           {
             this.enabled = value;
-            if (this.PropertyChanged != null)
-            {
-              PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Enabled"));
-              PropertyChanged.Invoke(this, new PropertyChangedEventArgs("TextColor"));
-            }
+            this.TryInvokePropertyChanged(
+              new PropertyChangedEventArgs("Enabled"),
+              new PropertyChangedEventArgs("TextColor"));
           }
         }
 
@@ -172,10 +170,6 @@ namespace PodFul.WPF.Miscellaneous
         }
 
         public Types Type { get; set; }
-        #endregion
-
-        #region Events
-        public event PropertyChangedEventHandler PropertyChanged;
         #endregion
       }
       #endregion

@@ -28,8 +28,6 @@ namespace PodFul.WPF
 
     private FeedCollection feedCollection;
 
-    private IFileDeliverer fileDeliverer;
-
     private FileDeliveryLogger fileDeliveryLogger;
 
     private IImageResolver imageResolver;
@@ -46,7 +44,6 @@ namespace PodFul.WPF
       FeedCollection feedCollection,
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
-      IFileDeliverer fileDeliverer,
       FileDeliveryLogger fileDeliveryLogger,
       ILogger logger,
       IPodcastDownloadConfirmer podcastDownloadConfirmer,
@@ -55,7 +52,6 @@ namespace PodFul.WPF
       this.feedCollection = feedCollection;
       this.indexes = feedIndexes;
       this.imageResolver = imageResolver;
-      this.fileDeliverer = fileDeliverer;
       this.fileDeliveryLogger = fileDeliveryLogger;
       this.logger = logger;
       this.podcastDownloadConfirmer = podcastDownloadConfirmer;
@@ -112,10 +108,6 @@ namespace PodFul.WPF
       {
         try
         {
-          this.logger.Message("Starting delivery point initialisation");
-          this.fileDeliverer.InitialiseDeliverypoints();
-          this.logger.Message("Delivery point initialisation completed.");
-          this.logger.Message(String.Empty);
 
           while (indexes.Count > 0)
           {
@@ -187,7 +179,7 @@ namespace PodFul.WPF
               foreach (var index in podcastIndexes)
               {
                 var podcast = newFeed.Podcasts[index];
-                var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.fileDeliverer, this.imageResolver);
+                var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.imageResolver);
                 this.downloadManager.AddJob(job);
               }
             }

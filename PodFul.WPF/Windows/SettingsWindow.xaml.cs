@@ -133,5 +133,11 @@ namespace PodFul.WPF
       this.UpdateSettings();
     }
     #endregion
+
+    private void DeliveryPointActiveCheck(Object sender, RoutedEventArgs e)
+    {
+      //var deliveryPointData = (Settings.SettingsData.DeliveryPointData)((CheckBox)sender).DataContext;
+      //deliveryPointData.Enabled = !deliveryPointData.Enabled;
+    }
   }
 }

@@ -9,7 +9,6 @@ namespace PodFul.WPF.Processing
   using Jabberwocky.Toolkit.WPF;
   using Library;
   using Miscellaneous;
-  using PodFul.FileDelivery;
 
   public class DownloadJob : NotifyPropertyChangedBase
   {
@@ -35,8 +34,6 @@ namespace PodFul.WPF.Processing
 
     private FeedCollection feedCollection;
 
-    private IFileDeliverer fileDeliverer;
-
     private Boolean fileSizeNotKnown;
 
     private Boolean useMarqueProgressStyle;
@@ -61,7 +58,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public DownloadJob(Podcast podcast, Feed feed, FeedCollection feedCollection, IFileDeliverer fileDeliverer, IImageResolver imageResolver)
+    public DownloadJob(Podcast podcast, Feed feed, FeedCollection feedCollection, IImageResolver imageResolver)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
@@ -83,8 +80,6 @@ namespace PodFul.WPF.Processing
       this.feed = feed;
 
       this.feedCollection = feedCollection;
-
-      this.fileDeliverer = fileDeliverer;
 
       this.imageResolver = imageResolver;
     }
@@ -112,12 +107,6 @@ namespace PodFul.WPF.Processing
     }
 
     public String FilePath { get; private set; }
-
-    /*public Boolean FileSizeNotKnown
-    {
-      get { return this.fileSizeNotKnown; }
-      set { this.SetField(ref this.fileSizeNotKnown, value); }
-    }*/
 
     public String Name { get { return this.podcast.Title; } }
 
@@ -239,8 +228,6 @@ namespace PodFul.WPF.Processing
       }
 
       this.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
-
-      this.fileDeliverer?.DeliverFileToDeliveryPoints(this.FilePath, this.podcast.Title);
 
       this.feedCollection.UpdateFeed(this.feed);
 

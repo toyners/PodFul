@@ -56,6 +56,8 @@ namespace PodFul.WPF.Processing
     #region Events
     public event Action AllDownloadsCompletedEvent;
 
+    public event Action<DownloadJob> JobCompletedEvent;
+
     public event Action<DownloadJob> JobFinishedEvent;
 
     public event Action<DownloadJob> JobStartedEvent;
@@ -193,6 +195,7 @@ namespace PodFul.WPF.Processing
           try
           {
             job.DownloadCompleted();
+            this.JobCompletedEvent?.Invoke(job);
             this.CompletedJobsCount++;
           }
           catch (Exception e)
