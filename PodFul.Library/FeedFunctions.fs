@@ -209,7 +209,7 @@ module public FeedFunctions =
              ImageFileName = imageFileName
              Podcasts = createPodcastArrayFromDocument document
              CreationDateTime = creationDate
-             UpdatedDateTime = NoDateTime
+             UpdatedDateTime = DateTime.Now
         }
 
     let private resolveImages (imageResolver : IImageResolver) (cancelToken : CancellationToken) (feed : Feed) : Feed =
@@ -220,7 +220,7 @@ module public FeedFunctions =
         let mutable index = 0
         while index < feed.Podcasts.Length do
           let podcast = feed.Podcasts.[index]
-
+            
           let localImagePath = imageResolver.GetName podcast.FileDetails.ImageFileName podcast.ImageURL
           if localImagePath <> podcast.FileDetails.ImageFileName then
             podcast.SetImageFileName localImagePath
