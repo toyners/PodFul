@@ -230,21 +230,7 @@ namespace PodFul.WPF
 
     private void Podcasts_Click(Object sender, RoutedEventArgs e)
     {
-      this.DisplayPodcastsWithPause();
-    }
-
-    private void DownloadPodcastsCallback(Object state)
-    {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.contextMenuTimer = null;
-
-        var selectedIndexes = this.GetSelectedPodcasts();
-        if (selectedIndexes != null)
-        {
-          this.DownloadPodcasts(selectedIndexes);
-        }
-      });
+      this.DisplayPodcasts();
     }
 
     private List<Int32> GetSelectedPodcasts()
@@ -259,11 +245,6 @@ namespace PodFul.WPF
       }
 
       return selectionWindow.SelectedIndexes;
-    }
-
-    private void DisplayPodcastsWithPause()
-    {
-      this.contextMenuTimer = new Timer(DownloadPodcastsCallback, null, 200, Timeout.Infinite);
     }
 
     private void DisplayPodcasts()
