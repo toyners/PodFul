@@ -5,6 +5,7 @@ namespace PodFul.WPF
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using System.Windows.Media;
   using PodFul.WPF.Processing;
 
   /// <summary>
@@ -16,6 +17,8 @@ namespace PodFul.WPF
     private DownloadManager downloadManager;
     private Boolean isLoaded;
     private Boolean isProcessing;
+    private DownloadJobCounter cancelledJobCounter;
+    private DownloadJobCounter failedJobCounter;
     #endregion
 
     #region Construction
@@ -68,12 +71,27 @@ namespace PodFul.WPF
       var waitingJobCount = this.downloadManager.WaitingJobsCount;
       var runningJobCount = this.downloadManager.ProcessingJobsCount;
       var completedJobCount = this.downloadManager.CompletedJobsCount;
-      var cancelledJobCount = this.downloadManager.CancelledJobsCount;
-      var failedJobCount = this.downloadManager.FailedJobsCount;
+      this.cancelledJobCounter.Count = this.downloadManager.CancelledJobsCount;
+      this.failedJobCounter.Count = this.downloadManager.FailedJobsCount;
+      //var cancelledJobCount = this.downloadManager.CancelledJobsCount;
+      //var failedJobCount = this.downloadManager.FailedJobsCount;
+
+      if (this.downloadManager.CancelledJobsCount > 0 && this.cancelledJobCounter == null)
+      {
+        Brush cancelledJobCounterBrush = new SolidColorBrush();
+        this.cancelledJobCounter = new DownloadJobCounter("", cancelledJobCounterBrush);
+
+      }
+
+      if (this.downloadManager.FailedJobsCount > 0 && this.failedJobCounter == null)
+      {
+        Brush failedJobCounterBrush = new SolidColorBrush();
+        this.cancelledJobCounter = new DownloadJobCounter("", failedJobCounterBrush);
+      }
 
       var title = String.Format("Downloading Podcasts: {0} waiting, {1} running, {2} completed", waitingJobCount, runningJobCount, completedJobCount);
 
-      if (cancelledJobCount > 0)
+      /*if (cancelledJobCount > 0)
       {
         title += ", " + cancelledJobCount + " cancelled";
       }
@@ -81,13 +99,23 @@ namespace PodFul.WPF
       if (failedJobCount > 0)
       {
         title += ", " + failedJobCount + " failed";
+      }*/
+
+      if (this.cancelledJobCounter.Count > 0)
+      {
+        title += ", " + this.cancelledJobCounter.Count + " cancelled";
+      }
+
+      if (this.failedJobCounter.Count > 0)
+      {
+        title += ", " + this.failedJobCounter.Count + " failed";
       }
 
       var waitingJobText = "Waiting: " + waitingJobCount;
       var processingCountText = "Running: " + runningJobCount;
       var completedCountText = "Completed: " + completedJobCount;
-      var cancelledCountText = (cancelledJobCount == 0 ? String.Empty : "Cancelled: " + cancelledJobCount);
-      var failedCountText = (failedJobCount == 0 ? String.Empty : "Failed: " + failedJobCount);
+      //var cancelledCountText = (cancelledJobCount == 0 ? String.Empty : "Cancelled: " + cancelledJobCount);
+      //var failedCountText = (failedJobCount == 0 ? String.Empty : "Failed: " + failedJobCount);
 
       Application.Current.Dispatcher.Invoke(() => 
       {
@@ -95,8 +123,11 @@ namespace PodFul.WPF
         this.WaitingCount.Text = waitingJobText;
         this.RunningCount.Text = processingCountText;
         this.CompletedCount.Text = completedCountText;
-        this.CancelledCount.Text = cancelledCountText;
-        this.FailedCount.Text = failedCountText;
+        this.cancelledJobCounter.UpdateTextCount();
+        this.failedJobCounter.UpdateTextCount();
+        //this.CancelledCount.Text = cancelledCountText;
+        //this.FailedCount.Text = failedCountText;
+
       });
     }
 
@@ -123,5 +154,31 @@ namespace PodFul.WPF
       });
     }
     #endregion
+  }
+
+  internal class DownloadJobCounter
+  {
+    private String text;
+    private Brush brush;
+
+    public DownloadJobCounter(String text, Brush brush)
+    {
+      this.text = text;
+      this.brush = brush;
+    }
+
+    public TextBox TextControl { get; set; }
+
+    public Int32 Count { get; set; }
+
+    public void UpdateTextControlForegroundColor()
+    {
+      this.TextControl.Foreground = this.brush;
+    }
+
+    public void UpdateTextCount()
+    {
+      this.TextControl.Text = this.text + this.Count;
+    }
   }
 }
