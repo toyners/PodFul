@@ -12,7 +12,7 @@ namespace PodFul.WPF
   using PodFul.Library;
 
   /// <summary>
-  /// Interaction logic for SelectionWindow.xaml
+  /// Interaction logic for PodcastsWindow.xaml
   /// </summary>
   public partial class PodcastsWindow : Window
   {
@@ -50,6 +50,8 @@ namespace PodFul.WPF
     #endregion
 
     #region Properties
+    public Boolean DeliverManualDownloadsToDeliveryPoints { get { return (Boolean)this.DeliverManualDownloads.IsChecked; } }
+
     public List<Int32> SelectedIndexes
     {
       get

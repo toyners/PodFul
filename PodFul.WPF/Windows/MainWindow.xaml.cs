@@ -233,12 +233,12 @@ namespace PodFul.WPF
       this.DisplayPodcasts();
     }
 
-    private List<Int32> GetSelectedPodcasts()
+    private List<Int32> GetSelectedPodcasts(out Boolean deliverManualDownloadsToDeliveryPoints)
     {
       var selectionWindow = new PodcastsWindow(this.currentFeed, this.settings.DeliverManualDownloadsToDeliveryPoints);
       selectionWindow.Owner = this;
       var startDownloading = selectionWindow.ShowDialog();
-
+      deliverManualDownloadsToDeliveryPoints = selectionWindow.DeliverManualDownloadsToDeliveryPoints;
       if (startDownloading == null || !startDownloading.Value)
       {
         return null;
@@ -249,23 +249,27 @@ namespace PodFul.WPF
 
     private void DisplayPodcasts()
     {
-      var selectedIndexes = this.GetSelectedPodcasts();
+      Boolean deliverManualDownloadsToDeliveryPoints = false;
+      var selectedIndexes = this.GetSelectedPodcasts(out deliverManualDownloadsToDeliveryPoints);
       if (selectedIndexes != null)
       {
-        this.DownloadPodcasts(selectedIndexes);
+        this.DownloadPodcasts(selectedIndexes, deliverManualDownloadsToDeliveryPoints);
       }
     }
 
-    private void DownloadPodcasts(List<Int32> selectedIndexes)
+    private void DownloadPodcasts(List<Int32> selectedIndexes, Boolean deliverManualDownloadsToDeliveryPoints)
     {
       // Sort the indexes into descending order. Podcasts will be downloaded
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
 
-      this.InitialiseDeliveryPoints();
-
       var podcastDownloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
-      podcastDownloadManager.JobCompletedEvent += JobCompletedEventHandler;
+      if (deliverManualDownloadsToDeliveryPoints)
+      {
+        this.InitialiseDeliveryPoints();
+        podcastDownloadManager.JobCompletedEvent += JobCompletedEventHandler;
+      }
+
       podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
 
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
