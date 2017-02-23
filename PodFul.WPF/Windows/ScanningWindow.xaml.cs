@@ -6,8 +6,8 @@ namespace PodFul.WPF
   using System.Windows.Controls;
   using System.Windows.Input;
   using Library;
-  using Miscellaneous;
   using Processing;
+  using UI_Support;
 
   /// <summary>
   /// Interaction logic for ScanningWindow.xaml
@@ -43,7 +43,7 @@ namespace PodFul.WPF
       this.feedScanner = feedScanner;
       this.PodcastList.ItemsSource = feedScanner.Jobs;
 
-      var jobCountStatusBarDisplay = new JobCountStatusBarDisplay(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
+      var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay);
     }
     #endregion

@@ -7,7 +7,8 @@ namespace PodFul.WPF
   using System.Windows.Input;
   using System.Windows.Media;
   using Miscellaneous;
-  using PodFul.WPF.Processing;
+  using Processing;
+  using UI_Support;
 
   /// <summary>
   /// Interaction logic for PodcastDownloadWindow.xaml
@@ -33,8 +34,8 @@ namespace PodFul.WPF
 
       this.PodcastList.ItemsSource = downloadManager.Jobs;
 
-      var jobCountStatusBarDisplay = new JobCountStatusBarDisplay(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
-      var jobCountWindowTitleDisplay = new JobCountWindowTitleDisplay(this);
+      var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
+      var jobCountWindowTitleDisplay = new JobCountWindowTitleDisplayComponent(this);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay, jobCountWindowTitleDisplay);
 
       this.UpdateCounts();

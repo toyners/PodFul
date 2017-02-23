@@ -1,65 +1,13 @@
 ﻿
-namespace PodFul.WPF.Miscellaneous
+namespace PodFul.WPF.UI_Support
 {
   using System;
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Media;
 
-  internal class JobCountDisplayManager : IJobCountDisplay
+  internal class JobCountStatusBarDisplayComponent : IJobCountDisplayComponent
   {
-    private IJobCountDisplay[] jobCountDisplayComponents;
-
-    public JobCountDisplayManager(params IJobCountDisplay[] jobCountDisplayComponents)
-    {
-      this.jobCountDisplayComponents = jobCountDisplayComponents;
-    }
-
-    public void UpdateCounts(Int32 waitingJobCount, Int32 runningJobCount, Int32 completedJobCount, Int32 cancelledJobCount, Int32 failedJobCount)
-    {
-      foreach (var jobCountDisplayComponent in this.jobCountDisplayComponents)
-      {
-        jobCountDisplayComponent.UpdateCounts(waitingJobCount, runningJobCount, completedJobCount, cancelledJobCount, failedJobCount);
-      }
-    }
-  }
-
-  internal interface IJobCountDisplay
-  {
-    void UpdateCounts(Int32 waitingJobCount, Int32 runningJobCount, Int32 completedJobCount, Int32 cancelledJobCount, Int32 failedJobCount);
-  }
-
-  internal class JobCountWindowTitleDisplay : IJobCountDisplay
-  {
-    private Window window;
-
-    public JobCountWindowTitleDisplay(Window window)
-    {
-      this.window = window;
-    }
-
-    public void UpdateCounts(Int32 waitingJobCount, Int32 runningJobCount, Int32 completedJobCount, Int32 cancelledJobCount, Int32 failedJobCount)
-    {
-      var title = String.Format("Downloading Podcasts: {0} waiting, {1} running, {2} completed", waitingJobCount, runningJobCount, completedJobCount);
-      if (cancelledJobCount > 0)
-      {
-        title += ", " + cancelledJobCount + " cancelled";
-      }
-
-      if (failedJobCount > 0)
-      {
-        title += ", " + failedJobCount + " failed";
-      }
-
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.window.Title = title;
-      });
-    }
-  }
-
-  internal class JobCountStatusBarDisplay : IJobCountDisplay
-  { 
     private TextBlock waitingCountTextblock;
     private TextBlock runningCountTextblock;
     private TextBlock completedCountTextblock;
@@ -68,11 +16,11 @@ namespace PodFul.WPF.Miscellaneous
     private DownloadJobCounter cancelledJobCounter;
     private DownloadJobCounter failedJobCounter;
 
-    public JobCountStatusBarDisplay(
-      TextBlock waitingCountTextblock, 
-      TextBlock runningCountTextblock, 
+    public JobCountStatusBarDisplayComponent(
+      TextBlock waitingCountTextblock,
+      TextBlock runningCountTextblock,
       TextBlock completedCountTextblock,
-      TextBlock firstOptionalCountTextblock, 
+      TextBlock firstOptionalCountTextblock,
       TextBlock secondOptionalCountTextblock)
     {
       this.waitingCountTextblock = waitingCountTextblock;
