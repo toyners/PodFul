@@ -6,6 +6,7 @@ namespace PodFul.WPF
   using System.Windows.Controls;
   using System.Windows.Input;
   using Library;
+  using Miscellaneous;
   using Processing;
 
   /// <summary>
@@ -18,6 +19,7 @@ namespace PodFul.WPF
     private Boolean isLoaded;
     private Boolean isProcessing;
     private Boolean closeAfterScan;
+    private JobCountDisplayManager jobCountDisplayManager;
     #endregion
 
     #region Construction   
@@ -40,6 +42,9 @@ namespace PodFul.WPF
 
       this.feedScanner = feedScanner;
       this.PodcastList.ItemsSource = feedScanner.Jobs;
+
+      var jobCountStatusBarDisplay = new JobCountStatusBarDisplay(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
+      this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay);
     }
     #endregion
 
@@ -100,11 +105,7 @@ namespace PodFul.WPF
 
     private void InitializeCounts()
     {
-      this.WaitingCount.Text = "Waiting: 0";
-      this.RunningCount.Text = "Running: 0";
-      this.CompletedCount.Text = "Completed: 0";
-      this.CancelledCount.Text = String.Empty;
-      this.FailedCount.Text = String.Empty;
+      this.jobCountDisplayManager.UpdateCounts(0, 0, 0, 0, 0);
     }
 
     private void ScanCompletedEventHandler()
@@ -125,14 +126,7 @@ namespace PodFul.WPF
 
     private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 runningJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
     {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.WaitingCount.Text = "Waiting: " + waitingJobsCount;
-        this.RunningCount.Text = "Running: " + runningJobsCount;
-        this.CompletedCount.Text = "Completed: " + completedJobsCount;
-        this.CancelledCount.Text = (cancelledJobsCount == 0 ? String.Empty : "Cancelled: " + cancelledJobsCount);
-        this.FailedCount.Text = (failedJobsCount == 0 ? String.Empty : "Failed: " + failedJobsCount);
-      });
+      this.jobCountDisplayManager.UpdateCounts(waitingJobsCount, runningJobsCount, completedJobsCount, cancelledJobsCount, failedJobsCount);
     }
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)

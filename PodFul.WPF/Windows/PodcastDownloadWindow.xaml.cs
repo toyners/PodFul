@@ -6,6 +6,7 @@ namespace PodFul.WPF
   using System.Windows.Controls;
   using System.Windows.Input;
   using System.Windows.Media;
+  using Miscellaneous;
   using PodFul.WPF.Processing;
 
   /// <summary>
@@ -17,8 +18,7 @@ namespace PodFul.WPF
     private DownloadManager downloadManager;
     private Boolean isLoaded;
     private Boolean isProcessing;
-    private DownloadJobCounter cancelledJobCounter;
-    private DownloadJobCounter failedJobCounter;
+    private JobCountDisplayManager jobCountDisplayManager;
     #endregion
 
     #region Construction
@@ -32,6 +32,10 @@ namespace PodFul.WPF
       this.downloadManager.JobFinishedEvent += this.UpdateCounts;
 
       this.PodcastList.ItemsSource = downloadManager.Jobs;
+
+      var jobCountStatusBarDisplay = new JobCountStatusBarDisplay(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
+      var jobCountWindowTitleDisplay = new JobCountWindowTitleDisplay(this);
+      this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay, jobCountWindowTitleDisplay);
 
       this.UpdateCounts();
     }
@@ -68,62 +72,12 @@ namespace PodFul.WPF
 
     private void UpdateCounts()
     {
-      var waitingJobCount = this.downloadManager.WaitingJobsCount;
-      var runningJobCount = this.downloadManager.ProcessingJobsCount;
-      var completedJobCount = this.downloadManager.CompletedJobsCount;
-      var cancelledJobCount = this.downloadManager.CancelledJobsCount;
-      var failedJobCount = this.downloadManager.FailedJobsCount;
-
-      if (cancelledJobCount > 0)
-      {
-        if (this.cancelledJobCounter == null)
-        {
-          Brush cancelledJobCounterBrush = new SolidColorBrush();
-          this.cancelledJobCounter = new DownloadJobCounter("Cancelled: ", cancelledJobCounterBrush);
-
-          if (this.failedJobCounter != null)
-          {
-            this.failedJobCounter.TextControl = this.SecondOptionalCount;
-          }
-
-          this.cancelledJobCounter.TextControl = this.FirstOptionalCount;
-        }
-
-        this.cancelledJobCounter.Count = cancelledJobCount;
-      }
-
-      if (failedJobCount > 0)
-      {
-        if (this.failedJobCounter == null)
-        {
-          Brush failedJobCounterBrush = new SolidColorBrush();
-          this.failedJobCounter = new DownloadJobCounter("Failed: ", failedJobCounterBrush);
-          this.failedJobCounter.TextControl = (this.cancelledJobCounter != null ? this.SecondOptionalCount : this.FirstOptionalCount);
-        }
-
-        this.failedJobCounter.Count = failedJobCount;
-      }
-
-      var title = String.Format("Downloading Podcasts: {0} waiting, {1} running, {2} completed", waitingJobCount, runningJobCount, completedJobCount);
-      if (this.cancelledJobCounter.Count > 0)
-      {
-        title += ", " + this.cancelledJobCounter.Count + " cancelled";
-      }
-
-      if (this.failedJobCounter.Count > 0)
-      {
-        title += ", " + this.failedJobCounter.Count + " failed";
-      }
-
-      Application.Current.Dispatcher.Invoke(() => 
-      {
-        this.Title = title;
-        this.WaitingCount.Text = "Waiting: " + waitingJobCount;
-        this.RunningCount.Text = "Running: " + runningJobCount;
-        this.CompletedCount.Text = "Completed: " + completedJobCount;
-        this.cancelledJobCounter.UpdateTextCount();
-        this.failedJobCounter.UpdateTextCount();
-      });
+      this.jobCountDisplayManager.UpdateCounts(
+        this.downloadManager.WaitingJobsCount,
+        this.downloadManager.ProcessingJobsCount,
+        this.downloadManager.CompletedJobsCount,
+        this.downloadManager.CancelledJobsCount,
+        this.downloadManager.FailedJobsCount);
     }
 
     private void Window_Loaded(Object sender, RoutedEventArgs e)

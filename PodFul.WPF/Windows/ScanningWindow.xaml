@@ -35,8 +35,8 @@
           <TextBlock Name="WaitingCount" Margin="3,0" Foreground="Blue">Waiting count</TextBlock>
           <TextBlock Name="RunningCount" Margin="3,0" Foreground="Black">Running count</TextBlock>
           <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green">Completed count</TextBlock>
-          <TextBlock Name="CancelledCount" Margin="3,0" Foreground="OrangeRed">Cancelled count</TextBlock>
-          <TextBlock Name="FailedCount" Margin="3,0" Foreground="Red">Failed count</TextBlock>
+          <TextBlock Name="FirstOptionalCount" Margin="3,0" Foreground="OrangeRed">Cancelled count</TextBlock>
+          <TextBlock Name="SecondOptionalCount" Margin="3,0" Foreground="Red">Failed count</TextBlock>
         </StackPanel>
 
         <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1">
