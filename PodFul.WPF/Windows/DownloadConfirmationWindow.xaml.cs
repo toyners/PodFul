@@ -74,6 +74,12 @@ namespace PodFul.WPF.Windows
       return index;
     }
 
+    private void PodcastListPreviewMouseRightButtonUp(Object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+      // No row selection for right mouse button clicks
+      e.Handled = true;
+    }
+
     private void PodcastListSelectionChanged(Object sender, SelectionChangedEventArgs e)
     {
       DownloadButton.IsEnabled = (this.PodcastList.SelectedItems.Count > 0);
