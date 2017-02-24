@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="PodcastDownloadWindow" Height="600" Width="800"
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded"
+        Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded" Closing="WindowClosing"
         WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">

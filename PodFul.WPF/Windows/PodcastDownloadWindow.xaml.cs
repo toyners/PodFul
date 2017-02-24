@@ -81,6 +81,18 @@ namespace PodFul.WPF
         this.downloadManager.FailedJobsCount);
     }
 
+    private Boolean isClosing;
+
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      if (this.isProcessing && !this.isClosing)
+      {
+        e.Cancel = true;
+        this.downloadManager.CancelAllDownloads();
+        this.isClosing = true;
+      }
+    }
+
     private void Window_Loaded(Object sender, RoutedEventArgs e)
     {
       if (!this.isLoaded)
@@ -97,13 +109,21 @@ namespace PodFul.WPF
     private void WorkCompleted()
     {
       this.isProcessing = false;
+
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.CommandButton.Content = "Close";
         this.CommandButton.IsEnabled = true;
+        this.CommandButton.Content = "Close";
+
+        if (this.isClosing)
+        {
+          this.Close();
+        }
       });
     }
     #endregion
+
+    
   }
 
   internal class DownloadJobCounter
