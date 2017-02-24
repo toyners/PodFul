@@ -28,6 +28,8 @@ namespace PodFul.WPF.UI_Support
       this.completedCountTextblock = completedCountTextblock;
       this.firstOptionalCountTextblock = firstOptionalCountTextblock;
       this.secondOptionalCountTextblock = secondOptionalCountTextblock;
+      this.firstOptionalCountTextblock.Text = String.Empty;
+      this.secondOptionalCountTextblock.Text = String.Empty;
     }
 
     public void UpdateCounts(Int32 waitingJobCount, Int32 runningJobCount, Int32 completedJobCount, Int32 cancelledJobCount, Int32 failedJobCount)
@@ -47,8 +49,16 @@ namespace PodFul.WPF.UI_Support
         this.waitingCountTextblock.Text = "Waiting: " + waitingJobCount;
         this.runningCountTextblock.Text = "Running: " + runningJobCount;
         this.completedCountTextblock.Text = "Completed: " + completedJobCount;
-        this.cancelledJobCounter.UpdateTextCount();
-        this.failedJobCounter.UpdateTextCount();
+
+        if (this.cancelledJobCounter != null)
+        {
+          this.cancelledJobCounter.UpdateTextCount();
+        }
+
+        if (this.failedJobCounter != null)
+        {
+          this.failedJobCounter.UpdateTextCount();
+        }
       });
     }
 
