@@ -5,7 +5,6 @@ namespace PodFul.WPF
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
-  using System.Windows.Media;
   using Miscellaneous;
   using Processing;
   using UI_Support;
@@ -19,6 +18,7 @@ namespace PodFul.WPF
     private DownloadManager downloadManager;
     private Boolean isLoaded;
     private Boolean isProcessing;
+    private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
     #endregion
 
@@ -43,12 +43,12 @@ namespace PodFul.WPF
     #endregion
 
     #region Methods
-    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
+    private void CancelDownloadJobClick(Object sender, RoutedEventArgs e)
     {
       this.downloadManager.CancelDownload((sender as Button).DataContext);
     }
 
-    private void CommandButton_Click(Object sender, RoutedEventArgs e)
+    private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
       if (this.isProcessing)
       {
@@ -84,8 +84,6 @@ namespace PodFul.WPF
       });
     }
 
-    private Boolean isClosing;
-
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
       if (this.isProcessing && !this.isClosing)
@@ -96,7 +94,7 @@ namespace PodFul.WPF
       }
     }
 
-    private void Window_Loaded(Object sender, RoutedEventArgs e)
+    private void WindowLoaded(Object sender, RoutedEventArgs e)
     {
       if (!this.isLoaded)
       {

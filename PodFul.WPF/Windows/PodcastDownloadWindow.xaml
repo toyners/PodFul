@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="PodcastDownloadWindow" Height="600" Width="800"
         MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico" Loaded="Window_Loaded" Closing="WindowClosing"
+        Icon="baggage_cart_box_tE4_icon.ico" Loaded="WindowLoaded" Closing="WindowClosing"
         WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
-      <Button Name="CommandButton" Margin="3" Width="70" HorizontalAlignment="Right" Click="CommandButton_Click" Style="{StaticResource StandardButton}">
+      <Button Name="CommandButton" Margin="3" Width="70" HorizontalAlignment="Right" Click="CommandButtonClick" Style="{StaticResource StandardButton}">
         Close
       </Button>
     </Border>
@@ -66,7 +66,7 @@
                   </StackPanel>
 
                   <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
-                        IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click">
+                        IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownloadJobClick">
                     <Image Source="..\cancel.png" Width="15" Height="15"/>
                   </Button>
                 </Grid>
