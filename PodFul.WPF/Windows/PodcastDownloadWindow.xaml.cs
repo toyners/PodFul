@@ -88,6 +88,7 @@ namespace PodFul.WPF
     {
       if (this.isProcessing && !this.isClosing)
       {
+        // If the processing is happening then cancel it before allowing the window to close.
         e.Cancel = true;
         this.downloadManager.CancelAllDownloads();
         this.isClosing = true;
@@ -118,6 +119,8 @@ namespace PodFul.WPF
 
         if (this.isClosing)
         {
+          // Window was set to close while processing was happening so now that the processing
+          // has finished complete the window close.
           this.Close();
         }
       });
