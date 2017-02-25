@@ -73,12 +73,15 @@ namespace PodFul.WPF
 
     private void UpdateCounts()
     {
-      this.jobCountDisplayManager.UpdateCounts(
-        this.downloadManager.WaitingJobsCount,
-        this.downloadManager.ProcessingJobsCount,
-        this.downloadManager.CompletedJobsCount,
-        this.downloadManager.CancelledJobsCount,
-        this.downloadManager.FailedJobsCount);
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.jobCountDisplayManager.UpdateCounts(
+          this.downloadManager.WaitingJobsCount,
+          this.downloadManager.ProcessingJobsCount,
+          this.downloadManager.CompletedJobsCount,
+          this.downloadManager.CancelledJobsCount,
+          this.downloadManager.FailedJobsCount);
+      });
     }
 
     private Boolean isClosing;
@@ -122,36 +125,5 @@ namespace PodFul.WPF
       });
     }
     #endregion
-
-    
-  }
-
-  internal class DownloadJobCounter
-  {
-    private String text;
-    private Brush brush;
-    private TextBlock textBlock;
-
-    public DownloadJobCounter(String text, Brush brush)
-    {
-      this.text = text;
-      this.brush = brush;
-    }
-
-    public TextBlock TextControl
-    {
-      set
-      {
-        this.textBlock = value;
-        this.textBlock.Foreground = this.brush;
-      }
-    }
-
-    public Int32 Count { get; set; }
-
-    public void UpdateTextCount()
-    {
-      this.textBlock.Text = this.text + this.Count;
-    }
   }
 }
