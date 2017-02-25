@@ -18,7 +18,7 @@ namespace PodFul.WPF
     private FeedScanner feedScanner;
     private Boolean isLoaded;
     private Boolean isProcessing;
-    private Boolean closeAfterScan;
+    private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
     #endregion
 
@@ -117,7 +117,7 @@ namespace PodFul.WPF
         this.CommandButton.IsEnabled = true;
         this.CommandButton.Content = "Close";
 
-        if (this.closeAfterScan)
+        if (this.isClosing)
         {
           this.Close();
         }
@@ -131,10 +131,17 @@ namespace PodFul.WPF
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
-      if (this.isProcessing && !this.closeAfterScan)
+      if (this.isClosing)
       {
+        // Already closing so ignore any further close window commands.
         e.Cancel = true;
-        this.closeAfterScan = true;
+      }
+
+      if (this.isProcessing && !this.isClosing)
+      {
+        // If the scanning is happening then cancel it before allowing the window to close.
+        e.Cancel = true;
+        this.isClosing = true;
         this.CancelScanning();
       }
     }

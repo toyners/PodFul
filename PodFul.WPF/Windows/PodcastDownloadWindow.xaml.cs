@@ -86,6 +86,12 @@ namespace PodFul.WPF
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
+      if (this.isClosing)
+      {
+        // Already closing so ignore any further close window commands.
+        e.Cancel = true;
+      }
+
       if (this.isProcessing && !this.isClosing)
       {
         // If the processing is happening then cancel it before allowing the window to close.
