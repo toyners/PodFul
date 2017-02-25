@@ -44,20 +44,28 @@ namespace PodFul.WPF
         return true;
       }
 
-      var message = "Directory does not exist. Create it now?\r\n\r\n(Warning: Not creating the directory now may cause file creation issues later on).";
-      var result = MessageBox.Show(message, "Create Directory?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Yes);
-
-      if (result == MessageBoxResult.Cancel)
-      {
-        return false;
-      }
-
-      if (result == MessageBoxResult.Yes)
+      try
       {
         Directory.CreateDirectory(this.FullPath.Text);
+        return true;
+      }
+      catch (ArgumentException)
+      {
+        var message = "Directory cannot be created. Please check that the directory does not contain illegal characters.";
+        MessageBox.Show(message, "Directory creation failed.", MessageBoxButton.OK);
+      }
+      catch (DirectoryNotFoundException)
+      {
+        var message = "Directory cannot be created. Please check that the drive letter is valid and that the user has directory creation permissions.";
+        MessageBox.Show(message, "Directory creation failed.", MessageBoxButton.OK);
+      }
+      catch (Exception)
+      {
+        var message = "Directory cannot be created. Please check that the user has directory creation permissions.";
+        MessageBox.Show(message, "Directory creation failed.", MessageBoxButton.OK);
       }
 
-      return true;
+      return false;
     }
 
     private void FullPathTextChanged(Object sender, System.Windows.Controls.TextChangedEventArgs e)
