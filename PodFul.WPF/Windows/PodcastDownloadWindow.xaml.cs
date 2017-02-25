@@ -106,7 +106,7 @@ namespace PodFul.WPF
       if (!this.isLoaded)
       {
         this.isProcessing = true;
-        this.CommandButton.Content = "Cancel";
+        this.CommandButton.Content = "Cancel All";
         this.downloadManager.StartDownloads();
         
         // Ensure this functionality is only called once.
