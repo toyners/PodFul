@@ -14,10 +14,19 @@ namespace PodFul.WPF
   /// </summary>
   public partial class PodcastDownloadWindow : Window
   {
+    #region enums
+    private enum ProcessingStates
+    {
+      Stopped,
+      Running,
+      Cancelling
+    }
+    #endregion
+
     #region Fields
     private DownloadManager downloadManager;
     private Boolean isLoaded;
-    private Boolean isProcessing;
+    private ProcessingStates processingState;
     private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
     #endregion
@@ -43,6 +52,14 @@ namespace PodFul.WPF
     #endregion
 
     #region Methods
+    private void CancelAllDownloadJobs()
+    {
+      this.processingState = ProcessingStates.Cancelling;
+      this.CommandButton.Content = "Cancelling";
+      this.CommandButton.IsEnabled = false;
+      this.downloadManager.CancelAllDownloads();
+    }
+
     private void CancelDownloadJobClick(Object sender, RoutedEventArgs e)
     {
       this.downloadManager.CancelDownload((sender as Button).DataContext);
@@ -50,13 +67,11 @@ namespace PodFul.WPF
 
     private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
-      if (this.isProcessing)
+      if (this.processingState == ProcessingStates.Running)
       {
-        this.CommandButton.Content = "Cancelling";
-        this.CommandButton.IsEnabled = false;
-        this.downloadManager.CancelAllDownloads();
+        this.CancelAllDownloadJobs();
       }
-      else
+      else if (this.processingState == ProcessingStates.Stopped)
       {
         this.Close();
       }
@@ -92,12 +107,21 @@ namespace PodFul.WPF
         e.Cancel = true;
       }
 
-      if (this.isProcessing && !this.isClosing)
+      if (!this.isClosing)
       {
-        // If the processing is happening then cancel it before allowing the window to close.
-        e.Cancel = true;
-        this.downloadManager.CancelAllDownloads();
-        this.isClosing = true;
+        if (this.processingState == ProcessingStates.Running)
+        {
+          // If the processing is happening then cancel it before allowing the window to close.
+          e.Cancel = true;
+          this.CancelAllDownloadJobs();
+          this.isClosing = true;
+        }
+        else if (this.processingState == ProcessingStates.Cancelling)
+        {
+          // Already cancelled via button so don't close until cancelling is complete.
+          e.Cancel = true;
+          this.isClosing = true;
+        }
       }
     }
 
@@ -105,7 +129,7 @@ namespace PodFul.WPF
     {
       if (!this.isLoaded)
       {
-        this.isProcessing = true;
+        this.processingState = ProcessingStates.Running;
         this.CommandButton.Content = "Cancel All";
         this.downloadManager.StartDownloads();
         
@@ -116,19 +140,21 @@ namespace PodFul.WPF
 
     private void WorkCompleted()
     {
-      this.isProcessing = false;
+      this.processingState = ProcessingStates.Stopped;
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.CommandButton.IsEnabled = true;
-        this.CommandButton.Content = "Close";
-
         if (this.isClosing)
         {
-          // Window was set to close while processing was happening so now that the processing
+          // Window was set to close while processing (or cancelling) was happening so now that the processing
           // has finished complete the window close.
+          this.isClosing = false;
           this.Close();
+          return;
         }
+
+        this.CommandButton.IsEnabled = true;
+        this.CommandButton.Content = "Close";
       });
     }
     #endregion
