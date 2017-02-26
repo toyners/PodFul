@@ -32,7 +32,6 @@ namespace PodFul.WPF
     private FileLogger fileLogger;
     private GUILogger guiLogger;
     private FileDeliveryLogger fileDeliveryLogger;
-    private Timer contextMenuTimer;
     private Settings settings;
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
 
