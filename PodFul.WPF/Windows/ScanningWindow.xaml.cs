@@ -126,7 +126,10 @@ namespace PodFul.WPF
 
     private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 runningJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
     {
-      this.jobCountDisplayManager.UpdateCounts(waitingJobsCount, runningJobsCount, completedJobsCount, cancelledJobsCount, failedJobsCount);
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.jobCountDisplayManager.UpdateCounts(waitingJobsCount, runningJobsCount, completedJobsCount, cancelledJobsCount, failedJobsCount);
+      });
     }
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
