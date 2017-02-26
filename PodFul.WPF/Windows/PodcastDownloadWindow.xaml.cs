@@ -14,7 +14,7 @@ namespace PodFul.WPF
   /// </summary>
   public partial class PodcastDownloadWindow : Window
   {
-    #region enums
+    #region Enums
     private enum ProcessingStates
     {
       Stopped,
