@@ -8,7 +8,6 @@ namespace PodFul.WPF
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
-  using FileDelivery;
   using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.String;
   using Library;
