@@ -6,7 +6,6 @@ namespace PodFul.WPF
   using System.Configuration;
   using System.IO;
   using System.Reflection;
-  using System.Threading;
   using System.Windows;
   using System.Windows.Controls;
   using Jabberwocky.Toolkit.Assembly;
@@ -31,6 +30,7 @@ namespace PodFul.WPF
     private Feed currentFeed;
     private FileLogger fileLogger;
     private GUILogger guiLogger;
+    private LogController logManager;
     private FileDeliveryLogger fileDeliveryLogger;
     private Settings settings;
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
@@ -42,6 +42,8 @@ namespace PodFul.WPF
         this.fileLogger = new FileLogger();
         this.guiLogger = new GUILogger(this.fileLogger);
         this.fileDeliveryLogger = new FileDeliveryLogger();
+
+        this.logManager = new LogController(  new Dictionary<string, ILogger>{ { "", fileLogger } } );
 
         InitializeComponent();
 
