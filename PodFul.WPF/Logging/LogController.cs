@@ -3,6 +3,7 @@ namespace PodFul.WPF.Logging
 {
   using System;
   using System.Collections.Generic;
+  using Jabberwocky.Toolkit.Object;
 
   public class LogController : ILogController
   {
@@ -10,7 +11,7 @@ namespace PodFul.WPF.Logging
 
     public LogController(Dictionary<String, ILogger> loggers)
     {
-      this.loggers = loggers;
+      loggers.VerifyThatObjectIsNotNull("Parameter 'loggers' is null.");    
     }
 
     public void Exception(String key, String message)
