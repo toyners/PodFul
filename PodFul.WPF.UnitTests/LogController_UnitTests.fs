@@ -26,11 +26,30 @@ type LogController_UnitTests() =
         
         let mutable testPassed = false
         try
-            let controller = new LogController(null);
+            let loggers = new Dictionary<String, ILogger>()
+            loggers.Add("Key", null)
+            let controller = new LogController(loggers)
             testPassed <- false
         with
             | e -> 
-                Assert.AreEqual("Parameter 'loggers' is null.", e.Message)
+                Assert.AreEqual("Parameter 'loggers' contains null value reference.", e.Message)
+                testPassed <- true  
+
+        Assert.AreEqual(true, testPassed)
+
+    [<Test>]
+    member public this.``Passing a null key reference in collection to the cstr throws meaningful exception``() =
+        
+        let mutable testPassed = false
+        try
+            let logger = new FileLogger()
+            let loggers = new Dictionary<String, ILogger>()
+            loggers.Add(null, logger)
+            let controller = new LogController(loggers)
+            testPassed <- false
+        with
+            | e -> 
+                Assert.AreEqual("Parameter 'loggers' contains null key reference.", e.Message)
                 testPassed <- true  
 
         Assert.AreEqual(true, testPassed)
