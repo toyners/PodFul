@@ -4,7 +4,7 @@ open System
 open System.Collections.Generic
 open FsUnit
 open NUnit.Framework
-open PodFul.WPF
+open PodFul.WPF.Logging
 
 type LogController_UnitTests() = 
     

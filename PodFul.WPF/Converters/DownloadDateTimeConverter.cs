@@ -1,4 +1,6 @@
 ﻿
+// This namespace must match the namespace of the App.xaml file since this converter is referenced in the xaml
+// where full namespaces cannot be used.
 namespace PodFul.WPF
 {
   using System;

@@ -1,4 +1,4 @@
-﻿namespace TestLibrary
+﻿namespace PodFul.Library.IntegrationTests
 
 open System.IO
 open System.Reflection

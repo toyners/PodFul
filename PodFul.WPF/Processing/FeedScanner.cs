@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.WPF
+namespace PodFul.WPF.Processing
 {
   using System;
   using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace PodFul.WPF
   using Library;
   using Logging;
   using Miscellaneous;
-  using Processing;
 
   /// <summary>
   /// Scans a list of feeds and collects a list of podcasts to be downloaded. Feeds with new podcasts are updated.

@@ -5,6 +5,7 @@ using System.Windows;
 using Jabberwocky.Toolkit.Object;
 using Jabberwocky.Toolkit.String;
 using PodFul.Library;
+using PodFul.WPF.Logging;
 
 namespace PodFul.WPF.Windows
 {

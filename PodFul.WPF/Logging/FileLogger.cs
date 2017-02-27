@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.WPF
+namespace PodFul.WPF.Logging
 {
   using System;
   using NLog;

@@ -5,6 +5,7 @@ namespace PodFul.WPF.Miscellaneous
   using System.Collections.Generic;
   using FileDelivery;
   using Jabberwocky.Toolkit.Object;
+  using Logging;
 
   /// <summary>
   /// Creates delivery point instances given delivery point data.

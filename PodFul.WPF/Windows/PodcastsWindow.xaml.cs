@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.WPF
+namespace PodFul.WPF.Windows
 {
   using System;
   using System.Collections.Generic;
@@ -8,7 +8,6 @@ namespace PodFul.WPF
   using System.Windows.Input;
   using Jabberwocky.Toolkit.String;
   using Jabberwocky.Toolkit.WPF;
-  using Miscellaneous;
   using PodFul.Library;
 
   /// <summary>

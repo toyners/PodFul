@@ -8,7 +8,7 @@
     <ProjectGuid>cf3eecae-e99d-4858-b7f2-b51514a0022d</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>TestLibrary</RootNamespace>
-    <AssemblyName>TestLibrary</AssemblyName>
+    <AssemblyName>PodFul.Library.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

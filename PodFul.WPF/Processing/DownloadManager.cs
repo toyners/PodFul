@@ -8,6 +8,7 @@ namespace PodFul.WPF.Processing
   using System.Windows;
   using Jabberwocky.Toolkit.Object;
   using Library;
+  using Logging;
 
   public class DownloadManager
   {

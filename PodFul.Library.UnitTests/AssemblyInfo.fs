@@ -1,4 +1,4 @@
-﻿namespace PodFul.Library.UnitTests.AssemblyInfo
+﻿namespace PodFul.Library.UnitTests
 
 open System.Reflection
 open System.Runtime.CompilerServices

@@ -1,9 +1,8 @@
 ﻿
-namespace PodFul.WPF.Miscellaneous
+namespace PodFul.WPF.UI_Support
 {
   using System;
   using System.Windows;
-  using UI_Support;
 
   internal class JobCountWindowTitleDisplayComponent : IJobCountDisplayComponent
   {

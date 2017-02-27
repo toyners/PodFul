@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.WPF
+namespace PodFul.WPF.Windows
 {
   using System;
   using System.Windows;
