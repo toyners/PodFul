@@ -21,6 +21,8 @@ namespace PodFul.WPF
   public class FeedScanner
   {
     #region Fields
+    private const String CombinedLogger = "Combined";
+
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
     private DownloadManager downloadManager;
@@ -33,7 +35,7 @@ namespace PodFul.WPF
 
     private Queue<Int32> indexes;
 
-    private ILogger logger;
+    private ILogController logController;
 
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
     #endregion
@@ -44,7 +46,7 @@ namespace PodFul.WPF
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
       FileDeliveryLogger fileDeliveryLogger,
-      ILogger logger,
+      ILogController logController,
       IPodcastDownloadConfirmer podcastDownloadConfirmer,
       DownloadManager downloadManager)
     {
@@ -52,7 +54,7 @@ namespace PodFul.WPF
       this.indexes = feedIndexes;
       this.imageResolver = imageResolver;
       this.fileDeliveryLogger = fileDeliveryLogger;
-      this.logger = logger;
+      this.logController = logController;
       this.podcastDownloadConfirmer = podcastDownloadConfirmer;
       this.downloadManager = downloadManager;
       this.downloadManager.JobStartedEvent += this.UpdateCounts;
@@ -108,6 +110,7 @@ namespace PodFul.WPF
         try
         {
 
+          var combinedLogger = this.logController.GetLogger(CombinedLogger);
           while (indexes.Count > 0)
           {
             Int32 feedIndex = indexes.Dequeue();
@@ -117,7 +120,7 @@ namespace PodFul.WPF
 
             var feed = this.feedCollection.Feeds[feedIndex];
 
-            this.logger.Message("Scanning \"" + feed.Title + "\".");
+            combinedLogger.Message("Scanning \"" + feed.Title + "\".");
 
             Feed newFeed = null;
             try
@@ -125,7 +128,7 @@ namespace PodFul.WPF
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
               newFeed = FeedFunctions.UpdateFeedFromFile(feed, feedFilePath, this.imageResolver, cancelToken);
 
-              this.logger.Message("Comparing podcasts ... ", false);
+              combinedLogger.Message("Comparing podcasts ... ", false);
 
               var podcastIndexes = this.BuildPodcastList(feed, newFeed);
               var updateFeed = (podcastIndexes.Count > 0);
@@ -134,7 +137,7 @@ namespace PodFul.WPF
               if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
               {
                 var feedReport = podcastIndexes.Count + " podcasts found";
-                this.logger.Message(feedReport + " (Scan cancelled).\r\n");
+                combinedLogger.Message(feedReport + " (Scan cancelled).\r\n");
                 scanReport += feedReport + " for \"" + feed.Title + "\".";
                 this.cancellationTokenSource.Cancel();
 
@@ -160,13 +163,13 @@ namespace PodFul.WPF
                 scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
               }
 
-              this.logger.Message(message);
+              combinedLogger.Message(message);
 
-              this.logger.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
+              combinedLogger.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
 
               this.FeedScanCompleted(feedIndex, newFeed);
 
-              this.logger.Message(String.Empty);
+              combinedLogger.Message(String.Empty);
 
               if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
               {
@@ -191,7 +194,7 @@ namespace PodFul.WPF
             {
               var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
               scanReport += exceptionReport;
-              this.logger.Message(exceptionReport);
+              combinedLogger.Message(exceptionReport);
             }
           }
 
@@ -199,7 +202,7 @@ namespace PodFul.WPF
         }
         catch (Exception exception)
         {
-          this.logger.Exception(exception.Message);
+          this.logController.Exception(CombinedLogger, exception.Message);
         }
       }, cancelToken);
 
@@ -238,11 +241,11 @@ namespace PodFul.WPF
         // Display the final scan report.
         if (scanReport == null)
         {
-          this.logger.Message("Nothing to report.");
+          this.logController.Info(CombinedLogger, "Nothing to report.");
         }
         else
         {
-          this.logger.Message("Scan Report\r\n" + scanReport);
+          this.logController.Info(CombinedLogger, "Scan Report\r\n" + scanReport);
         }
 
         this.ScanCompletedEvent?.Invoke();
@@ -281,7 +284,7 @@ namespace PodFul.WPF
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.feedCollection.UpdateFeed(feedIndex, feed);
-        this.logger.Message("Completed.");
+        this.logController.Info(CombinedLogger, "Completed.");
       });
     }
 

@@ -13,17 +13,32 @@ namespace PodFul.WPF
     void Exception(String message);
   }
 
-  public interface ILogManager
+  public interface ILogController
   {
+    void Exception(String key, String message);
+
+    ILogger GetLogger(String key);
+
     void Info(String key, String message);
   }
 
-  public class LogController : ILogManager
+  public class LogController : ILogController
   {
     private IDictionary<String, ILogger> loggers;
+
     public LogController(Dictionary<String, ILogger> loggers)
     {
       this.loggers = loggers;
+    }
+
+    public void Exception(String key, String message)
+    {
+      throw new NotImplementedException();
+    }
+
+    public ILogger GetLogger(String key)
+    {
+      throw new NotImplementedException();
     }
 
     public void Info(String key, String message)
