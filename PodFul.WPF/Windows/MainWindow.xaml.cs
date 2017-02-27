@@ -30,7 +30,7 @@ namespace PodFul.WPF
     private Feed currentFeed;
     private FileLogger fileLogger;
     private GUILogger guiLogger;
-    private LogController logManager;
+    private LogController logController;
     private FileDeliveryLogger fileDeliveryLogger;
     private Settings settings;
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
@@ -43,7 +43,7 @@ namespace PodFul.WPF
         this.guiLogger = new GUILogger(this.fileLogger);
         this.fileDeliveryLogger = new FileDeliveryLogger();
 
-        this.logManager = new LogController(  new Dictionary<string, ILogger>{ { "", fileLogger } } );
+        this.logController = new LogController(  new Dictionary<string, ILogger>{ { "", fileLogger } } );
 
         InitializeComponent();
 
@@ -344,7 +344,7 @@ namespace PodFul.WPF
 
       var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
       downloadManager.JobCompletedEvent += JobCompletedEventHandler;
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.guiLogger, this.podcastDownloadConfirmer, downloadManager);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
