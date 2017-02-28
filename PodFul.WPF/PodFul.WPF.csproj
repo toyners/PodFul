@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logging\CombinedLogger.cs" />
     <Compile Include="Logging\LogController.cs" />
     <Compile Include="Logging\ILogController.cs" />
     <Compile Include="Logging\FileDeliveryLogger.cs" />
