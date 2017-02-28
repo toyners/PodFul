@@ -22,7 +22,7 @@ namespace PodFul.WPF.Processing
     #region Fields
     private const String CombinedLogger = "COMBINED";
 
-    private const String ExceptionLogger = "EXCEPTION"
+    private const String ExceptionLogger = "EXCEPTION";
 
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -129,7 +129,7 @@ namespace PodFul.WPF.Processing
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
               newFeed = FeedFunctions.UpdateFeedFromFile(feed, feedFilePath, this.imageResolver, cancelToken);
 
-              combinedLogger.Message("Comparing podcasts ... ", false);
+              combinedLogger.Message("Comparing podcasts ... ");
 
               var podcastIndexes = this.BuildPodcastList(feed, newFeed);
               var updateFeed = (podcastIndexes.Count > 0);
@@ -166,7 +166,7 @@ namespace PodFul.WPF.Processing
 
               combinedLogger.Message(message);
 
-              combinedLogger.Message(String.Format("Updating \"{0}\" ... ", feed.Title), false);
+              combinedLogger.Message(String.Format("Updating \"{0}\" ... ", feed.Title));
 
               this.FeedScanCompleted(feedIndex, newFeed);
 

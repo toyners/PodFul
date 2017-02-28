@@ -18,9 +18,10 @@ namespace PodFul.WPF.Miscellaneous
     /// <param name="deliveryPointData">Data for the delivery points.</param>
     /// <param name="fileDeliveryLogger">Provides logging for delivery points.</param>
     /// <returns>Array of delivery point instances.</returns>
-    public static IDeliveryPoint[] CreateDeliveryPoints(List<Settings.SettingsData.DeliveryPointData> deliveryPointData, ILogger fileDeliveryLogger)
+    public static IDeliveryPoint[] CreateDeliveryPoints(List<Settings.SettingsData.DeliveryPointData> deliveryPointData, ILogger fileDeliveryLogger, ILogger fileDeliveryExceptionLogger)
     {
       fileDeliveryLogger.VerifyThatObjectIsNotNull("Parameter 'fileDeliveryLogger' is null.");
+      fileDeliveryExceptionLogger.VerifyThatObjectIsNotNull("Parameter 'fileDeliveryExceptionLogger' is null.");
 
       if (deliveryPointData == null)
       {
@@ -38,10 +39,10 @@ namespace PodFul.WPF.Miscellaneous
         switch (deliveryPoint.Type)
         {
           case Settings.SettingsData.DeliveryPointData.Types.Winamp:
-          deliveryPoints.Add(new WinampDeliveryPoint(deliveryPoint.Location, fileDeliveryLogger.Message, fileDeliveryLogger.Exception));
+          deliveryPoints.Add(new WinampDeliveryPoint(deliveryPoint.Location, fileDeliveryLogger.Message, fileDeliveryExceptionLogger.Message));
           break;
           case Settings.SettingsData.DeliveryPointData.Types.Directory:
-          deliveryPoints.Add(new FileDeliveryPoint(deliveryPoint.Location, fileDeliveryLogger.Message, fileDeliveryLogger.Exception));
+          deliveryPoints.Add(new FileDeliveryPoint(deliveryPoint.Location, fileDeliveryLogger.Message, fileDeliveryExceptionLogger.Message));
           break;
           default:
           throw new NotImplementedException("Delivery point '" + deliveryPoint.Type + "' not recognised");

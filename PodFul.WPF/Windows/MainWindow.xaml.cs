@@ -23,6 +23,9 @@ namespace PodFul.WPF.Windows
   /// </summary>
   public partial class MainWindow : Window
   {
+    public const String ExceptionKey = "EXCEPTION";
+    public const String InfoKey = "INFO";
+    public const String CombinedKey = "INFO+UI";
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
     private IImageResolver imageResolver;
@@ -37,13 +40,17 @@ namespace PodFul.WPF.Windows
 
     public MainWindow()
     {
+      FileLogger exceptionLogger = null;
       try
       {
         this.fileLogger = new FileLogger();
         this.guiLogger = new GUILogger(this.fileLogger);
         this.fileDeliveryLogger = new FileDeliveryLogger();
+        exceptionLogger = new FileLogger();
 
-        this.logController = new LogController(  new Dictionary<string, ILogger>{ { "", fileLogger } } );
+        this.logController = new LogController(new Dictionary<String, ILogger>{
+          { InfoKey, fileLogger },
+          { ExceptionKey, exceptionLogger} });
 
         InitializeComponent();
 
@@ -85,10 +92,8 @@ namespace PodFul.WPF.Windows
       }
       catch (Exception exception)
       {
-        if (this.fileLogger != null)
-        {
-          this.fileLogger.Exception(exception.Message + ": " + exception.StackTrace);
-        }
+        var fullExceptionMessage = exception.Message + ": " + exception.StackTrace;
+        exceptionLogger?.Message(fullExceptionMessage);
 
         var message = String.Format("Exception occurred during startup. Exception message is\r\n{0}\r\n\r\nPodFul will close.", exception.Message);
         MessageBox.Show(message, "PodFul Exception", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -103,7 +108,7 @@ namespace PodFul.WPF.Windows
 
     private IFileDeliverer CreateFileDeliver()
     {
-      var deliveryPoints = DeliveryPointCreator.CreateDeliveryPoints(this.settings.DeliveryPointData, this.fileDeliveryLogger);
+      var deliveryPoints = DeliveryPointCreator.CreateDeliveryPoints(this.settings.DeliveryPointData, this.fileDeliveryLogger, this.fileDeliveryLogger);
       return new FileDeliverer(deliveryPoints);
     }
 
@@ -126,7 +131,7 @@ namespace PodFul.WPF.Windows
         return;
       }
 
-      var addFeedProgressWindow = new AddFeedProgressWindow(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, this.fileLogger);
+      var addFeedProgressWindow = new AddFeedProgressWindow(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, this.logController);
       addFeedProgressWindow.Owner = this;
       addFeedProgressWindow.ShowDialog();
       Feed feed = addFeedProgressWindow.Feed;
@@ -156,7 +161,7 @@ namespace PodFul.WPF.Windows
       catch (Exception exception)
       {
         MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
-        this.fileLogger.Exception("Trying to add new feed: " + exception.Message);
+        this.logController.Message(ExceptionKey, "Trying to add new feed: " + exception.Message);
         return;
       }
 
@@ -264,7 +269,7 @@ namespace PodFul.WPF.Windows
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
 
-      var podcastDownloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
+      var podcastDownloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       if (deliverManualDownloadsToDeliveryPoints)
       {
         this.InitialiseDeliveryPoints();

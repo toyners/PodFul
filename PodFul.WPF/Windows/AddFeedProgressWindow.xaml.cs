@@ -15,26 +15,23 @@ namespace PodFul.WPF.Windows
   public partial class AddFeedProgressWindow : Window
   {
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
     private String feedURL;
     private String feedPath;
-
     private IImageResolver imageResolver;
-    private ILogger fileLogger;
-
+    private ILogController logController;
     private Boolean windowLoaded;
 
-    public AddFeedProgressWindow(String feedURL, String feedPath, IImageResolver imageResolver, ILogger fileLogger)
+    public AddFeedProgressWindow(String feedURL, String feedPath, IImageResolver imageResolver, ILogController logController)
     {
       feedURL.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'feedURL' is null or empty.");
       feedPath.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'feedPath' is null or empty.");
       imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
-      fileLogger.VerifyThatObjectIsNotNull("Parameter 'fileLogger' is null.");
+      logController.VerifyThatObjectIsNotNull("Parameter 'logController' is null.");
 
       this.feedURL = feedURL;
       this.feedPath = feedPath;
       this.imageResolver = imageResolver;
-      this.fileLogger = fileLogger;
+      this.logController = logController;
 
       InitializeComponent();
     }
@@ -61,7 +58,7 @@ namespace PodFul.WPF.Windows
       {
         if (task.IsFaulted)
         {
-          this.fileLogger.Exception("Trying to create new feed: " + task.Exception.Message);
+          this.logController.Message(MainWindow.ExceptionKey, "Trying to create new feed: " + task.Exception.Message);
           Application.Current.Dispatcher.Invoke(() =>
           {
             MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + task.Exception.Message, "Exception occurred.");
@@ -69,11 +66,11 @@ namespace PodFul.WPF.Windows
         }
         else if (task.IsCanceled)
         {
-          this.fileLogger.Message("Adding feed from '" + this.feedURL + "' was cancelled.");
+          this.logController.Message(MainWindow.InfoKey, "Adding feed from '" + this.feedURL + "' was cancelled.");
         }
         else
         {
-          this.fileLogger.Message("'" + this.Feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
+          this.logController.Message(MainWindow.InfoKey, "'" + this.Feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
         }
 
         Application.Current.Dispatcher.Invoke(() =>

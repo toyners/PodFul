@@ -25,8 +25,7 @@ namespace PodFul.WPF.Processing
     #region Construction
     public DownloadManager(ILogger logger, UInt32 concurrentDownloads)
     {
-      logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
-
+      logger.VerifyThatObjectIsNotNull("Parameter 'exceptionLogger' is null.");
       this.logger = logger;
       this.concurrentDownloads = concurrentDownloads;
 
@@ -123,7 +122,7 @@ namespace PodFul.WPF.Processing
         e = e.InnerException;
       }
 
-      this.logger.Exception(e.Message);
+      this.logger.Message(e.Message);
 
       Application.Current.Dispatcher.Invoke(() =>
       {
