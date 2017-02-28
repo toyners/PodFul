@@ -363,12 +363,12 @@ namespace PodFul.WPF.Windows
       propertiesWindow.ShowDialog();
     }
 
-    private void ScanButtonClick(Object sender, RoutedEventArgs e)
+    private void ScanAllButtonClick(Object sender, RoutedEventArgs e)
     {
       this.PerformScan(this.GetIndexesForAllFeeds());
     }
 
-    private void ScanFeed_Click(Object sender, RoutedEventArgs e)
+    private void ScanFeedContextMenuClick(Object sender, RoutedEventArgs e)
     {
       this.PerformScan(this.GetIndexForCurrentFeed());
     }
