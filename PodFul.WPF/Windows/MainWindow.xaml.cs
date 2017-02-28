@@ -31,7 +31,6 @@ namespace PodFul.WPF.Windows
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
-    private FileLogger fileLogger;
     private GUILogger guiLogger;
     private LogController logController;
     private FileDeliveryLogger fileDeliveryLogger;
@@ -43,14 +42,16 @@ namespace PodFul.WPF.Windows
       FileLogger exceptionLogger = null;
       try
       {
-        this.fileLogger = new FileLogger();
-        this.guiLogger = new GUILogger(this.fileLogger);
+        var fileLogger = new FileLogger();
+        this.guiLogger = new GUILogger(fileLogger);
+        var combinedLogger = new CombinedLogger(fileLogger, this.guiLogger);
         this.fileDeliveryLogger = new FileDeliveryLogger();
         exceptionLogger = new FileLogger();
 
         this.logController = new LogController(new Dictionary<String, ILogger>{
           { InfoKey, fileLogger },
-          { ExceptionKey, exceptionLogger} });
+          { ExceptionKey, exceptionLogger},
+          { CombinedKey, combinedLogger }});
 
         InitializeComponent();
 
@@ -88,7 +89,7 @@ namespace PodFul.WPF.Windows
 
         this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
 
-        this.fileLogger.Message("Main Window instantiated.");
+        fileLogger.Message("Main Window instantiated.");
       }
       catch (Exception exception)
       {
@@ -148,7 +149,7 @@ namespace PodFul.WPF.Windows
         var count = PodcastSynchroniser.Synchronise(feed);
 
         var message = String.Format("{0} MP3 file(s) synced after adding '{1}'", count, feed.Title);
-        this.fileLogger.Message(message);
+        this.logController.Message(InfoKey, message);
       }
 
       var imagePath = this.imageResolver.GetName(feed.ImageFileName, feed.ImageURL);
@@ -183,7 +184,7 @@ namespace PodFul.WPF.Windows
       var index = this.FeedList.SelectedIndex;
       var title = this.currentFeed.Title;
       this.feedCollection.RemoveFeed(this.currentFeed);
-      this.fileLogger.Message(String.Format("'{0}' removed.", title));
+      this.logController.Message(InfoKey, String.Format("'{0}' removed.", title));
 
       if (this.feedCollection.Feeds.Count == 0)
       {
@@ -347,7 +348,7 @@ namespace PodFul.WPF.Windows
     {
       this.InitialiseDeliveryPoints();
 
-      var downloadManager = new DownloadManager(this.guiLogger, this.settings.ConcurrentDownloadCount);
+      var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       downloadManager.JobCompletedEvent += JobCompletedEventHandler;
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);

@@ -43,7 +43,7 @@
               <ContextMenu>
                 <MenuItem Header="Podcasts ..." Click="Podcasts_Click" FontWeight="Bold" />
                 <MenuItem Header="Remove ..." Click="RemoveFeed_Click" />
-                <MenuItem Header="Scan" Click="ScanFeed_Click"/>
+                <MenuItem Header="Scan" Click="ScanFeedContextMenuClick"/>
                 <MenuItem Header="Synchronise Podcasts" Click="Synchronise_Click" />
                 <Separator />
                 <MenuItem Header="Properties" Click="PropertiesMenuItemClick" />
