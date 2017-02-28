@@ -11,22 +11,34 @@ namespace PodFul.WPF.Logging
 
     public LogController(Dictionary<String, ILogger> loggers)
     {
-      loggers.VerifyThatObjectIsNotNull("Parameter 'loggers' is null.");    
-    }
+      loggers.VerifyThatObjectIsNotNull("Parameter 'loggers' is null.");
 
-    public void Exception(String key, String message)
-    {
-      throw new NotImplementedException();
+      foreach (var kv in loggers)
+      {
+        if (kv.Value == null)
+        {
+          throw new Exception("Parameter 'loggers' contains null value reference.");
+        }
+      }
+
+      this.loggers = loggers;
     }
 
     public ILogger GetLogger(String key)
     {
-      throw new NotImplementedException();
+      key.VerifyThatObjectIsNotNull("Parameter 'key' is null.");
+
+      if (!this.loggers.ContainsKey(key))
+      {
+        throw new Exception("LogController does not have Logger matching key '" + key + "'.");
+      }
+
+      return this.loggers[key];
     }
 
-    public void Info(String key, String message)
+    public void Message(String key, String message)
     {
-      throw new NotImplementedException();
+      this.GetLogger(key).Message(message);
     }
   }
 }

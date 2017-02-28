@@ -5,10 +5,8 @@ namespace PodFul.WPF.Logging
 
   public interface ILogController
   {
-    void Exception(String key, String message);
-
     ILogger GetLogger(String key);
 
-    void Info(String key, String message);
+    void Message(String key, String message);
   }
 }

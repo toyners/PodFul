@@ -20,7 +20,9 @@ namespace PodFul.WPF.Processing
   public class FeedScanner
   {
     #region Fields
-    private const String CombinedLogger = "Combined";
+    private const String CombinedLogger = "COMBINED";
+
+    private const String ExceptionLogger = "EXCEPTION"
 
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -201,7 +203,7 @@ namespace PodFul.WPF.Processing
         }
         catch (Exception exception)
         {
-          this.logController.Exception(CombinedLogger, exception.Message);
+          this.logController.Message(ExceptionLogger, exception.Message);
         }
       }, cancelToken);
 
@@ -240,11 +242,11 @@ namespace PodFul.WPF.Processing
         // Display the final scan report.
         if (scanReport == null)
         {
-          this.logController.Info(CombinedLogger, "Nothing to report.");
+          this.logController.Message(CombinedLogger, "Nothing to report.");
         }
         else
         {
-          this.logController.Info(CombinedLogger, "Scan Report\r\n" + scanReport);
+          this.logController.Message(CombinedLogger, "Scan Report\r\n" + scanReport);
         }
 
         this.ScanCompletedEvent?.Invoke();
@@ -283,7 +285,7 @@ namespace PodFul.WPF.Processing
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.feedCollection.UpdateFeed(feedIndex, feed);
-        this.logController.Info(CombinedLogger, "Completed.");
+        this.logController.Message(CombinedLogger, "Completed.");
       });
     }
 

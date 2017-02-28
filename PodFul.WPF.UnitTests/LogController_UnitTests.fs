@@ -12,7 +12,7 @@ type LogController_UnitTests() =
         
         let mutable testPassed = false
         try
-            let controller = new LogController(null);
+            new LogController(null) |> ignore
             testPassed <- false
         with
             | e -> 
@@ -25,10 +25,11 @@ type LogController_UnitTests() =
     member public this.``Passing a null logger reference in collection to the cstr throws meaningful exception``() =
         
         let mutable testPassed = false
+        let loggers = new Dictionary<String, ILogger>()
+        loggers.Add("Key", null)
+
         try
-            let loggers = new Dictionary<String, ILogger>()
-            loggers.Add("Key", null)
-            let controller = new LogController(loggers)
+            new LogController(loggers) |> ignore
             testPassed <- false
         with
             | e -> 
@@ -38,46 +39,20 @@ type LogController_UnitTests() =
         Assert.AreEqual(true, testPassed)
 
     [<Test>]
-    member public this.``Passing a null key reference in collection to the cstr throws meaningful exception``() =
-        
-        let mutable testPassed = false
-        try
-            let logger = new FileLogger()
-            let loggers = new Dictionary<String, ILogger>()
-            loggers.Add(null, logger)
-            let controller = new LogController(loggers)
-            testPassed <- false
-        with
-            | e -> 
-                Assert.AreEqual("Parameter 'loggers' contains null key reference.", e.Message)
-                testPassed <- true  
-
-        Assert.AreEqual(true, testPassed)
-
-    [<Test>]
     member public this.``Passing non-matching key when displaying message throws a meaningful exception``() =
         
         let mutable testPassed = false
+        let logger = new FileLogger()
+        let loggers = new Dictionary<String, ILogger>()
+        loggers.Add("Log", logger)
+        let logController = new LogController(loggers)
+
         try
-            let controller = new LogController(null);
+            logController.Message("Key", "Message")
             testPassed <- false
         with
             | e -> 
-                Assert.AreEqual("", e.Message)
-                testPassed <- true
-
-        Assert.AreEqual(true, testPassed)
-
-    [<Test>]
-    member public this.``Passing non-matching key when displaying exception throws a meaningful exception``() =
-        
-        let mutable testPassed = false
-        try
-            let controller = new LogController(null);
-            testPassed <- false
-        with
-            | e -> 
-                Assert.AreEqual("", e.Message)
+                Assert.AreEqual("LogController does not have Logger matching key 'Key'.", e.Message)
                 testPassed <- true
 
         Assert.AreEqual(true, testPassed)
@@ -86,12 +61,29 @@ type LogController_UnitTests() =
     member public this.``Passing non-matching key when getting logger throws a meaningful exception``() =
         
         let mutable testPassed = false
+        let logger = new FileLogger()
+        let loggers = new Dictionary<String, ILogger>()
+        loggers.Add("Log", logger)
+        let controller = new LogController(loggers);
+
         try
-            let controller = new LogController(null);
+            controller.GetLogger("Key") |> ignore
             testPassed <- false
         with
             | e -> 
-                Assert.AreEqual("", e.Message)
+                Assert.AreEqual("LogController does not have Logger matching key 'Key'.", e.Message)
                 testPassed <- true
 
         Assert.AreEqual(true, testPassed)
+
+    [<Test>]
+    member public this.``Passing matching key when getting logger returns logger``() =
+        
+        let expected = new FileLogger()
+        let loggers = new Dictionary<String, ILogger>()
+        loggers.Add("Key", expected)
+        let controller = new LogController(loggers);
+        
+        let actual = controller.GetLogger("Key")
+
+        Assert.AreEqual(expected, actual)
