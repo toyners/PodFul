@@ -114,7 +114,7 @@
     </Compile>
     <Compile Include="Converters\TextTruncator.cs" />
     <Compile Include="Processing\FeedScanner.cs" />
-    <Compile Include="Logging\TextAreaILogger.cs" />
+    <Compile Include="Logging\UILogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\FileLogger.cs" />
     <Compile Include="Windows\ScanningWindow.xaml.cs">

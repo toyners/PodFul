@@ -43,7 +43,7 @@ namespace PodFul.WPF.Windows
       try
       {
         var fileLogger = new FileLogger();
-        var guiLogger = new TextAreaLogger();
+        var guiLogger = new UILogger();
         var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
         this.fileDeliveryLogger = new MessagePool();
         exceptionLogger = new FileLogger();
@@ -351,7 +351,7 @@ namespace PodFul.WPF.Windows
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       downloadManager.JobCompletedEvent += JobCompletedEventHandler;
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
-      var scanningWindow = ScanningWindow.CreateWindow(feedScanner, (TextAreaLogger)this.logController.GetLogger(UiKey), this.imageResolver);
+      var scanningWindow = ScanningWindow.CreateWindow(feedScanner, (UILogger)this.logController.GetLogger(UiKey), this.imageResolver);
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
     }

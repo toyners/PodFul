@@ -110,7 +110,7 @@ type LogController_UnitTests() =
         let mutable testPassed = false
 
         try
-            let actual = controller.GetLogger<TextAreaLogger>("Key")
+            let actual = controller.GetLogger<UILogger>("Key")
             testPassed <- false
         with
         | e ->

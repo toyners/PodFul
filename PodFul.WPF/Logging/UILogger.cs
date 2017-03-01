@@ -3,7 +3,7 @@ namespace PodFul.WPF.Logging
 {
   using System;
 
-  public class TextAreaLogger : ILogger
+  public class UILogger : ILogger
   {
     #region Events
     public Action<String> PostMessage;
