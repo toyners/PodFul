@@ -36,6 +36,11 @@ namespace PodFul.WPF.Logging
       return this.loggers[key];
     }
 
+    public T GetLogger<T>(String key)
+    {
+      throw new NotImplementedException();
+    }
+
     public void Message(String key, String message)
     {
       this.GetLogger(key).Message(message);

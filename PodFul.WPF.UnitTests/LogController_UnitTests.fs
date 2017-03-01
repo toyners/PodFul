@@ -87,3 +87,34 @@ type LogController_UnitTests() =
         let actual = controller.GetLogger("Key")
 
         Assert.AreEqual(expected, actual)
+
+    [<Test>]
+    member public this.``Passing matching key when getting logger of type returns logger``() =
+        
+        let expected = new FileLogger()
+        let loggers = new Dictionary<String, ILogger>()
+        loggers.Add("Key", expected)
+        let controller = new LogController(loggers);
+        
+        let actual = controller.GetLogger<FileLogger>("Key")
+
+        Assert.AreEqual(expected, actual)
+
+    [<Test>]
+    member public this.``Passing matching key with wrong type parameter when getting logger throws a meaningful exception``() =
+        
+        let expected = new FileLogger()
+        let loggers = new Dictionary<String, ILogger>()
+        loggers.Add("Key", expected)
+        let controller = new LogController(loggers);
+        let mutable testPassed = false
+
+        try
+            let actual = controller.GetLogger<TextAreaLogger>("Key")
+            testPassed <- false
+        with
+        | e ->
+            Assert.AreEqual("", e.Message)
+            testPassed <- true
+
+        Assert.AreEqual(true, testPassed)
