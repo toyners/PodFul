@@ -25,7 +25,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public static ScanningWindow CreateWindow(FeedScanner feedScanner, GUILogger logger, IImageResolver imageResolver)
+    public static ScanningWindow CreateWindow(FeedScanner feedScanner, TextAreaLogger logger, IImageResolver imageResolver)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");

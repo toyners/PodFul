@@ -9,11 +9,11 @@ namespace PodFul.WPF.Logging
     #region Members
     private readonly FileLogger fileLogger;
 
-    private readonly GUILogger uiLogger;
+    private readonly TextAreaLogger uiLogger;
     #endregion
 
     #region Construction
-    public CombinedLogger(FileLogger fileLogger, GUILogger uiLogger)
+    public CombinedLogger(FileLogger fileLogger, TextAreaLogger uiLogger)
     {
       fileLogger.VerifyThatObjectIsNotNull("Parameter 'fileLogger' is null.");
       uiLogger.VerifyThatObjectIsNotNull("Parameter 'uiLogger' is null.");

@@ -5,7 +5,7 @@ namespace PodFul.WPF.Logging
   using System.Collections;
   using System.Collections.Generic;
 
-  public class FileDeliveryLogger : ILogger, IEnumerator, IEnumerable
+  public class MessagePool : ILogger, IEnumerator, IEnumerable
   {
     #region Fields
     private List<String> messages = new List<String>();
@@ -24,21 +24,11 @@ namespace PodFul.WPF.Logging
     #endregion
 
     #region Methods
-    public void Exception(String message)
-    {
-      this.Message(message);
-    }
-
     public void Message(String message)
     {
       this.messages.Add(message);
     }
-
-    public void Message(String message, Boolean lineBreak)
-    {
-      this.Message(message);
-    }
-
+    
     public Boolean MoveNext()
     {
       this.enumeratorIndex++;

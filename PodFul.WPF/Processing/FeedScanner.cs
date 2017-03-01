@@ -30,7 +30,7 @@ namespace PodFul.WPF.Processing
 
     private FeedCollection feedCollection;
 
-    private FileDeliveryLogger fileDeliveryLogger;
+    private MessagePool fileDeliveryLogger;
 
     private IImageResolver imageResolver;
 
@@ -46,7 +46,7 @@ namespace PodFul.WPF.Processing
       FeedCollection feedCollection,
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
-      FileDeliveryLogger fileDeliveryLogger,
+      MessagePool fileDeliveryLogger,
       ILogController logController,
       IPodcastDownloadConfirmer podcastDownloadConfirmer,
       DownloadManager downloadManager)

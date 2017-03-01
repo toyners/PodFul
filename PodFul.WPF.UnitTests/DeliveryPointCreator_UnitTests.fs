@@ -13,7 +13,7 @@ type DeliveryPointCreator_UnitTests() =
 
     [<Test>]
     member public this.``Delivery Point data list is null so no delivery points are created.``() =
-        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(null, new FileDeliveryLogger(), new FileDeliveryLogger())
+        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(null, new MessagePool(), new MessagePool())
         
         instances |> should not' (equal null)
         instances.Length |> should equal 0
@@ -22,7 +22,7 @@ type DeliveryPointCreator_UnitTests() =
     member public this.``Delivery Point data list is empty so no delivery points are created.``() =
         
         let deliveryPointData = new List<PodFul.WPF.Miscellaneous.Settings.SettingsData.DeliveryPointData>()
-        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new FileDeliveryLogger(), new FileDeliveryLogger())
+        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new MessagePool(), new MessagePool())
         
         instances |> should not' (equal null)
         instances.Length |> should equal 0
@@ -34,7 +34,7 @@ type DeliveryPointCreator_UnitTests() =
         let deliveryPointData = new List<PodFul.WPF.Miscellaneous.Settings.SettingsData.DeliveryPointData>();
         deliveryPointData.Add(disabledDeliveryPoint)
 
-        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new FileDeliveryLogger(), new FileDeliveryLogger())
+        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new MessagePool(), new MessagePool())
         
         instances |> should not' (equal null)
         instances.Length |> should equal 0
@@ -50,7 +50,7 @@ type DeliveryPointCreator_UnitTests() =
         let deliveryPointData = new List<PodFul.WPF.Miscellaneous.Settings.SettingsData.DeliveryPointData>();
         deliveryPointData.Add(deliveryPoint)
 
-        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new FileDeliveryLogger(), new FileDeliveryLogger())
+        let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new MessagePool(), new MessagePool())
         
         instances |> should not' (equal null)
         instances.Length |> should equal 1
