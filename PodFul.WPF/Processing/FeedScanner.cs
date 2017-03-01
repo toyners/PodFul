@@ -101,7 +101,7 @@ namespace PodFul.WPF.Processing
       var cancelToken = this.cancellationTokenSource.Token;
 
       // Set this outside of the scanning task because there is no guarantee that the scanning task
-      // will start before the downloading taks.
+      // will start before the downloading task.
       var isScanning = true;
       String scanReport = null;
       

@@ -5,6 +5,7 @@ namespace PodFul.WPF.Windows
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using Jabberwocky.Toolkit.Object;
   using Library;
   using Logging;
   using Processing;
@@ -26,6 +27,10 @@ namespace PodFul.WPF.Windows
     #region Construction   
     public static ScanningWindow CreateWindow(FeedScanner feedScanner, GUILogger logger, IImageResolver imageResolver)
     {
+      feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
+      logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
+      imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
+
       var processingWindow = new ScanningWindow(feedScanner);
 
       logger.PostMessage = processingWindow.PostMessage;

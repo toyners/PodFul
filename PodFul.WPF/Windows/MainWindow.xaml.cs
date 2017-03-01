@@ -16,22 +16,22 @@ namespace PodFul.WPF.Windows
   using PodFul.FileDelivery;
   using PodFul.Library;
   using PodFul.WPF.Processing;
-  using Windows;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
   public partial class MainWindow : Window
   {
+    public const String CombinedKey = "INFO+UI";
     public const String ExceptionKey = "EXCEPTION";
     public const String InfoKey = "INFO";
-    public const String CombinedKey = "INFO+UI";
+    public const String UiKey = "UI";
+
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
-    private GUILogger guiLogger;
     private LogController logController;
     private FileDeliveryLogger fileDeliveryLogger;
     private Settings settings;
@@ -43,8 +43,8 @@ namespace PodFul.WPF.Windows
       try
       {
         var fileLogger = new FileLogger();
-        this.guiLogger = new GUILogger(fileLogger);
-        var combinedLogger = new CombinedLogger(fileLogger, this.guiLogger);
+        var guiLogger = new GUILogger();
+        var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
         this.fileDeliveryLogger = new FileDeliveryLogger();
         exceptionLogger = new FileLogger();
 
@@ -338,10 +338,10 @@ namespace PodFul.WPF.Windows
 
     private void InitialiseDeliveryPoints()
     {
-      this.guiLogger.Message("Starting delivery point initialisation");
+      this.logController.Message(CombinedKey, "Starting delivery point initialisation");
       this.fileDeliverer.InitialiseDeliverypoints();
-      this.guiLogger.Message("Delivery point initialisation completed.");
-      this.guiLogger.Message(String.Empty);
+      this.logController.Message(CombinedKey, "Delivery point initialisation completed.");
+      this.logController.Message(UiKey, String.Empty);
     }
 
     private void PerformScan(Queue<Int32> feedIndexes)
@@ -351,7 +351,7 @@ namespace PodFul.WPF.Windows
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       downloadManager.JobCompletedEvent += JobCompletedEventHandler;
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
-      var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.guiLogger, this.imageResolver);
+      var scanningWindow = ScanningWindow.CreateWindow(feedScanner, (GUILogger)this.logController.GetLogger(UiKey), this.imageResolver);
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
     }
