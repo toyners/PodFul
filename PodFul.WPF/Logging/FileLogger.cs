@@ -14,12 +14,4 @@ namespace PodFul.WPF.Logging
       logger.Info(message);
     }
   }
-
-  public class ExceptionLogger : FileLogger
-  {
-    public override void Message(String message)
-    {
-      FileLogger.logger.Error(message);
-    }
-  }
 }
