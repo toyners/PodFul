@@ -133,7 +133,7 @@ namespace PodFul.WPF.Processing
 
               if (updateFeed)
               {
-                this.LogNewPodcasts(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey));
+                this.LogNewPodcasts(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey), newFeed, podcastIndexes);
               }
 
               var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
@@ -258,7 +258,7 @@ namespace PodFul.WPF.Processing
       // continuation tasks from being scheduled (and hence started)
     }
 
-    private void LogNewPodcasts(ILogger logger)
+    private void LogNewPodcasts(ILogger logger, Feed feed, List<Int32> podcastIndexes)
     {
       throw new NotImplementedException();
     }
