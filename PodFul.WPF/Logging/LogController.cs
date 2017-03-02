@@ -7,8 +7,11 @@ namespace PodFul.WPF.Logging
 
   public class LogController : ILogController
   {
+    #region Fields
     private IDictionary<String, ILogger> loggers;
+    #endregion
 
+    #region Construction
     public LogController(Dictionary<String, ILogger> loggers)
     {
       loggers.VerifyThatObjectIsNotNull("Parameter 'loggers' is null.");
@@ -23,7 +26,9 @@ namespace PodFul.WPF.Logging
 
       this.loggers = loggers;
     }
+    #endregion
 
+    #region Methods
     public ILogger GetLogger(String key)
     {
       key.VerifyThatObjectIsNotNull("Parameter 'key' is null.");
@@ -51,5 +56,6 @@ namespace PodFul.WPF.Logging
     {
       this.GetLogger(key).Message(message);
     }
+    #endregion
   }
 }

@@ -13,6 +13,7 @@ namespace PodFul.WPF.Processing
   using Library;
   using Logging;
   using Miscellaneous;
+  using Windows;
 
   /// <summary>
   /// Scans a list of feeds and collects a list of podcasts to be downloaded. Feeds with new podcasts are updated.
@@ -20,10 +21,6 @@ namespace PodFul.WPF.Processing
   public class FeedScanner
   {
     #region Fields
-    private const String CombinedLogger = "COMBINED";
-
-    private const String ExceptionLogger = "EXCEPTION";
-
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
     private DownloadManager downloadManager;
@@ -111,7 +108,7 @@ namespace PodFul.WPF.Processing
         try
         {
 
-          var combinedLogger = this.logController.GetLogger(CombinedLogger);
+          var combinedLogger = this.logController.GetLogger(MainWindow.CombinedKey);
           while (indexes.Count > 0)
           {
             Int32 feedIndex = indexes.Dequeue();
@@ -133,6 +130,11 @@ namespace PodFul.WPF.Processing
 
               var podcastIndexes = this.BuildPodcastList(feed, newFeed);
               var updateFeed = (podcastIndexes.Count > 0);
+
+              if (updateFeed)
+              {
+                this.LogNewPodcasts(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey));
+              }
 
               var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
               if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
@@ -203,7 +205,7 @@ namespace PodFul.WPF.Processing
         }
         catch (Exception exception)
         {
-          this.logController.Message(ExceptionLogger, exception.Message);
+          this.logController.Message(MainWindow.ExceptionKey, exception.Message);
         }
       }, cancelToken);
 
@@ -242,11 +244,11 @@ namespace PodFul.WPF.Processing
         // Display the final scan report.
         if (scanReport == null)
         {
-          this.logController.Message(CombinedLogger, "Nothing to report.");
+          this.logController.Message(MainWindow.CombinedKey, "Nothing to report.");
         }
         else
         {
-          this.logController.Message(CombinedLogger, "Scan Report\r\n" + scanReport);
+          this.logController.Message(MainWindow.CombinedKey, "Scan Report\r\n" + scanReport);
         }
 
         this.ScanCompletedEvent?.Invoke();
@@ -254,6 +256,11 @@ namespace PodFul.WPF.Processing
       // No cancel token since we want this task to always run regardless
       // of what happens to the other tasks. Cancelling a task will stop any
       // continuation tasks from being scheduled (and hence started)
+    }
+
+    private void LogNewPodcasts(ILogger logger)
+    {
+      throw new NotImplementedException();
     }
 
     private List<Int32> BuildPodcastList(Feed oldFeed, Feed newFeed)
@@ -285,7 +292,7 @@ namespace PodFul.WPF.Processing
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.feedCollection.UpdateFeed(feedIndex, feed);
-        this.logController.Message(CombinedLogger, "Completed.");
+        this.logController.Message(MainWindow.CombinedKey, "Completed.");
       });
     }
 
