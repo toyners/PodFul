@@ -51,7 +51,8 @@ namespace PodFul.WPF.Windows
         this.logController = new LogController(new Dictionary<String, ILogger>{
           { InfoKey, fileLogger },
           { ExceptionKey, exceptionLogger},
-          { CombinedKey, combinedLogger }});
+          { CombinedKey, combinedLogger },
+          { UiKey, guiLogger}});
 
         InitializeComponent();
 

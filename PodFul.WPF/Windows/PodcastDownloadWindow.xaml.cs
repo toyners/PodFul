@@ -112,8 +112,8 @@ namespace PodFul.WPF.Windows
         {
           // If the processing is happening then cancel it before allowing the window to close.
           e.Cancel = true;
-          this.CancelAllDownloadJobs();
           this.isClosing = true;
+          this.CancelAllDownloadJobs();
         }
         else if (this.processingState == ProcessingStates.Cancelling)
         {

@@ -16,10 +16,20 @@ namespace PodFul.WPF.Windows
   /// </summary>
   public partial class ScanningWindow : Window
   {
+    #region Enums
+    private enum ProcessingStates
+    {
+      Stopped,
+      Running,
+      Cancelling
+    }
+    #endregion
+
     #region Fields
     private FeedScanner feedScanner;
     private Boolean isLoaded;
-    private Boolean isProcessing;
+    //private Boolean isProcessing;
+    private ProcessingStates processingState;
     private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
     #endregion
@@ -74,18 +84,19 @@ namespace PodFul.WPF.Windows
 
     private void CancelScanning()
     {
-      this.CommandButton.IsEnabled = false;
+      this.processingState = ProcessingStates.Cancelling;
       this.CommandButton.Content = "Cancelling";
+      this.CommandButton.IsEnabled = false;
       this.feedScanner.Cancel();
     }
 
     private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
-      if (this.isProcessing)
+      if (this.processingState == ProcessingStates.Running)
       {
         this.CancelScanning();
       }
-      else
+      else if (this.processingState == ProcessingStates.Stopped)
       {
         this.Close();
       }
@@ -103,10 +114,12 @@ namespace PodFul.WPF.Windows
 
     private void JobStartedEventHandler(DownloadJob job)
     {
-      /*Application.Current.Dispatcher.Invoke(() =>
+      Application.Current.Dispatcher.Invoke(() =>
       {
-        this.PodcastList.ScrollIntoView(job);
-      });*/
+        var index = this.feedScanner.Jobs.IndexOf(job);
+        var itemContainer = (FrameworkElement)this.PodcastList.ItemContainerGenerator.ContainerFromIndex(index);
+        itemContainer.BringIntoView();
+      });
     }
 
     private void InitializeCounts()
@@ -116,17 +129,21 @@ namespace PodFul.WPF.Windows
 
     private void ScanCompletedEventHandler()
     {
-      this.isProcessing = false;
+      this.processingState = ProcessingStates.Stopped;
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.CommandButton.IsEnabled = true;
-        this.CommandButton.Content = "Close";
-
         if (this.isClosing)
         {
+          // Window was set to close while processing (or cancelling) was happening so now that the processing
+          // has finished complete the window close.
+          this.isClosing = false;
           this.Close();
+          return;
         }
+
+        this.CommandButton.IsEnabled = true;
+        this.CommandButton.Content = "Close";
       });
     }
 
@@ -146,12 +163,21 @@ namespace PodFul.WPF.Windows
         e.Cancel = true;
       }
 
-      if (this.isProcessing && !this.isClosing)
+      if (!this.isClosing)
       {
-        // If the scanning is happening then cancel it before allowing the window to close.
-        e.Cancel = true;
-        this.isClosing = true;
-        this.CancelScanning();
+        if (this.processingState == ProcessingStates.Running)
+        {
+          // If the scanning is happening then cancel it before allowing the window to close.
+          e.Cancel = true;
+          this.isClosing = true;
+          this.CancelScanning();
+        }
+        if (this.processingState == ProcessingStates.Cancelling)
+        {
+          // Already cancelled via button so don't close until cancelling is complete.
+          e.Cancel = true;
+          this.isClosing = true;
+        }
       }
     }
 
@@ -162,7 +188,7 @@ namespace PodFul.WPF.Windows
         // Ensure this is only called once.
         this.InitializeCounts();
         this.isLoaded = true;
-        this.isProcessing = true;
+        this.processingState = ProcessingStates.Running;
         this.feedScanner.Process();
       }
     }
