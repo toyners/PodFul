@@ -113,7 +113,7 @@ type LogController_UnitTests() =
             testPassed <- false
         with
         | e ->
-            Assert.AreEqual("Type of value (FileLogger) does not match parameter type (UILogger).", e.Message)
+            Assert.AreEqual("Type of value (PodFul.WPF.Logging.FileLogger) does not match parameter type (PodFul.WPF.Logging.UILogger).", e.Message)
             testPassed <- true
 
         Assert.AreEqual(true, testPassed)

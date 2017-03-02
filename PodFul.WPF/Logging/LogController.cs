@@ -36,9 +36,15 @@ namespace PodFul.WPF.Logging
       return this.loggers[key];
     }
 
-    public T GetLogger<T>(String key)
+    public T GetLogger<T>(String key) where T : class
     {
-      throw new NotImplementedException();
+      var value = GetLogger(key);
+      if (value is T)
+      {
+        return (T)value;
+      }
+
+      throw new Exception(String.Format("Type of value ({0}) does not match parameter type ({1}).", value.GetType(), typeof(T)));
     }
 
     public void Message(String key, String message)
