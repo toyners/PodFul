@@ -103,9 +103,8 @@ type LogController_UnitTests() =
     [<Test>]
     member public this.``Passing matching key with wrong type parameter when getting logger throws a meaningful exception``() =
         
-        let expected = new FileLogger()
         let loggers = new Dictionary<String, ILogger>()
-        loggers.Add("Key", expected)
+        loggers.Add("Key", new FileLogger())
         let controller = new LogController(loggers);
         let mutable testPassed = false
 
@@ -114,7 +113,7 @@ type LogController_UnitTests() =
             testPassed <- false
         with
         | e ->
-            Assert.AreEqual("", e.Message)
+            Assert.AreEqual("Type of value (FileLogger) does not match parameter type (UILogger).", e.Message)
             testPassed <- true
 
         Assert.AreEqual(true, testPassed)
