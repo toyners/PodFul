@@ -100,7 +100,7 @@ namespace PodFul.WPF.Processing
       // Set this outside of the scanning task because there is no guarantee that the scanning task
       // will start before the downloading task.
       var isScanning = true;
-      String scanReport = null;
+      var scanReport = new MessageBuilder();
       
       Task scanningTask = Task.Factory.StartNew(
       () =>
@@ -140,7 +140,7 @@ namespace PodFul.WPF.Processing
               {
                 var feedReport = podcastIndexes.Count + " podcasts found";
                 combinedLogger.Message(feedReport + " (Scan cancelled).\r\n");
-                scanReport += feedReport + " for \"" + feed.Title + "\".";
+                scanReport.Message(feedReport + " for \"" + feed.Title + "\".");
                 this.cancellationTokenSource.Cancel();
 
                 break;
@@ -161,7 +161,7 @@ namespace PodFul.WPF.Processing
                 var feedReport = podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found";
                 var downloadingReport = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
                 message += feedReport + downloadingReport + ".";
-                scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
+                scanReport.Message(feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n");
               }
 
               combinedLogger.Message(message);
@@ -194,7 +194,7 @@ namespace PodFul.WPF.Processing
             catch (Exception exception)
             {
               var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
-              scanReport += exceptionReport;
+              scanReport.Message(exceptionReport);
               combinedLogger.Message(exceptionReport);
             }
           }
@@ -226,12 +226,12 @@ namespace PodFul.WPF.Processing
         // Collate the file delivery status
         foreach (var deliveryLine in this.fileDeliveryLogger)
         {
-          scanReport += deliveryLine + "\r\n";
+          scanReport.Message(deliveryLine + "\r\n");
         }
 
         if (tasks[0].IsCanceled || tasks[1].IsCanceled)
         {
-          scanReport += "\r\nCANCELLED";
+          scanReport.Message("\r\nCANCELLED");
           this.SetWindowTitleEvent?.Invoke(title + " - CANCELLED");
         }
         else
@@ -240,13 +240,14 @@ namespace PodFul.WPF.Processing
         }
 
         // Display the final scan report.
-        if (scanReport == null)
+        var text = scanReport.Text;
+        if (text == null)
         {
           this.logController.Message(MainWindow.CombinedKey, "Nothing to report.");
         }
         else
         {
-          this.logController.Message(MainWindow.CombinedKey, "Scan Report\r\n" + scanReport);
+          this.logController.Message(MainWindow.CombinedKey, "Scan Report\r\n" + text);
         }
 
         this.ScanCompletedEvent?.Invoke();

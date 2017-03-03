@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logging\CombinedLogger.cs" />
+    <Compile Include="Logging\MessageBuilder.cs" />
     <Compile Include="Logging\ExceptionLogger.cs" />
     <Compile Include="Logging\LogController.cs" />
     <Compile Include="Logging\ILogController.cs" />
