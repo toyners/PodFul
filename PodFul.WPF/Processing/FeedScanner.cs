@@ -151,7 +151,7 @@ namespace PodFul.WPF.Processing
                 newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
               }
 
-              message = "Complete - ";
+              String message = "Complete - ";
               if (podcastIndexes.Count == 0)
               {
                 message += "No new podcasts found.";
