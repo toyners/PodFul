@@ -107,7 +107,6 @@ namespace PodFul.WPF.Processing
       {
         try
         {
-
           var combinedLogger = this.logController.GetLogger(MainWindow.CombinedKey);
           while (indexes.Count > 0)
           {
@@ -133,7 +132,7 @@ namespace PodFul.WPF.Processing
 
               if (updateFeed)
               {
-                this.LogNewPodcasts(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey), newFeed, podcastIndexes);
+                this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey), newFeed, podcastIndexes);
               }
 
               var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
@@ -152,15 +151,14 @@ namespace PodFul.WPF.Processing
                 newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
               }
 
-              String message = "Complete - ";
+              message = "Complete - ";
               if (podcastIndexes.Count == 0)
               {
                 message += "No new podcasts found.";
               }
               else
               {
-                var feedReport = podcastIndexes.Count + " podcast" +
-                  (podcastIndexes.Count != 1 ? "s" : String.Empty) + " found";
+                var feedReport = podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found";
                 var downloadingReport = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
                 message += feedReport + downloadingReport + ".";
                 scanReport += feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n";
@@ -258,9 +256,16 @@ namespace PodFul.WPF.Processing
       // continuation tasks from being scheduled (and hence started)
     }
 
-    private void LogNewPodcasts(ILogger logger, Feed feed, List<Int32> podcastIndexes)
+    private void LogNewPodcastsFromFeed(ILogger logger, Feed feed, List<Int32> podcastIndexes)
     {
-      throw new NotImplementedException();
+      logger.Message(podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found for feed '" + feed.Title + "'.\r\n");
+      foreach (var podcastIndex in podcastIndexes)
+      {
+        var podcast = feed.Podcasts[podcastIndex];
+        logger.Message("New podcast details. Title: '" + podcast.Title + "', Description: '" + podcast.Description + 
+          "', Publishing Date: '" + podcast.PubDate + "', URL: '" + podcast.URL + 
+          "', Image URL: '" + podcast.ImageURL + "'.\r\n");
+      }
     }
 
     private List<Int32> BuildPodcastList(Feed oldFeed, Feed newFeed)

@@ -77,7 +77,7 @@
     <Compile Include="Logging\ExceptionLogger.cs" />
     <Compile Include="Logging\LogController.cs" />
     <Compile Include="Logging\ILogController.cs" />
-    <Compile Include="Logging\MemoryPool.cs" />
+    <Compile Include="Logging\MessagePool.cs" />
     <Compile Include="Miscellaneous\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="UI Support\JobCountStatusBarDisplayComponent.cs" />
