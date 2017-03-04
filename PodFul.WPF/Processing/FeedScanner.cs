@@ -107,7 +107,6 @@ namespace PodFul.WPF.Processing
       {
         try
         {
-          var combinedLogger = this.logController.GetLogger(MainWindow.CombinedKey);
           while (indexes.Count > 0)
           {
             Int32 feedIndex = indexes.Dequeue();
@@ -117,7 +116,8 @@ namespace PodFul.WPF.Processing
 
             var feed = this.feedCollection.Feeds[feedIndex];
 
-            combinedLogger.Message("Scanning \"" + feed.Title + "\".");
+            var message = "Scanning \"" + feed.Title + "\".";
+            this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
 
             Feed newFeed = null;
             try
@@ -125,7 +125,8 @@ namespace PodFul.WPF.Processing
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
               newFeed = FeedFunctions.UpdateFeedFromFile(feed, feedFilePath, this.imageResolver, cancelToken);
 
-              combinedLogger.Message("Comparing podcasts ... ");
+              message = "Searching for new podcasts ... ";
+              this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
 
               var podcastIndexes = this.BuildPodcastList(feed, newFeed);
               var updateFeed = (podcastIndexes.Count > 0);
@@ -138,11 +139,11 @@ namespace PodFul.WPF.Processing
               var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
               if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
               {
-                var feedReport = podcastIndexes.Count + " podcasts found";
-                combinedLogger.Message(feedReport + " (Scan cancelled).\r\n");
-                scanReport.Message(feedReport + " for \"" + feed.Title + "\".");
+                var feedMessage = podcastIndexes.Count + " podcasts found";
+                this.logController.Message(MainWindow.InfoKey, feedMessage + " (Scan cancelled).");
+                this.logController.Message(MainWindow.UiKey, feedMessage + " (Scan cancelled).\r\n");
+                scanReport.Message(feedMessage + " for \"" + feed.Title + "\".");
                 this.cancellationTokenSource.Cancel();
-
                 break;
               }
 
@@ -151,26 +152,28 @@ namespace PodFul.WPF.Processing
                 newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
               }
 
-              String message = "Complete - ";
+              message = "Completed - ";
               if (podcastIndexes.Count == 0)
               {
                 message += "No new podcasts found.";
               }
               else
               {
-                var feedReport = podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found";
-                var downloadingReport = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
-                message += feedReport + downloadingReport + ".";
-                scanReport.Message(feedReport + " for \"" + feed.Title + "\"" + downloadingReport + ".\r\n");
+                var feedMessage = podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found";
+                var downloadingSkippedMessage = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
+                message += feedMessage + downloadingSkippedMessage + ".";
+                scanReport.Message(feedMessage + " for \"" + feed.Title + "\"" + downloadingSkippedMessage + ".\r\n");
               }
 
-              combinedLogger.Message(message);
+              this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
 
-              combinedLogger.Message(String.Format("Updating \"{0}\" ... ", feed.Title));
+              message = String.Format("Updating \"{0}\" ... ", feed.Title);
+              this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
 
               this.FeedScanCompleted(feedIndex, newFeed);
 
-              combinedLogger.Message(String.Empty);
+              message = "Completed.";
+              this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
 
               if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
               {
@@ -193,9 +196,9 @@ namespace PodFul.WPF.Processing
             }
             catch (Exception exception)
             {
-              var exceptionReport = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
-              scanReport.Message(exceptionReport);
-              combinedLogger.Message(exceptionReport);
+              var exceptionMessage = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
+              scanReport.Message(exceptionMessage);
+              this.logController.Message(MainWindow.UiKey, exceptionMessage + "\r\n").Message(MainWindow.ExceptionKey, exceptionMessage);
             }
           }
 
@@ -243,11 +246,11 @@ namespace PodFul.WPF.Processing
         var text = scanReport.Text;
         if (text == null)
         {
-          this.logController.Message(MainWindow.CombinedKey, "Nothing to report.");
+          this.logController.Message(MainWindow.UiKey, "Nothing to report.");
         }
         else
         {
-          this.logController.Message(MainWindow.CombinedKey, "Scan Report\r\n" + text);
+          this.logController.Message(MainWindow.UiKey, "Scan Report\r\n" + text);
         }
 
         this.ScanCompletedEvent?.Invoke();
@@ -259,13 +262,12 @@ namespace PodFul.WPF.Processing
 
     private void LogNewPodcastsFromFeed(ILogger logger, Feed feed, List<Int32> podcastIndexes)
     {
-      logger.Message(podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found for feed '" + feed.Title + "'.\r\n");
       foreach (var podcastIndex in podcastIndexes)
       {
         var podcast = feed.Podcasts[podcastIndex];
         logger.Message("New podcast details. Title: '" + podcast.Title + "', Description: '" + podcast.Description + 
           "', Publishing Date: '" + podcast.PubDate + "', URL: '" + podcast.URL + 
-          "', Image URL: '" + podcast.ImageURL + "'.\r\n");
+          "', Image URL: '" + podcast.ImageURL + "'.");
       }
     }
 
@@ -298,7 +300,6 @@ namespace PodFul.WPF.Processing
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.feedCollection.UpdateFeed(feedIndex, feed);
-        this.logController.Message(MainWindow.CombinedKey, "Completed.");
       });
     }
 

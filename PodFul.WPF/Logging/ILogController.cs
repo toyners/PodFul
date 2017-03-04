@@ -9,6 +9,6 @@ namespace PodFul.WPF.Logging
 
     T GetLogger<T>(String key) where T : class;
 
-    void Message(String key, String message);
+    ILogController Message(String key, String message);
   }
 }

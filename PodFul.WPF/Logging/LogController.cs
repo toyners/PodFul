@@ -52,9 +52,10 @@ namespace PodFul.WPF.Logging
       throw new Exception(String.Format("Type of value ({0}) does not match parameter type ({1}).", value.GetType(), typeof(T)));
     }
 
-    public void Message(String key, String message)
+    public ILogController Message(String key, String message)
     {
       this.GetLogger(key).Message(message);
+      return this;
     }
     #endregion
   }
