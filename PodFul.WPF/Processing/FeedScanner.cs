@@ -265,9 +265,17 @@ namespace PodFul.WPF.Processing
       foreach (var podcastIndex in podcastIndexes)
       {
         var podcast = feed.Podcasts[podcastIndex];
-        logger.Message("New podcast details. Title: '" + podcast.Title + "', Description: '" + podcast.Description + 
-          "', Publishing Date: '" + podcast.PubDate + "', URL: '" + podcast.URL + 
-          "', Image URL: '" + podcast.ImageURL + "'.");
+        var message = "New podcast details. Title: '" + podcast.Title +
+          "', Description: '" + podcast.Description +
+          "', Publishing Date: '" + podcast.PubDate +
+          "', URL: '" + podcast.URL + "'";
+
+        if (!String.IsNullOrEmpty(podcast.ImageURL))
+        {
+          message += ", Image URL: '" + podcast.ImageURL + "'";
+        }
+
+        logger.Message(message + ".");
       }
     }
 
