@@ -40,15 +40,15 @@ namespace PodFul.WPF.Windows
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
       imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
 
-      var processingWindow = new ScanningWindow(feedScanner);
+      var scanningWindow = new ScanningWindow(feedScanner);
 
-      logger.PostMessage = processingWindow.PostMessage;
-      imageResolver.PostMessage = processingWindow.PostMessage;
-      feedScanner.SetWindowTitleEvent = processingWindow.SetWindowTitleEventHandler;
-      feedScanner.ScanCompletedEvent += processingWindow.ScanCompletedEventHandler; 
-      feedScanner.UpdateCountsEvent += processingWindow.UpdateCountsEventHandler;
-      feedScanner.JobStartedEvent += processingWindow.JobStartedEventHandler;
-      return processingWindow;
+      logger.PostMessage = scanningWindow.PostMessage;
+      imageResolver.PostMessage = scanningWindow.PostMessage;
+      feedScanner.SetWindowTitleEvent = scanningWindow.SetWindowTitleEventHandler;
+      feedScanner.ScanCompletedEvent += scanningWindow.ScanCompletedEventHandler; 
+      feedScanner.UpdateCountsEvent += scanningWindow.UpdateCountsEventHandler;
+      feedScanner.JobStartedEvent += scanningWindow.JobStartedEventHandler;
+      return scanningWindow;
     }
 
     public ScanningWindow(FeedScanner feedScanner)
