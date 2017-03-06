@@ -28,7 +28,6 @@ namespace PodFul.WPF.Windows
     #region Fields
     private FeedScanner feedScanner;
     private Boolean isLoaded;
-    //private Boolean isProcessing;
     private ProcessingStates processingState;
     private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
