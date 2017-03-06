@@ -32,7 +32,7 @@ namespace PodFul.WPF.Processing
 
     private Feed feed;
 
-    private FeedCollection feedCollection;
+    private IFeedCollection feedCollection;
 
     private Boolean fileSizeNotKnown;
 
@@ -58,7 +58,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public DownloadJob(Podcast podcast, Feed feed, FeedCollection feedCollection, IImageResolver imageResolver)
+    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, IImageResolver imageResolver)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;

@@ -28,7 +28,7 @@ namespace PodFul.WPF.Windows
     public const String UiKey = "UI";
 
     private const String defaultImageName = "Question-Mark.jpg";
-    private FeedCollection feedCollection;
+    private FeedUICollection feedCollection;
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
@@ -63,7 +63,8 @@ namespace PodFul.WPF.Windows
         var feedDirectory = PathOperations.CompleteDirectoryPath(ConfigurationManager.AppSettings["FeedDirectory"]);
         DirectoryOperations.EnsureDirectoryExists(feedDirectory);
         var feedStorage = new JSONFileStorage(feedDirectory);
-        this.feedCollection = new FeedCollection(feedStorage);
+        FeedCollection fc = new FeedCollection(feedStorage);
+        this.feedCollection = new FeedUICollection(fc);
 
         var imageDirectory = Path.Combine(feedDirectory, "Images");
         DirectoryOperations.EnsureDirectoryExists(imageDirectory);

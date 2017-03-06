@@ -25,7 +25,7 @@ namespace PodFul.WPF.Processing
 
     private DownloadManager downloadManager;
 
-    private FeedCollection feedCollection;
+    private IFeedCollection feedCollection;
 
     private MessagePool fileDeliveryLogger;
 
@@ -40,7 +40,7 @@ namespace PodFul.WPF.Processing
 
     #region Construction
     public FeedScanner(
-      FeedCollection feedCollection,
+      IFeedCollection feedCollection,
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
       MessagePool fileDeliveryLogger,
@@ -114,8 +114,8 @@ namespace PodFul.WPF.Processing
             title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
             this.SetWindowTitleEvent?.Invoke(title);
 
-            var feed = this.feedCollection.Feeds[feedIndex];
-
+            //var feed = this.feedCollection.Feeds[feedIndex];
+            Feed feed = null;
             var message = "Scanning \"" + feed.Title + "\".";
             this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
 
@@ -307,7 +307,7 @@ namespace PodFul.WPF.Processing
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.feedCollection.UpdateFeed(feedIndex, feed);
+        this.feedCollection.UpdateFeed(feed);
       });
     }
 
