@@ -5,8 +5,7 @@ namespace PodFul.WPF.Miscellaneous
   using Jabberwocky.Toolkit.Object;
 
   /// <summary>
-  /// Thin container that combines the feed storage with the observable collection used as the source
-  /// for the GUI feed list.
+  /// Thin container that wraps feed storage.
   /// </summary>
   public class FeedCollection : IFeedCollection
   {
