@@ -27,11 +27,11 @@ namespace PodFul.WPF.Processing
 
     private IFeedCollection feedCollection;
 
+    private Queue<Int32> feedIndexes;
+
     private MessagePool fileDeliveryLogger;
 
     private IImageResolver imageResolver;
-
-    private Queue<Int32> indexes;
 
     private ILogController logController;
 
@@ -49,7 +49,7 @@ namespace PodFul.WPF.Processing
       DownloadManager downloadManager)
     {
       this.feedCollection = feedCollection;
-      this.indexes = feedIndexes;
+      this.feedIndexes = feedIndexes;
       this.imageResolver = imageResolver;
       this.fileDeliveryLogger = fileDeliveryLogger;
       this.logController = logController;
@@ -91,7 +91,7 @@ namespace PodFul.WPF.Processing
 
     public void Process()
     {
-      var feedTotal = (UInt32)this.indexes.Count;
+      var feedTotal = (UInt32)this.feedCollection.Count;
       var title = "Scanning " + feedTotal + " feed".Pluralize(feedTotal);
       this.SetWindowTitleEvent?.Invoke(title);
 
@@ -107,15 +107,14 @@ namespace PodFul.WPF.Processing
       {
         try
         {
-          while (indexes.Count > 0)
+          while (this.feedIndexes.Count > 0)
           {
-            Int32 feedIndex = indexes.Dequeue();
-
-            title = "Scanning " + (feedTotal - indexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
+            Int32 feedIndex = this.feedIndexes.Dequeue();
+            title = "Scanning " + (feedTotal - this.feedIndexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
             this.SetWindowTitleEvent?.Invoke(title);
 
-            //var feed = this.feedCollection.Feeds[feedIndex];
-            Feed feed = null;
+            var feed = this.feedCollection[feedIndex];
+
             var message = "Scanning \"" + feed.Title + "\".";
             this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
 
@@ -170,7 +169,7 @@ namespace PodFul.WPF.Processing
               message = String.Format("Updating \"{0}\" ... ", feed.Title);
               this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
 
-              this.FeedScanCompleted(feedIndex, newFeed);
+              this.FeedScanCompleted(newFeed);
 
               message = "Completed.";
               this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
@@ -303,7 +302,7 @@ namespace PodFul.WPF.Processing
       return podcastIndexes;
     }
 
-    private void FeedScanCompleted(Int32 feedIndex, Feed feed)
+    private void FeedScanCompleted(/*Int32 feedIndex,*/ Feed feed)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {

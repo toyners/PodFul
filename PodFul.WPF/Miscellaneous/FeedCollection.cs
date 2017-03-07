@@ -3,6 +3,8 @@ namespace PodFul.WPF.Miscellaneous
 {
   using Library;
   using Jabberwocky.Toolkit.Object;
+  using System;
+  using System.Collections.ObjectModel;
 
   /// <summary>
   /// Thin container that wraps feed storage.
@@ -22,7 +24,29 @@ namespace PodFul.WPF.Miscellaneous
       {
         this.feedStorage.Open();
       }
+
+      this.ObservableFeeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
     }
+    #endregion
+
+    #region Properties
+    public Feed this[Int32 index]
+    {
+      get
+      {
+        return this.ObservableFeeds[index];
+      }
+    }
+
+    public Int32 Count
+    {
+      get
+      {
+        return this.ObservableFeeds.Count;
+      }
+    }
+
+    public ObservableCollection<Feed> ObservableFeeds { get; private set; }
     #endregion
 
     #region Methods
@@ -43,6 +67,12 @@ namespace PodFul.WPF.Miscellaneous
     public void UpdateFeed(Feed feed)
     {
       this.feedStorage.Update(feed);
+
+      // Triggering changed event on the ObservableCollection by
+      // removing and adding since reassigning does not work.
+      var index = this.ObservableFeeds.IndexOf(feed);
+      this.ObservableFeeds.RemoveAt(index);
+      this.ObservableFeeds.Insert(index, feed);
     }
     #endregion
   }

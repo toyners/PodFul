@@ -28,7 +28,7 @@ namespace PodFul.WPF.Windows
     public const String UiKey = "UI";
 
     private const String defaultImageName = "Question-Mark.jpg";
-    private FeedUICollection feedCollection;
+    private FeedCollection feedCollection;
     private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
@@ -63,8 +63,7 @@ namespace PodFul.WPF.Windows
         var feedDirectory = PathOperations.CompleteDirectoryPath(ConfigurationManager.AppSettings["FeedDirectory"]);
         DirectoryOperations.EnsureDirectoryExists(feedDirectory);
         var feedStorage = new JSONFileStorage(feedDirectory);
-        FeedCollection fc = new FeedCollection(feedStorage);
-        this.feedCollection = new FeedUICollection(fc);
+        this.feedCollection = new FeedCollection(feedStorage);
 
         var imageDirectory = Path.Combine(feedDirectory, "Images");
         DirectoryOperations.EnsureDirectoryExists(imageDirectory);
@@ -77,11 +76,11 @@ namespace PodFul.WPF.Windows
 
         this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath, true);
 
-        this.FeedList.ItemsSource = feedCollection.Feeds;
-        if (this.feedCollection.Feeds.Count > 0)
+        this.FeedList.ItemsSource = feedCollection.ObservableFeeds;
+        if (this.feedCollection.Count > 0)
         {
           this.FeedList.SelectedIndex = 0;
-          this.currentFeed = this.feedCollection.Feeds[0];
+          this.currentFeed = this.feedCollection[0];
           this.ScanButton.IsEnabled = true;
         }
 
@@ -188,7 +187,7 @@ namespace PodFul.WPF.Windows
       this.feedCollection.RemoveFeed(this.currentFeed);
       this.logController.Message(InfoKey, String.Format("'{0}' removed.", title));
 
-      if (this.feedCollection.Feeds.Count == 0)
+      if (this.feedCollection.Count == 0)
       {
         this.FeedList.SelectedIndex = -1;
         this.ScanButton.IsEnabled = false;
@@ -229,7 +228,7 @@ namespace PodFul.WPF.Windows
     private Queue<Int32> GetIndexesForAllFeeds()
     {
       var feedIndexes = new Queue<Int32>();
-      for (Int32 i = 0; i < this.feedCollection.Feeds.Count; i++)
+      for (Int32 i = 0; i < this.feedCollection.Count; i++)
       {
         feedIndexes.Enqueue(i);
       }
@@ -314,7 +313,7 @@ namespace PodFul.WPF.Windows
       this.RemoveButton.IsEnabled = true;
       this.PodcastsButton.IsEnabled = true;
 
-      var feed = this.feedCollection.Feeds[index];
+      var feed = this.feedCollection[index];
       if (feed == this.currentFeed)
       {
         return;
