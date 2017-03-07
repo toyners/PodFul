@@ -36,7 +36,7 @@ namespace PodFul.WPF.Windows
       InitializeComponent();
 
       this.downloadManager = downloadManager;
-      this.downloadManager.AllDownloadsCompletedEvent += this.WorkCompleted;
+      this.downloadManager.AllJobsFinishedEvent += this.WorkCompleted;
       this.downloadManager.JobStartedEvent += this.UpdateCounts;
       this.downloadManager.JobFinishedEvent += this.UpdateCounts;
 

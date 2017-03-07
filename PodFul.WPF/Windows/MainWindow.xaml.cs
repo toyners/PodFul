@@ -275,7 +275,7 @@ namespace PodFul.WPF.Windows
       if (deliverManualDownloadsToDeliveryPoints)
       {
         this.InitialiseDeliveryPoints();
-        podcastDownloadManager.JobCompletedEvent += JobCompletedEventHandler;
+        podcastDownloadManager.JobCompletedSuccessfullyEvent += JobCompletedEventHandler;
       }
 
       podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
@@ -350,7 +350,7 @@ namespace PodFul.WPF.Windows
       this.InitialiseDeliveryPoints();
 
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
-      downloadManager.JobCompletedEvent += JobCompletedEventHandler;
+      downloadManager.JobCompletedSuccessfullyEvent += JobCompletedEventHandler;
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = ScanningWindow.CreateWindow(feedScanner, this.logController.GetLogger<UILogger>(UiKey), this.imageResolver);
       scanningWindow.Owner = this;

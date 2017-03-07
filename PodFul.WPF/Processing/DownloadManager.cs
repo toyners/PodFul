@@ -54,9 +54,9 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Events
-    public event Action AllDownloadsCompletedEvent;
+    public event Action AllJobsFinishedEvent;
 
-    public event Action<DownloadJob> JobCompletedEvent;
+    public event Action<DownloadJob> JobCompletedSuccessfullyEvent;
 
     public event Action<DownloadJob> JobFinishedEvent;
 
@@ -140,7 +140,7 @@ namespace PodFul.WPF.Processing
         if (this.currentDownloads == 0)
         {
           // All current downloads have finished so nothing more to do.
-          AllDownloadsCompletedEvent?.Invoke();
+          AllJobsFinishedEvent?.Invoke();
         }
 
         return;
@@ -195,7 +195,7 @@ namespace PodFul.WPF.Processing
           try
           {
             job.DownloadCompleted();
-            this.JobCompletedEvent?.Invoke(job);
+            this.JobCompletedSuccessfullyEvent?.Invoke(job);
             this.CompletedJobsCount++;
           }
           catch (Exception e)
