@@ -34,25 +34,12 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public static ScanningWindow CreateWindow(FeedScanner feedScanner, UILogger logger, IImageResolver imageResolver)
+    public ScanningWindow(FeedScanner feedScanner, UILogger logger, IImageResolver imageResolver)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
       imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
 
-      var scanningWindow = new ScanningWindow(feedScanner);
-
-      logger.PostMessage = scanningWindow.PostMessage;
-      imageResolver.PostMessage = scanningWindow.PostMessage;
-      feedScanner.SetWindowTitleEvent = scanningWindow.SetWindowTitleEventHandler;
-      feedScanner.ScanCompletedEvent += scanningWindow.ScanCompletedEventHandler; 
-      feedScanner.UpdateCountsEvent += scanningWindow.UpdateCountsEventHandler;
-      feedScanner.JobStartedEvent += scanningWindow.JobStartedEventHandler;
-      return scanningWindow;
-    }
-
-    public ScanningWindow(FeedScanner feedScanner)
-    {
       this.InitializeComponent();
 
       this.feedScanner = feedScanner;
@@ -60,6 +47,13 @@ namespace PodFul.WPF.Windows
 
       var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay);
+
+      logger.PostMessage = this.PostMessage;
+      imageResolver.PostMessage = this.PostMessage;
+      feedScanner.SetWindowTitleEvent = this.SetWindowTitleEventHandler;
+      feedScanner.ScanCompletedEvent += this.ScanCompletedEventHandler;
+      feedScanner.UpdateCountsEvent += this.UpdateCountsEventHandler;
+      feedScanner.JobStartedEvent += this.JobStartedEventHandler;
     }
     #endregion
 
