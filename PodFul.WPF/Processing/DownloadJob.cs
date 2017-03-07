@@ -151,6 +151,7 @@ namespace PodFul.WPF.Processing
 
     public StatusTypes Status
     {
+      get { return this.status; }
       set
       {
         this.status = value;

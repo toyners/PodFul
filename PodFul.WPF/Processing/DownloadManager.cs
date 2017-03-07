@@ -61,12 +61,14 @@ namespace PodFul.WPF.Processing
     public event Action<DownloadJob> JobFinishedEvent;
 
     public event Action<DownloadJob> JobStartedEvent;
+
+    public event Action<DownloadJob> JobQueuedEvent;
     #endregion
 
     #region Methods
     public void AddJob(DownloadJob job)
     {
-      this.waitingJobs.Enqueue(job);
+      this.QueueJob(job);
 
       Application.Current.Dispatcher.Invoke(() =>
       {
@@ -78,7 +80,7 @@ namespace PodFul.WPF.Processing
     {
       foreach (var job in jobs)
       {
-        this.waitingJobs.Enqueue(job);
+        this.QueueJob(job);
         this.Jobs.Add(job);
       }
     }
@@ -105,7 +107,7 @@ namespace PodFul.WPF.Processing
     {
       while (this.GotWaitingJobs && this.currentDownloads < this.concurrentDownloads)
       {
-        StartDownload();
+        this.StartDownload();
       }
     }
 
@@ -131,6 +133,12 @@ namespace PodFul.WPF.Processing
       });
     }
 
+    private void QueueJob(DownloadJob job)
+    {
+      this.JobQueuedEvent?.Invoke(job);
+      this.waitingJobs.Enqueue(job);
+    }
+
     private void StartDownload()
     {
       if (this.waitingJobs.Count == 0)
@@ -140,7 +148,7 @@ namespace PodFul.WPF.Processing
         if (this.currentDownloads == 0)
         {
           // All current downloads have finished so nothing more to do.
-          AllJobsFinishedEvent?.Invoke();
+          this.AllJobsFinishedEvent?.Invoke();
         }
 
         return;

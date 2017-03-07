@@ -55,9 +55,6 @@ namespace PodFul.WPF.Processing
       this.logController = logController;
       this.podcastDownloadConfirmer = podcastDownloadConfirmer;
       this.downloadManager = downloadManager;
-      this.downloadManager.JobStartedEvent += this.UpdateCounts;
-      this.downloadManager.JobStartedEvent += this.JobStartedEventHandler;
-      this.downloadManager.JobFinishedEvent += this.UpdateCounts;
     }
     #endregion
 
@@ -70,7 +67,7 @@ namespace PodFul.WPF.Processing
 
     public event Action ScanCompletedEvent;
 
-    public event Action<Int32, Int32, Int32, Int32, Int32> UpdateCountsEvent;
+    public event Action<DownloadJob> JobFinishedEvent;
 
     public event Action<DownloadJob> JobStartedEvent;
     #endregion
@@ -302,26 +299,12 @@ namespace PodFul.WPF.Processing
       return podcastIndexes;
     }
 
-    private void FeedScanCompleted(/*Int32 feedIndex,*/ Feed feed)
+    private void FeedScanCompleted(Feed feed)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.feedCollection.UpdateFeed(feed);
       });
-    }
-
-    private void JobStartedEventHandler(DownloadJob job)
-    {
-      this.JobStartedEvent?.Invoke(job);
-    }
-
-    private void UpdateCounts(DownloadJob job)
-    {
-      this.UpdateCountsEvent?.Invoke(this.downloadManager.WaitingJobsCount, 
-        this.downloadManager.ProcessingJobsCount,
-        this.downloadManager.CompletedJobsCount,
-        this.downloadManager.CancelledJobsCount,
-        this.downloadManager.FailedJobsCount);
     }
     #endregion
   }

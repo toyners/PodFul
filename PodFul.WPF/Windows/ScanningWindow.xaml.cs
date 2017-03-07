@@ -5,6 +5,7 @@ namespace PodFul.WPF.Windows
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using FileDelivery;
   using Jabberwocky.Toolkit.Object;
   using Library;
   using Logging;
@@ -31,10 +32,16 @@ namespace PodFul.WPF.Windows
     private ProcessingStates processingState;
     private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
+
+    private Int32 waitingJobsCount;
+    private Int32 runningJobsCount;
+    private Int32 completedJobsCount;
+    private Int32 cancelledJobsCount;
+    private Int32 failedJobsCount;
     #endregion
 
     #region Construction   
-    public ScanningWindow(FeedScanner feedScanner, UILogger logger, IImageResolver imageResolver)
+    public ScanningWindow(FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, IImageResolver imageResolver)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
@@ -50,10 +57,10 @@ namespace PodFul.WPF.Windows
 
       logger.PostMessage = this.PostMessage;
       imageResolver.PostMessage = this.PostMessage;
+      downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
       feedScanner.SetWindowTitleEvent = this.SetWindowTitleEventHandler;
       feedScanner.ScanCompletedEvent += this.ScanCompletedEventHandler;
-      feedScanner.UpdateCountsEvent += this.UpdateCountsEventHandler;
-      feedScanner.JobStartedEvent += this.JobStartedEventHandler;
+      downloadManager.JobStartedEvent += this.JobStartedEventHandler;
     }
     #endregion
 
@@ -105,8 +112,15 @@ namespace PodFul.WPF.Windows
       // TODO: Scroll podcast download list.
     }
 
+    private void JobFinishedEventHandler(DownloadJob job)
+    {
+      this.UpdateCounts(job);
+    }
+
     private void JobStartedEventHandler(DownloadJob job)
     {
+      this.UpdateCounts(job);
+
       Application.Current.Dispatcher.Invoke(() =>
       {
         var index = this.feedScanner.Jobs.IndexOf(job);
@@ -140,11 +154,20 @@ namespace PodFul.WPF.Windows
       });
     }
 
-    private void UpdateCountsEventHandler(Int32 waitingJobsCount, Int32 runningJobsCount, Int32 completedJobsCount, Int32 cancelledJobsCount, Int32 failedJobsCount)
+    private void UpdateCounts(DownloadJob job)
     {
+      switch (job.Status)
+      {
+        case DownloadJob.StatusTypes.Waiting: this.waitingJobsCount++; break;
+        case DownloadJob.StatusTypes.Running: this.runningJobsCount++; break;
+        case DownloadJob.StatusTypes.Completed: this.completedJobsCount++; break;
+        case DownloadJob.StatusTypes.Canceled: this.cancelledJobsCount++; break;
+        case DownloadJob.StatusTypes.Failed: this.failedJobsCount++; break;
+      }
+
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.jobCountDisplayManager.UpdateCounts(waitingJobsCount, runningJobsCount, completedJobsCount, cancelledJobsCount, failedJobsCount);
+        this.jobCountDisplayManager.UpdateCounts(this.waitingJobsCount, this.runningJobsCount, this.completedJobsCount, this.cancelledJobsCount, this.failedJobsCount);
       });
     }
 
