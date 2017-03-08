@@ -35,12 +35,6 @@ namespace PodFul.WPF.Windows
 
     private UInt32 totalFeedCount;
     private UInt32 feedsScannedCount;
-
-    private Int32 waitingJobsCount;
-    private Int32 runningJobsCount;
-    private Int32 completedJobsCount;
-    private Int32 cancelledJobsCount;
-    private Int32 failedJobsCount;
     #endregion
 
     #region Construction   
@@ -144,11 +138,6 @@ namespace PodFul.WPF.Windows
       });
     }
 
-    private void InitializeCounts()
-    {
-      this.jobCountDisplayManager.UpdateCounts(0, 0, 0, 0, 0);
-    }
-
     private void ScanCompletedEventHandler()
     {
       this.processingState = ProcessingStates.Stopped;
@@ -171,18 +160,9 @@ namespace PodFul.WPF.Windows
 
     private void UpdateCounts(DownloadJob job)
     {
-      switch (job.Status)
-      {
-        case DownloadJob.StatusTypes.Waiting: this.waitingJobsCount++; break;
-        case DownloadJob.StatusTypes.Running: this.runningJobsCount++; break;
-        case DownloadJob.StatusTypes.Completed: this.completedJobsCount++; break;
-        case DownloadJob.StatusTypes.Canceled: this.cancelledJobsCount++; break;
-        case DownloadJob.StatusTypes.Failed: this.failedJobsCount++; break;
-      }
-
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.jobCountDisplayManager.UpdateCounts(this.waitingJobsCount, this.runningJobsCount, this.completedJobsCount, this.cancelledJobsCount, this.failedJobsCount);
+        this.jobCountDisplayManager.UpdateCounts(job);
       });
     }
 
@@ -217,7 +197,7 @@ namespace PodFul.WPF.Windows
       if (!this.isLoaded)
       {
         // Ensure this is only called once.
-        this.InitializeCounts();
+        this.jobCountDisplayManager.DisplayCounts(); // Display initial counts
         this.isLoaded = true;
         this.processingState = ProcessingStates.Running;
         this.feedScanner.Process();

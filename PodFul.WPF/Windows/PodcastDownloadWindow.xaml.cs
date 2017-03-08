@@ -46,7 +46,7 @@ namespace PodFul.WPF.Windows
       var jobCountWindowTitleDisplay = new JobCountWindowTitleDisplayComponent(this);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay, jobCountWindowTitleDisplay);
 
-      this.UpdateCounts();
+      this.jobCountDisplayManager.DisplayCounts(); // Display initial counts  
     }
     #endregion
 
@@ -82,19 +82,9 @@ namespace PodFul.WPF.Windows
 
     private void UpdateCounts(DownloadJob job)
     {
-      this.UpdateCounts();
-    }
-
-    private void UpdateCounts()
-    {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.jobCountDisplayManager.UpdateCounts(
-          this.downloadManager.WaitingJobsCount,
-          this.downloadManager.ProcessingJobsCount,
-          this.downloadManager.CompletedJobsCount,
-          this.downloadManager.CancelledJobsCount,
-          this.downloadManager.FailedJobsCount);
+        this.jobCountDisplayManager.UpdateCounts(job);
       });
     }
 

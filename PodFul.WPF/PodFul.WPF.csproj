@@ -82,6 +82,7 @@
     <Compile Include="Miscellaneous\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\IFeedCollection.cs" />
+    <Compile Include="UI Support\IJobCountDisplayManager.cs" />
     <Compile Include="UI Support\JobCountStatusBarDisplayComponent.cs" />
     <Compile Include="UI Support\JobCountWindowTitleDisplayComponent.cs" />
     <Compile Include="Miscellaneous\PodcastSynchroniser.cs" />
