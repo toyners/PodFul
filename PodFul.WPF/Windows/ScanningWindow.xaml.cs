@@ -5,8 +5,8 @@ namespace PodFul.WPF.Windows
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
-  using FileDelivery;
   using Jabberwocky.Toolkit.Object;
+  using Jabberwocky.Toolkit.String;
   using Library;
   using Logging;
   using Processing;
@@ -33,6 +33,9 @@ namespace PodFul.WPF.Windows
     private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
 
+    private UInt32 totalFeedCount;
+    private UInt32 feedsScannedCount;
+
     private Int32 waitingJobsCount;
     private Int32 runningJobsCount;
     private Int32 completedJobsCount;
@@ -41,7 +44,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public ScanningWindow(FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, IImageResolver imageResolver)
+    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, IImageResolver imageResolver)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
@@ -57,16 +60,23 @@ namespace PodFul.WPF.Windows
 
       logger.PostMessage = this.PostMessage;
       imageResolver.PostMessage = this.PostMessage;
+      downloadManager.JobQueuedEvent += this.JobQueuedEventHandler;
       downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
-      feedScanner.SetWindowTitleEvent = this.SetWindowTitleEventHandler;
+      feedScanner.FeedStartedEvent += this.FeedStartedEventHandler;
       feedScanner.ScanCompletedEvent += this.ScanCompletedEventHandler;
       downloadManager.JobStartedEvent += this.JobStartedEventHandler;
+
+      this.feedsScannedCount = 0;
+      this.totalFeedCount = totalFeedCount;
     }
     #endregion
 
     #region Methods
-    public void SetWindowTitleEventHandler(String title)
+    public void FeedStartedEventHandler()
     {
+      this.feedsScannedCount++;
+      var title = "Scanning " + this.feedsScannedCount + " of " + this.totalFeedCount + " feed".Pluralize(this.totalFeedCount);
+
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.Title = title;
@@ -113,6 +123,11 @@ namespace PodFul.WPF.Windows
     }
 
     private void JobFinishedEventHandler(DownloadJob job)
+    {
+      this.UpdateCounts(job);
+    }
+
+    private void JobQueuedEventHandler(DownloadJob job)
     {
       this.UpdateCounts(job);
     }

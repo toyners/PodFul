@@ -63,13 +63,9 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Events
-    public Action<String> SetWindowTitleEvent;
-
+    public event Action FeedStartedEvent;
     public event Action ScanCompletedEvent;
-
-    public event Action<DownloadJob> JobFinishedEvent;
-
-    public event Action<DownloadJob> JobStartedEvent;
+    public event Action ScanCanceledEvent;
     #endregion
 
     #region Methods
@@ -88,9 +84,9 @@ namespace PodFul.WPF.Processing
 
     public void Process()
     {
-      var feedTotal = (UInt32)this.feedCollection.Count;
-      var title = "Scanning " + feedTotal + " feed".Pluralize(feedTotal);
-      this.SetWindowTitleEvent?.Invoke(title);
+      //var feedTotal = (UInt32)this.feedCollection.Count;
+      //var title = "Scanning " + feedTotal + " feed".Pluralize(feedTotal);
+      //this.ScanStartedEvent?.Invoke(title);
 
       var cancelToken = this.cancellationTokenSource.Token;
 
@@ -106,9 +102,10 @@ namespace PodFul.WPF.Processing
         {
           while (this.feedIndexes.Count > 0)
           {
+            this.FeedStartedEvent?.Invoke();
             Int32 feedIndex = this.feedIndexes.Dequeue();
-            title = "Scanning " + (feedTotal - this.feedIndexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
-            this.SetWindowTitleEvent?.Invoke(title);
+            //title = "Scanning " + (feedTotal - this.feedIndexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
+            //this.ScanStartedEvent?.Invoke(title);
 
             var feed = this.feedCollection[feedIndex];
 
@@ -231,11 +228,13 @@ namespace PodFul.WPF.Processing
         if (tasks[0].IsCanceled || tasks[1].IsCanceled)
         {
           scanReport.Message("\r\nCANCELLED");
-          this.SetWindowTitleEvent?.Invoke(title + " - CANCELLED");
+          this.ScanCanceledEvent?.Invoke();
+          //this.ScanStartedEvent?.Invoke(title + " - CANCELLED");
         }
         else
         {
-          this.SetWindowTitleEvent?.Invoke(title + " - COMPLETED");
+          this.ScanCompletedEvent?.Invoke();
+          //this.ScanStartedEvent?.Invoke(title + " - COMPLETED");
         }
 
         // Display the final scan report.
