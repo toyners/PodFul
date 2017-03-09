@@ -67,24 +67,9 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Methods
-    public void FeedStartedEventHandler()
+    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
-      this.feedsScannedCount++;
-      var title = "Scanning " + this.feedsScannedCount + " of " + this.totalFeedCount + " feed".Pluralize(this.totalFeedCount);
-
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.Title = title;
-      });
-    }
-
-    public void PostMessage(String message)
-    {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.Feedback.Text += message;
-        this.FeedbackScroller.ScrollToBottom();
-      });
+      this.feedScanner.CancelDownload((sender as Button).DataContext);
     }
 
     private void CancelScanning()
@@ -107,14 +92,15 @@ namespace PodFul.WPF.Windows
       }
     }
 
-    private void CancelDownload_Click(Object sender, RoutedEventArgs e)
+    private void FeedStartedEventHandler()
     {
-      this.feedScanner.CancelDownload((sender as Button).DataContext);
-    }
+      this.feedsScannedCount++;
+      var title = "Scanning " + this.feedsScannedCount + " of " + this.totalFeedCount + " feed".Pluralize(this.totalFeedCount);
 
-    private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
-    {
-      // TODO: Scroll podcast download list.
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.Title = title;
+      });
     }
 
     private void JobFinishedEventHandler(DownloadJob job)
@@ -136,6 +122,20 @@ namespace PodFul.WPF.Windows
         var index = this.feedScanner.Jobs.IndexOf(job);
         var itemContainer = (FrameworkElement)this.PodcastList.ItemContainerGenerator.ContainerFromIndex(index);
         itemContainer.BringIntoView();
+      });
+    }
+
+    private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
+    {
+      // TODO: Scroll podcast download list.
+    }
+
+    private void PostMessage(String message)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.Feedback.Text += message;
+        this.FeedbackScroller.ScrollToBottom();
       });
     }
 
