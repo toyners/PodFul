@@ -58,6 +58,7 @@ namespace PodFul.WPF.Windows
       downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
       feedScanner.FeedStartedEvent += this.FeedStartedEventHandler;
       feedScanner.ScanCompletedEvent += this.ScanCompletedEventHandler;
+      feedScanner.ScanCanceledEvent += this.ScanCanceledEventHandler;
       downloadManager.JobStartedEvent += this.JobStartedEventHandler;
 
       this.feedsScannedCount = 0;
@@ -138,12 +139,14 @@ namespace PodFul.WPF.Windows
       });
     }
 
-    private void ScanCompletedEventHandler()
+    private void ProcessingFinished(String titleSuffix)
     {
       this.processingState = ProcessingStates.Stopped;
 
       Application.Current.Dispatcher.Invoke(() =>
       {
+        this.Title += " - " + titleSuffix;
+
         if (this.isClosing)
         {
           // Window was set to close while processing (or cancelling) was happening so now that the processing
@@ -156,6 +159,16 @@ namespace PodFul.WPF.Windows
         this.CommandButton.IsEnabled = true;
         this.CommandButton.Content = "Close";
       });
+    }
+
+    private void ScanCanceledEventHandler()
+    {
+      this.ProcessingFinished("CANCELLED");
+    }
+
+    private void ScanCompletedEventHandler()
+    {
+      this.ProcessingFinished("COMPLETED");
     }
 
     private void UpdateCounts(DownloadJob job)

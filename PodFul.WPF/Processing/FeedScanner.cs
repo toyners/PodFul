@@ -84,10 +84,6 @@ namespace PodFul.WPF.Processing
 
     public void Process()
     {
-      //var feedTotal = (UInt32)this.feedCollection.Count;
-      //var title = "Scanning " + feedTotal + " feed".Pluralize(feedTotal);
-      //this.ScanStartedEvent?.Invoke(title);
-
       var cancelToken = this.cancellationTokenSource.Token;
 
       // Set this outside of the scanning task because there is no guarantee that the scanning task
@@ -104,8 +100,6 @@ namespace PodFul.WPF.Processing
           {
             this.FeedStartedEvent?.Invoke();
             Int32 feedIndex = this.feedIndexes.Dequeue();
-            //title = "Scanning " + (feedTotal - this.feedIndexes.Count) + " of " + feedTotal + " feed".Pluralize(feedTotal);
-            //this.ScanStartedEvent?.Invoke(title);
 
             var feed = this.feedCollection[feedIndex];
 
@@ -229,12 +223,10 @@ namespace PodFul.WPF.Processing
         {
           scanReport.Message("\r\nCANCELLED");
           this.ScanCanceledEvent?.Invoke();
-          //this.ScanStartedEvent?.Invoke(title + " - CANCELLED");
         }
         else
         {
           this.ScanCompletedEvent?.Invoke();
-          //this.ScanStartedEvent?.Invoke(title + " - COMPLETED");
         }
 
         // Display the final scan report.
