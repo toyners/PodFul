@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Windows
 {
   using System;
+  using System.Collections.ObjectModel;
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
@@ -35,6 +36,9 @@ namespace PodFul.WPF.Windows
 
     private UInt32 totalFeedCount;
     private UInt32 feedsScannedCount;
+
+    private Boolean hideCompletedJobs = true;
+    private ObservableCollection<DownloadJob> jobs = new ObservableCollection<DownloadJob>();
     #endregion
 
     #region Construction   
@@ -103,14 +107,39 @@ namespace PodFul.WPF.Windows
       });
     }
 
+    private void HideCompletedJobs(Boolean hideCompletedJobs)
+    {
+      if (hideCompletedJobs)
+      {
+        this.PodcastList.ItemsSource = this.jobs;
+      }
+      else
+      {
+        this.PodcastList.ItemsSource = this.feedScanner.Jobs;
+      }
+    }
+
     private void JobFinishedEventHandler(DownloadJob job)
     {
       this.UpdateCounts(job);
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        if (job.Status == DownloadJob.StatusTypes.Completed)
+        {
+          this.jobs.Remove(job);
+        }
+      });
     }
 
     private void JobQueuedEventHandler(DownloadJob job)
     {
       this.UpdateCounts(job);
+
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.jobs.Add(job);
+      });
     }
 
     private void JobStartedEventHandler(DownloadJob job)
@@ -217,5 +246,11 @@ namespace PodFul.WPF.Windows
       }
     }
     #endregion
+
+    private void CheckBox_Checked(Object sender, RoutedEventArgs e)
+    {
+      var isChecked = ((CheckBox)sender).IsChecked;
+      this.HideCompletedJobs(isChecked.HasValue && isChecked.Value);
+    }
   }
 }

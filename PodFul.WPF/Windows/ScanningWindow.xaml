@@ -31,13 +31,27 @@
           </ScrollViewer>
         </Border>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-          <TextBlock Name="WaitingCount" Margin="3,0" Foreground="Blue">Waiting count</TextBlock>
-          <TextBlock Name="RunningCount" Margin="3,0" Foreground="Black">Running count</TextBlock>
-          <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green">Completed count</TextBlock>
-          <TextBlock Name="FirstOptionalCount" Margin="3,0" Foreground="OrangeRed">Cancelled count</TextBlock>
-          <TextBlock Name="SecondOptionalCount" Margin="3,0" Foreground="Red">Failed count</TextBlock>
-        </StackPanel>
+        <!--<StackPanel Grid.Row="1" Orientation="Horizontal">-->
+          <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Name="WaitingCount" Margin="3,0" Foreground="Blue">Waiting count</TextBlock>
+              <TextBlock Name="RunningCount" Margin="3,0" Foreground="Black">Running count</TextBlock>
+              <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green">Completed count</TextBlock>
+              <TextBlock Name="FirstOptionalCount" Margin="3,0" Foreground="OrangeRed">Cancelled count</TextBlock>
+              <TextBlock Name="SecondOptionalCount" Margin="3,0" Foreground="Red">Failed count</TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+              <CheckBox HorizontalAlignment="Right" Checked="CheckBox_Checked">Hide Completed Jobs</CheckBox>
+            </StackPanel>
+          </Grid>
+          
+        <!--</StackPanel>-->
 
         <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1">
           <ScrollViewer VerticalScrollBarVisibility="Visible">
