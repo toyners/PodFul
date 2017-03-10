@@ -352,7 +352,13 @@ namespace PodFul.WPF.Windows
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       downloadManager.JobCompletedSuccessfullyEvent += job => { this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name); };
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
-      var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, feedScanner, downloadManager, this.logController.GetLogger<UILogger>(UiKey), this.imageResolver);
+      var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
+        feedScanner, 
+        downloadManager, 
+        this.logController.GetLogger<UILogger>(UiKey), 
+        this.imageResolver, 
+        this.settings.HideCompletedJobs);
+
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
     }

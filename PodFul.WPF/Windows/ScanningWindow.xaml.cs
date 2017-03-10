@@ -41,7 +41,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, IImageResolver imageResolver)
+    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, IImageResolver imageResolver, Boolean hideCompletedDownloadJobs)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
@@ -66,6 +66,8 @@ namespace PodFul.WPF.Windows
 
       this.feedsScannedCount = 0;
       this.totalFeedCount = totalFeedCount;
+
+      this.HideCompletedDownloadJobsCheckbox.IsChecked = hideCompletedDownloadJobs;
     }
     #endregion
 
