@@ -37,7 +37,6 @@ namespace PodFul.WPF.Windows
     private UInt32 totalFeedCount;
     private UInt32 feedsScannedCount;
 
-    private Boolean hideCompletedJobs = true;
     private ObservableCollection<DownloadJob> jobs = new ObservableCollection<DownloadJob>();
     #endregion
 
@@ -105,6 +104,12 @@ namespace PodFul.WPF.Windows
       {
         this.Title = title;
       });
+    }
+
+    private void HideCompletedDownloadJobsChecked(Object sender, RoutedEventArgs e)
+    {
+      var isChecked = ((CheckBox)sender).IsChecked;
+      this.HideCompletedJobs(isChecked.HasValue && isChecked.Value);
     }
 
     private void HideCompletedJobs(Boolean hideCompletedJobs)
@@ -246,11 +251,5 @@ namespace PodFul.WPF.Windows
       }
     }
     #endregion
-
-    private void CheckBox_Checked(Object sender, RoutedEventArgs e)
-    {
-      var isChecked = ((CheckBox)sender).IsChecked;
-      this.HideCompletedJobs(isChecked.HasValue && isChecked.Value);
-    }
   }
 }
