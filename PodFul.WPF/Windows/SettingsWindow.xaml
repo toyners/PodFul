@@ -33,6 +33,7 @@
         <TextBlock Grid.Row="1" Margin="6,2" VerticalAlignment="Center">Confirm Download Threshold:</TextBlock>
         <TextBox Grid.Column="1" Grid.Row="1" Name="ConfirmPodcastDownloadThreshold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
 
+        <CheckBox Name="HideCompletedJobs" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,0">Hide Completed Jobs</CheckBox>
       </Grid>
     </Border>
 
@@ -48,7 +49,7 @@
             <RowDefinition />
           </Grid.RowDefinitions>
             
-          <TextBlock Margin="6,2">Delivery Points:</TextBlock>
+          <TextBlock Margin="6,2" VerticalAlignment="Center">Delivery Points:</TextBlock>
           <CheckBox Name="DeliverManualDownloads" Grid.Column="2" Margin="6,0" VerticalAlignment="Center" HorizontalAlignment="Right">Deliver Manual Downloads to Delivery Points</CheckBox>
 
         </Grid>
