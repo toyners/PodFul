@@ -280,7 +280,7 @@ namespace PodFul.WPF.Windows
 
       podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
 
-      var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager);
+      var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager, this.settings.HideCompletedJobs);
       podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();
     }

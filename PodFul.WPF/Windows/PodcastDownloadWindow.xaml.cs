@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Windows
 {
   using System;
+  using System.Collections.ObjectModel;
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
@@ -28,25 +29,30 @@ namespace PodFul.WPF.Windows
     private ProcessingStates processingState;
     private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
+
+    private ObservableCollection<DownloadJob> jobs;
     #endregion
 
     #region Construction
-    public PodcastDownloadWindow(DownloadManager downloadManager)
+    public PodcastDownloadWindow(DownloadManager downloadManager, Boolean hideCompletedDownloadJobs)
     {
       InitializeComponent();
 
       this.downloadManager = downloadManager;
       this.downloadManager.AllJobsFinishedEvent += this.WorkCompleted;
+      this.downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
       this.downloadManager.JobStartedEvent += this.UpdateCounts;
-      this.downloadManager.JobFinishedEvent += this.UpdateCounts;
 
       this.PodcastList.ItemsSource = downloadManager.Jobs;
+      this.jobs = new ObservableCollection<DownloadJob>(downloadManager.Jobs);
 
       var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       var jobCountWindowTitleDisplay = new JobCountWindowTitleDisplayComponent(this);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay, jobCountWindowTitleDisplay);
 
       this.jobCountDisplayManager.DisplayCounts(); // Display initial counts  
+
+      this.HideCompletedDownloadJobsCheckbox.IsChecked = hideCompletedDownloadJobs;
     }
     #endregion
 
@@ -78,6 +84,34 @@ namespace PodFul.WPF.Windows
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
+    }
+
+    private void HideCompletedDownloadJobsChecked(Object sender, RoutedEventArgs e)
+    {
+      var isChecked = ((CheckBox)sender).IsChecked;
+      this.HideCompletedJobs(isChecked.HasValue && isChecked.Value);
+    }
+
+    private void HideCompletedJobs(Boolean hideCompletedJobs)
+    {
+      if (hideCompletedJobs)
+      {
+        this.PodcastList.ItemsSource = this.jobs;
+      }
+      else
+      {
+        this.PodcastList.ItemsSource = this.downloadManager.Jobs;
+      }
+    }
+
+    private void JobFinishedEventHandler(DownloadJob job)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.jobs.Remove(job);
+      });
+
+      this.UpdateCounts(job);
     }
 
     private void UpdateCounts(DownloadJob job)

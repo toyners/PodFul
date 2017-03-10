@@ -46,7 +46,7 @@
           </StackPanel>
 
           <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
-            <CheckBox Name="HideCompletedDownloadJobsCheckbox" HorizontalAlignment="Right" Checked="HideCompletedDownloadJobsChecked">Hide Completed Jobs</CheckBox>
+            <CheckBox Name="HideCompletedDownloadJobsCheckbox" Checked="HideCompletedDownloadJobsChecked">Hide Completed Jobs</CheckBox>
           </StackPanel>
         </Grid>
 
