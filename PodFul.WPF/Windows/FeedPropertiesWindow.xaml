@@ -37,51 +37,82 @@
             <RowDefinition />
           </Grid.RowDefinitions>
 
-          <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,5,0" >
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="7*"/>
+            </Grid.ColumnDefinitions>
+          
             <Label VerticalAlignment="Top">Description:</Label>
-            <!--<Border BorderBrush="Black" BorderThickness="1" Margin="2">-->
-              <TextBox VerticalAlignment="Stretch" Margin="2" MinLines="2" Text="{Binding Path=Description, Mode=OneWay}" TextWrapping="Wrap" IsReadOnly="True" />
-            <!--</Border>-->
-          </StackPanel>
+            <TextBox Grid.Column="1"
+                Margin="2" MaxLines="2" Width="490" VerticalScrollBarVisibility="Visible"
+                Text="{Binding Path=Description, Mode=OneWay}" 
+                TextWrapping="Wrap" IsReadOnly="True" />
+          </Grid>
 
-          <StackPanel Grid.Row="1" Orientation="Horizontal">
+          <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="7*" />
+            </Grid.ColumnDefinitions>
+          <!--<StackPanel Grid.Row="1" Orientation="Horizontal">-->
             <Label VerticalAlignment="Center">Website:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Website, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
-          </StackPanel>
+            <TextBox VerticalAlignment="Center" Grid.Column="1" 
+                     Text="{Binding Path=Website, Mode=OneWay}"
+                     Width="490" Margin="2" IsReadOnly="True"/>
+          </Grid>
 
-          <StackPanel Grid.Row="2" Orientation="Horizontal">
+          <Grid Grid.Row="2" >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="7*" />
+            </Grid.ColumnDefinitions>
             <Label VerticalAlignment="Center">Directory:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=Directory, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
-          </StackPanel>
+            <TextBox Grid.Column="1"
+              VerticalAlignment="Center" 
+              Text="{Binding Path=Directory, Mode=OneWay}" Margin="2" Width="490" IsReadOnly="True" />
+          </Grid>
 
-          <StackPanel Grid.Row="3" Orientation="Horizontal">
+          <Grid Grid.Row="3" >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="7*" />
+            </Grid.ColumnDefinitions>
+            
             <Label VerticalAlignment="Center">URL:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=URL, Converter={StaticResource TextTruncator}, ConverterParameter=100}" />
-          </StackPanel>
+            <TextBox Grid.Column="1" 
+              VerticalAlignment="Center" 
+              Text="{Binding Path=URL, Mode=OneWay}" Width="490" Margin="2" IsReadOnly="True" />
+          </Grid>
 
-          <StackPanel Grid.Row="4" Orientation="Horizontal">
+          <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="6*" />
+            </Grid.ColumnDefinitions>
+            
             <Label VerticalAlignment="Center">Podcasts:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Podcasts.Length}" />
-          </StackPanel>
+            <TextBox Grid.Column="1" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" Text="{Binding Podcasts.Length, Mode=OneWay}" 
+                     Margin="2" IsReadOnly="True" Width="200" />
+          </Grid>
 
-          <StackPanel Grid.Row="5" Orientation="Horizontal">
+          <Grid Grid.Row="5">
             <Grid>
               <Grid.ColumnDefinitions>
                 <ColumnDefinition />
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition />
+                <ColumnDefinition Width="3*"/>
               </Grid.ColumnDefinitions>
 
-              <StackPanel Grid.Column="0" Orientation="Horizontal" Width="280">
                 <Label VerticalAlignment="Center">Created:</Label>
-                <TextBlock VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
-              </StackPanel>
+                <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" IsReadOnly="True" Margin="2" Width="200" />
 
-              <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Label VerticalAlignment="Center">Updated:</Label>
-                <TextBlock VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}}" />
-              </StackPanel>
+                <Label Grid.Column="2"  VerticalAlignment="Center">Updated:</Label>
+                <TextBox Grid.Column="3" VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" IsReadOnly="True" Margin="2" Width="200" />
             </Grid>
-          </StackPanel>
+          </Grid>
         </Grid>
       </Grid>
     </Border>
