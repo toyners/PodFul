@@ -12,7 +12,7 @@
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
         <Button Name="CloseButton" IsDefault="True" Width="70"  
-              VerticalContentAlignment="Center" Click="CloseButton_Click"
+              VerticalContentAlignment="Center" Click="CloseButtonClick"
               Style="{StaticResource StandardButton}">Close</Button>
       </StackPanel>
     </Border>
@@ -41,7 +41,7 @@
               <ColumnDefinition />
               <ColumnDefinition Width="7*"/>
             </Grid.ColumnDefinitions>
-          
+
             <Label VerticalAlignment="Top">Description:</Label>
             <TextBox Grid.Column="1"
                 MaxLines="3" Width="490" VerticalScrollBarVisibility="Visible"
@@ -62,13 +62,14 @@
 
           <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition Width="7*" />
+              <ColumnDefinition Width="42*"/>
+              <ColumnDefinition Width="232*" />
+              <ColumnDefinition Width="19*" />
             </Grid.ColumnDefinitions>
-            <Label VerticalAlignment="Center">Directory:</Label>
-            <TextBox Grid.Column="1"
-              VerticalAlignment="Center" 
-              Text="{Binding Path=Directory, Mode=OneWay}" Width="490" IsReadOnly="True" />
+            <Label VerticalAlignment="Center" Height="26" Margin="0,1">Directory:</Label>
+            <TextBox Grid.Column="1" Name="DirectoryPath" VerticalAlignment="Center" 
+              Text="{Binding Path=Directory, Mode=OneWay}" IsReadOnly="True" Height="18" Margin="0,5" />
+            <Button Grid.Column="2" Margin="5,5,0,5" Width="20" HorizontalAlignment="Left" Click="ChangeDirectoryClick">...</Button>
           </Grid>
 
           <Grid Grid.Row="3" >
@@ -76,7 +77,7 @@
               <ColumnDefinition />
               <ColumnDefinition Width="7*" />
             </Grid.ColumnDefinitions>
-            
+
             <Label VerticalAlignment="Center">URL:</Label>
             <TextBox Grid.Column="1" 
               VerticalAlignment="Center" 
