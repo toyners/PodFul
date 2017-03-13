@@ -47,6 +47,20 @@ type Feed =
                 UpdatedDateTime = date
             }
 
+        static member SetDirectory directory original =
+            {
+                Title = original.Title
+                Description = original.Description
+                Website = original.Website
+                Directory = directory
+                URL = original.URL
+                ImageURL = original.ImageURL
+                ImageFileName = original.ImageFileName
+                Podcasts = original.Podcasts
+                CreationDateTime = original.CreationDateTime
+                UpdatedDateTime = original.UpdatedDateTime
+            }
+
         override x.Equals other = 
             match other with
             | :? Feed as y -> (x.URL = y.URL)
