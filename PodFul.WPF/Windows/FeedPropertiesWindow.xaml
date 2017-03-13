@@ -34,7 +34,6 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
           </Grid.RowDefinitions>
 
           <Grid>
@@ -45,7 +44,7 @@
           
             <Label VerticalAlignment="Top">Description:</Label>
             <TextBox Grid.Column="1"
-                Margin="2" MaxLines="2" Width="490" VerticalScrollBarVisibility="Visible"
+                MaxLines="3" Width="490" VerticalScrollBarVisibility="Visible"
                 Text="{Binding Path=Description, Mode=OneWay}" 
                 TextWrapping="Wrap" IsReadOnly="True" />
           </Grid>
@@ -55,11 +54,10 @@
               <ColumnDefinition />
               <ColumnDefinition Width="7*" />
             </Grid.ColumnDefinitions>
-          <!--<StackPanel Grid.Row="1" Orientation="Horizontal">-->
             <Label VerticalAlignment="Center">Website:</Label>
             <TextBox VerticalAlignment="Center" Grid.Column="1" 
                      Text="{Binding Path=Website, Mode=OneWay}"
-                     Width="490" Margin="2" IsReadOnly="True"/>
+                     Width="490" IsReadOnly="True"/>
           </Grid>
 
           <Grid Grid.Row="2" >
@@ -70,7 +68,7 @@
             <Label VerticalAlignment="Center">Directory:</Label>
             <TextBox Grid.Column="1"
               VerticalAlignment="Center" 
-              Text="{Binding Path=Directory, Mode=OneWay}" Margin="2" Width="490" IsReadOnly="True" />
+              Text="{Binding Path=Directory, Mode=OneWay}" Width="490" IsReadOnly="True" />
           </Grid>
 
           <Grid Grid.Row="3" >
@@ -82,36 +80,33 @@
             <Label VerticalAlignment="Center">URL:</Label>
             <TextBox Grid.Column="1" 
               VerticalAlignment="Center" 
-              Text="{Binding Path=URL, Mode=OneWay}" Width="490" Margin="2" IsReadOnly="True" />
+              Text="{Binding Path=URL, Mode=OneWay}" Width="490" IsReadOnly="True" />
           </Grid>
 
           <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
               <ColumnDefinition />
-              <ColumnDefinition Width="6*" />
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition Width="2*" />
+              <ColumnDefinition />
+              <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
-            
+
             <Label VerticalAlignment="Center">Podcasts:</Label>
-            <TextBox Grid.Column="1" VerticalAlignment="Center" 
-                     HorizontalAlignment="Left" Text="{Binding Podcasts.Length, Mode=OneWay}" 
-                     Margin="2" IsReadOnly="True" Width="200" />
-          </Grid>
+            <TextBox Grid.Column="1" VerticalAlignment="Center"
+                      Text="{Binding Podcasts.Length, Mode=OneWay}" 
+                      Margin="11,0,2,0" IsReadOnly="True" />
 
-          <Grid Grid.Row="5">
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition />
-                <ColumnDefinition Width="3*"/>
-              </Grid.ColumnDefinitions>
+            <Label Grid.Column="2" VerticalAlignment="Center">Created:</Label>
+            <TextBox Grid.Column="3" VerticalAlignment="Center"
+                         Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" 
+                         IsReadOnly="True" Margin="2,0,2,0" />
 
-                <Label VerticalAlignment="Center">Created:</Label>
-                <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" IsReadOnly="True" Margin="2" Width="200" />
-
-                <Label Grid.Column="2"  VerticalAlignment="Center">Updated:</Label>
-                <TextBox Grid.Column="3" VerticalAlignment="Center" Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" IsReadOnly="True" Margin="2" Width="200" />
-            </Grid>
+            <Label Grid.Column="4"  VerticalAlignment="Center">Updated:</Label>
+            <TextBox Grid.Column="5" VerticalAlignment="Center" 
+                         Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" 
+                         IsReadOnly="True" Margin="2,0,12,0" />
           </Grid>
         </Grid>
       </Grid>
