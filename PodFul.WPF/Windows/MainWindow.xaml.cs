@@ -368,7 +368,12 @@ namespace PodFul.WPF.Windows
       var propertiesWindow = new FeedPropertiesWindow(this.currentFeed);
       propertiesWindow.Owner = this;
 
-      propertiesWindow.ShowDialog();
+      var dataChanged = propertiesWindow.ShowDialog();
+      if (dataChanged.HasValue && dataChanged.Value)
+      {
+        this.currentFeed = Feed.SetDirectory(propertiesWindow.DirectoryPath.Text, this.currentFeed);
+        this.feedCollection.UpdateFeed(this.currentFeed);
+      }
     }
 
     private void ScanAllButtonClick(Object sender, RoutedEventArgs e)

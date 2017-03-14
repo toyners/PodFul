@@ -4,6 +4,7 @@ namespace PodFul.WPF.Windows
   using System;
   using System.Windows;
   using System.Windows.Forms;
+  using Jabberwocky.Toolkit.Path;
   using PodFul.Library;
 
   /// <summary>
@@ -20,6 +21,7 @@ namespace PodFul.WPF.Windows
       this.Title = feed.Title;
       this.DataContext = feed;
       this.feed = feed;
+      this.DialogResult = false;
     }
     #endregion
 
@@ -37,8 +39,12 @@ namespace PodFul.WPF.Windows
         return;
       }
 
-      this.DirectoryPath.Text = folderBrowserDialog.SelectedPath;
-      //this.feed.Directory = folderBrowserDialog.SelectedPath;
+      var selectedPath = PathOperations.CompleteDirectoryPath(folderBrowserDialog.SelectedPath);
+      if (selectedPath != this.DirectoryPath.Text)
+      {
+        this.DirectoryPath.Text = selectedPath;
+        this.DialogResult = true;
+      }
     }
     #endregion
   }
