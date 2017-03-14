@@ -53,11 +53,14 @@ namespace PodFul.WPF.Miscellaneous
     public void AddFeed(Feed feed)
     {
       this.feedStorage.Add(feed);
+      this.ObservableFeeds.Add(feed);
     }
 
     public void RemoveFeed(Feed feed)
     {
       this.feedStorage.Remove(feed);
+      var index = this.ObservableFeeds.IndexOf(feed);
+      this.ObservableFeeds.RemoveAt(index);
     }
 
     /// <summary>
