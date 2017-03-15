@@ -9,10 +9,14 @@ namespace PodFul.WPF.Miscellaneous
   {
     public static Int32 Synchronise(Feed feed)
     {
+      if (feed.Podcasts == null)
+      {
+        return 0;
+      }
+
       var syncCount = 0;
       for (int i = 0; i < feed.Podcasts.Length; i++)
       {
-        var podcastUpdated = false;
         var podcast = feed.Podcasts[i];
         var podcastFilePath = Path.Combine(feed.Directory, podcast.FileName);
         var podcastFileInfo = new FileInfo(podcastFilePath);
@@ -22,11 +26,7 @@ namespace PodFul.WPF.Miscellaneous
         }
 
         podcast.SetFileDetails(podcastFileInfo.Length, podcastFileInfo.CreationTime);
-
-        if (podcastUpdated)
-        {
-          syncCount++;
-        }
+        syncCount++;
       }
 
       return syncCount;
