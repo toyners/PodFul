@@ -54,6 +54,7 @@
     <None Include="Script.fsx" />
     <Compile Include="Settings_IntegrationTests.fs" />
     <Content Include="packages.config" />
+    <Compile Include="PodcastSynchroniser_IntegrationTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">
