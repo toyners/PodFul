@@ -157,7 +157,7 @@ namespace PodFul.WPF.Processing
               message = String.Format("Updating \"{0}\" ... ", feed.Title);
               this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
 
-              this.FeedScanCompleted(newFeed);
+              this.FeedScanCompleted(feedIndex, newFeed);
 
               message = "Completed.";
               this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
@@ -290,11 +290,11 @@ namespace PodFul.WPF.Processing
       return podcastIndexes;
     }
 
-    private void FeedScanCompleted(Feed feed)
+    private void FeedScanCompleted(Int32 feedIndex, Feed feed)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.feedCollection.UpdateFeed(feed);
+        this.feedCollection[feedIndex] = feed;
       });
     }
     #endregion

@@ -218,11 +218,9 @@ namespace PodFul.WPF.Windows
       this.fileDeliverer = this.CreateFileDeliver();
     }
 
-    private Queue<Int32> GetIndexForCurrentFeed()
+    private Int32 GetIndexForCurrentFeed()
     {
-      var feedIndexes = new Queue<Int32>();
-      feedIndexes.Enqueue(this.FeedList.Items.IndexOf(this.currentFeed));
-      return feedIndexes;
+      return this.FeedList.Items.IndexOf(this.currentFeed);
     }
 
     private Queue<Int32> GetIndexesForAllFeeds()
@@ -372,7 +370,7 @@ namespace PodFul.WPF.Windows
       if (dataChanged.HasValue && dataChanged.Value)
       {
         this.currentFeed = Feed.SetDirectory(propertiesWindow.DirectoryPath.Text, this.currentFeed);
-        this.feedCollection.UpdateFeed(this.currentFeed);
+        this.feedCollection.UpdateFeedContent(this.currentFeed);
       }
     }
 
@@ -383,7 +381,9 @@ namespace PodFul.WPF.Windows
 
     private void ScanFeedContextMenuClick(Object sender, RoutedEventArgs e)
     {
-      this.PerformScan(this.GetIndexForCurrentFeed());
+      var feedIndexes = new Queue<Int32>();
+      feedIndexes.Enqueue(this.GetIndexForCurrentFeed());
+      this.PerformScan(feedIndexes);
     }
 
     private void Synchronise_Click(Object sender, RoutedEventArgs e)
@@ -392,7 +392,7 @@ namespace PodFul.WPF.Windows
 
       if (count > 0)
       {
-        this.feedCollection.UpdateFeed(this.currentFeed);
+        this.feedCollection.UpdateFeedContent(this.currentFeed);
         MessageBox.Show(String.Format("{0} MP3 file(s) snychronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
       else

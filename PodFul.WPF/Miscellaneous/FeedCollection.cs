@@ -36,6 +36,14 @@ namespace PodFul.WPF.Miscellaneous
       {
         return this.ObservableFeeds[index];
       }
+
+      set
+      {
+        // Triggering changed event on the ObservableCollection by
+        // removing and adding since reassigning does not work.
+        this.ObservableFeeds.RemoveAt(index);
+        this.ObservableFeeds.Insert(index, value);
+      }
     }
 
     public Int32 Count
@@ -50,12 +58,20 @@ namespace PodFul.WPF.Miscellaneous
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Add feed to collection and to storage.
+    /// </summary>
+    /// <param name="feed">Feed to add.</param>
     public void AddFeed(Feed feed)
     {
       this.feedStorage.Add(feed);
       this.ObservableFeeds.Add(feed);
     }
 
+    /// <summary>
+    /// Remove feed from collection and from storage.
+    /// </summary>
+    /// <param name="feed">Feed to be removed.</param>
     public void RemoveFeed(Feed feed)
     {
       this.feedStorage.Remove(feed);
@@ -67,15 +83,9 @@ namespace PodFul.WPF.Miscellaneous
     /// Update the feed in storage.
     /// </summary>
     /// <param name="feed">Feed to be updated in storage</param>
-    public void UpdateFeed(Feed feed)
+    public void UpdateFeedContent(Feed feed)
     {
       this.feedStorage.Update(feed);
-
-      // Triggering changed event on the ObservableCollection by
-      // removing and adding since reassigning does not work.
-      var index = this.ObservableFeeds.IndexOf(feed);
-      this.ObservableFeeds.RemoveAt(index);
-      this.ObservableFeeds.Insert(index, feed);
     }
     #endregion
   }

@@ -229,11 +229,10 @@ namespace PodFul.WPF.Processing
       }
 
       this.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
+      this.feedCollection.UpdateFeedContent(this.feed);
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.feedCollection.UpdateFeed(this.feed);
-
         if (!this.fileSizeNotKnown)
         {
           // File size is known so set percentage to 100%

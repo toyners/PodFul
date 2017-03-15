@@ -6,7 +6,7 @@ namespace PodFul.WPF.Miscellaneous
 
   public interface IFeedCollection
   {
-    Feed this[Int32 index] { get; }
+    Feed this[Int32 index] { get; set; }
 
     Int32 Count { get; }
 
@@ -14,6 +14,6 @@ namespace PodFul.WPF.Miscellaneous
 
     void RemoveFeed(Feed feed);
 
-    void UpdateFeed(Feed feed);
+    void UpdateFeedContent(Feed feed);
   }
 }
