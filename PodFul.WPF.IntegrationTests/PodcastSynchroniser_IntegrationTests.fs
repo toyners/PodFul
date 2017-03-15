@@ -26,7 +26,7 @@ type PodcastSynchroniser_IntegrationTests() =
             }
         }        
 
-    member private this.CreateFeed podcastList =
+    let createFeed podcastList =
         {
             Title = "title"
             Description = "description"
@@ -46,14 +46,23 @@ type PodcastSynchroniser_IntegrationTests() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
 
     [<Test>]
-    member public this.``Test``() =
+    member public this.``Synchronising feed with no podcast list returns correct zero``() =
+
+        let feed = createFeed null
+
+        let count = PodcastSynchroniser.Synchronise(feed)
+
+        Assert.AreEqual(1, 0)
+
+    [<Test>]
+    member public this.``Synchronising feed with one podcast file returns correct sync count``() =
 
         let filePath = Path.Combine(workingDirectory, "file.mp3")
         let file = File.Create(filePath)
         file.Close()
 
         let podcast = createPodcastRecord "title" filePath
-        let feed = this.CreateFeed [| podcast |]
+        let feed = createFeed [| podcast |]
 
         let count = PodcastSynchroniser.Synchronise(feed)
 
