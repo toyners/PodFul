@@ -7,7 +7,7 @@ open NUnit.Framework
 open PodFul.WPF.Logging
 
 /// <summary>
-/// Tests the different scenarios for crearting delivery point instances.
+/// Tests the different scenarios for creating delivery point instances.
 /// </summary>
 type DeliveryPointCreator_UnitTests() =
 

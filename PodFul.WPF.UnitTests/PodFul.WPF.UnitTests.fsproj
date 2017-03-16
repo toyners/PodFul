@@ -61,6 +61,7 @@
     <Compile Include="LogController_UnitTests.fs" />
     <Compile Include="PodcastComparisonListCreator_UnitTests.fs" />
     <Compile Include="DeliveryPointCreator_UnitTests.fs" />
+    <Compile Include="FeedCollection_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsUnit.NUnit">
@@ -83,6 +84,7 @@
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />

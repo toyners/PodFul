@@ -25,6 +25,12 @@ namespace PodFul.WPF.Miscellaneous
         this.feedStorage.Open();
       }
 
+      var feeds = this.feedStorage.Feeds;
+      if (feeds == null || feeds.Length == 0)
+      {
+        throw new Exception("Feed Storage contains no feeds");
+      }
+
       this.ObservableFeeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
     }
     #endregion
@@ -34,6 +40,11 @@ namespace PodFul.WPF.Miscellaneous
     {
       get
       {
+        if (index  < 0 || index >= this.ObservableFeeds.Count)
+        {
+          throw new Exception(String.Format("Cannot get feed: Index ({0}) is outside range (0..{1})", index, this.ObservableFeeds.Count - 1));
+        }
+
         return this.ObservableFeeds[index];
       }
 
