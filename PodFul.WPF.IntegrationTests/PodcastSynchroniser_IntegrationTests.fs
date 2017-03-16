@@ -40,7 +40,6 @@ type PodcastSynchroniser_IntegrationTests() =
             UpdatedDateTime = FeedFunctions.NoDateTime
         }
 
-
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
