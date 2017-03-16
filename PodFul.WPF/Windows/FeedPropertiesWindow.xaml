@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Properties" Height="250" Width="800"
+        Title="Properties" Height="270" Width="800"
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
@@ -30,6 +30,7 @@
         <Grid Grid.Column="1">
           <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -108,6 +109,20 @@
             <TextBox Grid.Column="5" VerticalAlignment="Center" 
                          Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" 
                          IsReadOnly="True" Margin="2,0,12,0" />
+          </Grid>
+
+          <Grid Grid.Row="5">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.75*"/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+              </Grid.ColumnDefinitions>
+
+              <CheckBox Name="PerformScan" Margin="4,0,0,0" VerticalAlignment="Center">Perform Scan</CheckBox>
+              <CheckBox Name="PerformDownloading" Grid.Column="1" VerticalAlignment="Center">Perform Downloading during Scan</CheckBox>
+              <CheckBox Name="ProcessDeliveryPoints" Grid.Column="2" VerticalAlignment="Center">Process Delivery Points during Scan</CheckBox>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
