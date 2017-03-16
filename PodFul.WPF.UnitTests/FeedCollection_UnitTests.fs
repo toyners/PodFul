@@ -69,7 +69,7 @@ type FeedCollections_UnitTests() =
     [<Test>]
     [<TestCase(-1)>]
     [<TestCase(1)>]
-    member public this.``Getting feed using outside index throws meaningful exception``(index : int) =
+    member public this.``Getting feed using out-of-range index throws meaningful exception``(index : int) =
 
         let mutable testPassed = false
         let expectedMessage = "Cannot get feed: Index (" + index.ToString() + ") is outside range (0..0)"
@@ -79,6 +79,28 @@ type FeedCollections_UnitTests() =
         
         try
             let feed = feedCollection.[index]
+            testPassed <- false
+        with
+            | e ->
+                Assert.AreEqual(expectedMessage, e.Message)
+                testPassed <- true
+                
+        Assert.AreEqual(testPassed, true)
+
+    [<Test>]
+    [<TestCase(-1)>]
+    [<TestCase(1)>]
+    member public this.``Setting feed using out-of-range index throws meaningful exception``(index : int) =
+
+        let mutable testPassed = false
+        let expectedMessage = "Cannot set feed: Index (" + index.ToString() + ") is outside range (0..0)"
+        let feed = createTestFeed
+        let feeds = [| feed |]
+        let testStorage = new TestStorage(feeds)
+        let feedCollection = new FeedCollection(testStorage)
+        
+        try
+            feedCollection.[index] <- feed
             testPassed <- false
         with
             | e ->

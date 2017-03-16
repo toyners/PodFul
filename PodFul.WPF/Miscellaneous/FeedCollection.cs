@@ -50,6 +50,11 @@ namespace PodFul.WPF.Miscellaneous
 
       set
       {
+        if (index < 0 || index >= this.ObservableFeeds.Count)
+        {
+          throw new Exception(String.Format("Cannot set feed: Index ({0}) is outside range (0..{1})", index, this.ObservableFeeds.Count - 1));
+        }
+
         // Triggering changed event on the ObservableCollection by
         // removing and adding since reassigning does not work.
         this.ObservableFeeds.RemoveAt(index);
