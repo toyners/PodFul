@@ -13,6 +13,7 @@ namespace PodFul.WPF.Windows
   public partial class FeedPropertiesWindow : Window
   {
     private Feed feed;
+    private Boolean isDirty;
 
     #region Construction
     public FeedPropertiesWindow(Feed feed)
@@ -21,7 +22,6 @@ namespace PodFul.WPF.Windows
       this.Title = feed.Title;
       this.DataContext = feed;
       this.feed = feed;
-      this.DialogResult = false;
     }
     #endregion
 
@@ -43,8 +43,13 @@ namespace PodFul.WPF.Windows
       if (selectedPath != this.DirectoryPath.Text)
       {
         this.DirectoryPath.Text = selectedPath;
-        this.DialogResult = true;
+        this.isDirty = true;
       }
+    }
+
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      this.DialogResult = this.isDirty;
     }
     #endregion
   }

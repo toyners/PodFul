@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Properties" Height="270" Width="800"
+        Title="Properties" Height="260" Width="800"
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner" Closing="WindowClosing">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
@@ -114,14 +114,15 @@
           <Grid Grid.Row="5">
             <Grid>
               <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.75*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
               </Grid.ColumnDefinitions>
 
-              <CheckBox Name="PerformScan" Margin="4,0,0,0" VerticalAlignment="Center">Perform Scan</CheckBox>
-              <CheckBox Name="PerformDownloading" Grid.Column="1" VerticalAlignment="Center">Perform Downloading during Scan</CheckBox>
-              <CheckBox Name="ProcessDeliveryPoints" Grid.Column="2" VerticalAlignment="Center">Process Delivery Points during Scan</CheckBox>
+              <CheckBox Name="PerformScan" Grid.Column="1" VerticalAlignment="Center">Perform Scan</CheckBox>
+              <CheckBox Name="PerformDownloading" Grid.Column="2" VerticalAlignment="Center">Perform Downloading</CheckBox>
+              <CheckBox Name="ProcessDeliveryPoints" Grid.Column="3" VerticalAlignment="Center">Process Delivery Points</CheckBox>
             </Grid>
           </Grid>
         </Grid>
