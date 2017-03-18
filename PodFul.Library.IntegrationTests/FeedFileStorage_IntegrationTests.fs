@@ -37,6 +37,9 @@ type FeedFileStorage_IntergrationTests() =
             ImageFileName = feedImageFileName
             CreationDateTime = new DateTime(2016, 2, 3)
             UpdatedDateTime = new DateTime(2017, 4, 5)
+            DoScan = true
+            CompleteDownloadsOnScan = true
+            DeliverDownloadsOnScan = true
             Podcasts = 
             [|
                 {
@@ -67,6 +70,9 @@ type FeedFileStorage_IntergrationTests() =
             Podcasts = [||]
             CreationDateTime = feed.CreationDateTime
             UpdatedDateTime = feed.UpdatedDateTime
+            DoScan = true
+            CompleteDownloadsOnScan = true
+            DeliverDownloadsOnScan = true
         }
 
     [<SetUp>]

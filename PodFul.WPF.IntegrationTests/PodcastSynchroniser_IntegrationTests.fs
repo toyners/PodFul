@@ -38,6 +38,9 @@ type PodcastSynchroniser_IntegrationTests() =
             Podcasts = podcastList
             CreationDateTime = new DateTime(2016, 2, 3)
             UpdatedDateTime = FeedFunctions.NoDateTime
+            DoScan = true
+            CompleteDownloadsOnScan = true
+            DeliverDownloadsOnScan = true
         }
 
     [<SetUp>]

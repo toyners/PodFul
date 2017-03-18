@@ -86,6 +86,9 @@ type NativeFeedIO() =
       CreationDateTime = NativeFeedIO.getDateTimeAt fields 6
       UpdatedDateTime = NativeFeedIO.getDateTimeAt fields 7
       Podcasts = List.unfold NativeFeedIO.getPodcastFromFile (reader) |> List.toArray
+      DoScan = true
+      CompleteDownloadsOnScan = true
+      DeliverDownloadsOnScan = true
     }
 
   static member public WriteFeedToFile (feed : Feed) (filePath : string) : unit =

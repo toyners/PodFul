@@ -15,6 +15,9 @@ type Feed =
         Podcasts : Podcast[];
         CreationDateTime : DateTime
         UpdatedDateTime : DateTime
+        DoScan : bool
+        CompleteDownloadsOnScan : bool
+        DeliverDownloadsOnScan : bool
     }
 
     with
@@ -31,6 +34,9 @@ type Feed =
                 Podcasts = original.Podcasts
                 CreationDateTime = original.CreationDateTime
                 UpdatedDateTime = original.UpdatedDateTime
+                DoScan = original.DoScan
+                CompleteDownloadsOnScan = original.CompleteDownloadsOnScan
+                DeliverDownloadsOnScan = original.DeliverDownloadsOnScan
             }
 
         static member SetUpdatedDate date original =
@@ -45,6 +51,9 @@ type Feed =
                 Podcasts = original.Podcasts
                 CreationDateTime = original.CreationDateTime
                 UpdatedDateTime = date
+                DoScan = original.DoScan
+                CompleteDownloadsOnScan = original.CompleteDownloadsOnScan
+                DeliverDownloadsOnScan = original.DeliverDownloadsOnScan
             }
 
         static member SetDirectory directory original =
@@ -59,6 +68,9 @@ type Feed =
                 Podcasts = original.Podcasts
                 CreationDateTime = original.CreationDateTime
                 UpdatedDateTime = original.UpdatedDateTime
+                DoScan = original.DoScan
+                CompleteDownloadsOnScan = original.CompleteDownloadsOnScan
+                DeliverDownloadsOnScan = original.DeliverDownloadsOnScan
             }
 
         override x.Equals other = 

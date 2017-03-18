@@ -34,6 +34,9 @@ type FeedCollections_UnitTests() =
             Podcasts = null
             CreationDateTime = new DateTime(2016, 2, 3)
             UpdatedDateTime = FeedFunctions.NoDateTime
+            DoScan = true
+            CompleteDownloadsOnScan = true
+            DeliverDownloadsOnScan = true
         }
 
     [<Test>]

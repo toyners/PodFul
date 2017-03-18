@@ -210,6 +210,9 @@ module public FeedFunctions =
              Podcasts = createPodcastArrayFromDocument document
              CreationDateTime = creationDate
              UpdatedDateTime = DateTime.Now
+             DoScan = true
+             CompleteDownloadsOnScan = true
+             DeliverDownloadsOnScan = true
         }
 
     let private resolveImages (imageResolver : IImageResolver) (cancelToken : CancellationToken) (feed : Feed) : Feed =
