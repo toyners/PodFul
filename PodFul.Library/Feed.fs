@@ -73,6 +73,23 @@ type Feed =
                 DeliverDownloadsOnScan = original.DeliverDownloadsOnScan
             }
 
+        static member SetScanningFlags doScan completeDownloadsOnScan deliverDownloadsOnScan original = 
+            {
+                Title = original.Title
+                Description = original.Description
+                Website = original.Website
+                Directory = original.Directory
+                URL = original.URL
+                ImageURL = original.ImageURL
+                ImageFileName = original.ImageFileName
+                Podcasts = original.Podcasts
+                CreationDateTime = original.CreationDateTime
+                UpdatedDateTime = original.UpdatedDateTime
+                DoScan = doScan
+                CompleteDownloadsOnScan = completeDownloadsOnScan
+                DeliverDownloadsOnScan = deliverDownloadsOnScan
+            }
+
         override x.Equals other = 
             match other with
             | :? Feed as y -> (x.URL = y.URL)
