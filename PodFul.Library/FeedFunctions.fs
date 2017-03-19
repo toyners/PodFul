@@ -264,19 +264,14 @@ module public FeedFunctions =
 
         data
 
-    let private saveToFile filePath (data : string) : string =
-        use writer = new StreamWriter(filePath, false)
-        writer.Write(data)
+    let private saveToFile (filePath : string) (data : string) : string =
+
+        if String.IsNullOrEmpty(filePath) <> true then
+            use writer = new StreamWriter(filePath, false)
+            writer.Write(data)
         data
 
-    let public CreateFeed url directoryPath imageResolver cancelToken = 
-        createWebClient |>
-        downloadFeedData url 5 |>
-        createXMLDocumentFromData |>
-        createFeedRecord url directoryPath String.Empty DateTime.Now |>
-        resolveImages imageResolver cancelToken
-       
-    let public CreateFeedFromFile url filePath directoryPath imageResolver cancelToken : Feed =
+    let public CreateFeed url filePath directoryPath imageResolver cancelToken : Feed =
         createWebClient |>
         downloadFeedData url 5 |>
         saveToFile filePath |>
@@ -284,16 +279,7 @@ module public FeedFunctions =
         createFeedRecord url directoryPath String.Empty DateTime.Now |>
         resolveImages imageResolver cancelToken
 
-    let public UpdateFeed feed imageResolver cancelToken : Feed = 
-        createWebClient |>
-        downloadFeedData feed.URL 5 |>
-        createXMLDocumentFromData |>
-        createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
-        Feed.SetUpdatedDate feed.UpdatedDateTime |> 
-        mergeFeeds feed |>
-        resolveImages imageResolver cancelToken
-
-    let public UpdateFeedFromFile feed filePath imageResolver cancelToken : Feed = 
+    let public UpdateFeed feed filePath imageResolver cancelToken : Feed = 
         createWebClient |>
         downloadFeedData feed.URL 5 |>
         saveToFile filePath |>

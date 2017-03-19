@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -51,7 +52,8 @@ namespace PodFul.WPF.Windows
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
         // Create the feed and add to storage.
-        this.Feed = FeedFunctions.CreateFeed(this.feedURL, this.feedPath, this.imageResolver, cancelToken);
+        var feedFilePath = Path.Combine(this.feedPath, "download.rss");
+        this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver, cancelToken);
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>

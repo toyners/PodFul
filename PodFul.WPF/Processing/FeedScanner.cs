@@ -110,7 +110,7 @@ namespace PodFul.WPF.Processing
             try
             {
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
-              newFeed = FeedFunctions.UpdateFeedFromFile(feed, feedFilePath, this.imageResolver, cancelToken);
+              newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, this.imageResolver, cancelToken);
 
               message = "Searching for new podcasts ... ";
               this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);

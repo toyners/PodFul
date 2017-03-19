@@ -4,6 +4,7 @@ namespace PodFul.Winforms
   using System;
   using System.Collections.Generic;
   using System.Diagnostics;
+  using System.IO;
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows.Forms;
@@ -55,7 +56,8 @@ namespace PodFul.Winforms
           Feed newFeed = null;
           try
           {
-            newFeed = FeedFunctions.CreateFeed(feed.URL, feed.Directory, null, CancellationToken.None);
+            var feedFilePath = Path.Combine(feed.Directory, "download.rss");
+            newFeed = FeedFunctions.CreateFeed(feed.URL, feedFilePath, feed.Directory, null, CancellationToken.None);
           }
           catch (Exception exception)
           {

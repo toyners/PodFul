@@ -7,10 +7,10 @@ open NUnit.Framework
 module public TestingSupport = 
 
     let createTestFeed url directoryPath =
-        FeedFunctions.CreateFeed url directoryPath null CancellationToken.None
+        FeedFunctions.CreateFeed url null directoryPath null CancellationToken.None
 
     let updateTestFeed feed =
-        FeedFunctions.UpdateFeed feed null CancellationToken.None
+        FeedFunctions.UpdateFeed feed null null CancellationToken.None
 
     let assertPodcastIsCorrect (podcast : Podcast) title description url imageURL fileSize pubDate imageFileName =
         Assert.AreEqual(title, podcast.Title)
