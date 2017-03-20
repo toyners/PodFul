@@ -72,7 +72,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create Feed from RSS url``() =
         let inputPath = workingDirectory + rssFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeedWithDirectoryPath inputPath "DirectoryPath"
 
         Assert.AreNotEqual(null, feed)
         Assert.AreEqual(feedTitle, feed.Title)
@@ -97,11 +97,23 @@ type FeedFunctions_IntergrationTests() =
             secondPodcastFileSize secondPodcastPubDate String.Empty     
 
     [<Test>]
+    member public this.``Create Feed from RSS url2``() =
+        let inputPath = workingDirectory + rssFileName
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
+
+        let feedFilePath = workingDirectory + "download.rss"
+        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+
+        let fileExists = System.IO.File.Exists(feedFilePath)
+
+        Assert.AreEqual(true, fileExists)
+
+    [<Test>]
     member public this.``Create RSS Feed that contains mixture of media content and enclosure tags``() =
         let MultipleItemsWithEnclosureAndMediaContentTags = "Multiple Items with Enclosure and MediaContent Tags.rss"
         let inputPath = workingDirectory + MultipleItemsWithEnclosureAndMediaContentTags;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(MultipleItemsWithEnclosureAndMediaContentTags, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeedWithDirectoryPath inputPath "DirectoryPath"
 
         Assert.AreNotEqual(null, feed)
         Assert.AreEqual(feedTitle, feed.Title)
@@ -134,7 +146,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed from RSS file with no feed image data``(feedFileName : string) =
         let inputPath = workingDirectory + feedFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeed inputPath
 
         Assert.AreEqual(String.Empty, feed.ImageFileName)
 
@@ -145,7 +157,7 @@ type FeedFunctions_IntergrationTests() =
         let secondDateTime = new DateTime(2016, 3, 4, 11, 12, 13)
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
-        let initialFeed = Setup.createTestFeed initialInputPath "DirectoryPath"
+        let initialFeed = Setup.createTestFeed initialInputPath
         
         let firstPodcast = initialFeed.Podcasts.[0]
         firstPodcast.SetFileDetails firstPodcast.FileDetails.FileSize firstDateTime
@@ -169,7 +181,7 @@ type FeedFunctions_IntergrationTests() =
         let secondDateTime = new DateTime(2016, 3, 4, 11, 12, 13)
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSWithMaximumPodcastsFileName, initialInputPath)
-        let initialFeed = Setup.createTestFeed initialInputPath "DirectoryPath"
+        let initialFeed = Setup.createTestFeed initialInputPath
         
         let firstPodcast = initialFeed.Podcasts.[0]
         firstPodcast.SetFileDetails firstPodcast.FileDetails.FileSize firstDateTime
@@ -191,7 +203,7 @@ type FeedFunctions_IntergrationTests() =
         let initialInputPath = workingDirectory + rssWithNoPodcasts
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
-        let initialFeed = Setup.createTestFeed initialInputPath "DirectoryPath"
+        let initialFeed = Setup.createTestFeed initialInputPath
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
         let finalFeed = Setup.updateTestFeed initialFeed
@@ -204,7 +216,7 @@ type FeedFunctions_IntergrationTests() =
         let initialInputPath = workingDirectory + rssWithNoPodcasts
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithNoPodcasts, initialInputPath)
-        let initialFeed = Setup.createTestFeed initialInputPath "DirectoryPath"
+        let initialFeed = Setup.createTestFeed initialInputPath
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssWithOnePodcast, initialInputPath)
         let finalFeed = Setup.updateTestFeed initialFeed
@@ -219,7 +231,7 @@ type FeedFunctions_IntergrationTests() =
         let podcastImageName = "LocalPodcastImagePath"
 
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, initialInputPath)
-        let mutable initialFeed = Setup.createTestFeed initialInputPath "DirectoryPath"
+        let mutable initialFeed = Setup.createTestFeed initialInputPath
         initialFeed <- Feed.SetImageFileName initialFeed feedImageName
         initialFeed.Podcasts.[0].SetImageFileName podcastImageName
         
@@ -233,7 +245,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed with multiple enclosure tags per item``() =
         let inputPath = workingDirectory + itemWithMultipleEnclosureTags
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(itemWithMultipleEnclosureTags, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeed inputPath
 
         Assert.AreNotEqual(null, feed)
         Assert.AreNotEqual(null, feed.Podcasts)
@@ -252,7 +264,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed with multiple duplicate enclosure tags per item``() =
         let inputPath = workingDirectory + itemWithMultipleDuplicateEnclosureTags
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(itemWithMultipleDuplicateEnclosureTags, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeed inputPath
 
         Assert.AreNotEqual(null, feed)
         Assert.AreNotEqual(null, feed.Podcasts)
@@ -265,7 +277,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed with multiple mediacontent tags per item``() =
         let inputPath = workingDirectory + itemWithMultipleMediaContentTags
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(itemWithMultipleMediaContentTags, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeed inputPath
 
         Assert.AreNotEqual(null, feed)
         Assert.AreNotEqual(null, feed.Podcasts)
@@ -284,7 +296,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed with multiple duplicate mediacontent tags per item``() =
         let inputPath = workingDirectory + itemWithMultipleDuplicateMediaContentTags
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(itemWithMultipleDuplicateMediaContentTags, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeed inputPath
 
         Assert.AreNotEqual(null, feed)
         Assert.AreNotEqual(null, feed.Podcasts)
@@ -297,7 +309,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed with enclosure and mediacontent tags per item``() =
         let inputPath = workingDirectory + itemWithEnclosureAndMediaContentTags
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(itemWithEnclosureAndMediaContentTags, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeed inputPath
 
         Assert.AreNotEqual(null, feed)
         Assert.AreNotEqual(null, feed.Podcasts)
@@ -313,7 +325,7 @@ type FeedFunctions_IntergrationTests() =
     member public this.``Create feed with duplicate enclosure and mediacontent tags per item``() =
         let inputPath = workingDirectory + itemWithDuplicateEnclosureAndMediaContentTags
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(itemWithDuplicateEnclosureAndMediaContentTags, inputPath)
-        let feed = Setup.createTestFeed inputPath "DirectoryPath"
+        let feed = Setup.createTestFeed inputPath
 
         Assert.AreNotEqual(null, feed)
         Assert.AreNotEqual(null, feed.Podcasts)
