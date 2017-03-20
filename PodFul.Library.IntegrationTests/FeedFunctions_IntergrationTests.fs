@@ -97,7 +97,7 @@ type FeedFunctions_IntergrationTests() =
             secondPodcastFileSize secondPodcastPubDate String.Empty     
 
     [<Test>]
-    member public this.``Create Feed from RSS url2``() =
+    member public this.``Create Feed with download file parameter creates download file``() =
         let inputPath = workingDirectory + rssFileName
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
 
