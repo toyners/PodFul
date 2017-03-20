@@ -1,16 +1,9 @@
-﻿namespace PodFul.Library.IntegrationTests
+﻿namespace PodFul.TestSupport
 
 open PodFul.Library
-open System.Threading
 open NUnit.Framework
 
-module public TestingSupport = 
-
-    let createTestFeed url directoryPath =
-        FeedFunctions.CreateFeed url null directoryPath null CancellationToken.None
-
-    let updateTestFeed feed =
-        FeedFunctions.UpdateFeed feed null null CancellationToken.None
+module public Asserting = 
 
     let assertPodcastIsCorrect (podcast : Podcast) title description url imageURL fileSize pubDate imageFileName =
         Assert.AreEqual(title, podcast.Title)

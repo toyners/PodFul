@@ -5,14 +5,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>cf3eecae-e99d-4858-b7f2-b51514a0022d</ProjectGuid>
+    <ProjectGuid>38f191e9-f7dc-48bb-8a82-f1156489942b</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>TestLibrary</RootNamespace>
-    <AssemblyName>PodFul.Library.IntegrationTests</AssemblyName>
+    <RootNamespace>PodFul.TestSupport</RootNamespace>
+    <AssemblyName>PodFul.TestSupport</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Name>PodFul.Library.IntegrationTests</Name>
+    <Name>PodFul.TestSupport</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +22,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\TestLibrary.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\PodFul.TestSupport.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +31,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\TestLibrary.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\PodFul.TestSupport.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
@@ -51,46 +51,11 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="ImageResolver_IntegrationTests.fs" />
-    <EmbeddedResource Include="Item with Multiple MediaContent Tags.rss" />
     <Content Include="packages.config" />
-    <Compile Include="FeedFunctions_IntergrationTests.fs" />
-    <Compile Include="Feed_IntegrationTests.fs" />
-    <Compile Include="FeedFileStorage_IntegrationTests.fs" />
-    <EmbeddedResource Include="Feed.rss" />
-    <EmbeddedResource Include="RSSFile.rss" />
-    <EmbeddedResource Include="Final RSSFile.rss" />
-    <EmbeddedResource Include="Final RSSFile with Maximum Podcasts.rss" />
-    <EmbeddedResource Include="Initial RSSFile with Maximum Podcasts.rss" />
-    <EmbeddedResource Include="RSSFileWithMediaContent.rss" />
-    <EmbeddedResource Include="RSSFileLineBreaks.rss" />
-    <EmbeddedResource Include="RSSFile with Missing Image.rss" />
-    <EmbeddedResource Include="RSSFile with Empty Image 1.rss" />
-    <EmbeddedResource Include="RSSFile with Empty Image 2.rss" />
-    <EmbeddedResource Include="RSSFile with Empty URL 1.rss" />
-    <EmbeddedResource Include="RSSFile with Empty URL 2.rss" />
-    <EmbeddedResource Include="Initial RSSFile.rss" />
-    <EmbeddedResource Include="One Podcast.rss" />
-    <EmbeddedResource Include="No Podcasts.rss" />
-    <EmbeddedResource Include="RSS with valid Images.rss" />
-    <EmbeddedResource Include="Image.jpg" />
-    <EmbeddedResource Include="Item with Multiple Enclosure Tags.rss" />
-    <EmbeddedResource Include="Item with Multiple Duplicate MediaContent Tags.rss" />
-    <EmbeddedResource Include="Item with Multiple Duplicate Enclosure Tags.rss" />
-    <EmbeddedResource Include="Item with Duplicate Enclosure and MediaContent Tags.rss" />
-    <EmbeddedResource Include="Multiple Items with Enclosure and MediaContent Tags.rss" />
-    <EmbeddedResource Include="Item with Enclosure and MediaContent Tags.rss" />
+    <Compile Include="Setup.fs" />
+    <Compile Include="Asserting.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">
-      <Name>PodFul.TestSupport</Name>
-      <Project>{38f191e9-f7dc-48bb-8a82-f1156489942b}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <Reference Include="Jabberwocky.Toolkit">
-      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.1\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
@@ -102,6 +67,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
       <Name>PodFul.Library</Name>
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
