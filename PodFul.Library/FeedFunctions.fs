@@ -285,6 +285,7 @@ module public FeedFunctions =
         saveToFile filePath |>
         createXMLDocumentFromData |>
         createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
-        Feed.SetUpdatedDate feed.UpdatedDateTime |> 
+        Feed.SetUpdatedDate feed.UpdatedDateTime |>
+        Feed.SetScanningFlags feed.DoScan feed.CompleteDownloadsOnScan feed.DeliverDownloadsOnScan |> 
         mergeFeeds feed |>
         resolveImages imageResolver cancelToken

@@ -58,6 +58,11 @@
     <Compile Include="Podcast_UnitTest.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">
+      <Name>PodFul.TestSupport</Name>
+      <Project>{38f191e9-f7dc-48bb-8a82-f1156489942b}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>

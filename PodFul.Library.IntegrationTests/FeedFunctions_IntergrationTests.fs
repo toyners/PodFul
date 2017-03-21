@@ -175,6 +175,25 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreEqual(secondPodcast.FileDetails.DownloadDate, finalFeed.Podcasts.[2].FileDetails.DownloadDate)
 
     [<Test>]
+    member public this.``Update feed from RSS file preserves scanning flags``() =
+        let initialInputPath = workingDirectory + initialRSSFileName
+        
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(initialRSSFileName, initialInputPath)
+        let initialFeed = Setup.createTestFeed initialInputPath
+        
+        let changedDoScanValue = not initialFeed.DoScan 
+        let changedCompleteDownloadsOnScan = not initialFeed.CompleteDownloadsOnScan
+        let changedDeliverDownloadsOnScan = not initialFeed.DeliverDownloadsOnScan
+        let initialFeed = Feed.SetScanningFlags changedDoScanValue changedCompleteDownloadsOnScan changedDeliverDownloadsOnScan initialFeed
+        
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(finalRSSFileName, initialInputPath)
+        let finalFeed = Setup.updateTestFeed initialFeed
+
+        Assert.AreEqual(initialFeed.DoScan, finalFeed.DoScan)
+        Assert.AreEqual(initialFeed.CompleteDownloadsOnScan, finalFeed.CompleteDownloadsOnScan)
+        Assert.AreEqual(initialFeed.DeliverDownloadsOnScan, finalFeed.DeliverDownloadsOnScan)
+
+    [<Test>]
     member public this.``Update feed from RSS file with maximum number of podcasts``() =
         let initialInputPath = workingDirectory + initialRSSWithMaximumPodcastsFileName
         let firstDateTime = new DateTime(2015, 1, 2, 8, 9, 10)

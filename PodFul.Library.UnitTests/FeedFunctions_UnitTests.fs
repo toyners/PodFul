@@ -1,6 +1,5 @@
 ﻿namespace PodFul.Library.UnitTests
 
-//open FsUnit
 open NUnit.Framework
 open PodFul.Library
 open System

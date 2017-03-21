@@ -1,9 +1,27 @@
 ﻿namespace PodFul.TestSupport
 
 open PodFul.Library
+open System
 open System.Threading
 
 module public Setup = 
+
+    let createDefaultTestFeed =
+        {
+            Title = "title"
+            Description = "description"
+            Website = "website"
+            Directory = "directory"
+            URL = "url"
+            ImageURL = "image URL"
+            ImageFileName = ""
+            Podcasts = null
+            CreationDateTime = new DateTime(2016, 2, 3)
+            UpdatedDateTime = FeedFunctions.NoDateTime
+            DoScan = true
+            CompleteDownloadsOnScan = true
+            DeliverDownloadsOnScan = true
+        }
 
     let createTestFeed url =
         FeedFunctions.CreateFeed url null "DirectoryPath" null CancellationToken.None
