@@ -116,38 +116,34 @@ namespace PodFul.WPF.Processing
               this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
 
               var podcastIndexes = this.BuildPodcastList(feed, newFeed);
-              var updateFeed = (podcastIndexes.Count > 0);
+              var feedHasNewPodcasts = (podcastIndexes.Count > 0);
 
-              if (updateFeed)
+              var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
+              if (feedHasNewPodcasts && newFeed.CompleteDownloadsOnScan)
               {
                 this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey), newFeed, podcastIndexes);
-              }
 
-              var downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
-              if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
-              {
-                var feedMessage = podcastIndexes.Count + " podcasts found";
-                this.logController.Message(MainWindow.InfoKey, feedMessage + " (Scan cancelled).");
-                this.logController.Message(MainWindow.UiKey, feedMessage + " (Scan cancelled).\r\n");
-                scanReport.Message(feedMessage + " for \"" + feed.Title + "\".");
-                this.cancellationTokenSource.Cancel();
-                break;
-              }
-
-              if (updateFeed)
-              {
-                newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
+                downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
+                if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
+                {
+                  var feedMessage = podcastIndexes.Count + " podcasts found";
+                  var logMessage = feedMessage + " (Scan cancelled).";
+                  this.logController.Message(MainWindow.InfoKey, logMessage).Message(MainWindow.UiKey, feedMessage + "\r\n");
+                  scanReport.Message(feedMessage + " for \"" + feed.Title + "\".");
+                  this.cancellationTokenSource.Cancel();
+                  break;
+                }
               }
 
               message = "Completed - ";
-              if (podcastIndexes.Count == 0)
+              if (!feedHasNewPodcasts)
               {
                 message += "No new podcasts found.";
               }
               else
               {
                 var feedMessage = podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found";
-                var downloadingSkippedMessage = (downloadConfirmation == DownloadConfirmationStatus.ContinueDownloading ? String.Empty : " (Downloading skipped)");
+                var downloadingSkippedMessage = (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading ? " (Downloading skipped)" : String.Empty);
                 message += feedMessage + downloadingSkippedMessage + ".";
                 scanReport.Message(feedMessage + " for \"" + feed.Title + "\"" + downloadingSkippedMessage + ".\r\n");
               }
@@ -292,6 +288,8 @@ namespace PodFul.WPF.Processing
 
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)
     {
+      feed = Feed.SetUpdatedDate(DateTime.Now, feed);
+
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.feedCollection[feedIndex] = feed;
