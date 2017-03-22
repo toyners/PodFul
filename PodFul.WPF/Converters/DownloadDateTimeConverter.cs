@@ -13,6 +13,16 @@ namespace PodFul.WPF
   {
     public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
     {
+      return this.ConvertToString(value);
+    }
+
+    public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
+    {
+      return DependencyProperty.UnsetValue;
+    }
+
+    internal String ConvertToString(Object value)
+    {
       if (value == null || !(value is DateTime))
       {
         return String.Empty;
@@ -26,11 +36,6 @@ namespace PodFul.WPF
       }
 
       return dateTime.ToString("d-MMM-yyyy H:mm:ss");
-    }
-
-    public Object ConvertBack(Object value, Type targetType, Object parameter, CultureInfo culture)
-    {
-      return DependencyProperty.UnsetValue;
     }
   }
 }

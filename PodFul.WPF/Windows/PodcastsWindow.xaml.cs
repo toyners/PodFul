@@ -8,6 +8,7 @@ namespace PodFul.WPF.Windows
   using System.Windows.Input;
   using Jabberwocky.Toolkit.String;
   using Jabberwocky.Toolkit.WPF;
+  using Miscellaneous;
   using PodFul.Library;
 
   /// <summary>
@@ -85,7 +86,8 @@ namespace PodFul.WPF.Windows
     private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)
     {
       var podcast = PodcastList.SelectedItem as Podcast;
-      var propertiesWindow = new PodcastPropertiesWindow(podcast, this.feedDirectory);
+      var podcastProperties = new PodcastProperties(podcast, this.feedDirectory);   
+      var propertiesWindow = new PodcastPropertiesWindow(podcastProperties);
       propertiesWindow.Owner = this;
 
       propertiesWindow.ShowDialog();

@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Miscellaneous\PodcastProperties.cs" />
     <Compile Include="Logging\CombinedLogger.cs" />
     <Compile Include="Logging\MessageBuilder.cs" />
     <Compile Include="Logging\ExceptionLogger.cs" />

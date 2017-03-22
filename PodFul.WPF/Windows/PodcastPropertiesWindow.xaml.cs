@@ -2,8 +2,8 @@
 namespace PodFul.WPF.Windows
 {
   using System;
-  using System.IO;
   using System.Windows;
+  using Miscellaneous;
   using PodFul.Library;
 
   /// <summary>
@@ -12,29 +12,11 @@ namespace PodFul.WPF.Windows
   public partial class PodcastPropertiesWindow : Window
   {
     #region Construction
-    public PodcastPropertiesWindow(Podcast podcast, String feedDirectory)
+    public PodcastPropertiesWindow(PodcastProperties properties)
     {
       InitializeComponent();
-
-      this.Title = podcast.Title;
-
-      this.Podcast = podcast;
-      if (podcast.FileDetails.DownloadDate == FeedFunctions.NoDateTime)
-      {
-        this.FilePath = "No download";
-      }
-      else
-      {
-        this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
-        if (!File.Exists(this.FilePath))
-        {
-          this.FilePath = "No file";
-        }
-      }
-
-      this.FileSize = (new FileSizeConverter()).ConvertToString(podcast.FileDetails.FileSize) + "  (" + podcast.FileDetails.FileSize + " bytes)";
-
-      this.DataContext = this;  
+      this.Title = properties.Title;
+      this.DataContext = properties;  
     }
     #endregion
 
