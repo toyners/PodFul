@@ -273,7 +273,7 @@ namespace PodFul.WPF.Windows
       if (deliverManualDownloadsToDeliveryPoints)
       {
         this.InitialiseDeliveryPoints();
-        podcastDownloadManager.JobCompletedSuccessfullyEvent += JobCompletedEventHandler;
+        podcastDownloadManager.JobCompletedSuccessfullyEvent += job => { this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name); };
       }
 
       podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
@@ -330,11 +330,6 @@ namespace PodFul.WPF.Windows
       e.Handled = true;
     }
 
-    private void JobCompletedEventHandler(DownloadJob job)
-    {
-      this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
-    }
-
     private void InitialiseDeliveryPoints()
     {
       this.logController.Message(CombinedKey, "Starting delivery point initialisation");
@@ -348,7 +343,14 @@ namespace PodFul.WPF.Windows
       this.InitialiseDeliveryPoints();
 
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
-      downloadManager.JobCompletedSuccessfullyEvent += this.JobCompletedEventHandler;
+      downloadManager.JobCompletedSuccessfullyEvent += job =>
+      {
+        if (job.DoDeliverFile)
+        {
+          this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
+        }
+      };
+
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 

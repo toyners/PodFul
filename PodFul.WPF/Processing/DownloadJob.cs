@@ -100,6 +100,8 @@ namespace PodFul.WPF.Processing
 
     public CancellationToken CancellationToken { get; private set; }
 
+    public Boolean DoDeliverFile { get { return this.feed.DeliverDownloadsOnScan; } }
+
     public String ExceptionMessage
     {
       get { return this.exceptionMessage; }
