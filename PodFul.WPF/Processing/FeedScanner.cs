@@ -135,7 +135,7 @@ namespace PodFul.WPF.Processing
                 }
               }
 
-              this.LogPodcastSearchResult(feed.Title, feedHasNewPodcasts, (UInt32)podcastIndexes.Count, downloadConfirmation, scanReport);
+              this.LogPodcastSearchResults(feed.Title, feedHasNewPodcasts, (UInt32)podcastIndexes.Count, downloadConfirmation, scanReport);
 
               this.FeedScanCompleted(feedIndex, newFeed);
               
@@ -144,14 +144,8 @@ namespace PodFul.WPF.Processing
                 continue;
               }
 
-              podcastIndexes.Reverse();
-
-              foreach (var index in podcastIndexes)
-              {
-                var podcast = newFeed.Podcasts[index];
-                var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.imageResolver);
-                this.downloadManager.AddJob(job);
-              }
+              this.CreateDownloadJobs(podcastIndexes, newFeed);
+              
             }
             catch (OperationCanceledException)
             {
@@ -224,43 +218,6 @@ namespace PodFul.WPF.Processing
       // continuation tasks from being scheduled (and hence started)
     }
 
-    private void LogPodcastSearchResult(String feedTitle, Boolean feedHasNewPodcasts, UInt32 podcastCount, DownloadConfirmationStatus downloadConfirmation, MessageBuilder scanReport)
-    {
-      var message = "Completed - ";
-      if (!feedHasNewPodcasts)
-      {
-        message += "No new podcasts found.";
-      }
-      else
-      {
-        var feedMessage = podcastCount + " podcast".Pluralize(podcastCount) + " found";
-        var downloadingSkippedMessage = (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading ? " (Downloading skipped)" : String.Empty);
-        message += feedMessage + downloadingSkippedMessage + ".";
-        scanReport.Message(feedMessage + " for \"" + feedTitle + "\"" + downloadingSkippedMessage + ".\r\n");
-      }
-
-      this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
-    }
-
-    private void LogNewPodcastsFromFeed(ILogger logger, Feed feed, List<Int32> podcastIndexes)
-    {
-      foreach (var podcastIndex in podcastIndexes)
-      {
-        var podcast = feed.Podcasts[podcastIndex];
-        var message = "New podcast details. Title: '" + podcast.Title +
-          "', Description: '" + podcast.Description +
-          "', Publishing Date: '" + podcast.PubDate +
-          "', URL: '" + podcast.URL + "'";
-
-        if (!String.IsNullOrEmpty(podcast.ImageURL))
-        {
-          message += ", Image URL: '" + podcast.ImageURL + "'";
-        }
-
-        logger.Message(message + ".");
-      }
-    }
-
     private List<Int32> BuildPodcastList(Feed oldFeed, Feed newFeed)
     {
       var podcastIndexes = new List<Int32>();
@@ -285,6 +242,18 @@ namespace PodFul.WPF.Processing
       return podcastIndexes;
     }
 
+    private void CreateDownloadJobs(List<Int32> podcastIndexes, Feed newFeed)
+    {
+      podcastIndexes.Reverse();
+
+      foreach (var index in podcastIndexes)
+      {
+        var podcast = newFeed.Podcasts[index];
+        var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.imageResolver);
+        this.downloadManager.AddJob(job);
+      }
+    }
+
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)
     {
       var message = String.Format("Updating \"{0}\" ... ", feed.Title);
@@ -299,6 +268,43 @@ namespace PodFul.WPF.Processing
 
       message = "Completed.";
       this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
+    }
+
+    private void LogNewPodcastsFromFeed(ILogger logger, Feed feed, List<Int32> podcastIndexes)
+    {
+      foreach (var podcastIndex in podcastIndexes)
+      {
+        var podcast = feed.Podcasts[podcastIndex];
+        var message = "New podcast details. Title: '" + podcast.Title +
+          "', Description: '" + podcast.Description +
+          "', Publishing Date: '" + podcast.PubDate +
+          "', URL: '" + podcast.URL + "'";
+
+        if (!String.IsNullOrEmpty(podcast.ImageURL))
+        {
+          message += ", Image URL: '" + podcast.ImageURL + "'";
+        }
+
+        logger.Message(message + ".");
+      }
+    }
+
+    private void LogPodcastSearchResults(String feedTitle, Boolean feedHasNewPodcasts, UInt32 podcastCount, DownloadConfirmationStatus downloadConfirmation, MessageBuilder scanReport)
+    {
+      var message = "Completed - ";
+      if (!feedHasNewPodcasts)
+      {
+        message += "No new podcasts found.";
+      }
+      else
+      {
+        var feedMessage = podcastCount + " podcast".Pluralize(podcastCount) + " found";
+        var downloadingSkippedMessage = (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading ? " (Downloading skipped)" : String.Empty);
+        message += feedMessage + downloadingSkippedMessage + ".";
+        scanReport.Message(feedMessage + " for \"" + feedTitle + "\"" + downloadingSkippedMessage + ".\r\n");
+      }
+
+      this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
     }
     #endregion
   }
