@@ -348,7 +348,7 @@ namespace PodFul.WPF.Windows
       this.InitialiseDeliveryPoints();
 
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
-      downloadManager.JobCompletedSuccessfullyEvent += job => { this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name); };
+      downloadManager.JobCompletedSuccessfullyEvent += this.JobCompletedEventHandler;
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 
