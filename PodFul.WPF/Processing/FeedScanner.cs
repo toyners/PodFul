@@ -119,7 +119,7 @@ namespace PodFul.WPF.Processing
               var feedHasNewPodcasts = (podcastIndexes.Count > 0);
 
               var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
-              if (feedHasNewPodcasts && newFeed.CompleteDownloadsOnScan)
+              if (feedHasNewPodcasts && downloadConfirmation != DownloadConfirmationStatus.SkipDownloading)
               {
                 this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey), newFeed, podcastIndexes);
 
@@ -135,29 +135,10 @@ namespace PodFul.WPF.Processing
                 }
               }
 
-              message = "Completed - ";
-              if (!feedHasNewPodcasts)
-              {
-                message += "No new podcasts found.";
-              }
-              else
-              {
-                var feedMessage = podcastIndexes.Count + " podcast".Pluralize((UInt32)podcastIndexes.Count) + " found";
-                var downloadingSkippedMessage = (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading ? " (Downloading skipped)" : String.Empty);
-                message += feedMessage + downloadingSkippedMessage + ".";
-                scanReport.Message(feedMessage + " for \"" + feed.Title + "\"" + downloadingSkippedMessage + ".\r\n");
-              }
-
-              this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
-
-              message = String.Format("Updating \"{0}\" ... ", feed.Title);
-              this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
+              this.LogPodcastSearchResult(feed.Title, feedHasNewPodcasts, (UInt32)podcastIndexes.Count, downloadConfirmation, scanReport);
 
               this.FeedScanCompleted(feedIndex, newFeed);
-
-              message = "Completed.";
-              this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
-
+              
               if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
               {
                 continue;
@@ -243,6 +224,24 @@ namespace PodFul.WPF.Processing
       // continuation tasks from being scheduled (and hence started)
     }
 
+    private void LogPodcastSearchResult(String feedTitle, Boolean feedHasNewPodcasts, UInt32 podcastCount, DownloadConfirmationStatus downloadConfirmation, MessageBuilder scanReport)
+    {
+      var message = "Completed - ";
+      if (!feedHasNewPodcasts)
+      {
+        message += "No new podcasts found.";
+      }
+      else
+      {
+        var feedMessage = podcastCount + " podcast".Pluralize(podcastCount) + " found";
+        var downloadingSkippedMessage = (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading ? " (Downloading skipped)" : String.Empty);
+        message += feedMessage + downloadingSkippedMessage + ".";
+        scanReport.Message(feedMessage + " for \"" + feedTitle + "\"" + downloadingSkippedMessage + ".\r\n");
+      }
+
+      this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
+    }
+
     private void LogNewPodcastsFromFeed(ILogger logger, Feed feed, List<Int32> podcastIndexes)
     {
       foreach (var podcastIndex in podcastIndexes)
@@ -288,12 +287,18 @@ namespace PodFul.WPF.Processing
 
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)
     {
+      var message = String.Format("Updating \"{0}\" ... ", feed.Title);
+      this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
+
       feed = Feed.SetUpdatedDate(DateTime.Now, feed);
 
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.feedCollection[feedIndex] = feed;
       });
+
+      message = "Completed.";
+      this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
     }
     #endregion
   }
