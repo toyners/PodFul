@@ -2,39 +2,24 @@
 
 open NUnit.Framework
 open PodFul.Library
+open PodFul.TestSupport
 open System
 
 type Podcast_UnitTest() = 
     
-    let createPodcastRecord title description url pubDate fileSize downloadDate imageFileName imageURL =
-        {
-            Title = title
-            Description = description
-            URL = url
-            ImageURL = imageURL
-            PubDate = pubDate
-            FileDetails =
-                {
-                    FileSize = fileSize
-                    DownloadDate = downloadDate
-                    ImageFileName = imageFileName
-                }
-            
-        }
-
     [<Test>]
     member public this.``Two podcast records are equal because of same title.``() =
         
-        let podcast1 = createPodcastRecord "title" "description1" "url1" (new DateTime(2016, 12, 31)) 1L DateTime.MaxValue "image1" "image1URL"
-        let podcast2 = createPodcastRecord "title" "description2" "url2" (new DateTime(2016, 12, 30)) 2L FeedFunctions.NoDateTime "image2" "image2URL"
+        let podcast1 = Setup.createTestPodcast "title" "description1" "url1" (new DateTime(2016, 12, 31)) 1L DateTime.MaxValue "image1" "image1URL"
+        let podcast2 = Setup.createTestPodcast "title" "description2" "url2" (new DateTime(2016, 12, 30)) 2L FeedFunctions.NoDateTime "image2" "image2URL"
 
         Assert.AreEqual(true, (podcast1 = podcast2))
 
     [<Test>]
     member public this.``Two podcast records are not equal because of different title.``() =
         
-        let podcast1 = createPodcastRecord "title1" "description" "url" (new DateTime(2016, 12, 31)) 1L DateTime.MaxValue "image" "imageURL"
-        let podcast2 = createPodcastRecord "title2" "description" "url" (new DateTime(2016, 12, 31)) 1L DateTime.MaxValue "image" "imageURL"
+        let podcast1 = Setup.createTestPodcast "title1" "description" "url" (new DateTime(2016, 12, 31)) 1L DateTime.MaxValue "image" "imageURL"
+        let podcast2 = Setup.createTestPodcast "title2" "description" "url" (new DateTime(2016, 12, 31)) 1L DateTime.MaxValue "image" "imageURL"
 
         Assert.AreEqual(false, (podcast1 = podcast2))
 
@@ -42,7 +27,7 @@ type Podcast_UnitTest() =
     member public this.``Setting file details updates the podcast file details``() =
 
         let imageFileName = "image"
-        let podcast = createPodcastRecord "title" "description" "url" (new DateTime(2016, 12, 31)) 1L DateTime.MinValue "" ""
+        let podcast = Setup.createTestPodcast "title" "description" "url" (new DateTime(2016, 12, 31)) 1L DateTime.MinValue "" ""
         let fileDetails = podcast.FileDetails
 
         podcast.SetAllFileDetails 2L DateTime.MaxValue imageFileName
@@ -57,7 +42,7 @@ type Podcast_UnitTest() =
     [<TestCase("")>]
     member public this.``Getting file name when URL is null or empty throws meaningful exception``(url : string) =
 
-        let podcast = createPodcastRecord "title" "description" url (new DateTime(2016, 12, 31)) 1L FeedFunctions.NoDateTime "image" ""
+        let podcast = Setup.createTestPodcast "title" "description" url (new DateTime(2016, 12, 31)) 1L FeedFunctions.NoDateTime "image" ""
 
         let mutable testSuccessful = false
         try
@@ -78,6 +63,6 @@ type Podcast_UnitTest() =
     [<TestCase("http://abc.mp3.com/fileName")>]
     member public this.``Getting file name when URL is valid returns file name only``(url : string) =
 
-        let podcast = createPodcastRecord "title" "description" url (new DateTime(2016, 12, 31)) 1L FeedFunctions.NoDateTime "image" ""
+        let podcast = Setup.createTestPodcast "title" "description" url (new DateTime(2016, 12, 31)) 1L FeedFunctions.NoDateTime "image" ""
 
         Assert.AreEqual("fileName.mp3", podcast.FileName)

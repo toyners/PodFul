@@ -55,6 +55,7 @@
     <Compile Include="Settings_IntegrationTests.fs" />
     <Content Include="packages.config" />
     <Compile Include="PodcastSynchroniser_IntegrationTests.fs" />
+    <Compile Include="PodcastProperties_IntegrationTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">
@@ -85,6 +86,11 @@
     <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
       <Name>PodFul.Library</Name>
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">
+      <Name>PodFul.TestSupport</Name>
+      <Project>{38f191e9-f7dc-48bb-8a82-f1156489942b}</Project>
       <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\PodFul.WPF\PodFul.WPF.csproj">

@@ -3,6 +3,7 @@ namespace PodFul.WPF.Miscellaneous
 {
   using System;
   using System.IO;
+  using Jabberwocky.Toolkit.Object;
   using Library;
 
   public class PodcastProperties
@@ -10,6 +11,7 @@ namespace PodFul.WPF.Miscellaneous
     #region Construction
     public PodcastProperties(Podcast podcast, String feedDirectory)
     {
+      feedDirectory.VerifyThatObjectIsNotNull("Parameter 'feedDirectory' is null.");
       this.Title = podcast.Title;
       this.Description = podcast.Description;
       this.DownloadedDate = new DownloadDateTimeConverter().ConvertToString(podcast.FileDetails.DownloadDate);
@@ -19,14 +21,14 @@ namespace PodFul.WPF.Miscellaneous
 
       if (podcast.FileDetails.DownloadDate == FeedFunctions.NoDateTime)
       {
-        this.FilePath = "No download";
+        this.FilePath = "<No Download>";
       }
       else
       {
         this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
         if (!File.Exists(this.FilePath))
         {
-          this.FilePath = "No file";
+          this.FilePath = "<No File>";
         }
       }
 
