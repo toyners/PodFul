@@ -120,8 +120,8 @@
                 <ColumnDefinition Width="150*" />
               </Grid.ColumnDefinitions>
 
-              <CheckBox Name="PerformScan" Grid.Column="1" VerticalAlignment="Center" Height="15" Margin="0,5">Perform Scan</CheckBox>
-              <CheckBox Name="PerformDownloading" Grid.Column="2" VerticalAlignment="Center" Height="15" Margin="0,5">Perform Downloading</CheckBox>
+              <CheckBox Name="PerformScan" Grid.Column="1" VerticalAlignment="Center" Height="15" Margin="0,5" Click="PerformScanChecked" >Perform Scan</CheckBox>
+              <CheckBox Name="PerformDownloading" Grid.Column="2" VerticalAlignment="Center" Height="15" Margin="0,5" Checked="PerformDownloadingChecked">Perform Downloading</CheckBox>
               <CheckBox Name="ProcessDeliveryPoints" Grid.Column="3" VerticalAlignment="Center" Height="15" Margin="0,5">Process Delivery Points</CheckBox>
             </Grid>
           </Grid>

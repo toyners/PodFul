@@ -22,6 +22,10 @@ namespace PodFul.WPF.Windows
       this.Title = feed.Title;
       this.DataContext = feed;
       this.feed = feed;
+
+      this.PerformScan.IsChecked = feed.DoScan;
+      this.PerformDownloading.IsChecked = feed.CompleteDownloadsOnScan;
+      this.ProcessDeliveryPoints.IsChecked = feed.DeliverDownloadsOnScan;
     }
     #endregion
 
@@ -52,5 +56,35 @@ namespace PodFul.WPF.Windows
       this.DialogResult = this.isDirty;
     }
     #endregion
+
+    private void PerformScanChecked(Object sender, RoutedEventArgs e)
+    {
+      if (this.IsTrue(this.PerformScan.IsChecked))
+      {
+        this.PerformDownloading.IsEnabled = true;
+        if (this.IsTrue(this.PerformDownloading.IsChecked))
+        {
+          this.ProcessDeliveryPoints.IsEnabled = true;
+        }
+        else
+        {
+          this.ProcessDeliveryPoints.IsEnabled = false;
+        }
+      }
+      else
+      {
+        this.PerformDownloading.IsEnabled = this.ProcessDeliveryPoints.IsEnabled = false;
+      }
+    }
+
+    private void PerformDownloadingChecked(Object sender, RoutedEventArgs e)
+    {
+      this.ProcessDeliveryPoints.IsEnabled = (this.PerformDownloading.IsChecked.HasValue && this.PerformDownloading.IsChecked.Value);
+    }
+
+    private Boolean IsTrue(Boolean? value)
+    {
+      return value.HasValue && value.Value;
+    }
   }
 }
