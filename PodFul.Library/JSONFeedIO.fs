@@ -6,18 +6,18 @@ open System.Text
 
 module JSONFeedIO =
 
-  let ResolveFeedDifferences (oldFeed : OldFeed) : Feed = 
+  let ResolveFeedDifferences (previousFeed : PreviousFeed) : Feed = 
     {
-        Title = oldFeed.Title
-        Description = oldFeed.Description
-        Website = oldFeed.Website
-        Directory = oldFeed.Directory
-        URL = oldFeed.URL
-        ImageURL = oldFeed.ImageURL
-        ImageFileName = oldFeed.ImageFileName
-        Podcasts = oldFeed.Podcasts
-        CreationDateTime = oldFeed.CreationDateTime
-        UpdatedDateTime = oldFeed.UpdatedDateTime
+        Title = previousFeed.Title
+        Description = previousFeed.Description
+        Website = previousFeed.Website
+        Directory = previousFeed.Directory
+        URL = previousFeed.URL
+        ImageURL = previousFeed.ImageURL
+        ImageFileName = previousFeed.ImageFileName
+        Podcasts = previousFeed.Podcasts
+        CreationDateTime = previousFeed.CreationDateTime
+        UpdatedDateTime = previousFeed.UpdatedDateTime
         DoScan = true
         CompleteDownloadsOnScan = true
         DeliverDownloadsOnScan = true

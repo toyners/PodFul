@@ -57,6 +57,7 @@
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <Compile Include="Feed_IntegrationTests.fs" />
     <Compile Include="FeedFileStorage_IntegrationTests.fs" />
+    <Compile Include="JSONFeedIO_IntergrationTests.fs" />
     <EmbeddedResource Include="Feed.rss" />
     <EmbeddedResource Include="RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile.rss" />
@@ -107,6 +108,8 @@
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

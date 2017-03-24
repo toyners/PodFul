@@ -2,7 +2,7 @@
 
 open System
 
-type OldFeed = 
+type PreviousFeed = 
     {
         Title : string;
         Description : string;
