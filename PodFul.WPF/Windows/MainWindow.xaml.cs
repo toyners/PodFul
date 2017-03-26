@@ -149,8 +149,9 @@ namespace PodFul.WPF.Windows
       {
         var count = PodcastSynchroniser.Synchronise(feed);
 
-        var message = String.Format("{0} MP3 file(s) synced after adding '{1}'", count, feed.Title);
+        var message = String.Format("{0} MP3 file(s) synchronised after adding '{1}'", count, feed.Title);
         this.logController.Message(InfoKey, message);
+        MessageBox.Show(String.Format("{0} MP3 file(s) synchronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
 
       var imagePath = this.imageResolver.GetName(feed.ImageFileName, feed.ImageURL);
@@ -395,7 +396,7 @@ namespace PodFul.WPF.Windows
       if (count > 0)
       {
         this.feedCollection.UpdateFeedContent(this.currentFeed);
-        MessageBox.Show(String.Format("{0} MP3 file(s) snychronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
+        MessageBox.Show(String.Format("{0} MP3 file(s) synchronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
       else
       {
