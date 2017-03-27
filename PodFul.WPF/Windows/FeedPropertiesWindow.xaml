@@ -45,9 +45,9 @@
 
             <Label VerticalAlignment="Top">Description:</Label>
             <TextBox Grid.Column="1"
-                MaxLines="3" Width="490" VerticalScrollBarVisibility="Visible"
-                Text="{Binding Path=Description, Mode=OneWay}" 
-                TextWrapping="Wrap" IsReadOnly="True" Margin="0,0,0,4" />
+                MaxLines="3" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch"
+                Text="{Binding Path=Description, Mode=OneWay}" Height="40"
+                TextWrapping="Wrap" IsReadOnly="True" Margin="11,0,10,0" />
           </Grid>
 
           <Grid Grid.Row="1" >
@@ -56,9 +56,9 @@
               <ColumnDefinition Width="7*" />
             </Grid.ColumnDefinitions>
             <Label VerticalAlignment="Center">Website:</Label>
-            <TextBox VerticalAlignment="Center" Grid.Column="1" 
-                     Text="{Binding Path=Website, Mode=OneWay}"
-                     Width="490" IsReadOnly="True"/>
+            <TextBox VerticalAlignment="Center" Grid.Column="1" Height="20"
+                     Text="{Binding Path=Website, Mode=OneWay}" Margin="11,0,10,0" HorizontalAlignment="Stretch"
+                     IsReadOnly="True"/>
           </Grid>
 
           <Grid Grid.Row="2" >
@@ -68,21 +68,22 @@
               <ColumnDefinition Width="19*" />
             </Grid.ColumnDefinitions>
             <Label VerticalAlignment="Center" Height="26" Margin="0,1">Directory:</Label>
-            <TextBox Grid.Column="1" Name="DirectoryPath" VerticalAlignment="Center" 
+            <TextBox Grid.Column="1" Name="DirectoryPath" VerticalAlignment="Center" Height="20"
               Text="{Binding Path=Directory, Mode=OneWay}" IsReadOnly="True" />
-            <Button Grid.Column="2" Margin="5,5,0,5" Width="20" HorizontalAlignment="Left" Click="ChangeDirectoryClick">...</Button>
+            <Button Grid.Column="2" Margin="5,0" Width="22" Height="20" HorizontalAlignment="Left" Click="ChangeDirectoryClick">...</Button>
           </Grid>
 
           <Grid Grid.Row="3" >
             <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition Width="7*" />
+              <ColumnDefinition Width="73*" />
+              <ColumnDefinition Width="494*" />
+              <ColumnDefinition Width="19*"/>
             </Grid.ColumnDefinitions>
 
             <Label VerticalAlignment="Center">URL:</Label>
             <TextBox Grid.Column="1" 
-              VerticalAlignment="Center" 
-              Text="{Binding Path=URL, Mode=OneWay}" Width="490" IsReadOnly="True" />
+              VerticalAlignment="Center" Height="20" HorizontalAlignment="Stretch" Margin="11,0,10,0"
+              Text="{Binding Path=URL, Mode=OneWay}" IsReadOnly="True" Grid.ColumnSpan="2" />
           </Grid>
 
           <Grid Grid.Row="4">
@@ -95,20 +96,20 @@
               <ColumnDefinition Width="153*" />
             </Grid.ColumnDefinitions>
 
-            <Label VerticalAlignment="Center" Height="26">Podcasts:</Label>
+            <Label VerticalAlignment="Center">Podcasts:</Label>
             <TextBox Grid.Column="1" VerticalAlignment="Center"
                       Text="{Binding Podcasts.Length, Mode=OneWay}" 
-                      Margin="11,4,2,4" IsReadOnly="True" Height="18" />
+                      Margin="11,0,0,0" IsReadOnly="True" Height="20" />
 
-            <Label Grid.Column="2" VerticalAlignment="Center" Height="26">Created:</Label>
+            <Label Grid.Column="2" VerticalAlignment="Center">Created:</Label>
             <TextBox Grid.Column="3" VerticalAlignment="Center"
                          Text="{Binding Path=CreationDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" 
-                         IsReadOnly="True" Margin="2,4" Height="18" />
+                         IsReadOnly="True" Margin="2,0" Height="20" />
 
-            <Label Grid.Column="4"  VerticalAlignment="Center" Height="26">Updated:</Label>
+            <Label Grid.Column="4"  VerticalAlignment="Center" >Updated:</Label>
             <TextBox Grid.Column="5" VerticalAlignment="Center" 
                          Text="{Binding Path=UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" 
-                         IsReadOnly="True" Margin="2,4,12,4" Height="18" />
+                         IsReadOnly="True" Margin="2,0,11,0" Height="20" />
           </Grid>
 
           <Grid Grid.Row="5">
@@ -116,12 +117,12 @@
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="84*"/>
                 <ColumnDefinition Width="137*" />
-                <ColumnDefinition Width="215*" />
-                <ColumnDefinition Width="150*" />
+                <ColumnDefinition Width="213*" />
+                <ColumnDefinition Width="152*" />
               </Grid.ColumnDefinitions>
 
               <CheckBox Name="PerformScan" Grid.Column="1" VerticalAlignment="Center" Height="15" Margin="0,5" Click="PerformScanChecked" >Perform Scan</CheckBox>
-              <CheckBox Name="PerformDownloading" Grid.Column="2" VerticalAlignment="Center" Height="15" Margin="0,5" Checked="PerformDownloadingChecked">Perform Downloading</CheckBox>
+              <CheckBox Name="PerformDownloading" Grid.Column="2" VerticalAlignment="Center" Height="15" Margin="0,5" Click="PerformDownloadingChecked">Perform Downloading</CheckBox>
               <CheckBox Name="ProcessDeliveryPoints" Grid.Column="3" VerticalAlignment="Center" Height="15" Margin="0,5">Process Delivery Points</CheckBox>
             </Grid>
           </Grid>

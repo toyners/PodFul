@@ -79,7 +79,14 @@ namespace PodFul.WPF.Windows
 
     private void PerformDownloadingChecked(Object sender, RoutedEventArgs e)
     {
-      this.ProcessDeliveryPoints.IsEnabled = (this.PerformDownloading.IsChecked.HasValue && this.PerformDownloading.IsChecked.Value);
+      if (this.IsTrue(this.PerformDownloading.IsChecked))
+      {
+        this.ProcessDeliveryPoints.IsEnabled = true;
+      }
+      else
+      {
+        this.ProcessDeliveryPoints.IsEnabled = false;
+      }
     }
 
     private Boolean IsTrue(Boolean? value)
