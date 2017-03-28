@@ -55,6 +55,7 @@
     <Compile Include="Miscellaneous.fs" />
     <Compile Include="PodcastFile.fs" />
     <Compile Include="Podcast.fs" />
+    <Compile Include="PreviousFeed.fs" />
     <Compile Include="Feed.fs" />
     <Compile Include="JSONFeedIO.fs" />
     <Compile Include="IFeedStorage.fs" />
