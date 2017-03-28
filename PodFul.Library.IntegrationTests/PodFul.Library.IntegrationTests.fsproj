@@ -80,6 +80,7 @@
     <EmbeddedResource Include="Item with Duplicate Enclosure and MediaContent Tags.rss" />
     <EmbeddedResource Include="Multiple Items with Enclosure and MediaContent Tags.rss" />
     <EmbeddedResource Include="Item with Enclosure and MediaContent Tags.rss" />
+    <Compile Include="JSONFeedIO_IntergrationTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">

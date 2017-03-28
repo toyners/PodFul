@@ -219,7 +219,7 @@ Test/
 Output/
 
 # Test directories
-PodFul.Library.IntegrationTests/
+PodFul.Library.IntegrationTests/*
 
 # Installation setup inno script for PodFul
 InstallationSetup.iss
