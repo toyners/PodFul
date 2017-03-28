@@ -57,7 +57,6 @@
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
     <Compile Include="Feed_IntegrationTests.fs" />
     <Compile Include="FeedFileStorage_IntegrationTests.fs" />
-    <Compile Include="JSONFeedIO_IntergrationTests.fs" />
     <EmbeddedResource Include="Feed.rss" />
     <EmbeddedResource Include="RSSFile.rss" />
     <EmbeddedResource Include="Final RSSFile.rss" />
