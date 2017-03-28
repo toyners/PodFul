@@ -12,7 +12,7 @@ open System.Threading
 
 type FeedFunctions_IntergrationTests() = 
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Test\FeedFunctions_IntergrationTests\";
 
     let feedFileName = "Feed.rss"
     let rssFileName = "RSSFile.rss"

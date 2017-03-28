@@ -9,7 +9,7 @@ open PodFul.Library
 
 type ImageResolver_IntegrationTests() =
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\ImageResolver_IntergrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Test\ImageResolver_IntergrationTests\";
 
     let createImageResolver imageDirectory defaultImagePath renameFunction =
         let imageResolver = ImageResolver(imageDirectory, defaultImagePath, false)

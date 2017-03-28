@@ -8,7 +8,7 @@ open System.IO
 
 type FeedFileStorage_IntergrationTests() = 
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFileStorage_IntergrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Test\FeedFileStorage_IntergrationTests\";
 
     let feedTitle = "Feed Title"
     let feedDescription = "Feed Description"

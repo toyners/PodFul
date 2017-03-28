@@ -11,7 +11,7 @@ open NUnit.Framework
 
 type JSONFeedIO_IntergrationTests() = 
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\JSONFeedIO_IntergrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Test\JSONFeedIO_IntergrationTests\";
 
     let createPreviousTestFeed : PreviousFeed = 
         {

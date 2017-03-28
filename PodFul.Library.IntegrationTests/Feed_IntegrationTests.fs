@@ -10,7 +10,7 @@ open System
 
 type Feed_IntergrationTests() = 
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Feed_IntergrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Test\Feed_IntergrationTests\";
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
