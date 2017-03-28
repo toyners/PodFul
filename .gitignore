@@ -218,8 +218,8 @@ BuildInstallationPackage.cmd
 Test/
 Output/
 
-# Test directories
-PodFul.Library.IntegrationTests/Test/
+# Test directories created as part of running integration tests
+*/Test/
 
 # Installation setup inno script for PodFul
 InstallationSetup.iss

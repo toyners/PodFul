@@ -9,7 +9,7 @@ open PodFul.WPF.Miscellaneous
 
 type PodcastSynchroniser_IntegrationTests() =
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\PodcastSynchroniser_IntegrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.WPF.IntegrationTests\Test\PodcastSynchroniser_IntegrationTests\";
 
     let createPodcastRecord title url =
         {

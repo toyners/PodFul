@@ -13,7 +13,7 @@ open PodFul.FileDelivery
 
 type Settings_IntegrationTests() =
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Settings_IntegrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.WPF.IntegrationTests\Test\Settings_IntegrationTests\";
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =

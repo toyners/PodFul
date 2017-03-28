@@ -10,7 +10,7 @@ open NUnit.Framework
 
 type PodcastProperties_IntegrationTests() = 
 
-    let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\PodcastProperties_IntegrationTests\";
+    let workingDirectory = @"C:\Projects\PodFul\PodFul.WPF.IntegrationTests\Test\PodcastProperties_IntegrationTests\";
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
