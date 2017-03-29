@@ -36,21 +36,11 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
-    public Int32 CancelledJobsCount { get; private set; }
+    public Boolean GotIncompleteJobs { get { return this.GotWaitingJobs || this.currentDownloads > 0; } }
 
-    public Int32 CompletedJobsCount { get; private set; }
-
-    public Int32 FailedJobsCount { get; private set; }
-
-    public Boolean GotIncompleteJobs { get { return this.GotWaitingJobs || this.ProcessingJobsCount > 0; } }
-
-    public Boolean GotWaitingJobs { get { return this.WaitingJobsCount > 0; } }
+    public Boolean GotWaitingJobs { get { return this.waitingJobs.Count > 0; } }
 
     public ObservableCollection<DownloadJob> Jobs { get; private set; }
-
-    public Int32 ProcessingJobsCount { get { return this.currentDownloads; } }
-
-    public Int32 WaitingJobsCount { get { return this.waitingJobs.Count; } }
     #endregion
 
     #region Events
@@ -87,6 +77,7 @@ namespace PodFul.WPF.Processing
 
     public void CancelAllDownloads()
     {
+
       foreach (var job in this.Jobs)
       {
         job.CancelDownload();
@@ -191,12 +182,10 @@ namespace PodFul.WPF.Processing
         if (task.IsFaulted)
         {
           this.ProcessException(task.Exception, job);
-          this.FailedJobsCount++;
         }
         else if (task.IsCanceled)
         {
           job.DownloadCanceled();
-          this.CancelledJobsCount++;
         }
         else
         {
@@ -204,7 +193,6 @@ namespace PodFul.WPF.Processing
           {
             job.DownloadCompleted();
             this.JobCompletedSuccessfullyEvent?.Invoke(job);
-            this.CompletedJobsCount++;
           }
           catch (Exception e)
           {
