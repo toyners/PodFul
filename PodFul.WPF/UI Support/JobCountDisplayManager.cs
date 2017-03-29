@@ -28,6 +28,14 @@ namespace PodFul.WPF.UI_Support
 
     public void UpdateCounts(DownloadJob job)
     {
+      switch (job.LastStatus)
+      {
+        case DownloadJob.StatusTypes.NotSet: break; // Ignore the initial last status
+        case DownloadJob.StatusTypes.Waiting: this.waitingJobsCount--; break;
+        case DownloadJob.StatusTypes.Running: this.runningJobsCount--; break;
+        default: throw new Exception(String.Format("Job should not have last status: {0}", job.LastStatus));
+      }
+
       switch (job.Status)
       {
         case DownloadJob.StatusTypes.Waiting: this.waitingJobsCount++; break;

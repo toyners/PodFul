@@ -277,10 +277,12 @@ namespace PodFul.WPF.Windows
         podcastDownloadManager.JobCompletedSuccessfullyEvent += job => { this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name); };
       }
 
-      podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
-
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager, this.settings.HideCompletedJobs);
       podcastDownloadWindow.Owner = this;
+
+      // Add the jobs after creating the window so that job queued event will fire.
+      podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
+
       podcastDownloadWindow.ShowDialog();
     }
 

@@ -14,6 +14,7 @@ namespace PodFul.WPF.Processing
   {
     public enum StatusTypes
     {
+      NotSet,
       Canceled,
       Completed,
       Failed,
@@ -110,6 +111,8 @@ namespace PodFul.WPF.Processing
 
     public String FilePath { get; private set; }
 
+    public StatusTypes LastStatus { get; private set; }
+
     public String Name { get { return this.podcast.Title; } }
 
     public String ProgressMajorSize
@@ -156,6 +159,7 @@ namespace PodFul.WPF.Processing
       get { return this.status; }
       set
       {
+        this.LastStatus = this.status;
         this.status = value;
         
         this.TryInvokePropertyChanged(

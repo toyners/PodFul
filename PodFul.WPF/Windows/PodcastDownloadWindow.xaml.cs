@@ -40,6 +40,7 @@ namespace PodFul.WPF.Windows
 
       this.downloadManager = downloadManager;
       this.downloadManager.AllJobsFinishedEvent += this.WorkCompleted;
+      this.downloadManager.JobQueuedEvent += this.UpdateCounts;
       this.downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
       this.downloadManager.JobStartedEvent += this.UpdateCounts;
 
