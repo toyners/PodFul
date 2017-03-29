@@ -78,8 +78,8 @@ namespace PodFul.WPF.Processing
     public void CancelDownload(Object dataContext)
     {
       dataContext.VerifyThatObjectIsNotNull("Parameter 'dataContext' is null.");
-      var podcast = (DownloadJob)dataContext;
-      podcast.CancelDownload();
+      var job = (DownloadJob)dataContext;
+      job.CancelDownload();
     }
 
     public void Process()

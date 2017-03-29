@@ -87,17 +87,17 @@ namespace PodFul.WPF.Processing
 
     public void CancelAllDownloads()
     {
-      foreach (var podcast in this.Jobs)
+      foreach (var job in this.Jobs)
       {
-        podcast.CancelDownload();
+        job.CancelDownload();
       }
     }
 
     public void CancelDownload(Object dataContext)
     {
       dataContext.VerifyThatObjectIsNotNull("Parameter 'dataContext' is null.");
-      var podcast = (DownloadJob)dataContext;
-      podcast.CancelDownload();
+      var job = (DownloadJob)dataContext;
+      job.CancelDownload();
     }
 
     /// <summary>
