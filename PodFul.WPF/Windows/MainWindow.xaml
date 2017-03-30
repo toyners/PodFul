@@ -54,12 +54,18 @@
                 <Grid Margin="0,2">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
 
                   <Image Source="{Binding ImageFileName}" Margin="0,0,2,0" />
+                  <StackPanel Grid.Column="1" >
+                    <Image Source="{Binding DoScanFileName}" Margin="2,0,0,0" />
+                    <Image Source="{Binding CompleteDownloadFileName}" Margin="2,0,0,0" />
+                    <Image Source="{Binding DeliverDownloadFileName}" Margin="2,0,0,0" />
+                  </StackPanel>
 
-                  <Grid Grid.Column="1">
+                  <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                       <RowDefinition />
                       <RowDefinition />
