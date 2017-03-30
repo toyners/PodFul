@@ -61,7 +61,7 @@
                   <Image Source="{Binding ImageFileName}" Margin="0,0,2,0" />
                   
                   <StackPanel Grid.Column="1" >
-                    <Image Source="..\donotscan.png" Margin="2,0,0,0" Width="10" Height="10">
+                    <Image Source="..\donotscan.png" Margin="0,0,0,0" Width="10" Height="10">
                       <Image.Style>
                         <Style TargetType="Image">
                           <Setter Property="Visibility" Value="Hidden" />

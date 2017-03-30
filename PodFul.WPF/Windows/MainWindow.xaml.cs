@@ -375,6 +375,11 @@ namespace PodFul.WPF.Windows
       if (dataChanged.HasValue && dataChanged.Value)
       {
         this.currentFeed = Feed.SetDirectory(propertiesWindow.DirectoryPath.Text, this.currentFeed);
+
+        this.currentFeed = Feed.SetScanningFlags(propertiesWindow.DoScan,
+          propertiesWindow.DoDownload,
+          propertiesWindow.DoDelivery,
+          this.currentFeed);
         this.feedCollection.UpdateFeedContent(this.currentFeed);
       }
     }

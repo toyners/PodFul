@@ -29,6 +29,10 @@ namespace PodFul.WPF.Windows
     }
     #endregion
 
+    public Boolean DoScan { get { return this.PerformScan.IsChecked.HasValue && this.PerformScan.IsChecked.Value; } }
+    public Boolean DoDownload { get { return this.PerformDownloading.IsChecked.HasValue && this.PerformDownloading.IsChecked.Value; } }
+    public Boolean DoDelivery { get { return this.ProcessDeliveryPoints.IsChecked.HasValue && this.ProcessDeliveryPoints.IsChecked.Value; } }
+
     #region Methods
     private void CloseButtonClick(Object sender, RoutedEventArgs e)
     {
@@ -51,12 +55,6 @@ namespace PodFul.WPF.Windows
       }
     }
 
-    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
-    {
-      this.DialogResult = this.isDirty;
-    }
-    #endregion
-
     private void PerformScanChecked(Object sender, RoutedEventArgs e)
     {
       if (this.IsTrue(this.PerformScan.IsChecked))
@@ -75,6 +73,8 @@ namespace PodFul.WPF.Windows
       {
         this.PerformDownloading.IsEnabled = this.ProcessDeliveryPoints.IsEnabled = false;
       }
+
+      this.isDirty = true;
     }
 
     private void PerformDownloadingChecked(Object sender, RoutedEventArgs e)
@@ -87,11 +87,24 @@ namespace PodFul.WPF.Windows
       {
         this.ProcessDeliveryPoints.IsEnabled = false;
       }
+
+      this.isDirty = true;
+    }
+
+    private void ProcessDeliveryPointChecked(Object sender, RoutedEventArgs e)
+    {
+      this.isDirty = true;
     }
 
     private Boolean IsTrue(Boolean? value)
     {
       return value.HasValue && value.Value;
     }
+
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      this.DialogResult = this.isDirty;
+    }
+    #endregion
   }
 }
