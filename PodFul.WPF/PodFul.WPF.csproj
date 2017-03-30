@@ -210,6 +210,9 @@
     <Resource Include="cancel.png" />
     <Resource Include="delete.png" />
     <Resource Include="edit.png" />
+    <Resource Include="donotscan.png" />
+    <Resource Include="donotdownload.png" />
+    <Resource Include="donotdeliver.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

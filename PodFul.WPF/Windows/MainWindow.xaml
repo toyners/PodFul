@@ -59,10 +59,46 @@
                   </Grid.ColumnDefinitions>
 
                   <Image Source="{Binding ImageFileName}" Margin="0,0,2,0" />
+                  
                   <StackPanel Grid.Column="1" >
-                    <Image Source="{Binding DoScanFileName}" Margin="2,0,0,0" />
-                    <Image Source="{Binding CompleteDownloadFileName}" Margin="2,0,0,0" />
-                    <Image Source="{Binding DeliverDownloadFileName}" Margin="2,0,0,0" />
+                    <Image Source="..\donotscan.png" Margin="2,0,0,0" Width="10" Height="10">
+                      <Image.Style>
+                        <Style TargetType="Image">
+                          <Setter Property="Visibility" Value="Hidden" />
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding DoScan}" Value="False">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Image.Style>
+                    </Image>
+
+                    <Image Source="..\donotdownload.png" Margin="2,0,0,0">
+                      <Image.Style>
+                        <Style TargetType="Image">
+                          <Setter Property="Visibility" Value="Hidden" />
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding CompleteDownloadsOnScan}" Value="False">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Image.Style>
+                    </Image>
+
+                    <Image Source="..\donotdeliver.png" Margin="2,0,0,0">
+                      <Image.Style>
+                        <Style TargetType="Image">
+                          <Setter Property="Visibility" Value="Hidden" />
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding DeliverDownloadsOnScan}" Value="False">
+                              <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Image.Style>
+                    </Image>
                   </StackPanel>
 
                   <Grid Grid.Column="2">
