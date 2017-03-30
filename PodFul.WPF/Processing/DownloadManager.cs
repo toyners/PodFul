@@ -2,8 +2,10 @@
 namespace PodFul.WPF.Processing
 {
   using System;
+  using System.Collections.Concurrent;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
+  using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
   using Jabberwocky.Toolkit.Object;
@@ -13,13 +15,11 @@ namespace PodFul.WPF.Processing
   public class DownloadManager
   {
     #region Fields
+    private Boolean isCancelingAll;
     private UInt32 concurrentDownloads = 1;
-
     private Int32 currentDownloads;
-
     private ILogger logger;
-
-    private Queue<DownloadJob> waitingJobs;
+    private ConcurrentQueue<DownloadJob> waitingJobs;
     #endregion
 
     #region Construction
@@ -29,7 +29,7 @@ namespace PodFul.WPF.Processing
       this.logger = logger;
       this.concurrentDownloads = concurrentDownloads;
 
-      this.waitingJobs = new Queue<DownloadJob>();
+      this.waitingJobs = new ConcurrentQueue<DownloadJob>();
 
       this.Jobs = new ObservableCollection<DownloadJob>();
     }
@@ -77,10 +77,25 @@ namespace PodFul.WPF.Processing
 
     public void CancelAllDownloads()
     {
-
-      foreach (var job in this.Jobs)
+      // Drain the waiting queue - processing queue will empty as the running jobs cancel out
+      if (this.waitingJobs.IsEmpty)
       {
-        job.CancelDownload();
+        return;
+      }
+
+      this.isCancelingAll = true; // Stop any further jobs being pulled from waiting queue
+
+      while (!this.waitingJobs.IsEmpty)
+      {
+        DownloadJob job;
+        if (!this.waitingJobs.TryDequeue(out job))
+        {
+          Thread.Sleep(50);
+          continue;
+        }
+
+        job.DownloadCanceled();
+        this.JobFinishedEvent?.Invoke(job);
       }
     }
 
@@ -132,7 +147,12 @@ namespace PodFul.WPF.Processing
 
     private void StartDownload()
     {
-      if (this.waitingJobs.Count == 0)
+      if (this.isCancelingAll)
+      {
+        return;
+      }
+
+      if (this.waitingJobs.IsEmpty)
       {
         // No more podcasts queued so do not start another download.
 
@@ -147,7 +167,17 @@ namespace PodFul.WPF.Processing
 
       this.currentDownloads++;
 
-      var job = this.waitingJobs.Dequeue();
+      DownloadJob job;
+      while (!this.waitingJobs.TryDequeue(out job))
+      {
+        if (this.waitingJobs.IsEmpty)
+        {
+          return;
+        }
+
+        Thread.Sleep(50);
+      }
+
       job.InitialiseBeforeDownload();
 
       Task downloadTask = null;
