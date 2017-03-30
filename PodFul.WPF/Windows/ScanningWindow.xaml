@@ -38,11 +38,11 @@
           </Grid.ColumnDefinitions>
 
           <StackPanel Orientation="Horizontal">
-            <TextBlock Name="WaitingCount" Margin="3,0" Foreground="Blue">Waiting count</TextBlock>
-            <TextBlock Name="RunningCount" Margin="3,0" Foreground="Black">Running count</TextBlock>
-            <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green">Completed count</TextBlock>
-            <TextBlock Name="FirstOptionalCount" Margin="3,0" Foreground="OrangeRed">First Optional count</TextBlock>
-            <TextBlock Name="SecondOptionalCount" Margin="3,0" Foreground="Red">Second Optional count</TextBlock>
+            <TextBlock Name="WaitingCount" Margin="3,0" Foreground="Blue" VerticalAlignment="Center">Waiting count</TextBlock>
+            <TextBlock Name="RunningCount" Margin="3,0" Foreground="Black" VerticalAlignment="Center">Running count</TextBlock>
+            <TextBlock Name="CompletedCount" Margin="3,0" Foreground="Green" VerticalAlignment="Center">Completed count</TextBlock>
+            <TextBlock Name="FirstOptionalCount" Margin="3,0" Foreground="OrangeRed" VerticalAlignment="Center">First Optional count</TextBlock>
+            <TextBlock Name="SecondOptionalCount" Margin="3,0" Foreground="Red" VerticalAlignment="Center">Second Optional count</TextBlock>
           </StackPanel>
 
           <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
