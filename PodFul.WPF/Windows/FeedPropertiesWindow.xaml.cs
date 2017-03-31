@@ -57,48 +57,17 @@ namespace PodFul.WPF.Windows
 
     private void PerformScanChecked(Object sender, RoutedEventArgs e)
     {
-      if (this.IsTrue(this.PerformScan.IsChecked))
-      {
-        this.PerformDownloading.IsEnabled = true;
-        if (this.IsTrue(this.PerformDownloading.IsChecked))
-        {
-          this.ProcessDeliveryPoints.IsEnabled = true;
-        }
-        else
-        {
-          this.ProcessDeliveryPoints.IsEnabled = false;
-        }
-      }
-      else
-      {
-        this.PerformDownloading.IsEnabled = this.ProcessDeliveryPoints.IsEnabled = false;
-      }
-
       this.isDirty = true;
     }
 
     private void PerformDownloadingChecked(Object sender, RoutedEventArgs e)
     {
-      if (this.IsTrue(this.PerformDownloading.IsChecked))
-      {
-        this.ProcessDeliveryPoints.IsEnabled = true;
-      }
-      else
-      {
-        this.ProcessDeliveryPoints.IsEnabled = false;
-      }
-
       this.isDirty = true;
     }
 
     private void ProcessDeliveryPointChecked(Object sender, RoutedEventArgs e)
     {
       this.isDirty = true;
-    }
-
-    private Boolean IsTrue(Boolean? value)
-    {
-      return value.HasValue && value.Value;
     }
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)

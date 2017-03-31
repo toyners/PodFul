@@ -54,54 +54,12 @@
                 <Grid Margin="0,2">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
 
                   <Image Source="{Binding ImageFileName}" Margin="0,0,2,0" />
-                  
-                  <StackPanel Grid.Column="1" >
-                    <Image Source="..\donotscan.png" Margin="0,0,0,0" Width="10" Height="10">
-                      <Image.Style>
-                        <Style TargetType="Image">
-                          <Setter Property="Visibility" Value="Hidden" />
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding DoScan}" Value="False">
-                              <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
-                      </Image.Style>
-                    </Image>
 
-                    <Image Source="..\donotdownload.png" Margin="2,0,0,0">
-                      <Image.Style>
-                        <Style TargetType="Image">
-                          <Setter Property="Visibility" Value="Hidden" />
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding CompleteDownloadsOnScan}" Value="False">
-                              <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
-                      </Image.Style>
-                    </Image>
-
-                    <Image Source="..\donotdeliver.png" Margin="2,0,0,0">
-                      <Image.Style>
-                        <Style TargetType="Image">
-                          <Setter Property="Visibility" Value="Hidden" />
-                          <Style.Triggers>
-                            <DataTrigger Binding="{Binding DeliverDownloadsOnScan}" Value="False">
-                              <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                          </Style.Triggers>
-                        </Style>
-                      </Image.Style>
-                    </Image>
-                  </StackPanel>
-
-                  <Grid Grid.Column="2">
+                  <Grid Grid.Column="1" Margin="4,0,0,0">
                     <Grid.RowDefinitions>
                       <RowDefinition />
                       <RowDefinition />
@@ -110,6 +68,7 @@
                     <Grid>
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="0.5*" />
                         <ColumnDefinition Width="1.75*" />
                         <ColumnDefinition Width="0.75*" />
                       </Grid.ColumnDefinitions>
@@ -120,14 +79,58 @@
                         </TextBlock.Inlines>
                       </TextBlock>
 
-                      <TextBlock Grid.Column="1" HorizontalAlignment="Right">
+                      <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" >
+                        <Image Source="..\donotscan.png" Margin="0,0,0,8" Width="10" Height="10">
+                          <Image.Style>
+                            <Style TargetType="Image">
+                              <Setter Property="Visibility" Value="Hidden" />
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding DoScan}" Value="False">
+                                  <Setter Property="Visibility" Value="Visible"/>
+                                  <Setter Property="ToolTip" Value="Will no automatically scan"/>
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Image.Style>
+                        </Image>
+
+                        <Image Source="..\donotdownload.png" Margin="0,0,0,8" Width="10" Height="10">
+                          <Image.Style>
+                            <Style TargetType="Image">
+                              <Setter Property="Visibility" Value="Hidden" />
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding CompleteDownloadsOnScan}" Value="False">
+                                  <Setter Property="Visibility" Value="Visible"/>
+                                  <Setter Property="ToolTip" Value="Will not download new podcasts during scanning"/>
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Image.Style>
+                        </Image>
+
+                        <Image Source="..\donotdeliver.png" Margin="0" Width="10" Height="10">
+                          <Image.Style>
+                            <Style TargetType="Image">
+                              <Setter Property="Visibility" Value="Hidden" />
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding DeliverDownloadsOnScan}" Value="False">
+                                  <Setter Property="Visibility" Value="Visible"/>
+                                  <Setter Property="ToolTip" Value="Will not deliver new podcasts to delivery points during scanning"/>
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Image.Style>
+                        </Image>
+                      </StackPanel>
+
+                      <TextBlock Grid.Column="2" HorizontalAlignment="Right">
                         <TextBlock.Inlines>
                           <Run Text="Last Updated: "/>
                           <Run FontWeight="Bold" Text="{Binding UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
                         </TextBlock.Inlines>
                       </TextBlock>
 
-                      <TextBlock Grid.Column="2" Margin="20,0,0,0" HorizontalAlignment="Right">
+                      <TextBlock Grid.Column="3" Margin="20,0,0,0" HorizontalAlignment="Right">
                         <TextBlock.Inlines>
                           <Run Text="Podcasts: " />
                           <Run FontWeight="Bold" Text="{Binding Podcasts.Length, Mode=OneWay}" />
