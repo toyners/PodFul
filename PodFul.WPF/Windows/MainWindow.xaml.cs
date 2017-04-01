@@ -381,6 +381,8 @@ namespace PodFul.WPF.Windows
           propertiesWindow.DoDelivery,
           this.currentFeed);
         this.feedCollection.UpdateFeedContent(this.currentFeed);
+        var index = this.feedCollection.ObservableFeeds.IndexOf(this.currentFeed);
+        this.feedCollection[index] = this.currentFeed;
       }
     }
 
