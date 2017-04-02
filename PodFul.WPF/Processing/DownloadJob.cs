@@ -83,6 +83,18 @@ namespace PodFul.WPF.Processing
       this.feedCollection = feedCollection;
 
       this.imageResolver = imageResolver;
+
+      var podcastSizeForDescription = String.Empty;
+      if (podcastSize == -1)
+      {
+        podcastSizeForDescription = "(unknown)";
+      }
+      else
+      {
+        podcastSizeForDescription = Miscellaneous.GetReadableFileSize(podcastSize) + "(" + podcastSize + " bytes)";
+      }
+
+      this.Description = "Feed: " + this.feed.Title + "\r\nSize: " + podcastSizeForDescription;
     }
     #endregion
 
@@ -100,6 +112,8 @@ namespace PodFul.WPF.Processing
     }
 
     public CancellationToken CancellationToken { get; private set; }
+
+    public String Description { get; private set; }
 
     public Boolean DoDeliverFile { get { return this.feed.DeliverDownloadsOnScan; } }
 
