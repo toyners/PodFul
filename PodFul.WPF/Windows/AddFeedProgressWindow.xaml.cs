@@ -48,6 +48,7 @@ namespace PodFul.WPF.Windows
     {
       this.ProgressBar.IsIndeterminate = true;
       var cancelToken = cancellationTokenSource.Token;
+      this.StatusMessage.Text = "Reading feed ...";
 
       Task addFeedTask = Task.Factory.StartNew(() =>
       {

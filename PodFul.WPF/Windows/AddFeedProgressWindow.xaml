@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
-        Title="Adding Feed" Height="105" Width="300" ResizeMode="NoResize" 
+        Title="Adding Feed" Height="130" Width="300" ResizeMode="NoResize" 
         Loaded="WindowLoaded" WindowStartupLocation="CenterOwner" Closing="WindowClosing"
         Icon="baggage_cart_box_tE4_icon.ico">
     <StackPanel>
-      <ProgressBar Name="ProgressBar" Margin="0,10,0,5" Width="240" Height="20"/>
-    <Button Name="CancelButton" Width="70" Click="CancelButtonClick" Style="{StaticResource StandardButton}">Cancel</Button>
-  </StackPanel>
+      <ProgressBar Name="ProgressBar" Margin="0,10,0,0" Width="240" Height="20"/>
+      <TextBlock Name="StatusMessage" Margin="0,5,0,5" Width="200" Height="20" HorizontalAlignment="Center" />
+      <Button Name="CancelButton" Width="70" Margin="0,0,0,5"  Click="CancelButtonClick" HorizontalAlignment="Center" Style="{StaticResource StandardButton}">Cancel</Button>
+    </StackPanel>
 </Window>
