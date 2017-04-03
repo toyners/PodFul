@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Windows
 {
   using System;
+  using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Windows;
   using System.Windows.Controls;
@@ -45,7 +46,6 @@ namespace PodFul.WPF.Windows
       this.downloadManager.JobStartedEvent += this.UpdateCounts;
 
       this.PodcastList.ItemsSource = downloadManager.Jobs;
-      this.jobs = new ObservableCollection<DownloadJob>(downloadManager.Jobs);
 
       var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       var jobCountWindowTitleDisplay = new JobCountWindowTitleDisplayComponent(this);
@@ -58,6 +58,11 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Methods
+    public void AddJobs(IEnumerable<DownloadJob> jobs)
+    {
+      this.jobs = new ObservableCollection<DownloadJob>(jobs);
+    }
+
     private void CancelAllDownloadJobs()
     {
       this.processingState = ProcessingStates.Cancelling;
@@ -87,7 +92,7 @@ namespace PodFul.WPF.Windows
     {
     }
 
-    private void HideCompletedDownloadJobsChecked(Object sender, RoutedEventArgs e)
+    private void HideCompletedDownloadJobsClicked(Object sender, RoutedEventArgs e)
     {
       var isChecked = ((CheckBox)sender).IsChecked;
       this.HideCompletedJobs(isChecked.HasValue && isChecked.Value);

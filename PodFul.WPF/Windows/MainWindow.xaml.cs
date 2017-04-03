@@ -281,7 +281,9 @@ namespace PodFul.WPF.Windows
       podcastDownloadWindow.Owner = this;
 
       // Add the jobs after creating the window so that job queued event will fire.
-      podcastDownloadManager.AddJobs(this.CreateDownloadJobs(selectedIndexes));
+      var jobs = this.CreateDownloadJobs(selectedIndexes);
+      podcastDownloadManager.AddJobs(jobs);
+      podcastDownloadWindow.AddJobs(jobs);
 
       podcastDownloadWindow.ShowDialog();
     }
