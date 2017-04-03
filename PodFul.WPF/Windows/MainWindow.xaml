@@ -24,7 +24,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <Button Width="70" Click="SettingsButtonClick" Style="{StaticResource StandardButton}">Settings</Button>
           <Button Name="PodcastsButton" Width="70" Click="Podcasts_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Podcasts</Button>
-          <Button Name="ScanButton" Width="70" Click="ScanAllButtonClick" IsEnabled="False" Style="{StaticResource StandardButton}">Scan All</Button>
+          <Button Name="ScanButton" Width="70" Click="ScanAllButtonClick" IsEnabled="False" Style="{StaticResource StandardButton}">Full Scan</Button>
         </StackPanel>
       </Grid>
     </Border>
@@ -88,7 +88,7 @@
                               <Style.Triggers>
                                 <DataTrigger Binding="{Binding DoScan}" Value="False">
                                   <Setter Property="Visibility" Value="Visible"/>
-                                  <Setter Property="ToolTip" Value="Will no automatically scan"/>
+                                  <Setter Property="ToolTip" Value="Will not take part in a full scan. Scanning can still be completed on an individual basis via context menu"/>
                                 </DataTrigger>
                               </Style.Triggers>
                             </Style>
@@ -102,7 +102,7 @@
                               <Style.Triggers>
                                 <DataTrigger Binding="{Binding CompleteDownloadsOnScan}" Value="False">
                                   <Setter Property="Visibility" Value="Visible"/>
-                                  <Setter Property="ToolTip" Value="Will not download new podcasts during scanning"/>
+                                  <Setter Property="ToolTip" Value="Will not download new podcasts during scan (full or individual)"/>
                                 </DataTrigger>
                               </Style.Triggers>
                             </Style>
@@ -116,7 +116,7 @@
                               <Style.Triggers>
                                 <DataTrigger Binding="{Binding DeliverDownloadsOnScan}" Value="False">
                                   <Setter Property="Visibility" Value="Visible"/>
-                                  <Setter Property="ToolTip" Value="Will not deliver new podcasts to delivery points during scanning"/>
+                                  <Setter Property="ToolTip" Value="Will not deliver new podcasts to delivery points during scan (full or individual)"/>
                                 </DataTrigger>
                               </Style.Triggers>
                             </Style>
