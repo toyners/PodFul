@@ -111,6 +111,9 @@
     <Compile Include="Windows\FeedPropertiesWindow.xaml.cs">
       <DependentUpon>FeedPropertiesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\PodcastDownloadWindow2.xaml.cs">
+      <DependentUpon>PodcastDownloadWindow2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PodcastDownloadWindow.xaml.cs">
       <DependentUpon>PodcastDownloadWindow.xaml</DependentUpon>
     </Compile>
@@ -163,6 +166,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\PodcastDownloadWindow2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\PodcastDownloadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
