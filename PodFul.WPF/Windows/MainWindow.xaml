@@ -79,8 +79,7 @@
                         </TextBlock.Inlines>
                       </TextBlock>
 
-                      <Border BorderBrush="Black" Grid.Column="1" BorderThickness="1">
-                      <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" >
+                      <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" >
                         <Image Source="..\donotscan.png" Margin="0,2,4,0" Width="10" Height="10">
                           <Image.Style>
                             <Style TargetType="Image">
@@ -123,8 +122,7 @@
                           </Image.Style>
                         </Image>
                       </StackPanel>
-                      </Border>
-                      
+
                       <TextBlock Grid.Column="2" HorizontalAlignment="Right">
                         <TextBlock.Inlines>
                           <Run Text="Last Updated: "/>
