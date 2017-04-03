@@ -80,7 +80,7 @@
                       </TextBlock>
 
                       <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" >
-                        <Image Source="..\donotscan.png" Margin="0,2,4,0" Width="10" Height="10">
+                        <Image Source="..\donotscan.png" Margin="0,2,4,0" Width="16" Height="16">
                           <Image.Style>
                             <Style TargetType="Image">
                               <Setter Property="Visibility" Value="Hidden" />
@@ -94,7 +94,7 @@
                           </Image.Style>
                         </Image>
 
-                        <Image Source="..\donotdownload.png" Margin="0,2,4,0" Width="10" Height="10">
+                        <Image Source="..\donotdownload.png" Margin="0,2,4,0" Width="16" Height="16">
                           <Image.Style>
                             <Style TargetType="Image">
                               <Setter Property="Visibility" Value="Hidden" />
@@ -108,7 +108,7 @@
                           </Image.Style>
                         </Image>
 
-                        <Image Source="..\donotdeliver.png" Margin="0,2,0,0" Width="10" Height="10">
+                        <Image Source="..\donotdeliver.png" Margin="0,2,0,0" Width="16" Height="16">
                           <Image.Style>
                             <Style TargetType="Image">
                               <Setter Property="Visibility" Value="Hidden" />
