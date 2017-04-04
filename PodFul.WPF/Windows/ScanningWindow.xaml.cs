@@ -37,7 +37,7 @@ namespace PodFul.WPF.Windows
     private UInt32 totalFeedCount;
     private UInt32 feedsScannedCount;
 
-    private ObservableCollection<DownloadJob> jobs = new ObservableCollection<DownloadJob>();
+    private ObservableCollection<DownloadJob> jobs;
     #endregion
 
     #region Construction   
@@ -50,7 +50,9 @@ namespace PodFul.WPF.Windows
       this.InitializeComponent();
 
       this.feedScanner = feedScanner;
-      this.PodcastList.ItemsSource = feedScanner.Jobs;
+      this.AllJobs.ItemsSource = feedScanner.Jobs;
+      this.jobs = new ObservableCollection<DownloadJob>();
+      this.NonCompletedJobs.ItemsSource = this.jobs;
 
       var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay);
@@ -118,11 +120,13 @@ namespace PodFul.WPF.Windows
     {
       if (hideCompletedJobs)
       {
-        this.PodcastList.ItemsSource = this.jobs;
+        this.AllJobs.Visibility = Visibility.Hidden;
+        this.NonCompletedJobs.Visibility = Visibility.Visible;
       }
       else
       {
-        this.PodcastList.ItemsSource = this.feedScanner.Jobs;
+        this.NonCompletedJobs.Visibility = Visibility.Hidden;
+        this.AllJobs.Visibility = Visibility.Visible;
       }
     }
 
@@ -130,13 +134,13 @@ namespace PodFul.WPF.Windows
     {
       this.UpdateCounts(job);
 
-      Application.Current.Dispatcher.Invoke(() =>
+      if (job.Status == DownloadJob.StatusTypes.Completed)
       {
-        if (job.Status == DownloadJob.StatusTypes.Completed)
+        Application.Current.Dispatcher.Invoke(() =>
         {
           this.jobs.Remove(job);
-        }
-      });
+        });
+      }
     }
 
     private void JobQueuedEventHandler(DownloadJob job)
@@ -153,10 +157,22 @@ namespace PodFul.WPF.Windows
     {
       this.UpdateCounts(job);
 
+      var index = -1;
+      ItemsControl itemsControl = null;
+      if (this.AllJobs.Visibility == Visibility.Visible)
+      {
+        index = this.feedScanner.Jobs.IndexOf(job);
+        itemsControl = AllJobs;
+      }
+      else
+      {
+        index = this.jobs.IndexOf(job);
+        itemsControl = NonCompletedJobs;
+      }
+
       Application.Current.Dispatcher.Invoke(() =>
       {
-        var index = this.feedScanner.Jobs.IndexOf(job);
-        var itemContainer = (FrameworkElement)this.PodcastList.ItemContainerGenerator.ContainerFromIndex(index);
+        var itemContainer = (FrameworkElement)itemsControl.ItemContainerGenerator.ContainerFromIndex(index);
         itemContainer.BringIntoView();
       });
     }
