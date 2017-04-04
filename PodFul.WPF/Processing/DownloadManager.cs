@@ -15,7 +15,6 @@ namespace PodFul.WPF.Processing
   public class DownloadManager
   {
     #region Fields
-    private Boolean isCancelingAll;
     private UInt32 concurrentDownloads = 1;
     private Int32 currentDownloads;
     private ILogger logger;
@@ -77,14 +76,7 @@ namespace PodFul.WPF.Processing
 
     public void CancelAllDownloads()
     {
-      // Drain the waiting queue - processing queue will empty as the running jobs cancel out
-      if (this.waitingJobs.IsEmpty)
-      {
-        return;
-      }
-
-      this.isCancelingAll = true; // Stop any further jobs being pulled from waiting queue
-
+      // Drain the waiting queue
       while (!this.waitingJobs.IsEmpty)
       {
         DownloadJob job;
@@ -96,6 +88,15 @@ namespace PodFul.WPF.Processing
 
         job.DownloadCanceled();
         this.JobFinishedEvent?.Invoke(job);
+      }
+
+      // Cancel any running jobs
+      foreach (var job in this.Jobs)
+      {
+        if (job.Status == DownloadJob.StatusTypes.Running)
+        {
+          job.CancelDownload();
+        }
       }
     }
 
@@ -147,15 +148,9 @@ namespace PodFul.WPF.Processing
 
     private void StartDownload()
     {
-      if (this.isCancelingAll)
-      {
-        return;
-      }
-
       if (this.waitingJobs.IsEmpty)
       {
         // No more podcasts queued so do not start another download.
-
         if (this.currentDownloads == 0)
         {
           // All current downloads have finished so nothing more to do.
