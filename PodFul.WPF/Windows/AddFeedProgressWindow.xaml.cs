@@ -61,7 +61,7 @@ namespace PodFul.WPF.Windows
       {
         // Create the feed.
         var feedFilePath = Path.Combine(this.feedPath, "download.rss");
-        this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver, cancelToken);
+        this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver, cancelToken, this.SetStatusMessage);
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>
@@ -89,6 +89,11 @@ namespace PodFul.WPF.Windows
           this.Close();
         });
       });
+    }
+
+    private void SetStatusMessage(String message)
+    {
+      this.StatusMessage.Text = message;
     }
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)

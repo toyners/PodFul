@@ -57,7 +57,7 @@ namespace PodFul.Winforms
           try
           {
             var feedFilePath = Path.Combine(feed.Directory, "download.rss");
-            newFeed = FeedFunctions.CreateFeed(feed.URL, feedFilePath, feed.Directory, null, CancellationToken.None);
+            newFeed = FeedFunctions.CreateFeed(feed.URL, feedFilePath, feed.Directory, null, CancellationToken.None, null);
           }
           catch (Exception exception)
           {

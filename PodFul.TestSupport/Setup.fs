@@ -24,13 +24,13 @@ module public Setup =
         }
 
     let createTestFeed url =
-        FeedFunctions.CreateFeed url null "DirectoryPath" null CancellationToken.None
+        FeedFunctions.CreateFeed url null "DirectoryPath" null CancellationToken.None null
 
     let createTestFeedWithDirectoryPath url directoryPath =
-        FeedFunctions.CreateFeed url null directoryPath null CancellationToken.None
+        FeedFunctions.CreateFeed url null directoryPath null CancellationToken.None null
 
     let createTestFeedUsingDownloadFile url downloadFilePath = 
-        FeedFunctions.CreateFeed url downloadFilePath "DirectoryPath" null CancellationToken.None
+        FeedFunctions.CreateFeed url downloadFilePath "DirectoryPath" null CancellationToken.None null
 
     let createTestPodcast title description url pubDate fileSize downloadDate imageFileName imageURL =
         {

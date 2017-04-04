@@ -271,13 +271,17 @@ module public FeedFunctions =
             writer.Write(data)
         data
 
-    let public CreateFeed url filePath directoryPath imageResolver cancelToken : Feed =
-        createWebClient |>
-        downloadFeedData url 5 |>
-        saveToFile filePath |>
-        createXMLDocumentFromData |>
-        createFeedRecord url directoryPath String.Empty DateTime.Now |>
-        resolveImages imageResolver cancelToken
+    let public CreateFeed url filePath directoryPath imageResolver cancelToken (postMessage : Action<string>) : Feed =
+        let feed = createWebClient |>
+                   downloadFeedData url 5 |>
+                   saveToFile filePath |>
+                   createXMLDocumentFromData |>
+                   createFeedRecord url directoryPath String.Empty DateTime.Now
+
+        if Object.ReferenceEquals(postMessage, null) <> true then 
+            postMessage.Invoke("Downloading images ...")
+
+        resolveImages imageResolver cancelToken feed
 
     let public UpdateFeed feed filePath imageResolver cancelToken : Feed = 
         createWebClient |>
