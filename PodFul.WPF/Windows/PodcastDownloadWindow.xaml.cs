@@ -41,11 +41,13 @@ namespace PodFul.WPF.Windows
 
       this.downloadManager = downloadManager;
       this.downloadManager.AllJobsFinishedEvent += this.WorkCompleted;
-      this.downloadManager.JobQueuedEvent += this.UpdateCounts;
+      this.downloadManager.JobQueuedEvent += this.JobQueueEventHandler;
       this.downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
       this.downloadManager.JobStartedEvent += this.UpdateCounts;
 
-      this.PodcastList.ItemsSource = downloadManager.Jobs;
+      this.AllJobs.ItemsSource = downloadManager.Jobs;
+      this.jobs = new ObservableCollection<DownloadJob>();
+      this.NonCompletedJobs.ItemsSource = this.jobs;
 
       var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       var jobCountWindowTitleDisplay = new JobCountWindowTitleDisplayComponent(this);
@@ -58,11 +60,6 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Methods
-    public void AddJobs(IEnumerable<DownloadJob> jobs)
-    {
-      this.jobs = new ObservableCollection<DownloadJob>(jobs);
-    }
-
     private void CancelAllDownloadJobs()
     {
       this.processingState = ProcessingStates.Cancelling;
@@ -102,11 +99,13 @@ namespace PodFul.WPF.Windows
     {
       if (hideCompletedJobs)
       {
-        this.PodcastList.ItemsSource = this.jobs;
+        this.AllJobs.Visibility = Visibility.Hidden;
+        this.NonCompletedJobs.Visibility = Visibility.Visible;
       }
       else
       {
-        this.PodcastList.ItemsSource = this.downloadManager.Jobs;
+        this.NonCompletedJobs.Visibility = Visibility.Hidden;
+        this.AllJobs.Visibility = Visibility.Visible;
       }
     }
 
@@ -115,6 +114,16 @@ namespace PodFul.WPF.Windows
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.jobs.Remove(job);
+      });
+
+      this.UpdateCounts(job);
+    }
+
+    private void JobQueueEventHandler(DownloadJob job)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.jobs.Add(job);
       });
 
       this.UpdateCounts(job);
