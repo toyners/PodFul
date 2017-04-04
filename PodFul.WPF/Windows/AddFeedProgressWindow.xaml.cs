@@ -15,13 +15,16 @@ namespace PodFul.WPF.Windows
   /// </summary>
   public partial class AddFeedProgressWindow : Window
   {
+    #region Fields
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private String feedURL;
     private String feedPath;
     private IImageResolver imageResolver;
     private ILogController logController;
     private Boolean windowLoaded;
+    #endregion
 
+    #region Construction
     public AddFeedProgressWindow(String feedURL, String feedPath, IImageResolver imageResolver, ILogController logController)
     {
       feedURL.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'feedURL' is null or empty.");
@@ -36,9 +39,13 @@ namespace PodFul.WPF.Windows
 
       InitializeComponent();
     }
+    #endregion
 
-    public Feed Feed { get; set; }
+    #region Properties
+    public Feed Feed { get; private set; }
+    #endregion
 
+    #region Methods
     private void CancelButtonClick(Object sender, RoutedEventArgs e)
     {
       this.cancellationTokenSource.Cancel();
@@ -52,7 +59,7 @@ namespace PodFul.WPF.Windows
 
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
-        // Create the feed and add to storage.
+        // Create the feed.
         var feedFilePath = Path.Combine(this.feedPath, "download.rss");
         this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver, cancelToken);
       }, cancelToken);
@@ -97,5 +104,6 @@ namespace PodFul.WPF.Windows
         this.StartProcessing();
       }
     }
+    #endregion
   }
 }
