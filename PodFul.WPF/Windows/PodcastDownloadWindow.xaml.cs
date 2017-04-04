@@ -111,12 +111,15 @@ namespace PodFul.WPF.Windows
 
     private void JobFinishedEventHandler(DownloadJob job)
     {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.jobs.Remove(job);
-      });
-
       this.UpdateCounts(job);
+
+      if (job.Status == DownloadJob.StatusTypes.Completed)
+      {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          this.jobs.Remove(job);
+        });
+      }
     }
 
     private void JobQueueEventHandler(DownloadJob job)
