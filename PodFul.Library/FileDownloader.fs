@@ -43,7 +43,7 @@ type FileDownloader() =
         getResponseFromURL url |> 
         writeToFile filePath cancelToken updateProgressFn
 
-    member this.DownloadAsync(url, filePath,  cancelToken, updateProgressFn: Action<int>) = 
+    member this.DownloadAsync(url, filePath, cancelToken, updateProgressFn: Action<int>) = 
         async {
             download url filePath cancelToken updateProgressFn
         } |> Async.StartAsTask

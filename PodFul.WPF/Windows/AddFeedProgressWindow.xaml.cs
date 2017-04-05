@@ -93,7 +93,10 @@ namespace PodFul.WPF.Windows
 
     private void SetStatusMessage(String message)
     {
-      this.StatusMessage.Text = message;
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.StatusMessage.Text = message;
+      });
     }
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
