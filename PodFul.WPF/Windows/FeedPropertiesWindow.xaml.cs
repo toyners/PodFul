@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Windows
 {
   using System;
+  using System.IO;
   using System.Windows;
   using System.Windows.Forms;
   using Jabberwocky.Toolkit.Path;
@@ -36,6 +37,19 @@ namespace PodFul.WPF.Windows
     #region Methods
     private void CloseButtonClick(Object sender, RoutedEventArgs e)
     {
+      this.DirectoryPath.Text = PathOperations.CompleteDirectoryPath(this.DirectoryPath.Text);
+
+      if (!Directory.Exists(this.DirectoryPath.Text))
+      {
+        var messageBoxResult = System.Windows.MessageBox.Show(String.Format("'{0}' does not exist. Create?\r\n\r\n(Yes to create. No to cancel)", this.DirectoryPath.Text), "Directory does not exist", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes);
+        if (messageBoxResult == MessageBoxResult.No)
+        {
+          return;
+        }
+
+        Directory.CreateDirectory(this.DirectoryPath.Text);
+      }
+
       this.Close();
     }
 
@@ -53,6 +67,11 @@ namespace PodFul.WPF.Windows
         this.DirectoryPath.Text = selectedPath;
         this.isDirty = true;
       }
+    }
+
+    private void DirectoryPathTextChanged(Object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+      this.isDirty = true;
     }
 
     private void PerformScanChecked(Object sender, RoutedEventArgs e)

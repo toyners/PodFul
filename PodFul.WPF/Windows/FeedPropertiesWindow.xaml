@@ -69,7 +69,7 @@
             </Grid.ColumnDefinitions>
             <Label VerticalAlignment="Center" Height="26" Margin="0,1">Directory:</Label>
             <TextBox Grid.Column="1" Name="DirectoryPath" VerticalAlignment="Center" Height="20"
-              Text="{Binding Path=Directory, Mode=OneWay}" IsReadOnly="True" />
+              Text="{Binding Path=Directory, Mode=OneWay}" TextChanged="DirectoryPathTextChanged" />
             <Button Grid.Column="2" Margin="5,0" Width="22" Height="20" HorizontalAlignment="Left" Click="ChangeDirectoryClick">...</Button>
           </Grid>
 
