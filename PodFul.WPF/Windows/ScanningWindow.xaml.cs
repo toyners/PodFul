@@ -61,15 +61,16 @@ namespace PodFul.WPF.Windows
       imageResolver.PostMessage = this.PostMessage;
       downloadManager.JobQueuedEvent += this.JobQueuedEventHandler;
       downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
+      downloadManager.JobStartedEvent += this.JobStartedEventHandler;
       feedScanner.FeedStartedEvent += this.FeedStartedEventHandler;
       feedScanner.ScanCompletedEvent += this.ScanCompletedEventHandler;
       feedScanner.ScanCanceledEvent += this.ScanCanceledEventHandler;
-      downloadManager.JobStartedEvent += this.JobStartedEventHandler;
 
       this.feedsScannedCount = 0;
       this.totalFeedCount = totalFeedCount;
 
       this.HideCompletedDownloadJobsCheckbox.IsChecked = hideCompletedDownloadJobs;
+      this.HideCompletedJobs(hideCompletedDownloadJobs);
     }
     #endregion
 
@@ -110,7 +111,7 @@ namespace PodFul.WPF.Windows
       });
     }
 
-    private void HideCompletedDownloadJobsChecked(Object sender, RoutedEventArgs e)
+    private void HideCompletedDownloadJobsClicked(Object sender, RoutedEventArgs e)
     {
       var isChecked = ((CheckBox)sender).IsChecked;
       this.HideCompletedJobs(isChecked.HasValue && isChecked.Value);

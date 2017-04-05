@@ -56,6 +56,7 @@ namespace PodFul.WPF.Windows
       this.jobCountDisplayManager.DisplayCounts(); // Display initial counts  
 
       this.HideCompletedDownloadJobsCheckbox.IsChecked = hideCompletedDownloadJobs;
+      this.HideCompletedJobs(hideCompletedDownloadJobs);
     }
     #endregion
 
