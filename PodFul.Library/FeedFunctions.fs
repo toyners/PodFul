@@ -234,6 +234,24 @@ module public FeedFunctions =
 
         count
 
+    let private downloadImageFile urlPath savePath (postMessage : Action<string>) =
+        let imageDownloader = new FileDownloader()
+        let mutable localPath = savePath
+
+        let message = "Downloading '" + urlPath + "' ... "
+        postMessage.Invoke(message)
+
+        imageDownloader.Download(urlPath, savePath, System.Threading.CancellationToken.None, null) |> ignore
+
+        postMessage.Invoke("Complete\r\n")
+        savePath
+
+    let private resolveImages2 (feed : Feed) : Feed =
+        let mutable index = 0
+        //while index < feed.Podcasts.Length do
+
+        feed
+
     let private resolveImages (imageResolver : IImageResolver) (cancelToken : CancellationToken) (feed : Feed) : Feed =
 
       match (imageResolver) with
@@ -312,3 +330,4 @@ module public FeedFunctions =
         Feed.SetScanningFlags feed.DoScan feed.CompleteDownloadsOnScan feed.DeliverDownloadsOnScan |> 
         mergeFeeds feed |>
         resolveImages imageResolver cancelToken
+
