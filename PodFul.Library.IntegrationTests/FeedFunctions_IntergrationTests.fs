@@ -109,7 +109,7 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreEqual(true, fileExists)
 
     [<Test>]
-    member public this.``Create RSS Feed that contains mixture of media content and enclosure tags``() =
+    member public this.``Create Feed that contains mixture of media content and enclosure tags``() =
         let MultipleItemsWithEnclosureAndMediaContentTags = "Multiple Items with Enclosure and MediaContent Tags.rss"
         let inputPath = workingDirectory + MultipleItemsWithEnclosureAndMediaContentTags;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(MultipleItemsWithEnclosureAndMediaContentTags, inputPath)

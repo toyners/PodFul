@@ -215,6 +215,25 @@ module public FeedFunctions =
              DeliverDownloadsOnScan = true
         }
 
+    let private needsToDownloadImage (podcast : Podcast) (defaultImagePath : string) : bool =
+        let localName = podcast.FileDetails.ImageFileName
+        let gotLocalPath = String.IsNullOrEmpty(localName) = false
+        let gotURLPath = String.IsNullOrEmpty(podcast.ImageURL) = false
+
+        ((gotLocalPath = false || localName = defaultImagePath) && gotURLPath) ||
+            (gotLocalPath && File.Exists(localName) = false)
+
+    let private determineImageDownloadCount (feed : Feed) : int =
+        let mutable index = 0
+        let mutable count = 0
+        while index < feed.Podcasts.Length do
+            
+            if needsToDownloadImage feed.Podcasts.[index] "" then
+                count <- count + 1
+            index <- index + 1
+
+        count
+
     let private resolveImages (imageResolver : IImageResolver) (cancelToken : CancellationToken) (feed : Feed) : Feed =
 
       match (imageResolver) with
@@ -278,7 +297,7 @@ module public FeedFunctions =
                    createXMLDocumentFromData |>
                    createFeedRecord url directoryPath String.Empty DateTime.Now
 
-        if Object.ReferenceEquals(postMessage, null) <> true then 
+        if Object.ReferenceEquals(postMessage, null) <> true then
             postMessage.Invoke("Downloading images ...")
 
         resolveImages imageResolver cancelToken feed
