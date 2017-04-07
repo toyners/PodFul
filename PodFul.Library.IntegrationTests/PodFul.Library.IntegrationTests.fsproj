@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="ImageResolver_IntegrationTests.fs" />
+    <Compile Include="ResolveImages_IntegrationTests.fs" />
     <EmbeddedResource Include="Item with Multiple MediaContent Tags.rss" />
     <Content Include="packages.config" />
     <Compile Include="FeedFunctions_IntergrationTests.fs" />
