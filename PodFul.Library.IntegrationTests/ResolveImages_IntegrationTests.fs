@@ -210,9 +210,9 @@ type ResolveImages_IntegrationTests() =
         let localPath = ""
         let resolveLocalFilePathFunction = fun n -> 
             match n with
-            | urlPath1 -> fileName1
-            | urlPath2 -> fileName2
-            | urlPath3 -> fileName3
+            | urlPath1 when urlPath1 = n -> fileName1
+            | urlPath2 when urlPath2 = n -> fileName2
+            | urlPath3 when urlPath3 = n -> fileName3
             | _ -> failwith "Incorrect Parameters"
             
         let mutable downloadCount = 0
@@ -237,3 +237,65 @@ type ResolveImages_IntegrationTests() =
 
         // Assert
         Assert.AreEqual(3, downloadCount)
+
+    [<Test>]
+    member public this.``Podcast image files need downloading so file details of each download posted before downloading ``() =
+        let defaultImagePath = @"C:\DefaultImage.jpg"
+        let imageDirectory = workingDirectory + @"ImageDirectory\"
+
+        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
+
+        let fileName1 = "Image1.jpg"
+        let urlPath1 = workingDirectory + fileName1
+
+        let fileName2 = "Image2.jpg"
+        let urlPath2 = workingDirectory + fileName2
+        let localPath2 = imageDirectory + fileName2
+
+        let fileName3 = "Image3.jpg"
+        let urlPath3 = workingDirectory + fileName3
+        let localPath3 = defaultImagePath
+
+        let fileName4 = "Image4.jpg"
+        let urlPath4 = ""
+        let localPath4 = imageDirectory + fileName4
+
+        let localPath = ""
+        let resolveLocalFilePathFunction = fun n -> 
+            match n with
+            | urlPath1 when urlPath1 = n -> fileName1
+            | urlPath2 when urlPath2 = n -> fileName2
+            | urlPath3 when urlPath3 = n -> fileName3
+            | _ -> failwith "Incorrect Parameters"
+            
+        let downloadIndexes = [||]
+        let reportDownloadStartFunction = 
+            fun index file -> 
+                Array.append downloadIndexes index, file
+
+        let assembly = Assembly.GetExecutingAssembly()
+        assembly.CopyEmbeddedResourceToFile(fileName1, urlPath1)
+        assembly.CopyEmbeddedResourceToFile(fileName2, urlPath2)
+        assembly.CopyEmbeddedResourceToFile(fileName3, urlPath3)
+        assembly.CopyEmbeddedResourceToFile(fileName4, localPath4)
+
+        // Podcast image filename not set and URL path is set so file is downloaded
+        let podcast1 = createTestPodcast "" urlPath1
+        // Local path set but file not found locally so file is downloaded
+        let podcast2 = createTestPodcast localPath2 urlPath2
+        // Podcast image filename set to default and URL path is set so file is downloaded
+        let podcast3 = createTestPodcast localPath urlPath3
+        // Podcast image filename set and file exists so nothing downloaded
+        let podcast4 = createTestPodcast localPath4 urlPath4
+
+        resolveImages [| podcast1; podcast2; podcast3; podcast4 |]
+
+        // Assert
+        Assert.AreEqual(3, downloadIndexes.Length)
+        Assert.AreEqual(1, fst downloadIndexes.[0])
+        Assert.AreEqual(urlPath1, snd downloadIndexes.[0])
+        Assert.AreEqual(2, fst downloadIndexes.[1])
+        Assert.AreEqual(urlPath2, snd downloadIndexes.[1])
+        Assert.AreEqual(3, fst downloadIndexes.[2])
+        Assert.AreEqual(urlPath3, snd downloadIndexes.[2])
+
