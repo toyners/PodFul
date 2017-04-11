@@ -5,52 +5,87 @@ open System.IO
 
 module public ImageFunctions =
 
-    let needsToDownloadImage (podcast : Podcast) (defaultImagePath : string) : bool =
-        let localName = podcast.FileDetails.ImageFileName
-        let gotLocalPath = String.IsNullOrEmpty(localName) = false
-        let gotURLPath = String.IsNullOrEmpty(podcast.ImageURL) = false
+    let needsToDownloadImage (localImagePath : string) (onlineImagePath : string) (defaultImagePath : string) : bool =
+        let gotLocalImagePath = String.IsNullOrEmpty(localImagePath) = false
+        let gotOnlineImagePath = String.IsNullOrEmpty(onlineImagePath) = false
 
-        ((gotLocalPath = false || localName = defaultImagePath) && gotURLPath) ||
-            (gotLocalPath && File.Exists(localName) = false)
+        ((gotLocalImagePath = false || localImagePath = defaultImagePath) && gotOnlineImagePath) ||
+            (gotLocalImagePath && File.Exists(localImagePath) = false)
 
-    let determineImageDownloadCount (podcasts : Podcast[]) (defaultImagePath : string) : int =
+    let downloadImageFile 
+        sourcePath 
+        destinationPath 
+        defaultPath 
+        startDownloadNotificationFunction
+        downloadCompletedNotificationFunction
+        downloadFailedNotificationFunction =
+        let imageDownloader = new FileDownloader()
+
+        startDownloadNotificationFunction destinationPath
+        try
+            imageDownloader.Download(sourcePath, destinationPath, System.Threading.CancellationToken.None, null) |> ignore
+            downloadCompletedNotificationFunction destinationPath
+            destinationPath
+        with
+        | _ ->
+            downloadFailedNotificationFunction destinationPath  
+            defaultPath
+
+    (*let determineImageDownloadCount (podcasts : Podcast[]) (defaultImagePath : string) : int =
         let mutable index = 0
         let mutable count = 0
         while index < podcasts.Length do
-            
-            if needsToDownloadImage podcasts.[index] "" then
+            let podcast = podcasts.[index]
+            let localImagePath = resolveLocalFilePathFunction podcast.ImageURL
+
+            if needsToDownloadImage localImagePath podcasts.[index].ImageURL defaultImagePath then
                 count <- count + 1
             index <- index + 1
 
-        count
+        count*)
 
-    let resolveImages (podcasts : Podcast[]) resolveLocalFilePathFunction =
+    let resolveImages 
+        (podcasts : Podcast[]) 
+        (defaultImagePath : string) 
+        resolveLocalFilePathFunction 
+        totalDownloadsRequiredNotificationFunction
+        startDownloadNotificationFunction 
+        completedDownloadNotificationFunction 
+        failedDownloadNotificationFunction =
+
         // Get count of images that need downloading for collection of podcasts
         let mutable index = 0
+        let mutable downloadTotal = 0
         while index < podcasts.Length do
             let podcast = podcasts.[index]
+            let localImagePath = resolveLocalFilePathFunction podcast.ImageURL
 
-            let localPath = resolveLocalFilePathFunction podcast.ImageURL
-
-            //if needsToDownloadImage localPath podcast.ImageURL
+            if needsToDownloadImage localImagePath podcast.ImageURL defaultImagePath then
+                downloadTotal <- downloadTotal + 1
 
             index <- index + 1
 
-        // If not downloading images use default image
+        totalDownloadsRequiredNotificationFunction downloadTotal
 
-        // iterate over podcasts and
-        // resolve name to local file name
-        // if local file exists then use it
-        // if local file does not exist then
-        //      try download image
-        //      if allowed return local file name
-        //      if not allowed then
-        //          try use default image
-        //          if passed in return default image name
-        //          if not passed in set name to blank
-        //      if allowed and failed then
-        //          Log
-        //          try use default image        
-        //          if passed in set default image name
-        //          if not passed in return blank
-        ()
+        index <- 0
+        let mutable downloadNumber = 0
+        let imageDownloader = new FileDownloader()
+        while index < podcasts.Length do
+            let podcast = podcasts.[index]
+            let localImagePath = resolveLocalFilePathFunction podcast.ImageURL
+            
+            if needsToDownloadImage localImagePath podcast.ImageURL defaultImagePath then
+                downloadNumber <- downloadNumber + 1
+                
+                try
+                    startDownloadNotificationFunction downloadNumber podcast.ImageURL    
+                    imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
+                    podcast.SetImageFileName localImagePath
+                    completedDownloadNotificationFunction podcast.ImageURL
+                with
+                | _ as ex ->
+                    podcast.SetImageFileName defaultImagePath
+                    failedDownloadNotificationFunction podcast.ImageURL ex
+
+            index <- index + 1
+        

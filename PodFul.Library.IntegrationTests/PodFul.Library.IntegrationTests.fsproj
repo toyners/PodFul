@@ -82,10 +82,10 @@
     <EmbeddedResource Include="Multiple Items with Enclosure and MediaContent Tags.rss" />
     <EmbeddedResource Include="Item with Enclosure and MediaContent Tags.rss" />
     <Compile Include="JSONFeedIO_IntergrationTests.fs" />
-    <None Include="Image2.jpg" />
-    <None Include="Image3.jpg" />
-    <None Include="Image4.jpg" />
-    <None Include="Image1.jpg" />
+    <EmbeddedResource Include="Image2.jpg" />
+    <EmbeddedResource Include="Image3.jpg" />
+    <EmbeddedResource Include="Image4.jpg" />
+    <EmbeddedResource Include="Image1.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">

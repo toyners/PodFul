@@ -27,6 +27,16 @@ type ResolveImages_IntegrationTests() =
                 }
         }
 
+    let runResolveImagesWithoutFeedBack (podcasts : Podcast[]) (defaultImagePath : string) resolveLocalFilePathFunction =
+        ImageFunctions.resolveImages 
+            podcasts 
+            defaultImagePath
+            resolveLocalFilePathFunction
+            (fun n -> ()) 
+            (fun n s -> ())
+            (fun s -> ())
+            (fun s e -> ())
+
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
@@ -42,14 +52,14 @@ type ResolveImages_IntegrationTests() =
         let urlPath = workingDirectory + fileName
         let localPath = ""
         let expectedPath = imageDirectory + fileName
-        let resolveLocalFilePathFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
+        let resolveLocalFilePathFunction = fun n -> if n = urlPath then Path.Combine(imageDirectory, fileName) else failwith "Incorrect Parameters"
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
 
         let podcast = createTestPodcast localPath urlPath 
 
-        ImageFunctions.resolveImages [|podcast|] resolveLocalFilePathFunction
+        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
 
         // Assert
         Assert.AreEqual(expectedPath, podcast.FileDetails.ImageFileName)
@@ -74,8 +84,8 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath 
         
         // Act
-        ImageFunctions.resolveImages [|podcast|] resolveLocalFilePathFunction
-        
+        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
+
         // Assert
         Assert.AreEqual(localPath, podcast.FileDetails.ImageFileName)
 
@@ -95,8 +105,8 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath 
 
         // Act
-        ImageFunctions.resolveImages [|podcast|] null
-        
+        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
+
         // Assert
         Assert.AreEqual(defaultImagePath, podcast.FileDetails.ImageFileName)
 
@@ -119,7 +129,7 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath 
 
         // Act
-        ImageFunctions.resolveImages [|podcast|] resolveLocalFilePathFunction
+        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
         
         // Assert
         Assert.AreEqual(localPath, podcast.FileDetails.ImageFileName)
@@ -146,7 +156,7 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath
         
         // Act
-        ImageFunctions.resolveImages [|podcast|] resolveLocalFilePathFunction
+        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
         
         // Assert
         Assert.AreEqual(expectedPath, podcast.FileDetails.ImageFileName)
@@ -158,11 +168,44 @@ type ResolveImages_IntegrationTests() =
         let defaultImagePath = @"C:\DefaultImage.jpg"
         let imageDirectory = @"C:\ImageDirectory\"
         
+        let fileName = "Image.jpg"
+        let urlPath = workingDirectory + fileName
+
+        let fileName = "Image.jpg"
         let podcast = createTestPodcast "" "Bad image url"
 
-        ImageFunctions.resolveImages [|podcast|] null
+        runResolveImagesWithoutFeedBack [|podcast|] defaultImagePath (fun n -> fileName)
 
         Assert.AreEqual(defaultImagePath, podcast.FileDetails.ImageFileName)
+
+    [<Test>]
+    member public this.``Image download fails and exception message is stored``() =
+        
+        let defaultImagePath = @"C:\DefaultImage.jpg"
+        let imageDirectory = @"C:\ImageDirectory\"
+        
+        let fileName = "Image.jpg"
+        let urlPath = workingDirectory + fileName
+
+        let fileName = "Image.jpg"
+        let podcast = createTestPodcast "" "Bad image url"
+
+        let mutable failedFile = ""
+        let mutable ex = null
+
+        ImageFunctions.resolveImages
+            [|podcast|] 
+            defaultImagePath 
+            (fun n -> fileName)
+            (fun n -> ())
+            (fun n s -> ())
+            (fun s -> ())
+            (fun s e -> 
+                failedFile <- s 
+                ex <- e)
+
+        Assert.AreEqual("Bad image url", failedFile)
+        Assert.AreEqual(typeof<System.UriFormatException>, ex.GetType())
 
     [<Test>]
     member public this.``Podcast image files need downloading so download count function is called with correct download count``() =
@@ -212,7 +255,14 @@ type ResolveImages_IntegrationTests() =
         // Podcast image filename set and file exists so nothing downloaded
         let podcast4 = createTestPodcast localPath4 urlPath4
 
-        ImageFunctions.resolveImages [| podcast1; podcast2; podcast3; podcast4 |] resolveLocalFilePathFunction
+        ImageFunctions.resolveImages 
+            [| podcast1; podcast2; podcast3; podcast4 |] 
+            null
+            resolveLocalFilePathFunction
+            reportDownloadCountFunction
+            (fun n s -> ())
+            (fun s -> ())
+            (fun s e -> ())
 
         // Assert
         Assert.AreEqual(3, downloadCount)
@@ -247,8 +297,8 @@ type ResolveImages_IntegrationTests() =
             | urlPath3 when urlPath3 = n -> fileName3
             | _ -> failwith "Incorrect Parameters"
             
-        let downloads = [||]
-        let reportDownloadStartFunction = fun index file -> Array.append downloads index, file
+        let startedDownloads = [||]
+        let completedDownloads = [||]
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName1, urlPath1)
@@ -265,14 +315,25 @@ type ResolveImages_IntegrationTests() =
         // Podcast image filename set and file exists so nothing downloaded
         let podcast4 = createTestPodcast localPath4 urlPath4
 
-        ImageFunctions.resolveImages [| podcast1; podcast2; podcast3; podcast4 |] resolveLocalFilePathFunction
+        ImageFunctions.resolveImages 
+            [| podcast1; podcast2; podcast3; podcast4 |] 
+            null
+            resolveLocalFilePathFunction
+            (fun n -> ())
+            (fun n s -> Array.append startedDownloads [|n,s|] |> ignore)
+            (fun s -> Array.append completedDownloads [|s|] |> ignore)
+            (fun s e -> ())
 
         // Assert
-        Assert.AreEqual(3, downloads.Length)
-        Assert.AreEqual(1, fst downloads.[0])
-        Assert.AreEqual(urlPath1, snd downloads.[0])
-        Assert.AreEqual(2, fst downloads.[1])
-        Assert.AreEqual(urlPath2, snd downloads.[1])
-        Assert.AreEqual(3, fst downloads.[2])
-        Assert.AreEqual(urlPath3, snd downloads.[2])
+        Assert.AreEqual(3, startedDownloads.Length)
+        Assert.AreEqual(1, fst startedDownloads.[0])
+        Assert.AreEqual(urlPath1, snd startedDownloads.[0])
+        Assert.AreEqual(2, fst startedDownloads.[1])
+        Assert.AreEqual(urlPath2, snd startedDownloads.[1])
+        Assert.AreEqual(3, fst startedDownloads.[2])
+        Assert.AreEqual(urlPath3, snd startedDownloads.[2])
 
+        Assert.AreEqual(3, completedDownloads.Length)
+        Assert.AreEqual(urlPath1, completedDownloads.[0])
+        Assert.AreEqual(urlPath2, completedDownloads.[1])
+        Assert.AreEqual(urlPath3, completedDownloads.[2])
