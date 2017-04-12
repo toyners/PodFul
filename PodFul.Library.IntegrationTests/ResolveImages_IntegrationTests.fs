@@ -337,3 +337,39 @@ type ResolveImages_IntegrationTests() =
         Assert.AreEqual(urlPath1, completedDownloads.[0])
         Assert.AreEqual(urlPath2, completedDownloads.[1])
         Assert.AreEqual(urlPath3, completedDownloads.[2])
+
+    [<Test>]
+    member public this.``Multiple podcasts have same image file but file only downloaded once``() =
+
+        let imageDirectory = workingDirectory + @"ImageDirectory\"
+
+        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
+
+        let fileName = "Image.jpg"
+        let urlPath = workingDirectory + fileName
+
+        let resolveLocalFilePathFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
+
+        let assembly = Assembly.GetExecutingAssembly()
+        assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
+
+        let podcast1 = createTestPodcast "" urlPath
+        let podcast2 = createTestPodcast "" urlPath
+
+        let startedDownloads = [||]
+        let completedDownloads = [||]
+
+        ImageFunctions.resolveImages 
+            [| podcast1; podcast2 |]
+            null
+            resolveLocalFilePathFunction
+            (fun n -> ())
+            (fun n s -> Array.append startedDownloads [|n,s|] |> ignore)
+            (fun s -> Array.append completedDownloads [|s|] |> ignore)
+            (fun s e -> ())
+
+        Assert.AreEqual(1, startedDownloads.Length)
+        Assert.AreEqual(urlPath, snd startedDownloads.[0])
+
+        Assert.AreEqual(1, completedDownloads.Length)
+        Assert.AreEqual(urlPath, completedDownloads.[0])
