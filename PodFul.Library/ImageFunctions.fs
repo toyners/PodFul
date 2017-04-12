@@ -12,6 +12,13 @@ module public ImageFunctions =
         ((gotLocalImagePath = false || localImagePath = defaultImagePath) && gotOnlineImagePath) ||
             (gotLocalImagePath && File.Exists(localImagePath) = false)
 
+    let needsToDownloadImage2 (localImagePath : string) (onlineImagePath : string) (defaultImagePath : string) : bool =
+        let gotLocalImagePath = String.IsNullOrEmpty(localImagePath) = false
+        let gotOnlineImagePath = String.IsNullOrEmpty(onlineImagePath) = false
+
+        ((gotLocalImagePath = false || localImagePath = defaultImagePath) && gotOnlineImagePath) ||
+            (gotLocalImagePath && File.Exists(localImagePath) = false)
+
     let downloadImageFile 
         sourcePath 
         destinationPath 
