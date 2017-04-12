@@ -34,8 +34,9 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             (fun n -> ()) 
             (fun n s -> ())
+            (fun n s -> failwith "Should not be called")
             (fun s -> ())
-            (fun s e -> ())
+            (fun s e -> failwith "Should not be called")
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
@@ -199,6 +200,7 @@ type ResolveImages_IntegrationTests() =
             (fun n -> fileName)
             (fun n -> ())
             (fun n s -> ())
+            (fun n s -> failwith "Should not be called")
             (fun s -> ())
             (fun s e -> 
                 failedFile <- s 
@@ -261,8 +263,9 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             reportDownloadCountFunction
             (fun n s -> ())
+            (fun n s -> failwith "Should not be called")
             (fun s -> ())
-            (fun s e -> ())
+            (fun s e -> failwith "Should not be called")
 
         // Assert
         Assert.AreEqual(3, downloadCount)
@@ -321,8 +324,9 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             (fun n -> ())
             (fun n s -> Array.append startedDownloads [|n,s|] |> ignore)
+            (fun n s -> failwith "Should not be called")
             (fun s -> Array.append completedDownloads [|s|] |> ignore)
-            (fun s e -> ())
+            (fun s e -> failwith "Should not be called")
 
         // Assert
         Assert.AreEqual(3, startedDownloads.Length)
@@ -348,6 +352,8 @@ type ResolveImages_IntegrationTests() =
         let fileName = "Image.jpg"
         let urlPath = workingDirectory + fileName
 
+        let expectedPath = Path.Combine(imageDirectory, fileName)
+
         let resolveLocalFilePathFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
 
         let assembly = Assembly.GetExecutingAssembly()
@@ -357,6 +363,7 @@ type ResolveImages_IntegrationTests() =
         let podcast2 = createTestPodcast "" urlPath
 
         let startedDownloads = [||]
+        let skippedDownloads = [||]
         let completedDownloads = [||]
 
         ImageFunctions.resolveImages 
@@ -365,11 +372,19 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             (fun n -> ())
             (fun n s -> Array.append startedDownloads [|n,s|] |> ignore)
+            (fun n s -> Array.append skippedDownloads [|n,s|] |> ignore)
             (fun s -> Array.append completedDownloads [|s|] |> ignore)
-            (fun s e -> ())
+            (fun s e -> failwith "Should not be called")
 
         Assert.AreEqual(1, startedDownloads.Length)
         Assert.AreEqual(urlPath, snd startedDownloads.[0])
 
+        Assert.AreEqual(1, skippedDownloads.Length)
+        Assert.AreEqual(urlPath, snd skippedDownloads.[0])
+
         Assert.AreEqual(1, completedDownloads.Length)
-        Assert.AreEqual(urlPath, completedDownloads.[0])
+        Assert.AreEqual(urlPath, snd startedDownloads.[0])
+
+        Assert.AreEqual(expectedPath, podcast1.FileDetails.ImageFileName)
+        Assert.AreEqual(expectedPath, podcast2.FileDetails.ImageFileName)
+        Assert.AreEqual(true, File.Exists(expectedPath))

@@ -57,6 +57,7 @@ module public ImageFunctions =
         resolveLocalFilePathFunction 
         totalDownloadsRequiredNotificationFunction
         startDownloadNotificationFunction 
+        skippedDownloadNotificationFunction
         completedDownloadNotificationFunction 
         failedDownloadNotificationFunction =
 
