@@ -53,6 +53,7 @@ module public ImageFunctions =
 
     let resolveImages 
         (podcasts : Podcast[]) 
+        (localImageDirectory : string)
         (defaultImagePath : string) 
         resolveLocalFilePathFunction 
         totalDownloadsRequiredNotificationFunction
@@ -66,9 +67,8 @@ module public ImageFunctions =
         let mutable downloadTotal = 0
         while index < podcasts.Length do
             let podcast = podcasts.[index]
-            let localImagePath = resolveLocalFilePathFunction podcast.ImageURL
 
-            if needsToDownloadImage localImagePath podcast.ImageURL defaultImagePath then
+            if needsToDownloadImage podcast.FileDetails.ImageFileName podcast.ImageURL defaultImagePath then
                 downloadTotal <- downloadTotal + 1
 
             index <- index + 1
@@ -80,12 +80,13 @@ module public ImageFunctions =
         let imageDownloader = new FileDownloader()
         while index < podcasts.Length do
             let podcast = podcasts.[index]
-            let localImagePath = resolveLocalFilePathFunction podcast.ImageURL
             
-            if needsToDownloadImage localImagePath podcast.ImageURL defaultImagePath then
+            if needsToDownloadImage podcast.FileDetails.ImageFileName podcast.ImageURL defaultImagePath then
                 downloadNumber <- downloadNumber + 1
                 
                 try
+                    let localImageFileName = resolveLocalFilePathFunction podcast.ImageURL
+                    let localImagePath = Path.Combine(localImageDirectory, localImageFileName)
                     startDownloadNotificationFunction downloadNumber podcast.ImageURL    
                     imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
                     podcast.SetImageFileName localImagePath
@@ -94,6 +95,8 @@ module public ImageFunctions =
                 | _ as ex ->
                     podcast.SetImageFileName defaultImagePath
                     failedDownloadNotificationFunction podcast.ImageURL ex
+            else if System.String.IsNullOrEmpty(podcast.FileDetails.ImageFileName) then
+                podcast.SetImageFileName defaultImagePath
 
             index <- index + 1
         

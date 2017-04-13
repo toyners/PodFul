@@ -11,6 +11,8 @@ open PodFul.Library
 type ResolveImages_IntegrationTests() =
 
     let workingDirectory = @"C:\Projects\PodFul\PodFul.Library.IntegrationTests\Test\ResolveImages_IntergrationTests\";
+    let imageDirectory = workingDirectory + @"ImageDirectory\"
+    let defaultImagePath = @"C:\DefaultImage.jpg"
 
     let createTestPodcast imageFileName imageURL =
         {
@@ -27,40 +29,40 @@ type ResolveImages_IntegrationTests() =
                 }
         }
 
-    let runResolveImagesWithoutFeedBack (podcasts : Podcast[]) (defaultImagePath : string) resolveLocalFilePathFunction =
+    let runResolveImagesWithoutFeedBack (podcasts : Podcast[]) (localImageDirectory : string) (defaultImagePath : string) resolveLocalFilePathFunction =
         ImageFunctions.resolveImages 
             podcasts 
+            localImageDirectory
             defaultImagePath
             resolveLocalFilePathFunction
             (fun n -> ()) 
             (fun n s -> ())
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
-            (fun s e -> failwith "Should not be called")
+            (fun s e -> ())
+
+    let createResolveLocalImageNameFunction urlPath fileName = 
+        fun n -> if n = urlPath then fileName else failwith "Unexpected parameter: " + urlPath
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =
         DirectoryOperations.EnsureDirectoryIsEmpty(workingDirectory)
+        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
     [<Test>]
     member public this.``Podcast image filename not set and URL path is set so file is downloaded and podcast image path is updated``() =
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName = "Image.jpg"
         let urlPath = workingDirectory + fileName
         let localPath = ""
         let expectedPath = imageDirectory + fileName
-        let resolveLocalFilePathFunction = fun n -> if n = urlPath then Path.Combine(imageDirectory, fileName) else failwith "Incorrect Parameters"
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
 
         let podcast = createTestPodcast localPath urlPath 
 
-        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
+        runResolveImagesWithoutFeedBack [|podcast|] imageDirectory null (createResolveLocalImageNameFunction urlPath fileName)
 
         // Assert
         Assert.AreEqual(expectedPath, podcast.FileDetails.ImageFileName)
@@ -69,15 +71,10 @@ type ResolveImages_IntegrationTests() =
     [<Test>]
     member public this.``Podcast image filename set and file exists so podcast image filename is not changed``()=
         // Arrange
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName = "Image.jpg"
         let urlPath = ""
         let localPath = imageDirectory + fileName
-        let resolveLocalFilePathFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, localPath)
@@ -85,44 +82,42 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath 
         
         // Act
-        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
+        ImageFunctions.resolveImages
+            [|podcast|] 
+            imageDirectory
+            null 
+            (fun s -> failwith "Should not be called")
+            (fun n -> ())
+            (fun n s -> failwith "Should not be called")
+            (fun n s -> failwith "Should not be called")
+            (fun s -> failwith "Should not be called")
+            (fun s e -> failwith "Should not be called")
 
         // Assert
         Assert.AreEqual(localPath, podcast.FileDetails.ImageFileName)
 
     [<Test>]
     member public this.``Podcast image filename not set and URL path not set so default image filename is used``() =
-        // Arrange
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName = "Image.jpg"
         let urlPath = ""
         let localPath = ""
-        let resolveLocalFilePathFunction = fun n -> failwith "Incorrect Parameters"
+        let resolveLocalFilePathFunction = fun n -> failwith "Should not be called"
 
         let podcast = createTestPodcast localPath urlPath 
 
         // Act
-        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
+        runResolveImagesWithoutFeedBack [|podcast|] imageDirectory defaultImagePath resolveLocalFilePathFunction
 
         // Assert
         Assert.AreEqual(defaultImagePath, podcast.FileDetails.ImageFileName)
 
     [<Test>]
     member public this.``Podcast image filename set but file not found locally so is downloaded and local path is returned``() =
-        // Arrange
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName = "Image.jpg"
         let urlPath = workingDirectory + fileName
         let localPath = imageDirectory + fileName
-        let resolveLocalFilePathFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
@@ -130,7 +125,7 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath 
 
         // Act
-        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
+        runResolveImagesWithoutFeedBack [|podcast|] imageDirectory null (createResolveLocalImageNameFunction urlPath fileName)
         
         // Assert
         Assert.AreEqual(localPath, podcast.FileDetails.ImageFileName)
@@ -138,18 +133,11 @@ type ResolveImages_IntegrationTests() =
 
     [<Test>]
     member public this.``Podcast image filename set to default and URL path is set so file is downloaded and podcast image path is updated``()=
-        
-        // Arrange
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName = "Image.jpg"
         let urlPath = workingDirectory + fileName
         let localPath = defaultImagePath
         let expectedPath = imageDirectory + fileName
-        let resolveLocalFilePathFunction = fun n -> if n = urlPath then fileName else failwith "Incorrect Parameters"
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, urlPath)
@@ -157,7 +145,7 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath
         
         // Act
-        runResolveImagesWithoutFeedBack [|podcast|] null resolveLocalFilePathFunction
+        runResolveImagesWithoutFeedBack [|podcast|] imageDirectory null (createResolveLocalImageNameFunction urlPath fileName)
         
         // Assert
         Assert.AreEqual(expectedPath, podcast.FileDetails.ImageFileName)
@@ -166,28 +154,16 @@ type ResolveImages_IntegrationTests() =
     [<Test>]
     member public this.``Image download fails so default image filename is used``() =
         
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = @"C:\ImageDirectory\"
-        
-        let fileName = "Image.jpg"
-        let urlPath = workingDirectory + fileName
-
         let fileName = "Image.jpg"
         let podcast = createTestPodcast "" "Bad image url"
 
-        runResolveImagesWithoutFeedBack [|podcast|] defaultImagePath (fun n -> fileName)
+        runResolveImagesWithoutFeedBack [|podcast|] imageDirectory defaultImagePath (fun n -> fileName)
 
         Assert.AreEqual(defaultImagePath, podcast.FileDetails.ImageFileName)
 
     [<Test>]
     member public this.``Image download fails and exception message is stored``() =
         
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = @"C:\ImageDirectory\"
-        
-        let fileName = "Image.jpg"
-        let urlPath = workingDirectory + fileName
-
         let fileName = "Image.jpg"
         let podcast = createTestPodcast "" "Bad image url"
 
@@ -195,7 +171,8 @@ type ResolveImages_IntegrationTests() =
         let mutable ex = null
 
         ImageFunctions.resolveImages
-            [|podcast|] 
+            [|podcast|]
+            imageDirectory
             defaultImagePath 
             (fun n -> fileName)
             (fun n -> ())
@@ -211,10 +188,6 @@ type ResolveImages_IntegrationTests() =
 
     [<Test>]
     member public this.``Podcast image files need downloading so download count function is called with correct download count``() =
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName1 = "Image1.jpg"
         let urlPath1 = workingDirectory + fileName1
@@ -259,6 +232,7 @@ type ResolveImages_IntegrationTests() =
 
         ImageFunctions.resolveImages 
             [| podcast1; podcast2; podcast3; podcast4 |] 
+            imageDirectory
             null
             resolveLocalFilePathFunction
             reportDownloadCountFunction
@@ -272,10 +246,6 @@ type ResolveImages_IntegrationTests() =
 
     [<Test>]
     member public this.``Podcast image files need downloading so file details of each download posted before downloading ``() =
-        let defaultImagePath = @"C:\DefaultImage.jpg"
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName1 = "Image1.jpg"
         let urlPath1 = workingDirectory + fileName1
@@ -300,8 +270,8 @@ type ResolveImages_IntegrationTests() =
             | urlPath3 when urlPath3 = n -> fileName3
             | _ -> failwith "Incorrect Parameters"
             
-        let startedDownloads = [||]
-        let completedDownloads = [||]
+        let mutable startedDownloads = [||]
+        let mutable completedDownloads = [||]
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName1, urlPath1)
@@ -320,16 +290,17 @@ type ResolveImages_IntegrationTests() =
 
         ImageFunctions.resolveImages 
             [| podcast1; podcast2; podcast3; podcast4 |] 
+            imageDirectory
             null
             resolveLocalFilePathFunction
             (fun n -> ())
-            (fun n s -> Array.append startedDownloads [|n,s|] |> ignore)
+            (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
             (fun n s -> failwith "Should not be called")
-            (fun s -> Array.append completedDownloads [|s|] |> ignore)
+            (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
             (fun s e -> failwith "Should not be called")
 
         // Assert
-        Assert.AreEqual(3, startedDownloads.Length)
+        Assert.AreEqual(3, Array.length startedDownloads)
         Assert.AreEqual(1, fst startedDownloads.[0])
         Assert.AreEqual(urlPath1, snd startedDownloads.[0])
         Assert.AreEqual(2, fst startedDownloads.[1])
@@ -344,10 +315,6 @@ type ResolveImages_IntegrationTests() =
 
     [<Test>]
     member public this.``Multiple podcasts have same image file but file only downloaded once``() =
-
-        let imageDirectory = workingDirectory + @"ImageDirectory\"
-
-        DirectoryOperations.EnsureDirectoryIsEmpty(imageDirectory)
 
         let fileName = "Image.jpg"
         let urlPath = workingDirectory + fileName
@@ -368,6 +335,7 @@ type ResolveImages_IntegrationTests() =
 
         ImageFunctions.resolveImages 
             [| podcast1; podcast2 |]
+            imageDirectory
             null
             resolveLocalFilePathFunction
             (fun n -> ())
