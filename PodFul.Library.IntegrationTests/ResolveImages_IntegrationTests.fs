@@ -329,9 +329,9 @@ type ResolveImages_IntegrationTests() =
         let podcast1 = createTestPodcast "" urlPath
         let podcast2 = createTestPodcast "" urlPath
 
-        let startedDownloads = [||]
-        let skippedDownloads = [||]
-        let completedDownloads = [||]
+        let mutable startedDownloads = [||]
+        let mutable skippedDownloads = [||]
+        let mutable completedDownloads = [||]
 
         ImageFunctions.resolveImages 
             [| podcast1; podcast2 |]
@@ -339,9 +339,9 @@ type ResolveImages_IntegrationTests() =
             null
             resolveLocalFilePathFunction
             (fun n -> ())
-            (fun n s -> Array.append startedDownloads [|n,s|] |> ignore)
-            (fun n s -> Array.append skippedDownloads [|n,s|] |> ignore)
-            (fun s -> Array.append completedDownloads [|s|] |> ignore)
+            (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
+            (fun n s -> skippedDownloads <- Array.append skippedDownloads [|n,s|])
+            (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
             (fun s e -> failwith "Should not be called")
 
         Assert.AreEqual(1, startedDownloads.Length)
