@@ -40,6 +40,7 @@ type ResolveImages_IntegrationTests() =
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
             (fun s e -> ())
+            System.Threading.CancellationToken.None
 
     let createResolveLocalImageNameFunction urlPath fileName = 
         fun n -> if n = urlPath then fileName else failwith "Unexpected parameter: " + urlPath
@@ -92,6 +93,7 @@ type ResolveImages_IntegrationTests() =
             (fun n s -> failwith "Should not be called")
             (fun s -> failwith "Should not be called")
             (fun s e -> failwith "Should not be called")
+            System.Threading.CancellationToken.None
 
         // Assert
         Assert.AreEqual(localPath, podcast.FileDetails.ImageFileName)
@@ -182,6 +184,7 @@ type ResolveImages_IntegrationTests() =
             (fun s e -> 
                 failedFile <- s 
                 ex <- e)
+            System.Threading.CancellationToken.None
 
         Assert.AreEqual("Bad image url", failedFile)
         Assert.AreEqual(typeof<System.UriFormatException>, ex.GetType())
@@ -240,6 +243,7 @@ type ResolveImages_IntegrationTests() =
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
             (fun s e -> failwith "Should not be called")
+            System.Threading.CancellationToken.None
 
         // Assert
         Assert.AreEqual(3, downloadCount)
@@ -298,6 +302,7 @@ type ResolveImages_IntegrationTests() =
             (fun n s -> failwith "Should not be called")
             (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
             (fun s e -> failwith "Should not be called")
+            System.Threading.CancellationToken.None
 
         // Assert
         Assert.AreEqual(3, Array.length startedDownloads)
@@ -343,6 +348,7 @@ type ResolveImages_IntegrationTests() =
             (fun n s -> skippedDownloads <- Array.append skippedDownloads [|n,s|])
             (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
             (fun s e -> failwith "Should not be called")
+            System.Threading.CancellationToken.None
 
         Assert.AreEqual(1, startedDownloads.Length)
         Assert.AreEqual(urlPath, snd startedDownloads.[0])

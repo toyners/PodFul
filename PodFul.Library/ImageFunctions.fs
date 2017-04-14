@@ -2,6 +2,7 @@
 
 open System
 open System.IO
+open System.Threading
 
 module public ImageFunctions =
 
@@ -21,12 +22,15 @@ module public ImageFunctions =
         startDownloadNotificationFunction 
         skippedDownloadNotificationFunction
         completedDownloadNotificationFunction 
-        failedDownloadNotificationFunction =
+        failedDownloadNotificationFunction 
+        (cancelToken : CancellationToken) =
 
         // Get count of images that need downloading for collection of podcasts
         let mutable index = 0
         let mutable downloadTotal = 0
         while index < podcasts.Length do
+            cancelToken.ThrowIfCancellationRequested()
+
             let podcast = podcasts.[index]
 
             if needsToDownloadImage podcast.FileDetails.ImageFileName podcast.ImageURL defaultImagePath then
@@ -41,6 +45,8 @@ module public ImageFunctions =
         let imageDownloader = new FileDownloader()
         let imagesDownloaded = new System.Collections.Generic.Dictionary<string, string>()
         while index < podcasts.Length do
+            cancelToken.ThrowIfCancellationRequested()
+
             let podcast = podcasts.[index]
             
             if needsToDownloadImage podcast.FileDetails.ImageFileName podcast.ImageURL defaultImagePath then
