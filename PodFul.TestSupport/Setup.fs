@@ -24,13 +24,13 @@ module public Setup =
         }
 
     let createTestFeed url =
-        FeedFunctions.CreateFeed url null "DirectoryPath" null CancellationToken.None null
+        FeedFunctions.CreateFeed url null "DirectoryPath" (fun c f -> f) CancellationToken.None
 
     let createTestFeedWithDirectoryPath url directoryPath =
-        FeedFunctions.CreateFeed url null directoryPath null CancellationToken.None null
+        FeedFunctions.CreateFeed url null directoryPath (fun c f -> f) CancellationToken.None
 
     let createTestFeedUsingDownloadFile url downloadFilePath = 
-        FeedFunctions.CreateFeed url downloadFilePath "DirectoryPath" null CancellationToken.None null
+        FeedFunctions.CreateFeed url downloadFilePath "DirectoryPath" (fun c f -> f) CancellationToken.None
 
     let createTestPodcast title description url pubDate fileSize downloadDate imageFileName imageURL =
         {
@@ -48,4 +48,4 @@ module public Setup =
         }
 
     let updateTestFeed feed =
-        FeedFunctions.UpdateFeed feed null null CancellationToken.None
+        FeedFunctions.UpdateFeed feed null (fun c f -> feed) CancellationToken.None

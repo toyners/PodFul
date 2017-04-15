@@ -215,7 +215,7 @@ module public FeedFunctions =
              DeliverDownloadsOnScan = true
         }
 
-    let private needsToDownloadImage (podcast : Podcast) (defaultImagePath : string) : bool =
+    (*let private needsToDownloadImage (podcast : Podcast) (defaultImagePath : string) : bool =
         let localName = podcast.FileDetails.ImageFileName
         let gotLocalPath = String.IsNullOrEmpty(localName) = false
         let gotURLPath = String.IsNullOrEmpty(podcast.ImageURL) = false
@@ -246,13 +246,7 @@ module public FeedFunctions =
         postMessage.Invoke("Complete\r\n")
         savePath
 
-    let private resolveImages2 (feed : Feed) : Feed =
-        let mutable index = 0
-        //while index < feed.Podcasts.Length do
-
-        feed
-
-    let private resolveImages (imageResolver : IImageResolver) (cancelToken : CancellationToken) (feed : Feed) : Feed =
+    let private resolveImages (imageResolver : IImageResolverOld) (cancelToken : CancellationToken) (feed : Feed) : Feed =
 
       match (imageResolver) with
       | null -> feed
@@ -273,7 +267,7 @@ module public FeedFunctions =
         if (localImagePath <> feed.ImageFileName) then
             Feed.SetImageFileName feed localImagePath
         else
-            feed
+            feed*)
     
     let private createWebClient : WebClient = 
         let webClient = new WebClient()
@@ -308,19 +302,19 @@ module public FeedFunctions =
             writer.Write(data)
         data
 
-    let public CreateFeed url filePath directoryPath imageResolver cancelToken (postMessage : Action<string>) : Feed =
+    let public CreateFeed url filePath directoryPath resolveImages cancelToken : Feed =
         let feed = createWebClient |>
                    downloadFeedData url 5 |>
                    saveToFile filePath |>
                    createXMLDocumentFromData |>
                    createFeedRecord url directoryPath String.Empty DateTime.Now
 
-        if Object.ReferenceEquals(postMessage, null) <> true then
-            postMessage.Invoke("Downloading images ...")
+        //if Object.ReferenceEquals(postMessage, null) <> true then
+        //    postMessage.Invoke("Downloading images ...")
 
-        resolveImages imageResolver cancelToken feed
+        resolveImages cancelToken feed
 
-    let public UpdateFeed feed filePath imageResolver cancelToken : Feed = 
+    let public UpdateFeed feed filePath resolveImages cancelToken : Feed = 
         createWebClient |>
         downloadFeedData feed.URL 5 |>
         saveToFile filePath |>
@@ -329,5 +323,5 @@ module public FeedFunctions =
         Feed.SetUpdatedDate feed.UpdatedDateTime |>
         Feed.SetScanningFlags feed.DoScan feed.CompleteDownloadsOnScan feed.DeliverDownloadsOnScan |> 
         mergeFeeds feed |>
-        resolveImages imageResolver cancelToken
+        resolveImages cancelToken
 

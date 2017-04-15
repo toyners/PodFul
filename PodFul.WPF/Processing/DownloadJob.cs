@@ -39,7 +39,7 @@ namespace PodFul.WPF.Processing
 
     private Boolean useMarqueProgressStyle;
 
-    private IImageResolver imageResolver;
+    private ImageResolver imageResolver;
 
     private Int64 podcastSize;
     private Int64 downloadedSize;
@@ -59,7 +59,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, IImageResolver imageResolver)
+    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, ImageResolver imageResolver)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
@@ -332,15 +332,15 @@ namespace PodFul.WPF.Processing
       });
     }
 
-    public void SetPodcastFileDetails(IImageResolver imageResolver, Int64 fileLength)
+    private void SetPodcastFileDetails(ImageResolver imageResolver, Int64 fileLength)
     {
       if (imageResolver == null)
       {
         throw new Exception("Should not get here");
       }
 
-      var imagePath = imageResolver.GetName(this.podcast.FileDetails.ImageFileName, this.podcast.ImageURL);
-      this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imagePath);
+      //var imagePath = imageResolver.GetName(this.podcast.FileDetails.ImageFileName, this.podcast.ImageURL);
+      //this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imagePath);
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)

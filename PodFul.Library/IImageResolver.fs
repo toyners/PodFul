@@ -3,7 +3,7 @@
 open System
 
 [<AllowNullLiteral>]
-type IImageResolver =
+type IImageResolverOld =
 
     abstract member PostMessage : Action<string> with get, set
 

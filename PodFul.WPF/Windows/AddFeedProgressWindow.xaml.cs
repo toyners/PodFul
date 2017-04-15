@@ -7,6 +7,7 @@ using Jabberwocky.Toolkit.Object;
 using Jabberwocky.Toolkit.String;
 using PodFul.Library;
 using PodFul.WPF.Logging;
+using PodFul.WPF.Processing;
 
 namespace PodFul.WPF.Windows
 {
@@ -19,13 +20,13 @@ namespace PodFul.WPF.Windows
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private String feedURL;
     private String feedPath;
-    private IImageResolver imageResolver;
+    private ImageResolver imageResolver;
     private ILogController logController;
     private Boolean windowLoaded;
     #endregion
 
     #region Construction
-    public AddFeedProgressWindow(String feedURL, String feedPath, IImageResolver imageResolver, ILogController logController)
+    public AddFeedProgressWindow(String feedURL, String feedPath, ImageResolver imageResolver, ILogController logController)
     {
       feedURL.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'feedURL' is null or empty.");
       feedPath.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'feedPath' is null or empty.");
@@ -61,7 +62,8 @@ namespace PodFul.WPF.Windows
       {
         // Create the feed.
         var feedFilePath = Path.Combine(this.feedPath, "download.rss");
-        this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver, cancelToken, this.SetStatusMessage);
+        throw new Exception("Create new feed");
+        //this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver, cancelToken, this.SetStatusMessage);
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>

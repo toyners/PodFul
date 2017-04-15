@@ -41,11 +41,11 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, IImageResolver imageResolver, Boolean hideCompletedDownloadJobs)
+    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, /*IImageResolver imageResolver,*/ Boolean hideCompletedDownloadJobs)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
-      imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
+      //imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
 
       this.InitializeComponent();
 
@@ -58,7 +58,7 @@ namespace PodFul.WPF.Windows
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay);
 
       logger.PostMessage = this.PostMessage;
-      imageResolver.PostMessage = this.PostMessage;
+      //imageResolver.PostMessage = this.PostMessage;
       downloadManager.JobQueuedEvent += this.JobQueuedEventHandler;
       downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
       downloadManager.JobStartedEvent += this.JobStartedEventHandler;

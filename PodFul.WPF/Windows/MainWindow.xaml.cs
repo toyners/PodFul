@@ -29,7 +29,7 @@ namespace PodFul.WPF.Windows
 
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
-    private IImageResolver imageResolver;
+    private ImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
     private LogController logController;
@@ -74,7 +74,7 @@ namespace PodFul.WPF.Windows
           Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, defaultImagePath);
         }
 
-        this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath, true);
+        this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath);
 
         this.FeedList.ItemsSource = feedCollection.ObservableFeeds;
         if (this.feedCollection.Count > 0)
@@ -154,8 +154,9 @@ namespace PodFul.WPF.Windows
         MessageBox.Show(String.Format("{0} MP3 file(s) synchronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
 
-      var imagePath = this.imageResolver.GetName(feed.ImageFileName, feed.ImageURL);
-      feed = Feed.SetImageFileName(feed, imagePath);
+      throw new Exception("Set feed image");
+      //var imagePath = this.imageResolver.GetName(feed.ImageFileName, feed.ImageURL);
+      //feed = Feed.SetImageFileName(feed, imagePath);
       
       try
       {
@@ -360,7 +361,7 @@ namespace PodFul.WPF.Windows
         feedScanner, 
         downloadManager, 
         this.logController.GetLogger<UILogger>(UiKey), 
-        this.imageResolver, 
+        //this.imageResolver, 
         this.settings.HideCompletedJobs);
 
       scanningWindow.Owner = this;

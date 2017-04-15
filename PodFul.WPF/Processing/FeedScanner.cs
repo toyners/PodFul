@@ -31,7 +31,7 @@ namespace PodFul.WPF.Processing
 
     private MessagePool fileDeliveryLogger;
 
-    private IImageResolver imageResolver;
+    private ImageResolver imageResolver;
 
     private ILogController logController;
 
@@ -42,7 +42,7 @@ namespace PodFul.WPF.Processing
     public FeedScanner(
       IFeedCollection feedCollection,
       Queue<Int32> feedIndexes,
-      IImageResolver imageResolver,
+      ImageResolver imageResolver,
       MessagePool fileDeliveryLogger,
       ILogController logController,
       IPodcastDownloadConfirmer podcastDownloadConfirmer,
@@ -110,7 +110,8 @@ namespace PodFul.WPF.Processing
             try
             {
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
-              newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, this.imageResolver, cancelToken);
+              throw new Exception("Update feed");
+              //newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, this.imageResolver, cancelToken);
 
               message = "Searching for new podcasts ... ";
               this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
@@ -307,5 +308,18 @@ namespace PodFul.WPF.Processing
       this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
     }
     #endregion
+  }
+
+  public class ImageResolver
+  {
+    public ImageResolver(string imageDirectoryPath, string defaultImagePath)
+    {
+
+    }
+
+    public void Resolve()
+    {
+
+    }
   }
 }

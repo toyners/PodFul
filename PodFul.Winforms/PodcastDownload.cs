@@ -37,7 +37,7 @@ namespace PodFul.Winforms
 
     public event Action OnFinish;
 
-    public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes, IImageResolver imageResolver)
+    public Boolean Download(String directoryPath, Podcast[] podcasts, Queue<Int32> podcastsIndexes)
     {
       var downloader = new FileDownloader();
 
@@ -64,8 +64,6 @@ namespace PodFul.Winforms
           this.OnSuccessfulDownload?.Invoke(podcast, filePath);
 
           var fileLength = new FileInfo(filePath).Length;
-          var imagePath = imageResolver.GetName(podcast.FileDetails.ImageFileName, podcast.ImageURL);
-          podcast.SetAllFileDetails(fileLength, DateTime.Now, imagePath);
         }
         catch (AggregateException exception)
         {

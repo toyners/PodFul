@@ -5,7 +5,7 @@ open System.IO
 open System.Collections.Generic
 open Jabberwocky.Toolkit.String
 
-type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, returnDefaultImageOnException : Boolean) =
+type ImageResolverOld(imageDirectoryPath : string, defaultImagePath : string, returnDefaultImageOnException : Boolean) =
 
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
@@ -42,7 +42,7 @@ type ImageResolver(imageDirectoryPath : string, defaultImagePath : string, retur
         with set(v : string -> string) =
             renameFunction <- v
 
-    interface IImageResolver with
+    interface IImageResolverOld with
 
         member this.PostMessage 
             with get() : Action<string> = 

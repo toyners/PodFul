@@ -57,7 +57,7 @@ namespace PodFul.Winforms
           try
           {
             var feedFilePath = Path.Combine(feed.Directory, "download.rss");
-            newFeed = FeedFunctions.CreateFeed(feed.URL, feedFilePath, feed.Directory, null, CancellationToken.None, null);
+            newFeed = FeedFunctions.CreateFeed(feed.URL, feedFilePath, feed.Directory, null, CancellationToken.None);
           }
           catch (Exception exception)
           {
@@ -121,7 +121,7 @@ namespace PodFul.Winforms
 
           feeds[feedIndex] = newFeed;
 
-          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes, null))
+          if (downloadPodcasts && !podcastDownload.Download(feed.Directory, newFeed.Podcasts, podcastIndexes))
           {
             this.PostMessage("\r\nCANCELLED");
             return;
@@ -157,7 +157,7 @@ namespace PodFul.Winforms
       Task task = Task.Factory.StartNew(() =>
       {
         this.SetStateOfCancelButton(true);
-        if (podcastDownload.Download(feed.Directory, feed.Podcasts, queue, null))
+        if (podcastDownload.Download(feed.Directory, feed.Podcasts, queue))
         {
           feedStorage.Update(feed);
         }
