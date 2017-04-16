@@ -312,13 +312,33 @@ namespace PodFul.WPF.Processing
 
   public class ImageResolver
   {
+    private String imageDirectoryPath;
+    private String defaultImagePath;
+
     public ImageResolver(string imageDirectoryPath, string defaultImagePath)
     {
-
+      this.imageDirectoryPath = imageDirectoryPath;
+      this.defaultImagePath = defaultImagePath;
     }
 
-    public void Resolve()
+    public void Resolve(Feed feed)
     {
+      int total = 0;
+      ImageFunctions.resolveImages2(x => { total = x; });
+      /*
+      ImageFunctions.resolveImages(
+        feed.Podcasts,
+        this.imageDirectoryPath,
+        this.defaultImagePath,
+        //Microsoft.FSharp.Core.FSharpFunc<string, string>.InvokeFast(
+        //Microsoft.FSharp.Core.FSharpFunc<typeof(String), typeof(String)> conv = x => { return Miscellaneous.NextImageFileName(x); },
+        //null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        CancellationToken.None);*/
 
     }
   }

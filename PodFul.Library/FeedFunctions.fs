@@ -322,6 +322,6 @@ module public FeedFunctions =
         createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
         Feed.SetUpdatedDate feed.UpdatedDateTime |>
         Feed.SetScanningFlags feed.DoScan feed.CompleteDownloadsOnScan feed.DeliverDownloadsOnScan |> 
-        mergeFeeds feed |>
-        resolveImages cancelToken
+        mergeFeeds feed (*|>
+        resolveImages cancelToken*)
 

@@ -14,6 +14,9 @@ type ResolveImages_IntegrationTests() =
     let imageDirectory = workingDirectory + @"ImageDirectory\"
     let defaultImagePath = @"C:\DefaultImage.jpg"
 
+    let emptyTotalDownloadsRequiredNotificationFunction (n) = ()
+    let emptyTotalDownloadsRequiredNotificationTask = Action<int> emptyTotalDownloadsRequiredNotificationFunction
+
     let createTestPodcast imageFileName imageURL =
         {
             Title = ""
@@ -30,12 +33,13 @@ type ResolveImages_IntegrationTests() =
         }
 
     let runResolveImagesWithoutFeedBack (podcasts : Podcast[]) (localImageDirectory : string) (defaultImagePath : string) resolveLocalFilePathFunction =
+
         ImageFunctions.resolveImages 
             podcasts 
             localImageDirectory
             defaultImagePath
             resolveLocalFilePathFunction
-            (fun n -> ()) 
+            emptyTotalDownloadsRequiredNotificationTask
             (fun n s -> ())
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
@@ -88,7 +92,7 @@ type ResolveImages_IntegrationTests() =
             imageDirectory
             null 
             (fun s -> failwith "Should not be called")
-            (fun n -> ())
+            emptyTotalDownloadsRequiredNotificationTask
             (fun n s -> failwith "Should not be called")
             (fun n s -> failwith "Should not be called")
             (fun s -> failwith "Should not be called")
@@ -177,7 +181,7 @@ type ResolveImages_IntegrationTests() =
             imageDirectory
             defaultImagePath 
             (fun n -> fileName)
-            (fun n -> ())
+            emptyTotalDownloadsRequiredNotificationTask
             (fun n s -> ())
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
@@ -217,6 +221,7 @@ type ResolveImages_IntegrationTests() =
             
         let mutable downloadCount = 0
         let reportDownloadCountFunction = fun n -> downloadCount <- n
+        let reportDownloadCountTask = Action<int> reportDownloadCountFunction
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName1, urlPath1)
@@ -238,7 +243,7 @@ type ResolveImages_IntegrationTests() =
             imageDirectory
             null
             resolveLocalFilePathFunction
-            reportDownloadCountFunction
+            reportDownloadCountTask
             (fun n s -> ())
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
@@ -297,7 +302,7 @@ type ResolveImages_IntegrationTests() =
             imageDirectory
             null
             resolveLocalFilePathFunction
-            (fun n -> ())
+            emptyTotalDownloadsRequiredNotificationTask
             (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
             (fun n s -> failwith "Should not be called")
             (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
@@ -343,7 +348,7 @@ type ResolveImages_IntegrationTests() =
             imageDirectory
             null
             resolveLocalFilePathFunction
-            (fun n -> ())
+            emptyTotalDownloadsRequiredNotificationTask
             (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
             (fun n s -> skippedDownloads <- Array.append skippedDownloads [|n,s|])
             (fun s -> completedDownloads <- Array.append completedDownloads [|s|])

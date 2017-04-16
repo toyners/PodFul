@@ -18,7 +18,7 @@ module public ImageFunctions =
         (localImageDirectory : string)
         (defaultImagePath : string) 
         resolveLocalFilePathFunction 
-        totalDownloadsRequiredNotificationFunction
+        (totalDownloadsRequiredNotificationFunction : System.Action<int>)
         startDownloadNotificationFunction 
         skippedDownloadNotificationFunction
         completedDownloadNotificationFunction 
@@ -38,7 +38,7 @@ module public ImageFunctions =
 
             index <- index + 1
 
-        totalDownloadsRequiredNotificationFunction downloadTotal
+        totalDownloadsRequiredNotificationFunction.Invoke downloadTotal
 
         index <- 0
         let mutable downloadNumber = 0
@@ -74,3 +74,10 @@ module public ImageFunctions =
 
             index <- index + 1
         
+    let resolveImages2
+             (totalDownloadsRequiredNotificationFunction : System.Action<int>) = 
+
+             let number = 2
+             totalDownloadsRequiredNotificationFunction.Invoke number
+            
+
