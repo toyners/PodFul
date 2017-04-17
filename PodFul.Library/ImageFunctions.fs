@@ -19,10 +19,10 @@ module public ImageFunctions =
         (defaultImagePath : string) 
         resolveLocalFilePathFunction 
         (totalDownloadsRequiredNotificationFunction : System.Action<int>)
-        startDownloadNotificationFunction 
+        (startDownloadNotificationFunction : System.Action<int, string>)
         skippedDownloadNotificationFunction
-        completedDownloadNotificationFunction 
-        failedDownloadNotificationFunction 
+        completedDownloadNotificationFunction
+        failedDownloadNotificationFunction
         (cancelToken : CancellationToken) =
 
         // Get count of images that need downloading for collection of podcasts
@@ -61,7 +61,7 @@ module public ImageFunctions =
                     imagesDownloaded.Add(podcast.ImageURL, localImagePath) |> ignore
                 
                     try
-                        startDownloadNotificationFunction downloadNumber podcast.ImageURL    
+                        startDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)    
                         imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
                         podcast.SetImageFileName localImagePath
                         completedDownloadNotificationFunction podcast.ImageURL

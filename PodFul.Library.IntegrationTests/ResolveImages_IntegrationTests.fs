@@ -17,6 +17,12 @@ type ResolveImages_IntegrationTests() =
     let emptyTotalDownloadsRequiredNotificationFunction (n) = ()
     let emptyTotalDownloadsRequiredNotificationTask = Action<int> emptyTotalDownloadsRequiredNotificationFunction
 
+    let emptyStartDownloadNotificationFunction = (fun n s -> ())
+    let emptyStartDownloadNotificationTask = Action<int, string> emptyStartDownloadNotificationFunction
+
+    let failWithNotificationFunction = (fun n s -> failwith "Should not be called")
+    let failWithNotificationTask = Action<int, string> failWithNotificationFunction 
+    
     let createTestPodcast imageFileName imageURL =
         {
             Title = ""
@@ -40,7 +46,7 @@ type ResolveImages_IntegrationTests() =
             defaultImagePath
             resolveLocalFilePathFunction
             emptyTotalDownloadsRequiredNotificationTask
-            (fun n s -> ())
+            emptyStartDownloadNotificationTask
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
             (fun s e -> ())
@@ -93,7 +99,7 @@ type ResolveImages_IntegrationTests() =
             null 
             (fun s -> failwith "Should not be called")
             emptyTotalDownloadsRequiredNotificationTask
-            (fun n s -> failwith "Should not be called")
+            failWithNotificationTask
             (fun n s -> failwith "Should not be called")
             (fun s -> failwith "Should not be called")
             (fun s e -> failwith "Should not be called")
@@ -182,7 +188,7 @@ type ResolveImages_IntegrationTests() =
             defaultImagePath 
             (fun n -> fileName)
             emptyTotalDownloadsRequiredNotificationTask
-            (fun n s -> ())
+            emptyStartDownloadNotificationTask
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
             (fun s e -> 
@@ -244,7 +250,7 @@ type ResolveImages_IntegrationTests() =
             null
             resolveLocalFilePathFunction
             reportDownloadCountTask
-            (fun n s -> ())
+            emptyStartDownloadNotificationTask
             (fun n s -> failwith "Should not be called")
             (fun s -> ())
             (fun s e -> failwith "Should not be called")
@@ -280,6 +286,9 @@ type ResolveImages_IntegrationTests() =
             | _ -> failwith "Incorrect Parameters"
             
         let mutable startedDownloads = [||]
+        let startDownloadNotification = (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
+        let startDownloadNotificationTask = Action<int, string> startDownloadNotification
+
         let mutable completedDownloads = [||]
 
         let assembly = Assembly.GetExecutingAssembly()
@@ -303,7 +312,7 @@ type ResolveImages_IntegrationTests() =
             null
             resolveLocalFilePathFunction
             emptyTotalDownloadsRequiredNotificationTask
-            (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
+            startDownloadNotificationTask
             (fun n s -> failwith "Should not be called")
             (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
             (fun s e -> failwith "Should not be called")
@@ -340,6 +349,9 @@ type ResolveImages_IntegrationTests() =
         let podcast2 = createTestPodcast "" urlPath
 
         let mutable startedDownloads = [||]
+        let startDownloadNotification = (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
+        let startDownloadNotificationTask = Action<int, string> startDownloadNotification
+        
         let mutable skippedDownloads = [||]
         let mutable completedDownloads = [||]
 
@@ -349,7 +361,7 @@ type ResolveImages_IntegrationTests() =
             null
             resolveLocalFilePathFunction
             emptyTotalDownloadsRequiredNotificationTask
-            (fun n s -> startedDownloads <- Array.append startedDownloads [|n,s|])
+            startDownloadNotificationTask
             (fun n s -> skippedDownloads <- Array.append skippedDownloads [|n,s|])
             (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
             (fun s e -> failwith "Should not be called")
