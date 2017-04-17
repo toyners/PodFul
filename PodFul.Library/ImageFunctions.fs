@@ -20,9 +20,9 @@ module public ImageFunctions =
         resolveLocalFilePathFunction 
         (totalDownloadsRequiredNotificationFunction : System.Action<int>)
         (startDownloadNotificationFunction : System.Action<int, string>)
-        skippedDownloadNotificationFunction
-        completedDownloadNotificationFunction
-        failedDownloadNotificationFunction
+        (skippedDownloadNotificationFunction : System.Action<int, string>)
+        (completedDownloadNotificationFunction : System.Action<string>)
+        (failedDownloadNotificationFunction : System.Action<string, System.Exception>)
         (cancelToken : CancellationToken) =
 
         // Get count of images that need downloading for collection of podcasts
@@ -53,7 +53,7 @@ module public ImageFunctions =
                 downloadNumber <- downloadNumber + 1
                 
                 if imagesDownloaded.ContainsKey(podcast.ImageURL) then
-                    skippedDownloadNotificationFunction downloadNumber podcast.ImageURL
+                    skippedDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)
                     podcast.SetImageFileName imagesDownloaded.[podcast.ImageURL]
                 else
                     let localImageFileName = resolveLocalFilePathFunction podcast.ImageURL
@@ -64,11 +64,11 @@ module public ImageFunctions =
                         startDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)    
                         imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
                         podcast.SetImageFileName localImagePath
-                        completedDownloadNotificationFunction podcast.ImageURL
+                        completedDownloadNotificationFunction.Invoke podcast.ImageURL
                     with
                     | _ as ex ->
                         podcast.SetImageFileName defaultImagePath
-                        failedDownloadNotificationFunction podcast.ImageURL ex
+                        failedDownloadNotificationFunction.Invoke(podcast.ImageURL, ex)
             else if System.String.IsNullOrEmpty(podcast.FileDetails.ImageFileName) then
                 podcast.SetImageFileName defaultImagePath
 

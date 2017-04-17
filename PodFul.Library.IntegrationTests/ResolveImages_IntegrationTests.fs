@@ -20,8 +20,14 @@ type ResolveImages_IntegrationTests() =
     let emptyStartDownloadNotificationFunction = (fun n s -> ())
     let emptyStartDownloadNotificationTask = Action<int, string> emptyStartDownloadNotificationFunction
 
+    let emptyCompletedDownloadNotification = (fun s ->())
+    let emptyCompletedDownloadNotificationTask = Action<string> emptyCompletedDownloadNotification
+
     let failWithNotificationFunction = (fun n s -> failwith "Should not be called")
     let failWithNotificationTask = Action<int, string> failWithNotificationFunction 
+
+    let failWithExceptionHandlingFunction = (fun s e -> failwith "Should not be called")
+    let failWithExceptionHandlingFunctionTask = Action<string, System.Exception> failWithExceptionHandlingFunction
     
     let createTestPodcast imageFileName imageURL =
         {
@@ -40,6 +46,9 @@ type ResolveImages_IntegrationTests() =
 
     let runResolveImagesWithoutFeedBack (podcasts : Podcast[]) (localImageDirectory : string) (defaultImagePath : string) resolveLocalFilePathFunction =
 
+        let ignoreExceptionFunction = (fun s e -> ())
+        let ignoreExceptionFunctionTask = Action<string, System.Exception> ignoreExceptionFunction
+
         ImageFunctions.resolveImages 
             podcasts 
             localImageDirectory
@@ -47,9 +56,9 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             emptyTotalDownloadsRequiredNotificationTask
             emptyStartDownloadNotificationTask
-            (fun n s -> failwith "Should not be called")
-            (fun s -> ())
-            (fun s e -> ())
+            failWithNotificationTask
+            emptyCompletedDownloadNotificationTask
+            ignoreExceptionFunctionTask
             System.Threading.CancellationToken.None
 
     let createResolveLocalImageNameFunction urlPath fileName = 
@@ -90,6 +99,9 @@ type ResolveImages_IntegrationTests() =
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, localPath)
 
+        let failWith = (fun s -> failwith "Should not be called")
+        let failWithTask = Action<string> failwith
+
         let podcast = createTestPodcast localPath urlPath 
         
         // Act
@@ -100,9 +112,9 @@ type ResolveImages_IntegrationTests() =
             (fun s -> failwith "Should not be called")
             emptyTotalDownloadsRequiredNotificationTask
             failWithNotificationTask
-            (fun n s -> failwith "Should not be called")
-            (fun s -> failwith "Should not be called")
-            (fun s e -> failwith "Should not be called")
+            failWithNotificationTask
+            failWithTask
+            failWithExceptionHandlingFunctionTask
             System.Threading.CancellationToken.None
 
         // Assert
@@ -182,6 +194,11 @@ type ResolveImages_IntegrationTests() =
         let mutable failedFile = ""
         let mutable ex = null
 
+        let exceptionHandlingFunction = (fun s e -> 
+                                            failedFile <- s 
+                                            ex <- e)
+        let exceptionHandlingFunctionTask = Action<string, System.Exception> exceptionHandlingFunction
+
         ImageFunctions.resolveImages
             [|podcast|]
             imageDirectory
@@ -189,11 +206,9 @@ type ResolveImages_IntegrationTests() =
             (fun n -> fileName)
             emptyTotalDownloadsRequiredNotificationTask
             emptyStartDownloadNotificationTask
-            (fun n s -> failwith "Should not be called")
-            (fun s -> ())
-            (fun s e -> 
-                failedFile <- s 
-                ex <- e)
+            failWithNotificationTask
+            emptyCompletedDownloadNotificationTask
+            exceptionHandlingFunctionTask
             System.Threading.CancellationToken.None
 
         Assert.AreEqual("Bad image url", failedFile)
@@ -251,9 +266,9 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             reportDownloadCountTask
             emptyStartDownloadNotificationTask
-            (fun n s -> failwith "Should not be called")
-            (fun s -> ())
-            (fun s e -> failwith "Should not be called")
+            failWithNotificationTask
+            emptyCompletedDownloadNotificationTask
+            failWithExceptionHandlingFunctionTask
             System.Threading.CancellationToken.None
 
         // Assert
@@ -290,6 +305,8 @@ type ResolveImages_IntegrationTests() =
         let startDownloadNotificationTask = Action<int, string> startDownloadNotification
 
         let mutable completedDownloads = [||]
+        let completedDownloadNotification = (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
+        let completedDownloadNotificationTask = Action<string> completedDownloadNotification
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName1, urlPath1)
@@ -313,9 +330,9 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             emptyTotalDownloadsRequiredNotificationTask
             startDownloadNotificationTask
-            (fun n s -> failwith "Should not be called")
-            (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
-            (fun s e -> failwith "Should not be called")
+            failWithNotificationTask
+            completedDownloadNotificationTask
+            failWithExceptionHandlingFunctionTask
             System.Threading.CancellationToken.None
 
         // Assert
@@ -353,7 +370,12 @@ type ResolveImages_IntegrationTests() =
         let startDownloadNotificationTask = Action<int, string> startDownloadNotification
         
         let mutable skippedDownloads = [||]
+        let skippedDownloadNotification = (fun n s -> skippedDownloads <- Array.append skippedDownloads [|n,s|])
+        let skippedDownloadNotificationTask = Action<int, string> skippedDownloadNotification
+
         let mutable completedDownloads = [||]
+        let completedDownloadNotification = (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
+        let completedDownloadNotificationTask = Action<string> completedDownloadNotification
 
         ImageFunctions.resolveImages 
             [| podcast1; podcast2 |]
@@ -362,9 +384,9 @@ type ResolveImages_IntegrationTests() =
             resolveLocalFilePathFunction
             emptyTotalDownloadsRequiredNotificationTask
             startDownloadNotificationTask
-            (fun n s -> skippedDownloads <- Array.append skippedDownloads [|n,s|])
-            (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
-            (fun s e -> failwith "Should not be called")
+            skippedDownloadNotificationTask
+            completedDownloadNotificationTask
+            failWithExceptionHandlingFunctionTask
             System.Threading.CancellationToken.None
 
         Assert.AreEqual(1, startedDownloads.Length)

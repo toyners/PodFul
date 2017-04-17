@@ -323,7 +323,7 @@ namespace PodFul.WPF.Processing
 
     public void Resolve(Feed feed)
     {
-      int total = 0;
+      /*int total = 0;
       ImageFunctions.resolveImages2(x => { total = x; });
       /*
       ImageFunctions.resolveImages(
