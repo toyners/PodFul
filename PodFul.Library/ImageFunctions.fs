@@ -77,5 +77,20 @@ module public ImageFunctions =
     let resolveImagesForFeed
         (feed : Feed)
         (localImageDirectory : string)
-        (defaultImagePath : string) = 
-        ()
+        (defaultImagePath : string) 
+        resolveLocalFilePathFunction 
+        (failedDownloadNotificationFunction : Action<string, System.Exception>) = 
+
+        if needsToDownloadImage feed.ImageFileName feed.ImageURL defaultImagePath then
+            let imageDownloader = new FileDownloader()
+            let localImageFileName = resolveLocalFilePathFunction feed.ImageURL
+            let localImagePath = Path.Combine(localImageDirectory, localImageFileName)
+            try
+                imageDownloader.Download(feed.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
+                Feed.SetImageFileName feed localImagePath 
+            with
+            | _ as ex ->
+                failedDownloadNotificationFunction.Invoke(feed.ImageURL, ex)
+                Feed.SetImageFileName feed defaultImagePath 
+        else
+            feed
