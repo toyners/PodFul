@@ -13,7 +13,7 @@ module public ImageFunctions =
         ((gotLocalImagePath = false || localImagePath = defaultImagePath) && gotOnlineImagePath) ||
             (gotLocalImagePath && File.Exists(localImagePath) = false)
 
-    let resolveImages 
+    let resolveImagesForPodcasts 
         (podcasts : Podcast[]) 
         (localImageDirectory : string)
         (defaultImagePath : string) 
@@ -74,10 +74,8 @@ module public ImageFunctions =
 
             index <- index + 1
         
-    let resolveImages2
-             (totalDownloadsRequiredNotificationFunction : System.Action<int>) = 
-
-             let number = 2
-             totalDownloadsRequiredNotificationFunction.Invoke number
-            
-
+    let resolveImagesForFeed
+        (feed : Feed)
+        (localImageDirectory : string)
+        (defaultImagePath : string) = 
+        ()
