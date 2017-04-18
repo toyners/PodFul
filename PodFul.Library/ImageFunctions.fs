@@ -21,7 +21,7 @@ module public ImageFunctions =
         (totalDownloadsRequiredNotificationFunction : System.Action<int>)
         (startDownloadNotificationFunction : System.Action<int, string>)
         (skippedDownloadNotificationFunction : System.Action<int, string>)
-        (completedDownloadNotificationFunction : System.Action<string>)
+        (completedDownloadNotificationFunction : System.Action<int, string>)
         (failedDownloadNotificationFunction : System.Action<string, System.Exception>)
         (cancelToken : CancellationToken) =
 
@@ -64,7 +64,7 @@ module public ImageFunctions =
                         startDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)    
                         imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
                         podcast.SetImageFileName localImagePath
-                        completedDownloadNotificationFunction.Invoke podcast.ImageURL
+                        completedDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)
                     with
                     | _ as ex ->
                         podcast.SetImageFileName defaultImagePath

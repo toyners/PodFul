@@ -20,8 +20,8 @@ type ResolveImages_IntegrationTests() =
     let emptyStartDownloadNotificationFunction = (fun n s -> ())
     let emptyStartDownloadNotificationTask = Action<int, string> emptyStartDownloadNotificationFunction
 
-    let emptyCompletedDownloadNotification = (fun s ->())
-    let emptyCompletedDownloadNotificationTask = Action<string> emptyCompletedDownloadNotification
+    let emptyCompletedDownloadNotification = (fun n s ->())
+    let emptyCompletedDownloadNotificationTask = Action<int, string> emptyCompletedDownloadNotification
 
     let failWithNotificationFunction = (fun n s -> failwith "Should not be called")
     let failWithNotificationTask = Action<int, string> failWithNotificationFunction 
@@ -99,9 +99,6 @@ type ResolveImages_IntegrationTests() =
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName, localPath)
 
-        let failWith = (fun s -> failwith "Should not be called")
-        let failWithTask = Action<string> failwith
-
         let podcast = createTestPodcast localPath urlPath 
         
         // Act
@@ -113,7 +110,7 @@ type ResolveImages_IntegrationTests() =
             emptyTotalDownloadsRequiredNotificationTask
             failWithNotificationTask
             failWithNotificationTask
-            failWithTask
+            failWithNotificationTask
             failWithExceptionHandlingFunctionTask
             System.Threading.CancellationToken.None
 
@@ -305,8 +302,8 @@ type ResolveImages_IntegrationTests() =
         let startDownloadNotificationTask = Action<int, string> startDownloadNotification
 
         let mutable completedDownloads = [||]
-        let completedDownloadNotification = (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
-        let completedDownloadNotificationTask = Action<string> completedDownloadNotification
+        let completedDownloadNotification = (fun n s -> completedDownloads <- Array.append completedDownloads [|n,s|])
+        let completedDownloadNotificationTask = Action<int, string> completedDownloadNotification
 
         let assembly = Assembly.GetExecutingAssembly()
         assembly.CopyEmbeddedResourceToFile(fileName1, urlPath1)
@@ -345,9 +342,12 @@ type ResolveImages_IntegrationTests() =
         Assert.AreEqual(urlPath3, snd startedDownloads.[2])
 
         Assert.AreEqual(3, completedDownloads.Length)
-        Assert.AreEqual(urlPath1, completedDownloads.[0])
-        Assert.AreEqual(urlPath2, completedDownloads.[1])
-        Assert.AreEqual(urlPath3, completedDownloads.[2])
+        Assert.AreEqual(1, fst completedDownloads.[0])
+        Assert.AreEqual(urlPath1, snd completedDownloads.[0])
+        Assert.AreEqual(2, fst completedDownloads.[1])
+        Assert.AreEqual(urlPath2, snd completedDownloads.[1])
+        Assert.AreEqual(3, fst completedDownloads.[2])
+        Assert.AreEqual(urlPath3, snd completedDownloads.[2])
 
     [<Test>]
     member public this.``Multiple podcasts have same image file but file only downloaded once``() =
@@ -374,8 +374,8 @@ type ResolveImages_IntegrationTests() =
         let skippedDownloadNotificationTask = Action<int, string> skippedDownloadNotification
 
         let mutable completedDownloads = [||]
-        let completedDownloadNotification = (fun s -> completedDownloads <- Array.append completedDownloads [|s|])
-        let completedDownloadNotificationTask = Action<string> completedDownloadNotification
+        let completedDownloadNotification = (fun n s -> completedDownloads <- Array.append completedDownloads [|n,s|])
+        let completedDownloadNotificationTask = Action<int, string> completedDownloadNotification
 
         ImageFunctions.resolveImages 
             [| podcast1; podcast2 |]
@@ -390,13 +390,16 @@ type ResolveImages_IntegrationTests() =
             System.Threading.CancellationToken.None
 
         Assert.AreEqual(1, startedDownloads.Length)
+        Assert.AreEqual(1, fst startedDownloads.[0])
         Assert.AreEqual(urlPath, snd startedDownloads.[0])
 
         Assert.AreEqual(1, skippedDownloads.Length)
+        Assert.AreEqual(2, fst skippedDownloads.[0])
         Assert.AreEqual(urlPath, snd skippedDownloads.[0])
 
         Assert.AreEqual(1, completedDownloads.Length)
-        Assert.AreEqual(urlPath, snd startedDownloads.[0])
+        Assert.AreEqual(1, fst completedDownloads.[0])
+        Assert.AreEqual(urlPath, snd completedDownloads.[0])
 
         Assert.AreEqual(expectedPath, podcast1.FileDetails.ImageFileName)
         Assert.AreEqual(expectedPath, podcast2.FileDetails.ImageFileName)
