@@ -49,7 +49,7 @@ type ResolveImages_IntegrationTests() =
         let ignoreExceptionFunction = (fun s e -> ())
         let ignoreExceptionFunctionTask = Action<string, System.Exception> ignoreExceptionFunction
 
-        ImageFunctions.resolveImagesForPodcasts
+        ImageFunctions.resolvePodcastImages
             podcasts 
             localImageDirectory
             defaultImagePath
@@ -102,7 +102,7 @@ type ResolveImages_IntegrationTests() =
         let podcast = createTestPodcast localPath urlPath 
         
         // Act
-        ImageFunctions.resolveImagesForPodcasts
+        ImageFunctions.resolvePodcastImages
             [|podcast|] 
             imageDirectory
             null 
@@ -196,7 +196,7 @@ type ResolveImages_IntegrationTests() =
                                             ex <- e)
         let exceptionHandlingFunctionTask = Action<string, System.Exception> exceptionHandlingFunction
 
-        ImageFunctions.resolveImagesForPodcasts
+        ImageFunctions.resolvePodcastImages
             [|podcast|]
             imageDirectory
             defaultImagePath 
@@ -256,7 +256,7 @@ type ResolveImages_IntegrationTests() =
         // Podcast image filename set and file exists so nothing downloaded
         let podcast4 = createTestPodcast localPath4 urlPath4
 
-        ImageFunctions.resolveImagesForPodcasts
+        ImageFunctions.resolvePodcastImages
             [| podcast1; podcast2; podcast3; podcast4 |] 
             imageDirectory
             null
@@ -320,7 +320,7 @@ type ResolveImages_IntegrationTests() =
         // Podcast image filename set and file exists so nothing downloaded
         let podcast4 = createTestPodcast localPath4 urlPath4
 
-        ImageFunctions.resolveImagesForPodcasts
+        ImageFunctions.resolvePodcastImages
             [| podcast1; podcast2; podcast3; podcast4 |] 
             imageDirectory
             null
@@ -377,7 +377,7 @@ type ResolveImages_IntegrationTests() =
         let completedDownloadNotification = (fun n s -> completedDownloads <- Array.append completedDownloads [|n,s|])
         let completedDownloadNotificationTask = Action<int, string> completedDownloadNotification
 
-        ImageFunctions.resolveImagesForPodcasts
+        ImageFunctions.resolvePodcastImages
             [| podcast1; podcast2 |]
             imageDirectory
             null

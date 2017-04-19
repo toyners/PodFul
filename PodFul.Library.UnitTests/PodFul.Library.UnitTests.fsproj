@@ -53,7 +53,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Content Include="packages.config" />
     <Compile Include="FeedFunctions_UnitTests.fs" />
-    <Compile Include="Miscellaneous_UnitTests.fs" />
+    <Compile Include="ImageFunctions_UnitTests.fs" />
     <Compile Include="Feed_UnitTests.fs" />
     <Compile Include="Podcast_UnitTest.fs" />
   </ItemGroup>

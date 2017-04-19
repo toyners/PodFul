@@ -16,7 +16,7 @@ module public Miscellaneous =
     let public SwapDirectoryInFilePath directoryPath (filePath : string) =
         filePath.LastIndexOf('/') + 1 |> filePath.Substring |> combine directoryPath
 
-    let public NextImageFileName (urlPath : string) =
+    let public OldNextImageFileName (urlPath : string) =
         let mutable name = Guid.NewGuid().ToString()
         if urlPath.EndsWith(".jpg", true, null) then
             name <- name + ".jpg"

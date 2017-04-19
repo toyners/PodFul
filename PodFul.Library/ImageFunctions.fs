@@ -13,7 +13,13 @@ module public ImageFunctions =
         ((gotLocalImagePath = false || localImagePath = defaultImagePath) && gotOnlineImagePath) ||
             (gotLocalImagePath && File.Exists(localImagePath) = false)
 
-    let resolveImagesForPodcasts 
+    let nextImageFileName (urlPath : string) =
+        let mutable name = Guid.NewGuid().ToString()
+        if urlPath.EndsWith(".jpg", true, null) then
+            name <- name + ".jpg"
+        name
+
+    let resolvePodcastImages 
         (podcasts : Podcast[]) 
         (localImageDirectory : string)
         (defaultImagePath : string) 
@@ -73,8 +79,31 @@ module public ImageFunctions =
                 podcast.SetImageFileName defaultImagePath
 
             index <- index + 1
-        
-    let resolveImagesForFeed
+
+    let resolveImagesForPodcasts
+        (podcasts : Podcast[]) 
+        (localImageDirectory : string)
+        (defaultImagePath : string) 
+        (totalDownloadsRequiredNotificationFunction : System.Action<int>)
+        (startDownloadNotificationFunction : System.Action<int, string>)
+        (skippedDownloadNotificationFunction : System.Action<int, string>)
+        (completedDownloadNotificationFunction : System.Action<int, string>)
+        (failedDownloadNotificationFunction : System.Action<string, System.Exception>)
+        (cancelToken : CancellationToken) =
+
+        resolvePodcastImages 
+            podcasts 
+            localImageDirectory 
+            defaultImagePath 
+            nextImageFileName
+            totalDownloadsRequiredNotificationFunction
+            startDownloadNotificationFunction
+            skippedDownloadNotificationFunction
+            completedDownloadNotificationFunction
+            failedDownloadNotificationFunction
+            cancelToken
+
+    let resolveFeedImage
         (feed : Feed)
         (localImageDirectory : string)
         (defaultImagePath : string) 
@@ -94,3 +123,16 @@ module public ImageFunctions =
                 Feed.SetImageFileName feed defaultImagePath 
         else
             feed
+
+    let resolveImageForFeed
+        (feed : Feed)
+        (localImageDirectory : string)
+        (defaultImagePath : string) 
+        (failedDownloadNotificationFunction : Action<string, System.Exception>) = 
+    
+        resolveFeedImage
+            feed
+            localImageDirectory
+            defaultImagePath
+            nextImageFileName
+            failedDownloadNotificationFunction 

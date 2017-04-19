@@ -10,7 +10,7 @@ type ImageResolverOld(imageDirectoryPath : string, defaultImagePath : string, re
     let directoryPath = imageDirectoryPath
     let defaultImagePath = defaultImagePath
     let returnDefaultImageOnException = returnDefaultImageOnException
-    let mutable renameFunction = Miscellaneous.NextImageFileName
+    let mutable renameFunction = Miscellaneous.OldNextImageFileName
     let mutable postMessage : Action<string> = null
 
     member private this.tryPostMessage message = 
