@@ -154,9 +154,7 @@ namespace PodFul.WPF.Windows
         MessageBox.Show(String.Format("{0} MP3 file(s) synchronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
 
-      throw new Exception("Set feed image");
-      //var imagePath = this.imageResolver.GetName(feed.ImageFileName, feed.ImageURL);
-      //feed = Feed.SetImageFileName(feed, imagePath);
+      feed = this.imageResolver.ResolveFeedImage(feed);
       
       try
       {

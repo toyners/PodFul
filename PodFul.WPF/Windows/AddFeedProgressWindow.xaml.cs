@@ -62,9 +62,8 @@ namespace PodFul.WPF.Windows
       {
         // Create the feed.
         var feedFilePath = Path.Combine(this.feedPath, "download.rss");
-        throw new Exception("Create new feed");
-        //this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver, cancelToken, this.SetStatusMessage);
-        this.imageResolver.Resolve(this.Feed);
+        this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, cancelToken);
+        this.imageResolver.ResolvePodcastImagesForFeed(this.Feed, cancelToken);
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>
