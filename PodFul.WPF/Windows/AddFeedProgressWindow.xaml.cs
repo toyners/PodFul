@@ -20,13 +20,14 @@ namespace PodFul.WPF.Windows
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private String feedURL;
     private String feedPath;
-    private ImageResolver imageResolver;
+    private IImageResolver imageResolver;
     private ILogController logController;
     private Boolean windowLoaded;
+    private Int32 imageDownloadTotal;
     #endregion
 
     #region Construction
-    public AddFeedProgressWindow(String feedURL, String feedPath, ImageResolver imageResolver, ILogController logController)
+    public AddFeedProgressWindow(String feedURL, String feedPath, IImageResolver imageResolver, ILogController logController)
     {
       feedURL.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'feedURL' is null or empty.");
       feedPath.VerifyThatStringIsNotNullAndNotEmpty("Parameter 'feedPath' is null or empty.");
@@ -63,6 +64,8 @@ namespace PodFul.WPF.Windows
         // Create the feed.
         var feedFilePath = Path.Combine(this.feedPath, "download.rss");
         this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, cancelToken);
+
+        this.imageResolver.TotalDownloadsRequiredEvent += TotalDownloadsRequiredEventHandler;
         this.imageResolver.ResolvePodcastImagesForFeed(this.Feed, cancelToken);
       }, cancelToken);
 
@@ -85,12 +88,19 @@ namespace PodFul.WPF.Windows
           this.logController.Message(MainWindow.InfoKey, "'" + this.Feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
         }
 
+        this.imageResolver.TotalDownloadsRequiredEvent -= TotalDownloadsRequiredEventHandler;
+
         Application.Current.Dispatcher.Invoke(() =>
         {
           this.ProgressBar.IsIndeterminate = false; // Turn marque effect
           this.Close();
         });
       });
+    }
+
+    private void TotalDownloadsRequiredEventHandler(Int32 totalDownloads)
+    {
+      this.imageDownloadTotal = totalDownloads;
     }
 
     private void SetStatusMessage(String message)

@@ -39,7 +39,7 @@ namespace PodFul.WPF.Processing
 
     private Boolean useMarqueProgressStyle;
 
-    private ImageResolver imageResolver;
+    private IImageResolver imageResolver;
 
     private Int64 podcastSize;
     private Int64 downloadedSize;
@@ -59,7 +59,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, ImageResolver imageResolver)
+    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, IImageResolver imageResolver)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
@@ -332,7 +332,7 @@ namespace PodFul.WPF.Processing
       });
     }
 
-    private void SetPodcastFileDetails(ImageResolver imageResolver, Int64 fileLength)
+    private void SetPodcastFileDetails(IImageResolver imageResolver, Int64 fileLength)
     {
       if (imageResolver == null)
       {

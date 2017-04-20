@@ -29,7 +29,7 @@ namespace PodFul.WPF.Windows
 
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
-    private ImageResolver imageResolver;
+    private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
     private LogController logController;

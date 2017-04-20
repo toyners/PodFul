@@ -5,7 +5,7 @@ namespace PodFul.WPF.Processing
   using System.Threading;
   using Library;
 
-  public class ImageResolver
+  public class ImageResolver : IImageResolver
   {
     #region Fields
     private String imageDirectoryPath;
