@@ -44,7 +44,8 @@ module public ImageFunctions =
 
             index <- index + 1
 
-        totalDownloadsRequiredNotificationFunction.Invoke downloadTotal
+        if totalDownloadsRequiredNotificationFunction <> null then
+            totalDownloadsRequiredNotificationFunction.Invoke downloadTotal
 
         index <- 0
         let mutable downloadNumber = 0
@@ -59,7 +60,8 @@ module public ImageFunctions =
                 downloadNumber <- downloadNumber + 1
                 
                 if imagesDownloaded.ContainsKey(podcast.ImageURL) then
-                    skippedDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)
+                    if skippedDownloadNotificationFunction <> null then
+                        skippedDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)
                     podcast.SetImageFileName imagesDownloaded.[podcast.ImageURL]
                 else
                     let localImageFileName = resolveLocalFilePathFunction podcast.ImageURL
@@ -67,14 +69,17 @@ module public ImageFunctions =
                     imagesDownloaded.Add(podcast.ImageURL, localImagePath) |> ignore
                 
                     try
-                        startDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)    
+                        if startDownloadNotificationFunction <> null then
+                            startDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)    
                         imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
                         podcast.SetImageFileName localImagePath
-                        completedDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)
+                        if completedDownloadNotificationFunction <> null then
+                            completedDownloadNotificationFunction.Invoke(downloadNumber, podcast.ImageURL)
                     with
                     | _ as ex ->
                         podcast.SetImageFileName defaultImagePath
-                        failedDownloadNotificationFunction.Invoke(podcast.ImageURL, ex)
+                        if failedDownloadNotificationFunction <> null then
+                            failedDownloadNotificationFunction.Invoke(podcast.ImageURL, ex)
             else if System.String.IsNullOrEmpty(podcast.FileDetails.ImageFileName) then
                 podcast.SetImageFileName defaultImagePath
 
@@ -119,7 +124,8 @@ module public ImageFunctions =
                 Feed.SetImageFileName feed localImagePath 
             with
             | _ as ex ->
-                failedDownloadNotificationFunction.Invoke(feed.ImageURL, ex)
+                if failedDownloadNotificationFunction <> null then
+                    failedDownloadNotificationFunction.Invoke(feed.ImageURL, ex)
                 Feed.SetImageFileName feed defaultImagePath 
         else
             feed
