@@ -101,6 +101,10 @@ namespace PodFul.WPF.Windows
     private void TotalDownloadsRequiredEventHandler(Int32 totalDownloads)
     {
       this.imageDownloadTotal = totalDownloads;
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.StatusMessage.Text = "Downloading " + this.imageDownloadTotal + " images";
+      });
     }
 
     private void SetStatusMessage(String message)
