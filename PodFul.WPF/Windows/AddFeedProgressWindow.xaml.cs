@@ -66,6 +66,7 @@ namespace PodFul.WPF.Windows
         this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, cancelToken);
 
         this.imageResolver.TotalDownloadsRequiredEvent += TotalDownloadsRequiredEventHandler;
+        this.imageResolver.StartDownloadNotificationEvent += StartDownloadNotificationEventHandler;
         this.imageResolver.ResolvePodcastImagesForFeed(this.Feed, cancelToken);
       }, cancelToken);
 
@@ -89,6 +90,7 @@ namespace PodFul.WPF.Windows
         }
 
         this.imageResolver.TotalDownloadsRequiredEvent -= TotalDownloadsRequiredEventHandler;
+        this.imageResolver.StartDownloadNotificationEvent -= StartDownloadNotificationEventHandler;
 
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -96,6 +98,11 @@ namespace PodFul.WPF.Windows
           this.Close();
         });
       });
+    }
+
+    private void StartDownloadNotificationEventHandler(Int32 downloadNumber, String imageFilePath)
+    {
+      throw new NotImplementedException();
     }
 
     private void TotalDownloadsRequiredEventHandler(Int32 totalDownloads)
