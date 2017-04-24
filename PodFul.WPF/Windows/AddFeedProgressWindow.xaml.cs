@@ -24,6 +24,7 @@ namespace PodFul.WPF.Windows
     private ILogController logController;
     private Boolean windowLoaded;
     private Int32 imageDownloadTotal;
+    private Int32 imageDownloadCount;
     #endregion
 
     #region Construction
@@ -65,8 +66,10 @@ namespace PodFul.WPF.Windows
         var feedFilePath = Path.Combine(this.feedPath, "download.rss");
         this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, cancelToken);
 
-        this.imageResolver.TotalDownloadsRequiredEvent += TotalDownloadsRequiredEventHandler;
-        this.imageResolver.StartDownloadNotificationEvent += StartDownloadNotificationEventHandler;
+        this.imageResolver.TotalDownloadsRequiredEvent += this.TotalDownloadsRequiredEventHandler;
+        this.imageResolver.StartDownloadNotificationEvent += this.StartDownloadNotificationEventHandler;
+        this.imageResolver.SkippedDownloadNotificationEvent += this.SkipDownloadNotificationEventHandler;
+        this.imageResolver.CompletedDownloadNotificationEvent += this.CompletedDownloadNotificationEventHandler;
         this.imageResolver.ResolvePodcastImagesForFeed(this.Feed, cancelToken);
       }, cancelToken);
 
@@ -89,28 +92,56 @@ namespace PodFul.WPF.Windows
           this.logController.Message(MainWindow.InfoKey, "'" + this.Feed.Title + "' added. Podcasts stored in '" + this.feedPath + "'");
         }
 
-        this.imageResolver.TotalDownloadsRequiredEvent -= TotalDownloadsRequiredEventHandler;
-        this.imageResolver.StartDownloadNotificationEvent -= StartDownloadNotificationEventHandler;
+        this.imageResolver.TotalDownloadsRequiredEvent -= this.TotalDownloadsRequiredEventHandler;
+        this.imageResolver.StartDownloadNotificationEvent -= this.StartDownloadNotificationEventHandler;
+        this.imageResolver.SkippedDownloadNotificationEvent -= this.SkipDownloadNotificationEventHandler;
+        this.imageResolver.CompletedDownloadNotificationEvent -= this.CompletedDownloadNotificationEventHandler;
 
         Application.Current.Dispatcher.Invoke(() =>
         {
-          this.ProgressBar.IsIndeterminate = false; // Turn marque effect
+          this.ProgressBar.IsIndeterminate = false; // Turn off marque effect
           this.Close();
         });
       });
     }
 
+    private void CompletedDownloadNotificationEventHandler(Int32 downloadNumber, String imageFilePath)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.ProgressBar.Value = imageDownloadCount;
+      });
+    }
+
+    private void SkipDownloadNotificationEventHandler(Int32 downloadNumber, String imageFilePath)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        imageDownloadCount++;
+        this.StatusMessage.Text = "Skipped " + imageDownloadCount + " of " + imageDownloadTotal + " Images ...";
+        this.ProgressBar.Value = imageDownloadCount;
+      });
+    }
+
     private void StartDownloadNotificationEventHandler(Int32 downloadNumber, String imageFilePath)
     {
-      throw new NotImplementedException();
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        imageDownloadCount++;
+        this.StatusMessage.Text = "Downloading " + imageDownloadCount + " of " + imageDownloadTotal + " Images ...";
+      });
     }
 
     private void TotalDownloadsRequiredEventHandler(Int32 totalDownloads)
     {
       this.imageDownloadTotal = totalDownloads;
+      this.imageDownloadCount = 0;
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.StatusMessage.Text = "Downloading " + this.imageDownloadTotal + " images";
+        this.CancelButton.Content = "Skip";
+        this.ProgressBar.IsIndeterminate = false;
+        this.ProgressBar.Maximum = totalDownloads;
+        this.ProgressBar.Value = 0; 
       });
     }
 

@@ -52,11 +52,10 @@ module public ImageFunctions =
         let imageDownloader = new FileDownloader()
         let imagesDownloaded = new System.Collections.Generic.Dictionary<string, string>()
         while index < podcasts.Length do
-            cancelToken.ThrowIfCancellationRequested()
-
             let podcast = podcasts.[index]
             
-            if needsToDownloadImage podcast.FileDetails.ImageFileName podcast.ImageURL defaultImagePath then
+            if cancelToken.IsCancellationRequested = false && 
+                needsToDownloadImage podcast.FileDetails.ImageFileName podcast.ImageURL defaultImagePath then
                 downloadNumber <- downloadNumber + 1
                 
                 if imagesDownloaded.ContainsKey(podcast.ImageURL) then
