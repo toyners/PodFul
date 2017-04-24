@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="600"
+        Title="Settings" Height="340" Width="600"
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico" Closing="WindowClosing"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" >
       <Button HorizontalAlignment="Right" Width="70" IsDefault="True" Click="CloseButtonClick" Style="{StaticResource ResourceKey=StandardButton}">Close</Button>
+    </Border>
+
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Bottom">
+      <CheckBox Name="DownloadImagesWhenAddingFeeds" HorizontalAlignment="Right" Margin="0,2,2,2">Download images when adding feeds</CheckBox>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
@@ -55,7 +59,7 @@
         </Grid>
 
         <DockPanel>
-          <StackPanel DockPanel.Dock="Right" Margin="0,-5">
+          <StackPanel DockPanel.Dock="Right" Margin="0,-5,0,0">
             <Button Click="AddButtonClick" Width="70" Style="{StaticResource ResourceKey=StandardButton}">
               <Button.Content>
                 <StackPanel Orientation="Horizontal">

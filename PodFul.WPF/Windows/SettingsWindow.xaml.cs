@@ -115,6 +115,7 @@ namespace PodFul.WPF.Windows
       this.ConfirmPodcastDownloadThreshold.Text = this.settings.ConfirmPodcastDownloadThreshold.ToString();
       this.DeliverManualDownloads.IsChecked = this.settings.DeliverManualDownloadsToDeliveryPoints;
       this.HideCompletedJobs.IsChecked = this.settings.HideCompletedJobs;
+      this.DownloadImagesWhenAddingFeeds.IsChecked = this.settings.DownloadImagesWhenAddingFeeds;
 
       this.deliveryPoints = new ObservableCollection<Settings.SettingsData.DeliveryPointData>(this.settings.DeliveryPointData);
       this.DeliveryPointList.ItemsSource = deliveryPoints;
@@ -128,6 +129,7 @@ namespace PodFul.WPF.Windows
         this.settings.ConfirmPodcastDownloadThreshold = UInt32.Parse(this.ConfirmPodcastDownloadThreshold.Text);
         this.settings.DeliverManualDownloadsToDeliveryPoints = (Boolean)this.DeliverManualDownloads.IsChecked;
         this.settings.HideCompletedJobs = (Boolean)this.HideCompletedJobs.IsChecked;
+        this.settings.DownloadImagesWhenAddingFeeds = (Boolean)this.DownloadImagesWhenAddingFeeds.IsChecked;
         this.settings.Save();
       }
       catch (Exception exception)

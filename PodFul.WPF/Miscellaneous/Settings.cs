@@ -81,6 +81,12 @@ namespace PodFul.WPF.Miscellaneous
       get { return this.settingsData.HideCompletedJobs; }
       set { this.settingsData.HideCompletedJobs = value; }
     }
+
+    public Boolean DownloadImagesWhenAddingFeeds
+    {
+      get { return this.settingsData.DownloadImagesWhenAddingFeeds; }
+      set { this.settingsData.DownloadImagesWhenAddingFeeds = value; }
+    }
     #endregion
 
     #region Methods
@@ -132,6 +138,8 @@ namespace PodFul.WPF.Miscellaneous
       public List<DeliveryPointData> DeliveryData { get; set; }
 
       public Boolean HideCompletedJobs { get; set; }
+
+      public Boolean DownloadImagesWhenAddingFeeds { get; set; }
       #endregion
 
       #region Classes

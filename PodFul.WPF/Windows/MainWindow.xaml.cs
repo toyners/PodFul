@@ -133,7 +133,11 @@ namespace PodFul.WPF.Windows
         return;
       }
 
-      var addFeedProgressWindow = new AddFeedProgressWindow(addFeedWindow.FeedURL, addFeedWindow.FeedDirectory, this.imageResolver, this.logController);
+      var addFeedProgressWindow = new AddFeedProgressWindow(
+        addFeedWindow.FeedURL, 
+        addFeedWindow.FeedDirectory,
+        this.imageResolver,
+        this.logController);
       addFeedProgressWindow.Owner = this;
       addFeedProgressWindow.ShowDialog();
       Feed feed = addFeedProgressWindow.Feed;
