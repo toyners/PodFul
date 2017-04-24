@@ -215,60 +215,6 @@ module public FeedFunctions =
              DeliverDownloadsOnScan = true
         }
 
-    (*let private needsToDownloadImage (podcast : Podcast) (defaultImagePath : string) : bool =
-        let localName = podcast.FileDetails.ImageFileName
-        let gotLocalPath = String.IsNullOrEmpty(localName) = false
-        let gotURLPath = String.IsNullOrEmpty(podcast.ImageURL) = false
-
-        ((gotLocalPath = false || localName = defaultImagePath) && gotURLPath) ||
-            (gotLocalPath && File.Exists(localName) = false)
-
-    let private determineImageDownloadCount (feed : Feed) : int =
-        let mutable index = 0
-        let mutable count = 0
-        while index < feed.Podcasts.Length do
-            
-            if needsToDownloadImage feed.Podcasts.[index] "" then
-                count <- count + 1
-            index <- index + 1
-
-        count
-
-    let private downloadImageFile urlPath savePath (postMessage : Action<string>) =
-        let imageDownloader = new FileDownloader()
-        let mutable localPath = savePath
-
-        let message = "Downloading '" + urlPath + "' ... "
-        postMessage.Invoke(message)
-
-        imageDownloader.Download(urlPath, savePath, System.Threading.CancellationToken.None, null) |> ignore
-
-        postMessage.Invoke("Complete\r\n")
-        savePath
-
-    let private resolveImages (imageResolver : IImageResolverOld) (cancelToken : CancellationToken) (feed : Feed) : Feed =
-
-      match (imageResolver) with
-      | null -> feed
-      | _ ->
-        let mutable index = 0
-        while index < feed.Podcasts.Length do
-          let podcast = feed.Podcasts.[index]
-            
-          let localImagePath = imageResolver.GetName podcast.FileDetails.ImageFileName podcast.ImageURL
-          if localImagePath <> podcast.FileDetails.ImageFileName then
-            podcast.SetImageFileName localImagePath
-        
-          cancelToken.ThrowIfCancellationRequested()
-          
-          index <- index + 1
-
-        let localImagePath = imageResolver.GetName feed.ImageFileName feed.ImageURL  
-        if (localImagePath <> feed.ImageFileName) then
-            Feed.SetImageFileName feed localImagePath
-        else
-            feed*)
-    
     let private createWebClient : WebClient = 
         let webClient = new WebClient()
         webClient.Headers.Add("user-agent", "Podful Podcatcher")
@@ -317,6 +263,5 @@ module public FeedFunctions =
         createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
         Feed.SetUpdatedDate feed.UpdatedDateTime |>
         Feed.SetScanningFlags feed.DoScan feed.CompleteDownloadsOnScan feed.DeliverDownloadsOnScan |> 
-        mergeFeeds feed (*|>
-        resolveImages cancelToken*)
+        mergeFeeds feed
 

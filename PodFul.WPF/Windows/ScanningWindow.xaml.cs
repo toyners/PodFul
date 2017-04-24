@@ -8,7 +8,6 @@ namespace PodFul.WPF.Windows
   using System.Windows.Input;
   using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.String;
-  using Library;
   using Logging;
   using Processing;
   using UI_Support;

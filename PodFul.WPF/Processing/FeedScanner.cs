@@ -110,8 +110,7 @@ namespace PodFul.WPF.Processing
             try
             {
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
-              throw new Exception("Update feed");
-              //newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, this.imageResolver, cancelToken);
+              newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
 
               message = "Searching for new podcasts ... ";
               this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);

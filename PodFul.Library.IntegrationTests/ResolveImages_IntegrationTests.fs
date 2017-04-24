@@ -153,6 +153,22 @@ type ResolveImages_IntegrationTests() =
         Assert.AreEqual(true, File.Exists(localPath))
 
     [<Test>]
+    member public this.``Podcast image filename set but file not found locally and URL path not set so default image filename is used``() =
+
+        let fileName = "Image.jpg"
+        let urlPath = ""
+        let localPath = imageDirectory + fileName
+        let resolveLocalFilePathFunction = fun n -> failwith "Should not be called"
+
+        let podcast = createTestPodcast localPath urlPath 
+
+        // Act
+        runResolveImagesWithoutFeedBack [|podcast|] imageDirectory defaultImagePath resolveLocalFilePathFunction
+        
+        // Assert
+        Assert.AreEqual(defaultImagePath, podcast.FileDetails.ImageFileName)
+
+    [<Test>]
     member public this.``Podcast image filename set to default and URL path is set so file is downloaded and podcast image path is updated``()=
 
         let fileName = "Image.jpg"

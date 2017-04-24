@@ -10,8 +10,9 @@ module public ImageFunctions =
         let gotLocalImagePath = String.IsNullOrEmpty(localImagePath) = false
         let gotOnlineImagePath = String.IsNullOrEmpty(onlineImagePath) = false
 
-        ((gotLocalImagePath = false || localImagePath = defaultImagePath) && gotOnlineImagePath) ||
-            (gotLocalImagePath && File.Exists(localImagePath) = false)
+        gotOnlineImagePath && 
+        ((gotLocalImagePath = false || localImagePath = defaultImagePath) || 
+            (gotLocalImagePath && File.Exists(localImagePath) = false))
 
     let nextImageFileName (urlPath : string) =
         let mutable name = Guid.NewGuid().ToString()
@@ -79,7 +80,8 @@ module public ImageFunctions =
                         podcast.SetImageFileName defaultImagePath
                         if failedDownloadNotificationFunction <> null then
                             failedDownloadNotificationFunction.Invoke(podcast.ImageURL, ex)
-            else if System.String.IsNullOrEmpty(podcast.FileDetails.ImageFileName) then
+            else if System.String.IsNullOrEmpty(podcast.FileDetails.ImageFileName) || 
+                System.IO.File.Exists(podcast.FileDetails.ImageFileName) = false then
                 podcast.SetImageFileName defaultImagePath
 
             index <- index + 1
