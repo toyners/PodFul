@@ -54,6 +54,20 @@ namespace PodFul.WPF.Processing
         this.FailedDownloadNotificationEvent, 
         cancellationToken);
     }
+
+    public void ResolvePodcastImages(Podcast[] podcasts, CancellationToken cancellationToken)
+    {
+      ImageFunctions.resolveImagesForPodcasts(
+        podcasts,
+        this.imageDirectoryPath,
+        this.DefaultImagePath,
+        this.TotalDownloadsRequiredEvent,
+        this.StartDownloadNotificationEvent,
+        this.SkippedDownloadNotificationEvent,
+        this.CompletedDownloadNotificationEvent,
+        this.FailedDownloadNotificationEvent,
+        cancellationToken);
+    }
     #endregion
   }
 }

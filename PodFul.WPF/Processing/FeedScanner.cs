@@ -144,7 +144,11 @@ namespace PodFul.WPF.Processing
                 continue;
               }
 
-              this.CreateDownloadJobs(podcastIndexes, newFeed);
+              var podcasts = this.BuildPodcastArray(podcastIndexes, newFeed);
+
+              this.DownloadPodcastImages(podcasts, cancelToken);
+
+              this.CreateDownloadJobs(podcasts, newFeed);
               
             }
             catch (OperationCanceledException)
@@ -242,16 +246,37 @@ namespace PodFul.WPF.Processing
       return podcastIndexes;
     }
 
-    private void CreateDownloadJobs(List<Int32> podcastIndexes, Feed newFeed)
+    private Podcast[] BuildPodcastArray(List<Int32> podcastIndexes, Feed feed)
     {
+      var podcasts = new Podcast[podcastIndexes.Count];
       podcastIndexes.Reverse();
 
-      foreach (var index in podcastIndexes)
+      var index = 0;
+      foreach (var podcastIndex in podcastIndexes)
       {
-        var podcast = newFeed.Podcasts[index];
-        var job = new DownloadJob(podcast, newFeed, this.feedCollection, this.imageResolver);
+        podcasts[index++] = feed.Podcasts[podcastIndex];
+      }
+
+      return podcasts;
+    }
+
+    private void CreateDownloadJobs(Podcast[] podcasts, Feed feed)
+    {
+      foreach (var podcast in podcasts)
+      {
+        var job = new DownloadJob(podcast, feed, this.feedCollection, this.imageResolver);
         this.downloadManager.AddJob(job);
       }
+    }
+
+    private void DownloadPodcastImages(Podcast[] podcasts, CancellationToken cancellationToken)
+    {
+      if (this.imageResolver != null)
+      {
+        return;
+      }
+
+      this.imageResolver.ResolvePodcastImages(podcasts, cancellationToken);
     }
 
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)

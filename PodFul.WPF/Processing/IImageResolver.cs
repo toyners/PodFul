@@ -18,5 +18,7 @@ namespace PodFul.WPF.Processing
     Feed ResolveFeedImage(Feed feed);
 
     void ResolvePodcastImagesForFeed(Feed feed, CancellationToken cancellationToken);
+
+    void ResolvePodcastImages(Podcast[] podcasts, CancellationToken cancellationToken);
   }
 }
