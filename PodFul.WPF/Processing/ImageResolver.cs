@@ -9,17 +9,21 @@ namespace PodFul.WPF.Processing
   {
     #region Fields
     private String imageDirectoryPath;
-    private String defaultImagePath;
     #endregion
 
     #region Construction
     public ImageResolver(string imageDirectoryPath, string defaultImagePath)
     {
       this.imageDirectoryPath = imageDirectoryPath;
-      this.defaultImagePath = defaultImagePath;
+      this.DefaultImagePath = defaultImagePath;
     }
     #endregion
 
+    #region Properties
+    public String DefaultImagePath { get; private set; }
+    #endregion
+
+    #region Events
     public event Action<Int32> TotalDownloadsRequiredEvent;
 
     public event Action<Int32, String> StartDownloadNotificationEvent;
@@ -29,11 +33,12 @@ namespace PodFul.WPF.Processing
     public event Action<Int32, String> CompletedDownloadNotificationEvent;
 
     public event Action<String, Exception> FailedDownloadNotificationEvent;
+    #endregion
 
     #region Methods
     public Feed ResolveFeedImage(Feed feed)
     {
-      return ImageFunctions.resolveImageForFeed(feed, this.imageDirectoryPath, this.defaultImagePath, FailedDownloadNotificationEvent);
+      return ImageFunctions.resolveImageForFeed(feed, this.imageDirectoryPath, this.DefaultImagePath, FailedDownloadNotificationEvent);
     }
 
     public void ResolvePodcastImagesForFeed(Feed feed, CancellationToken cancellationToken)
@@ -41,7 +46,7 @@ namespace PodFul.WPF.Processing
       ImageFunctions.resolveImagesForPodcasts(
         feed.Podcasts, 
         this.imageDirectoryPath, 
-        this.defaultImagePath, 
+        this.DefaultImagePath, 
         this.TotalDownloadsRequiredEvent, 
         this.StartDownloadNotificationEvent, 
         this.SkippedDownloadNotificationEvent, 

@@ -64,7 +64,7 @@ namespace PodFul.WPF.Windows
       {
         // Create the feed.
         var feedFilePath = Path.Combine(this.feedPath, "download.rss");
-        this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, cancelToken);
+        this.Feed = FeedFunctions.CreateFeed(this.feedURL, feedFilePath, this.feedPath, this.imageResolver.DefaultImagePath, cancelToken);
 
         this.imageResolver.TotalDownloadsRequiredEvent += this.TotalDownloadsRequiredEventHandler;
         this.imageResolver.StartDownloadNotificationEvent += this.StartDownloadNotificationEventHandler;

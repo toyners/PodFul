@@ -195,7 +195,7 @@ module public FeedFunctions =
             newIndex <- newIndex + 1
         newFeed
 
-    let private createFeedRecord url directoryPath imageFileName creationDate (document : XDocument) : Feed =
+    let private createFeedRecord url directoryPath feedImageFilePath creationDate (document : XDocument) : Feed =
         let channel = document.Element(xn "rss").Element(xn "channel")
         let imageFileURL = getImageForChannel channel
 
@@ -206,7 +206,7 @@ module public FeedFunctions =
              Directory = directoryPath
              URL = url
              ImageURL = imageFileURL
-             ImageFileName = imageFileName
+             ImageFileName = feedImageFilePath
              Podcasts = createPodcastArrayFromDocument document
              CreationDateTime = creationDate
              UpdatedDateTime = DateTime.Now
@@ -248,12 +248,18 @@ module public FeedFunctions =
             writer.Write(data)
         data
 
-    let public CreateFeed url filePath directoryPath cancelToken : Feed =
+    let private setAllPodcastsToHaveDefaultImage (defaultImagePath : string) (feed : Feed) : Feed = 
+        for podcast in feed.Podcasts do
+            podcast.SetImageFileName defaultImagePath    
+        feed
+
+    let public CreateFeed url saveFilePath directoryPath defaultImagePath cancelToken : Feed =
         createWebClient |>
         downloadFeedData url 5 |>
-        saveToFile filePath |>
+        saveToFile saveFilePath |>
         createXMLDocumentFromData |>
-        createFeedRecord url directoryPath String.Empty DateTime.Now
+        createFeedRecord url directoryPath String.Empty DateTime.Now |>
+        setAllPodcastsToHaveDefaultImage defaultImagePath
 
     let public UpdateFeed feed filePath cancelToken : Feed = 
         createWebClient |>

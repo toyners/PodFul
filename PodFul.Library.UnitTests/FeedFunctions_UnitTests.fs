@@ -69,7 +69,7 @@ type FeedFunctions_UnitTests() =
 
         let mutable testSuccessful = false
         try 
-            FeedFunctions.CreateFeed badURL null directory System.Threading.CancellationToken.None |> ignore
+            FeedFunctions.CreateFeed badURL null directory "" System.Threading.CancellationToken.None |> ignore
         with
         | _ as e ->
             let r = e :? System.Net.WebException

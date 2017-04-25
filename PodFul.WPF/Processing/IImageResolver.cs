@@ -13,6 +13,8 @@ namespace PodFul.WPF.Processing
     event Action<Int32, String> CompletedDownloadNotificationEvent;
     event Action<String, Exception> FailedDownloadNotificationEvent;
 
+    string DefaultImagePath { get; }
+
     Feed ResolveFeedImage(Feed feed);
 
     void ResolvePodcastImagesForFeed(Feed feed, CancellationToken cancellationToken);
