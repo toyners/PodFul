@@ -83,6 +83,8 @@
     <Compile Include="Miscellaneous\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\IFeedCollection.cs" />
+    <Compile Include="Processing\FeedFactory.cs" />
+    <Compile Include="Processing\IFeedFactory.cs" />
     <Compile Include="Processing\IImageResolver.cs" />
     <Compile Include="Processing\ImageResolver.cs" />
     <Compile Include="UI Support\IJobCountDisplayManager.cs" />

@@ -36,6 +36,7 @@ namespace PodFul.WPF.Windows
     private MessagePool fileDeliveryLogger;
     private Settings settings;
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
+    private String defaultImagePath;
 
     public MainWindow()
     {
@@ -68,13 +69,13 @@ namespace PodFul.WPF.Windows
         var imageDirectory = Path.Combine(feedDirectory, "Images");
         DirectoryOperations.EnsureDirectoryExists(imageDirectory);
 
-        String defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
-        if (!File.Exists(defaultImagePath))
+        this.defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
+        if (!File.Exists(this.defaultImagePath))
         {
-          Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, defaultImagePath);
+          Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, this.defaultImagePath);
         }
 
-        this.imageResolver = new ImageResolver(imageDirectory, defaultImagePath);
+        this.imageResolver = new ImageResolver(imageDirectory, this.defaultImagePath);
 
         this.FeedList.ItemsSource = feedCollection.ObservableFeeds;
         if (this.feedCollection.Count > 0)
@@ -133,11 +134,13 @@ namespace PodFul.WPF.Windows
         return;
       }
 
+      IFeedFactory feedFactory = new FeedFactory(addFeedWindow.FeedDirectory, addFeedWindow.FeedURL, this.defaultImagePath);
+
       var addFeedProgressWindow = new AddFeedProgressWindow(
-        addFeedWindow.FeedURL, 
-        addFeedWindow.FeedDirectory,
-        this.imageResolver,
-        this.logController);
+        feedFactory,
+        this.logController,
+        (this.settings.DownloadImagesWhenAddingFeeds ? this.imageResolver : null));
+
       addFeedProgressWindow.Owner = this;
       addFeedProgressWindow.ShowDialog();
       Feed feed = addFeedProgressWindow.Feed;
