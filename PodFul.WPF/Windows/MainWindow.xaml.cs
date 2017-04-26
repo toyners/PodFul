@@ -367,12 +367,23 @@ namespace PodFul.WPF.Windows
       };
 
       IImageResolver imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
+      imageResolver.CompletedDownloadNotificationEvent += (downloadNumber, imageURL) =>
+      {
+        var message = "Downloaded '" + imageURL + "'";
+        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
+      };
+      
+      imageResolver.FailedDownloadNotificationEvent += (imageURL, exception) =>
+      {
+        var message = "Failed to download '" + imageURL + "'. Exception: " + exception.Message;
+        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
+      };
+
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 
         downloadManager, 
         this.logController.GetLogger<UILogger>(UiKey), 
-        imageResolver, 
         this.settings.HideCompletedJobs);
 
       scanningWindow.Owner = this;

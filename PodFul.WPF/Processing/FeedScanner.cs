@@ -146,10 +146,7 @@ namespace PodFul.WPF.Processing
 
               var podcasts = this.BuildPodcastArray(podcastIndexes, newFeed);
 
-              this.DownloadPodcastImages(podcasts, cancelToken);
-
               this.CreateDownloadJobs(podcasts, newFeed);
-              
             }
             catch (OperationCanceledException)
             {
@@ -267,16 +264,6 @@ namespace PodFul.WPF.Processing
         var job = new DownloadJob(podcast, feed, this.feedCollection, this.imageResolver);
         this.downloadManager.AddJob(job);
       }
-    }
-
-    private void DownloadPodcastImages(Podcast[] podcasts, CancellationToken cancellationToken)
-    {
-      if (this.imageResolver != null)
-      {
-        return;
-      }
-
-      this.imageResolver.ResolvePodcastImages(podcasts, cancellationToken);
     }
 
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)

@@ -32,7 +32,6 @@ namespace PodFul.WPF.Windows
     private ProcessingStates processingState;
     private Boolean isClosing;
     private JobCountDisplayManager jobCountDisplayManager;
-    private IImageResolver imageResolver;
 
     private UInt32 totalFeedCount;
     private UInt32 feedsScannedCount;
@@ -41,11 +40,10 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, IImageResolver imageResolver, Boolean hideCompletedDownloadJobs)
+    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, Boolean hideCompletedDownloadJobs)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
-      imageResolver.VerifyThatObjectIsNotNull("Parameter 'imageResolver' is null.");
 
       this.InitializeComponent();
 
@@ -56,7 +54,6 @@ namespace PodFul.WPF.Windows
 
       var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay);
-      this.imageResolver = imageResolver;
 
       logger.PostMessage = this.PostMessage;
       downloadManager.JobQueuedEvent += this.JobQueuedEventHandler;
