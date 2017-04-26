@@ -41,6 +41,15 @@ namespace PodFul.WPF.Processing
       return ImageFunctions.resolveImageForFeed(feed, this.imageDirectoryPath, this.DefaultImagePath, FailedDownloadNotificationEvent);
     }
 
+    public void ResolvePodcastImage(Podcast podcast)
+    {
+      ImageFunctions.resolvePodcastImage(
+        podcast,
+        this.imageDirectoryPath,
+        this.DefaultImagePath,
+        this.FailedDownloadNotificationEvent);
+    }
+
     public void ResolvePodcastImagesForFeed(Feed feed, CancellationToken cancellationToken)
     {
       ImageFunctions.resolveImagesForPodcasts(

@@ -29,7 +29,7 @@ namespace PodFul.WPF.Windows
 
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
-    private IImageResolver imageResolver;
+    //private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
     private LogController logController;
@@ -37,6 +37,7 @@ namespace PodFul.WPF.Windows
     private Settings settings;
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
     private String defaultImagePath;
+    private String imageDirectory;
 
     public MainWindow()
     {
@@ -66,16 +67,14 @@ namespace PodFul.WPF.Windows
         var feedStorage = new JSONFileStorage(feedDirectory);
         this.feedCollection = new FeedCollection(feedStorage);
 
-        var imageDirectory = Path.Combine(feedDirectory, "Images");
-        DirectoryOperations.EnsureDirectoryExists(imageDirectory);
+        this.imageDirectory = Path.Combine(feedDirectory, "Images");
+        DirectoryOperations.EnsureDirectoryExists(this.imageDirectory);
 
         this.defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
         if (!File.Exists(this.defaultImagePath))
         {
           Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, this.defaultImagePath);
         }
-
-        this.imageResolver = new ImageResolver(imageDirectory, this.defaultImagePath);
 
         this.FeedList.ItemsSource = feedCollection.ObservableFeeds;
         if (this.feedCollection.Count > 0)
@@ -135,11 +134,16 @@ namespace PodFul.WPF.Windows
       }
 
       IFeedFactory feedFactory = new FeedFactory(addFeedWindow.FeedDirectory, addFeedWindow.FeedURL, this.defaultImagePath);
+      IImageResolver imageResolver = null;
+      if (this.settings.DownloadImagesWhenAddingFeeds)
+      {
+        imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
+      }
 
       var addFeedProgressWindow = new AddFeedProgressWindow(
         feedFactory,
         this.logController,
-        (this.settings.DownloadImagesWhenAddingFeeds ? this.imageResolver : null));
+        imageResolver);
 
       addFeedProgressWindow.Owner = this;
       addFeedProgressWindow.ShowDialog();
@@ -161,7 +165,7 @@ namespace PodFul.WPF.Windows
         MessageBox.Show(String.Format("{0} MP3 file(s) synchronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
 
-      feed = this.imageResolver.ResolveFeedImage(feed);
+      feed = imageResolver.ResolveFeedImage(feed);
       
       try
       {
@@ -284,22 +288,23 @@ namespace PodFul.WPF.Windows
       }
 
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager, this.settings.HideCompletedJobs);
-      podcastDownloadWindow.Owner = this;
 
       // Add the jobs after creating the window so that job queued event will fire.
       var jobs = this.CreateDownloadJobs(selectedIndexes);
       podcastDownloadManager.AddJobs(jobs);
 
+      podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();
     }
 
     private IEnumerable<DownloadJob> CreateDownloadJobs(List<Int32> podcastIndexes)
     {
       List<DownloadJob> jobs = new List<DownloadJob>();
+      IImageResolver imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
       foreach (var index in podcastIndexes)
       { 
         var podcast = this.currentFeed.Podcasts[index];
-        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, this.imageResolver);
+        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, imageResolver);
 
         jobs.Add(downloadJob);
       }
@@ -361,12 +366,13 @@ namespace PodFul.WPF.Windows
         }
       };
 
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, this.imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
+      IImageResolver imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 
         downloadManager, 
         this.logController.GetLogger<UILogger>(UiKey), 
-        //this.imageResolver, 
+        imageResolver, 
         this.settings.HideCompletedJobs);
 
       scanningWindow.Owner = this;

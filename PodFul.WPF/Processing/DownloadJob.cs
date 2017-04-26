@@ -248,7 +248,8 @@ namespace PodFul.WPF.Processing
         throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
       }
 
-      this.SetPodcastFileDetails(this.imageResolver, fileInfo.Length);
+      this.imageResolver.ResolvePodcastImage(this.podcast);
+      this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
       this.feedCollection.UpdateFeedContent(this.feed);
 
       Application.Current.Dispatcher.Invoke(() =>
@@ -330,17 +331,6 @@ namespace PodFul.WPF.Processing
 
         this.ProgressValue = (Int32)value;
       });
-    }
-
-    private void SetPodcastFileDetails(IImageResolver imageResolver, Int64 fileLength)
-    {
-      if (imageResolver == null)
-      {
-        throw new Exception("Should not get here");
-      }
-
-      //var imagePath = imageResolver.GetName(this.podcast.FileDetails.ImageFileName, this.podcast.ImageURL);
-      //this.podcast.SetAllFileDetails(fileLength, DateTime.Now, imagePath);
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)

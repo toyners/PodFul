@@ -20,6 +20,27 @@ module public ImageFunctions =
             name <- name + ".jpg"
         name
 
+    let resolvePodcastImage 
+        (podcast : Podcast) 
+        (localImageDirectory : string)
+        (defaultImagePath : string) 
+        (failedDownloadNotificationFunction : System.Action<string, System.Exception>) = 
+
+        if needsToDownloadImage podcast.FileDetails.ImageFileName podcast.ImageURL defaultImagePath then
+            try
+                let imageDownloader = new FileDownloader()
+                let localImageFileName = nextImageFileName podcast.ImageURL
+                let localImagePath = Path.Combine(localImageDirectory, localImageFileName)
+                imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
+            with
+            | _ as ex ->
+                podcast.SetImageFileName defaultImagePath
+                if failedDownloadNotificationFunction <> null then
+                    failedDownloadNotificationFunction.Invoke(podcast.ImageURL, ex)
+        else if System.String.IsNullOrEmpty(podcast.FileDetails.ImageFileName) || 
+                System.IO.File.Exists(podcast.FileDetails.ImageFileName) = false then
+                podcast.SetImageFileName defaultImagePath
+
     let resolvePodcastImages 
         (podcasts : Podcast[]) 
         (localImageDirectory : string)

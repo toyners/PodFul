@@ -176,7 +176,7 @@ module public FeedFunctions =
                         }
           ] |> List.toArray
             
-    let private mergeFeeds (oldFeed : Feed) (newFeed : Feed) : Feed =
+    let private upDateFileDetailsOnPodcastsForNewFeed (oldFeed : Feed) (newFeed : Feed) : Feed =
 
         let mutable newIndex = 0
         let mutable oldIndex = 0
@@ -269,5 +269,5 @@ module public FeedFunctions =
         createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
         Feed.SetUpdatedDate feed.UpdatedDateTime |>
         Feed.SetScanningFlags feed.DoScan feed.CompleteDownloadsOnScan feed.DeliverDownloadsOnScan |> 
-        mergeFeeds feed
+        upDateFileDetailsOnPodcastsForNewFeed feed
 

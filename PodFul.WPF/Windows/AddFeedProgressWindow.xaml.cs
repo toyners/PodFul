@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Jabberwocky.Toolkit.Object;
-using Jabberwocky.Toolkit.String;
 using PodFul.Library;
 using PodFul.WPF.Logging;
 using PodFul.WPF.Processing;
