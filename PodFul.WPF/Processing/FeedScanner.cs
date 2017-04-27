@@ -211,8 +211,6 @@ namespace PodFul.WPF.Processing
         {
           this.logController.Message(MainWindow.UiKey, "Scan Report\r\n" + text);
         }
-
-        this.ScanCompletedEvent?.Invoke();
       });
       // No cancel token since we want this task to always run regardless
       // of what happens to the other tasks. Cancelling a task will stop any
