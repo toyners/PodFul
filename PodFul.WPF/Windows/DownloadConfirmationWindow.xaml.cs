@@ -74,6 +74,20 @@ namespace PodFul.WPF.Windows
       return index;
     }
 
+    private Boolean IsCtrlA(System.Windows.Input.KeyEventArgs e)
+    {
+      return e.Key == System.Windows.Input.Key.A &&
+        (e.KeyboardDevice.IsKeyDown(System.Windows.Input.Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(System.Windows.Input.Key.RightCtrl));
+    }
+
+    private void PodcastListPreviewKeyDown(Object sender, System.Windows.Input.KeyEventArgs e)
+    {
+      if (this.IsCtrlA(e))
+      {
+        e.Handled = true;
+      }
+    }
+
     private void PodcastListPreviewMouseRightButtonUp(Object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
       // No row selection for right mouse button clicks
@@ -96,10 +110,15 @@ namespace PodFul.WPF.Windows
       }
     }
 
-    private void SelectAllClick(Object sender, RoutedEventArgs e)
+    private void SelectAll()
     {
       this.SelectNone();
       this.Select((p) => { return p.HasNewPodcast; });
+    }
+
+    private void SelectAllClick(Object sender, RoutedEventArgs e)
+    {
+      this.SelectAll();
     }
 
     private void SelectNew()

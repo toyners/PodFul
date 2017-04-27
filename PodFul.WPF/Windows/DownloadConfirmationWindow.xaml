@@ -32,7 +32,7 @@
 
     <Border BorderBrush="Black" BorderThickness="1">
       <DataGrid Name="PodcastList" IsReadOnly="True" AutoGenerateColumns="False" SelectionChanged="PodcastListSelectionChanged"
-                PreviewMouseRightButtonUp="PodcastListPreviewMouseRightButtonUp">
+                PreviewMouseRightButtonUp="PodcastListPreviewMouseRightButtonUp" PreviewKeyDown="PodcastListPreviewKeyDown">
 
         <!-- Row will be disabled if the HasNewPodcast property is false -->
         <DataGrid.RowStyle>
