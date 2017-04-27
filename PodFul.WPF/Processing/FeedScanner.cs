@@ -203,7 +203,7 @@ namespace PodFul.WPF.Processing
 
         // Display the final scan report.
         var text = scanReport.Text;
-        if (text == null)
+        if (String.IsNullOrEmpty(text))
         {
           this.logController.Message(MainWindow.UiKey, "Nothing to report.");
         }
