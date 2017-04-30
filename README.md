@@ -1,6 +1,27 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.1.0 (1.9.5)
+1. **Changed:** Now handling multiple podcasts per item tag.
+2. **Changed:** Podcasts can now be posted to delivery points during manual downloads.
+3. **Changed:** Last updated value updated when feed is first added.
+4. **Fixed:** Fixed bug where right clicking selects rows in the Confirm Podcast Downloads screen.
+5. **Fixed:** Fixed issue where the failed podcast count can look misaligned if the cancelled podcast count is 0.
+6. **Fixed:** Fixed issue where closing the podcast download or scanning window does not cancel any downloads.
+7. **Fixed:** Fixed bug when delivery point has a bad/missing directory.
+8. **Fixed:** Scrolling reintroduced in podcast download or scanning window for downloads.
+9. **Changed:** Now logging podcast download details.
+10. **Changed:** Feed properties (rss, website and directory) can be copied to clipboard.
+11. **Changed:** Added high res image for podcast properties window.
+12. **Changed:** Error messages now go in their own file.
+13. **Changed:** Feed directory can now be changed using directory select dialog.
+14. **Changed:** Completed download jobs can now be hidden in the download panels when scanning or manual downloading.
+15. **Fixed:** Fixed a bug where CTRL-A in the Confirm Podcast Downloads screen selects wrong rows.
+16. **Changed:** Enable downloading of images to be skipped during feed adding. Also changed scanning algorithm so that images are only downloaded when the podcast is downloaded.
+17. **Changed:** Feeds can be excluded from full scanning.
+18. **Changed:** New podcasts for a feed can be ignored during full scanning (not manual scanning).
+19. **Changed:** Podcasts downloaded during full scanning can ignore delivery (not manual scanning).
+
 ## 3.0.4 (1.9)
 1. **Fixed:** Issue where carriage return was offsetting title when downloading podcast.
 2. **Fixed:** Issue where progress value not set to 100% when download is finished.
