@@ -24,7 +24,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <Button Width="70" Click="SettingsButtonClick" Style="{StaticResource StandardButton}">Settings</Button>
           <Button Name="PodcastsButton" Width="70" Click="Podcasts_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Podcasts</Button>
-          <Button Name="ScanButton" Width="70" Click="ScanAllButtonClick" IsEnabled="False" Style="{StaticResource StandardButton}">Full Scan</Button>
+          <Button Name="ScanButton" Width="70" Click="FullScanButtonClick" IsEnabled="False" Style="{StaticResource StandardButton}">Full Scan</Button>
         </StackPanel>
       </Grid>
     </Border>

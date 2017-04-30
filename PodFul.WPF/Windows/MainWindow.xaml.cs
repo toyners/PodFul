@@ -235,12 +235,16 @@ namespace PodFul.WPF.Windows
       return this.FeedList.Items.IndexOf(this.currentFeed);
     }
 
-    private Queue<Int32> GetIndexesForAllFeeds()
+    private Queue<Int32> GetIndexesForAllEnabledFeeds()
     {
       var feedIndexes = new Queue<Int32>();
+      
       for (Int32 i = 0; i < this.feedCollection.Count; i++)
       {
-        feedIndexes.Enqueue(i);
+        if (this.feedCollection[0].DoScan)
+        {
+          feedIndexes.Enqueue(i);
+        }
       }
 
       return feedIndexes;
@@ -411,9 +415,9 @@ namespace PodFul.WPF.Windows
       }
     }
 
-    private void ScanAllButtonClick(Object sender, RoutedEventArgs e)
+    private void FullScanButtonClick(Object sender, RoutedEventArgs e)
     {
-      this.PerformScan(this.GetIndexesForAllFeeds());
+      this.PerformScan(this.GetIndexesForAllEnabledFeeds());
     }
 
     private void ScanFeedContextMenuClick(Object sender, RoutedEventArgs e)
