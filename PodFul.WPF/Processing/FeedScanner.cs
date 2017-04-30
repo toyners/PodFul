@@ -102,8 +102,15 @@ namespace PodFul.WPF.Processing
             Int32 feedIndex = this.feedIndexes.Dequeue();
 
             var feed = this.feedCollection[feedIndex];
+            var message = "";
+            if (!feed.DoScan)
+            {
+              message = "SKIPPING \"" + feed.Title + "\".";
+              this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
+              continue;
+            }
 
-            var message = "Scanning \"" + feed.Title + "\".";
+            message = "Scanning \"" + feed.Title + "\".";
             this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
 
             Feed newFeed = null;
