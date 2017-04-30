@@ -5,6 +5,7 @@ namespace PodFul.WPF.Windows
   using System.Collections.Generic;
   using System.Configuration;
   using System.IO;
+  using System.Linq;
   using System.Reflection;
   using System.Windows;
   using System.Windows.Controls;
@@ -237,17 +238,11 @@ namespace PodFul.WPF.Windows
 
     private Queue<Int32> GetIndexesForAllEnabledFeeds()
     {
-      var feedIndexes = new Queue<Int32>();
-      
-      for (Int32 i = 0; i < this.feedCollection.Count; i++)
-      {
-        if (this.feedCollection[0].DoScan)
-        {
-          feedIndexes.Enqueue(i);
-        }
-      }
+      var feedIndexes = this.feedCollection.ObservableFeeds.Select((feed, index) => new { Index = index, Value = feed })
+        .Where(x => x.Value.DoScan)
+        .Select(x => x.Index);
 
-      return feedIndexes;
+      return new Queue<int>(feedIndexes.ToList());
     }
 
     private void Podcasts_Click(Object sender, RoutedEventArgs e)
