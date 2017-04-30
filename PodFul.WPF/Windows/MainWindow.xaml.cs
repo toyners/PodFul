@@ -239,7 +239,6 @@ namespace PodFul.WPF.Windows
     private Queue<Int32> GetIndexesForAllEnabledFeeds()
     {
       var feedIndexes = this.feedCollection.ObservableFeeds.Select((feed, index) => new { Index = index, Value = feed })
-        .Where(x => x.Value.DoScan)
         .Select(x => x.Index);
 
       return new Queue<int>(feedIndexes.ToList());
