@@ -227,6 +227,7 @@ namespace PodFul.WPF.Windows
       settingsWindow.ShowDialog();
 
       this.fileDeliverer = this.CreateFileDeliver();
+      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
     }
 
     private Int32 GetIndexForCurrentFeed()
