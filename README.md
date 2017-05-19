@@ -1,6 +1,9 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.1.1 (1.9.5)
+1. **Fixed:** Fixed a bug when adding feeds with image resolution turned off
+
 ## 3.1.0 (1.9.5)
 1. **Changed:** Now handling multiple podcasts per item tag.
 2. **Changed:** Podcasts can now be posted to delivery points during manual downloads.
