@@ -105,7 +105,7 @@ namespace PodFul.WPF.Processing
             var message = "";
             if (!feed.DoScan)
             {
-              message = "SKIPPING \"" + feed.Title + "\".";
+              message = "SKIPPING \"" + feed.Title + "\".\r\n";
               this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
               continue;
             }
