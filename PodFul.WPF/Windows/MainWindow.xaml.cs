@@ -306,7 +306,7 @@ namespace PodFul.WPF.Windows
       foreach (var index in podcastIndexes)
       { 
         var podcast = this.currentFeed.Podcasts[index];
-        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, imageResolver);
+        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection);
 
         jobs.Add(downloadJob);
       }

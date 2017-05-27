@@ -39,8 +39,6 @@ namespace PodFul.WPF.Processing
 
     private Boolean useMarqueProgressStyle;
 
-    private IImageResolver imageResolver;
-
     private Int64 podcastSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
@@ -59,7 +57,7 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
-    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, IImageResolver imageResolver)
+    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection)
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
@@ -81,8 +79,6 @@ namespace PodFul.WPF.Processing
       this.feed = feed;
 
       this.feedCollection = feedCollection;
-
-      this.imageResolver = imageResolver;
 
       var podcastSizeForDescription = String.Empty;
       if (podcastSize == -1)
@@ -248,7 +244,6 @@ namespace PodFul.WPF.Processing
         throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
       }
 
-      this.imageResolver.ResolvePodcastImage(this.podcast);
       this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
       this.feedCollection.UpdateFeedContent(this.feed);
 

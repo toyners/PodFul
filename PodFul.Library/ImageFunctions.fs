@@ -32,6 +32,7 @@ module public ImageFunctions =
                 let localImageFileName = nextImageFileName podcast.ImageURL
                 let localImagePath = Path.Combine(localImageDirectory, localImageFileName)
                 imageDownloader.Download(podcast.ImageURL, localImagePath, System.Threading.CancellationToken.None, null) |> ignore
+                podcast.SetImageFileName localImagePath
             with
             | _ as ex ->
                 podcast.SetImageFileName defaultImagePath

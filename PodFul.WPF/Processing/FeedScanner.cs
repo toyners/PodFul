@@ -144,14 +144,15 @@ namespace PodFul.WPF.Processing
 
               this.LogPodcastSearchResults(feed.Title, feedHasNewPodcasts, (UInt32)podcastIndexes.Count, downloadConfirmation, scanReport);
 
+              var podcasts = this.BuildPodcastArray(podcastIndexes, newFeed);
+              this.DownloadPodcastImages(podcasts, cancelToken);
+
               this.FeedScanCompleted(feedIndex, newFeed);
               
               if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
               {
                 continue;
               }
-
-              var podcasts = this.BuildPodcastArray(podcastIndexes, newFeed);
 
               this.CreateDownloadJobs(podcasts, newFeed);
             }
@@ -266,9 +267,19 @@ namespace PodFul.WPF.Processing
     {
       foreach (var podcast in podcasts)
       {
-        var job = new DownloadJob(podcast, feed, this.feedCollection, this.imageResolver);
+        var job = new DownloadJob(podcast, feed, this.feedCollection);
         this.downloadManager.AddJob(job);
       }
+    }
+
+    private void DownloadPodcastImages(Podcast[] podcasts, CancellationToken cancellationToken)
+    {
+      if (this.imageResolver != null)
+      {
+        return;
+      }
+
+      this.imageResolver.ResolvePodcastImages(podcasts, cancellationToken);
     }
 
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)

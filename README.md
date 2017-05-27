@@ -1,6 +1,10 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.1.2 (1.9.5)
+1. **Fixed:** Fixed a bug where podcast images are not being displayed in podcast list screen.
+2. **Changed:** Added blank line after the skipping feed scan message during scannig.
+
 ## 3.1.1 (1.9.5)
 1. **Fixed:** Fixed a bug when adding feeds with image resolution turned off
 
