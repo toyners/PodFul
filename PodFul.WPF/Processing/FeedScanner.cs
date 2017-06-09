@@ -151,6 +151,9 @@ namespace PodFul.WPF.Processing
               
               if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
               {
+                // Feed gets updated in storage everytime a download job completes - but if nothing
+                // is being downloaded then I need to update the feed 'manually' 
+                this.feedCollection.UpdateFeedContent(newFeed);
                 continue;
               }
 
