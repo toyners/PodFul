@@ -151,9 +151,6 @@ namespace PodFul.WPF.Processing
               
               if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
               {
-                // Feed gets updated in storage everytime a download job completes - but if nothing
-                // is being downloaded then I need to update the feed 'manually' 
-                this.feedCollection.UpdateFeedContent(newFeed);
                 continue;
               }
 
@@ -296,6 +293,9 @@ namespace PodFul.WPF.Processing
       {
         this.feedCollection[feedIndex] = feed;
       });
+
+      // Now update the feed to storage for real.
+      this.feedCollection.UpdateFeedContent(feed);
 
       message = "Completed.";
       this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
