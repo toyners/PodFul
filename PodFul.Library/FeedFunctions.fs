@@ -39,8 +39,7 @@ module public FeedFunctions =
         
         // Replace line breaks and multiple spaces with single spaces
         let mutable cleanText = dirtyText.Replace("\r\n", " ").Replace("\n", " ")
-        while cleanText.IndexOf("  ") <> -1 do 
-            cleanText <- cleanText.Replace("  ", " ")
+        cleanText <- cleanText.Replace("  ", " ")
 
         // Replace known special character codes.
         cleanText <- cleanText
@@ -102,10 +101,13 @@ module public FeedFunctions =
 
     let private getFileSizeFromElement (element : XElement) (attributeName : string) =
     
-        let length = getValueFromAttribute element attributeName
-        match length with
-        | null | "" -> -1L
-        | _ -> length |> Int64.Parse
+        try
+          let length = getValueFromAttribute element attributeName
+          match length with
+          | null | "" -> -1L
+          | _ -> Int64.Parse(length, Globalization.NumberStyles.Number)
+        with
+        | _ -> -1L
 
     let private isAudioFile mimeType : bool =
         mimeType = "audio/mpeg3" || mimeType = "audio/mpeg" || mimeType = "audio/mp3"
@@ -143,38 +145,44 @@ module public FeedFunctions =
 
     let private createPodcastArrayFromDocument (document: XDocument) =
 
-        [for item in document.Descendants(xn "item") do
+        try
+          let items = document.Descendants(xn "item")
+          [for item in items do
             
-            let baseTitle = getTitleForItem item
-            let imageURL = getImageForItem item
-            let description = getDescriptionFromItem item
-            let pubDate = getPubDateFromItem item
+              let baseTitle = getTitleForItem item
+              let imageURL = getImageForItem item
+              let description = getDescriptionFromItem item
+              let pubDate = getPubDateFromItem item
 
-            if baseTitle <> String.Empty then
-                let fileDetails = getAllFileDetailsForPodcasts item |> fileDetailsListWithoutDuplicates
-                let fileDetailsCount = List.length fileDetails
-                let mutable fileDetailsNumber = 1
-                for fileDetail in fileDetails do
-                    let url = fst fileDetail
+              if baseTitle <> String.Empty then
+                  let fileDetails = getAllFileDetailsForPodcasts item |> fileDetailsListWithoutDuplicates
+                  let fileDetailsCount = List.length fileDetails
+                  let mutable fileDetailsNumber = 1
+                  for fileDetail in fileDetails do
+                      let url = fst fileDetail
                     
-                    if url <> String.Empty then
-                        let title = getPodcastTitle baseTitle fileDetailsNumber fileDetailsCount
-                        fileDetailsNumber <- fileDetailsNumber + 1
+                      if url <> String.Empty then
+                          let title = getPodcastTitle baseTitle fileDetailsNumber fileDetailsCount
+                          fileDetailsNumber <- fileDetailsNumber + 1
 
-                        yield {
-                            Title = title
-                            Description = description
-                            PubDate = pubDate
-                            URL = url
-                            ImageURL = imageURL
-                            FileDetails =
-                            {
-                                FileSize = snd fileDetail
-                                DownloadDate = NoDateTime
-                                ImageFileName = ""
-                            }
-                        }
-          ] |> List.toArray
+                          let podcast = {
+                              Title = title
+                              Description = description
+                              PubDate = pubDate
+                              URL = url
+                              ImageURL = imageURL
+                              FileDetails =
+                              {
+                                  FileSize = snd fileDetail
+                                  DownloadDate = NoDateTime
+                                  ImageFileName = ""
+                              }
+                          }
+
+                          yield podcast
+            ] |> List.toArray
+        with
+        | _ as ex -> failwith ("error: " + ex.Message)          
             
     let private upDateFileDetailsOnPodcastsForNewFeed (oldFeed : Feed) (newFeed : Feed) : Feed =
 
