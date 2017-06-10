@@ -39,6 +39,11 @@ module public FeedFunctions =
         
         // Replace line breaks and multiple spaces with single spaces
         let mutable cleanText = dirtyText.Replace("\r\n", " ").Replace("\n", " ")
+        let mutable length = -1
+        while length <> cleanText.Length do
+          length <- cleanText.Length
+          cleanText <- cleanText.Replace("  ", " ")
+
         cleanText <- cleanText.Replace("  ", " ")
 
         // Replace known special character codes.

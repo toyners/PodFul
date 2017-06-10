@@ -352,3 +352,10 @@ type FeedFunctions_IntergrationTests() =
 
         Asserting.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle podcastDescription firstPodcastURL podcastImageURL
             firstPodcastFileSize podcastPubDate String.Empty
+
+    [<Test>]
+    member public this.``Test``() =
+      let feed = Setup.createTestFeed @"C:\Projects\PodFul_Test\Podcasts\Tea with Alice\download.rss"
+
+      Assert.AreEqual(151, feed.Podcasts.Length)
+      
