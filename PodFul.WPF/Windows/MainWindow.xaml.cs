@@ -30,7 +30,6 @@ namespace PodFul.WPF.Windows
 
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
-    //private IImageResolver imageResolver;
     private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
     private LogController logController;
@@ -286,7 +285,10 @@ namespace PodFul.WPF.Windows
       if (deliverManualDownloadsToDeliveryPoints)
       {
         this.InitialiseDeliveryPoints();
-        podcastDownloadManager.JobCompletedSuccessfullyEvent += job => { this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name); };
+        podcastDownloadManager.JobCompletedSuccessfullyEvent += job => 
+        {
+          this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
+        };
       }
 
       var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager, this.settings.HideCompletedJobs);
@@ -299,14 +301,32 @@ namespace PodFul.WPF.Windows
       podcastDownloadWindow.ShowDialog();
     }
 
+    private IImageResolver CreateImageResolver()
+    {
+      IImageResolver imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
+      imageResolver.CompletedDownloadNotificationEvent += (downloadNumber, imageURL) =>
+      {
+        var message = "Downloaded '" + imageURL + "'";
+        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
+      };
+
+      imageResolver.FailedDownloadNotificationEvent += (imageURL, exception) =>
+      {
+        var message = "Failed to download '" + imageURL + "'. Exception: " + exception.Message;
+        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
+      };
+
+      return imageResolver;
+    }
+
     private IEnumerable<DownloadJob> CreateDownloadJobs(List<Int32> podcastIndexes)
     {
       List<DownloadJob> jobs = new List<DownloadJob>();
-      IImageResolver imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
+      IImageResolver imageResolver = this.CreateImageResolver();
       foreach (var index in podcastIndexes)
       { 
         var podcast = this.currentFeed.Podcasts[index];
-        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection);
+        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, imageResolver);
 
         jobs.Add(downloadJob);
       }
@@ -368,19 +388,7 @@ namespace PodFul.WPF.Windows
         }
       };
 
-      IImageResolver imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
-      imageResolver.CompletedDownloadNotificationEvent += (downloadNumber, imageURL) =>
-      {
-        var message = "Downloaded '" + imageURL + "'";
-        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
-      };
-      
-      imageResolver.FailedDownloadNotificationEvent += (imageURL, exception) =>
-      {
-        var message = "Failed to download '" + imageURL + "'. Exception: " + exception.Message;
-        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
-      };
-
+      IImageResolver imageResolver = this.CreateImageResolver();
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 

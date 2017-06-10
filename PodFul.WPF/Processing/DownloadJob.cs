@@ -24,36 +24,23 @@ namespace PodFul.WPF.Processing
 
     #region Fields
     private Boolean cancellationCanBeRequested = true;
-
     private Visibility cancellationVisibility = Visibility.Visible;
-
     private CancellationTokenSource cancellationTokenSource;
-
     private String exceptionMessage;
-
     private Feed feed;
-
     private IFeedCollection feedCollection;
-
     private Boolean fileSizeNotKnown;
-
     private Boolean useMarqueProgressStyle;
-
     private Int64 podcastSize;
     private Int64 downloadedSize;
     private Int64 percentageStepSize;
-
     private String progressMajorSize;
-
     private String progressMinorSize;
-
     private String progressUnit;
-
     private Int32 progressValue;
-
     private Podcast podcast;
-
     private StatusTypes status;
+    private IImageResolver imageResolver;
     #endregion
 
     #region Construction
@@ -61,27 +48,17 @@ namespace PodFul.WPF.Processing
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
-
       this.exceptionMessage = String.Empty;
-
       this.podcastSize = podcast.FileDetails.FileSize;
-
       this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
-      
       this.percentageStepSize = this.podcastSize / 100;
-
       this.FilePath = Path.Combine(feed.Directory, podcast.FileName);
-
       this.status = StatusTypes.Waiting;
-
       this.podcast = podcast;
-
       this.feed = feed;
-
       this.feedCollection = feedCollection;
-
       var podcastSizeForDescription = String.Empty;
-      if (podcastSize == -1)
+      if (podcastSize <= 0)
       {
         podcastSizeForDescription = "(unknown)";
       }
@@ -91,6 +68,12 @@ namespace PodFul.WPF.Processing
       }
 
       this.Description = "Feed: " + this.feed.Title + "\r\nSize: " + podcastSizeForDescription;
+    }
+
+    public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, IImageResolver imageResolver)
+      : this(podcast, feed, feedCollection)
+    {
+      this.imageResolver = imageResolver;
     }
     #endregion
 
@@ -242,6 +225,11 @@ namespace PodFul.WPF.Processing
       if (!fileInfo.Exists)
       {
         throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
+      }
+
+      if (this.imageResolver != null)
+      {
+        this.imageResolver.ResolvePodcastImage(this.podcast);
       }
 
       this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
