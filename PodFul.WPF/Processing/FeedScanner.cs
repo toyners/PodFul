@@ -274,7 +274,7 @@ namespace PodFul.WPF.Processing
 
     private void DownloadPodcastImages(Podcast[] podcasts, CancellationToken cancellationToken)
     {
-      if (this.imageResolver != null)
+      if (this.imageResolver == null)
       {
         return;
       }
