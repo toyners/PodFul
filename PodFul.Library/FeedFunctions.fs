@@ -108,7 +108,7 @@ module public FeedFunctions =
         | _ -> length |> Int64.Parse
 
     let private isAudioFile mimeType : bool =
-        mimeType = "audio/mpeg3" || mimeType = "audio/mpeg"
+        mimeType = "audio/mpeg3" || mimeType = "audio/mpeg" || mimeType = "audio/mp3"
 
     let private enclourseElementName : XName = xn "enclosure"
 
