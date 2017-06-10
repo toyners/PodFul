@@ -22,19 +22,12 @@ namespace PodFul.WPF.Processing
   {
     #region Fields
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
     private DownloadManager downloadManager;
-
     private IFeedCollection feedCollection;
-
     private Queue<Int32> feedIndexes;
-
     private MessagePool fileDeliveryLogger;
-
     private IImageResolver imageResolver;
-
     private ILogController logController;
-
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
     #endregion
 
