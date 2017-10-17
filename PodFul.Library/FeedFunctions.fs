@@ -249,7 +249,7 @@ module public FeedFunctions =
             with
             | _ as ex ->
                     tryCount <- tryCount - 1
-                    if retryCount = 0 then
+                    if tryCount = 0 then
                         reraise()
 
         data
