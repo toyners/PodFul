@@ -47,8 +47,10 @@
               <DataTemplate>
                 <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">
                   <Grid>
-                    <ProgressBar Margin="0" Height="30" Value="{Binding ProgressValue}" IsIndeterminate="{Binding UseMarqueProgressStyle}" />
-                    <Grid>
+                    <ProgressBar Margin="0" Height="30" 
+                                 Value="{Binding ProgressValue}" 
+                                 IsIndeterminate="{Binding UseMarqueProgressStyle}" />
+                    <Grid ToolTip="{Binding Description}">
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="8.5*"/>
                         <ColumnDefinition Width="*"/>
