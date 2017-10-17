@@ -64,7 +64,7 @@ namespace PodFul.WPF.Processing
       }
       else
       {
-        podcastSizeForDescription = Miscellaneous.GetReadableFileSize(podcastSize) + "(" + podcastSize + " bytes)";
+        podcastSizeForDescription = Miscellaneous.GetReadableFileSize(podcastSize) + "Mb (" + podcastSize.ToString("{0:n0}") + " bytes)";
       }
 
       this.Description = "Feed: " + this.feed.Title + "\r\nSize: " + podcastSizeForDescription;
