@@ -71,10 +71,9 @@ type FeedFunctions_UnitTests() =
         try 
             FeedFunctions.CreateFeed badURL null directory "" System.Threading.CancellationToken.None |> ignore
         with
-        | _ as e ->
-            let r = e :? System.Net.WebException
-            Assert.IsNotNull(r)
-            
+        | :? System.Net.WebException as webex ->
             testSuccessful <- true
+        | _ ->
+            testSuccessful <- false // Explicit assignment to help readability
 
         Assert.AreEqual(true, testSuccessful)
