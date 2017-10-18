@@ -100,6 +100,11 @@
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">
+      <Name>PodFul.TestSupport</Name>
+      <Project>{38f191e9-f7dc-48bb-8a82-f1156489942b}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\PodFul.WPF\PodFul.WPF.csproj">
       <Name>PodFul.WPF</Name>
       <Project>{acc61fe2-7dcb-4b41-9c2d-3de3016dcf69}</Project>

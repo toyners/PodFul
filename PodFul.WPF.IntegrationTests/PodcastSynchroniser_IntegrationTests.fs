@@ -5,6 +5,7 @@ open System.IO
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
+open PodFul.TestSupport
 open PodFul.WPF.Miscellaneous
 
 type PodcastSynchroniser_IntegrationTests() =
@@ -12,19 +13,7 @@ type PodcastSynchroniser_IntegrationTests() =
     let workingDirectory = @"C:\Projects\PodFul\PodFul.WPF.IntegrationTests\Test\PodcastSynchroniser_IntegrationTests\";
 
     let createPodcastRecord title url =
-        {
-            Title = title
-            Description = "Description"
-            URL = url
-            ImageURL = "imageURL"
-            PubDate = DateTime.MinValue
-            FileDetails = 
-            {
-                FileSize = 0L
-                DownloadDate = DateTime.MinValue
-                ImageFileName = String.Empty
-            }
-        }        
+        Setup.createTestPodcast title "Description" url DateTime.MinValue 0L DateTime.MinValue String.Empty "imageURL"
 
     let createFeed directory podcastList =
         {

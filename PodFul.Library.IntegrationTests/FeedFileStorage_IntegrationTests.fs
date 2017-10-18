@@ -3,6 +3,7 @@
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
+open PodFul.TestSupport
 open System
 open System.IO
 
@@ -42,19 +43,7 @@ type FeedFileStorage_IntergrationTests() =
             DeliverDownloadsOnScan = true
             Podcasts = 
             [|
-                {
-                    Title = podcastTitle
-                    Description = podcastDescription
-                    URL = podcastURL
-                    ImageURL = podcastImageURL
-                    PubDate = podcastPubDate
-                    FileDetails =
-                    {
-                        FileSize = podcastFileSize
-                        DownloadDate = new DateTime(2017, 1, 2)
-                        ImageFileName = podcastImageFileName
-                    }
-                };           
+                Setup.createTestPodcast podcastTitle podcastDescription podcastURL podcastPubDate podcastFileSize (new DateTime(2017, 1, 2)) podcastImageFileName podcastImageURL
             |]
         }
 

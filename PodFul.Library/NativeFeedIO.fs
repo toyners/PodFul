@@ -64,6 +64,7 @@ type NativeFeedIO() =
               FileSize = Int64.Parse(fields.[3])
               DownloadDate = NativeFeedIO.getDateTimeAt fields 5
               ImageFileName = fields.[6]
+              FileName = ""
           }
         }
 

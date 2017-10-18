@@ -44,6 +44,7 @@ module public Setup =
                     FileSize = fileSize
                     DownloadDate = downloadDate
                     ImageFileName = imageFileName
+                    FileName = ""
                 }
         }
 

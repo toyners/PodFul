@@ -7,6 +7,7 @@ open Jabberwocky.Toolkit.Assembly
 open Jabberwocky.Toolkit.IO
 open NUnit.Framework
 open PodFul.Library
+open PodFul.TestSupport
 
 type ResolveImages_IntegrationTests() =
 
@@ -30,19 +31,7 @@ type ResolveImages_IntegrationTests() =
     let failWithExceptionHandlingFunctionTask = Action<string, System.Exception> failWithExceptionHandlingFunction
     
     let createTestPodcast imageFileName imageURL =
-        {
-            Title = ""
-            Description = ""
-            URL = ""
-            ImageURL = imageURL
-            PubDate = System.DateTime.Now
-            FileDetails =
-                {
-                    FileSize = 0L
-                    DownloadDate = System.DateTime.Now
-                    ImageFileName = imageFileName
-                }
-        }
+        Setup.createTestPodcast String.Empty String.Empty String.Empty DateTime.Now 0L DateTime.Now imageFileName imageURL
 
     let runResolveImagesWithoutFeedBack (podcasts : Podcast[]) (localImageDirectory : string) (defaultImagePath : string) resolveLocalFilePathFunction =
 

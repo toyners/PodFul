@@ -181,6 +181,7 @@ module public FeedFunctions =
                                   FileSize = snd fileDetail
                                   DownloadDate = NoDateTime
                                   ImageFileName = ""
+                                  FileName = ""
                               }
                           }
 

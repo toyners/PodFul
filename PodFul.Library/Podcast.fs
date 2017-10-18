@@ -67,6 +67,7 @@ type Podcast =
                         FileSize = fileSize
                         DownloadDate = downloadDate
                         ImageFileName = imageFileName
+                        FileName = this.FileDetails.FileName
                     }
 
         member this.SetImageFileName imageFileName = 

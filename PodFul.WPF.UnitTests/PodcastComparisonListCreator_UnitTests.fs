@@ -3,24 +3,13 @@
 open System
 open NUnit.Framework
 open PodFul.Library
+open PodFul.TestSupport
 open PodFul.WPF.Processing
 
 type PodcastComparisonListCreator_UnitTests() =
 
     member private this.CreatePodcast title = 
-        {
-            Title = title
-            Description = "Description"
-            URL = "url"
-            ImageURL = "imageurl"
-            PubDate = DateTime.MinValue
-            FileDetails = 
-            {
-                FileSize = 0L
-                DownloadDate = DateTime.MinValue
-                ImageFileName = "imagefilename"
-            }
-        }
+        Setup.createTestPodcast title "Description" "url" DateTime.MinValue 0L DateTime.MinValue "imagefilename" "imageurl"
 
     member private this.CreatePodcastList titles =
         [for title in titles do
