@@ -67,4 +67,16 @@ type FinalisingFileNameFunctions_UnitTests() =
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
 
+    [<Test>]
+    member public this.``Finalising urls with clashes using simple finalising function``() =
 
+        let podcasts =
+            [
+                Setup.createTestPodcast "title1" "description1" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1"
+                Setup.createTestPodcast "title2" "description2" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2"
+                Setup.createTestPodcast "title3" "description3" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3"
+            ]
+            
+        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm podcasts
+
+        Assert.AreEqual(false, fst results)
