@@ -36,33 +36,3 @@ type Podcast_UnitTest() =
         Assert.AreEqual(2L, podcast.FileDetails.FileSize)
         Assert.AreEqual(DateTime.MaxValue, podcast.FileDetails.DownloadDate)
         Assert.AreEqual(imageFileName, podcast.FileDetails.ImageFileName)
-
-    [<Test>]
-    [<TestCase(null)>]
-    [<TestCase("")>]
-    member public this.``Getting file name when URL is null or empty throws meaningful exception``(url : string) =
-
-        let podcast = Setup.createTestPodcast "title" "description" url (new DateTime(2016, 12, 31)) 1L FeedFunctions.NoDateTime "image" ""
-
-        let mutable testSuccessful = false
-        try
-            podcast.FileName |> ignore
-        with
-        | _ as e ->
-            Assert.AreEqual("Cannot get FileName: URL is null or empty.", e.Message)
-            testSuccessful <- true
-
-        Assert.AreEqual(true, testSuccessful)
-
-    [<Test>]
-    [<TestCase("fileName.mp3")>]
-    [<TestCase("http://abc.com/fileName.mp3")>]
-    [<TestCase(@"C:\abc\fileName.mp3")>]
-    [<TestCase("http://abc.com/fileName.mp3?dest-id=92518")>]
-    [<TestCase("http://abc.com/fileName")>]
-    [<TestCase("http://abc.mp3.com/fileName")>]
-    member public this.``Getting file name when URL is valid returns file name only``(url : string) =
-
-        let podcast = Setup.createTestPodcast "title" "description" url (new DateTime(2016, 12, 31)) 1L FeedFunctions.NoDateTime "image" ""
-
-        Assert.AreEqual("fileName.mp3", podcast.FileName)
