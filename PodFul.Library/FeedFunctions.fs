@@ -148,7 +148,10 @@ module public FeedFunctions =
         else
             baseTitle + " [" + fileDetailsNumber.ToString() + " of " + fileDetailsCount.ToString() + "]"
 
-    let private createPodcastArrayFromDocument (document: XDocument) =
+    let private finaliseFileNames (podcasts : list<Podcast>) : list<Podcast> =
+        podcasts 
+
+    let private createPodcastArrayFromDocument (document: XDocument) : Podcast[] =
 
         try
           let items = document.Descendants(xn "item")
@@ -186,7 +189,7 @@ module public FeedFunctions =
                           }
 
                           yield podcast
-            ] |> List.toArray
+            ] |> finaliseFileNames |> List.toArray
         with
         | _ as ex -> failwith ("error: " + ex.Message)          
             
