@@ -66,6 +66,7 @@
     <Compile Include="NativeFileStorage.fs" />
     <Content Include="packages.config" />
     <Compile Include="ImageFunctions.fs" />
+    <Compile Include="FinalisingFileNameFunctions.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">

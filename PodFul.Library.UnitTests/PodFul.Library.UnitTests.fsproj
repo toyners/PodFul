@@ -56,6 +56,7 @@
     <Compile Include="ImageFunctions_UnitTests.fs" />
     <Compile Include="Feed_UnitTests.fs" />
     <Compile Include="Podcast_UnitTest.fs" />
+    <Compile Include="FinalisingFileNameFunctions_UnitTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">
