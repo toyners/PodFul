@@ -143,3 +143,17 @@ type FinalisingFileNameFunctions_UnitTests() =
         Assert.AreEqual(true, fst results)
         Assert.AreEqual(1,  List.length <| (snd results))
         Assert.AreEqual(expectedFileName, podcasts.[0].FileDetails.FileName)
+
+    [<Test>]
+    [<TestCase("file:Name.mp3", "file-c-Name.mp3")>]
+    [<TestCase("file*Name.mp3", "file-a-Name.mp3")>]
+    [<TestCase("file?Name.mp3", "file-q-Name.mp3")>]
+    [<TestCase("file\"Name.mp3", "file-qu-Name.mp3")>]
+    [<TestCase("file<Name.mp3", "file-lt-Name.mp3")>]
+    [<TestCase("file>Name.mp3", "file-rt-Name.mp3")>]
+    [<TestCase("file|Name.mp3", "file-b-Name.mp3")>]
+    member public this.``Substitute bad file name characters``(fileName : string, expectedFileName : string) =
+
+        let actualFileName = FinalisingFileNameFunctions.substituteBadFileNameCharacters fileName
+
+        Assert.AreEqual(expectedFileName, actualFileName)
