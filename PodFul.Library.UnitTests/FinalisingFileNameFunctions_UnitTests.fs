@@ -12,17 +12,20 @@ type FinalisingFileNameFunctions_UnitTests() =
     [<TestCase("")>]
     member public this.``Finalising null or empty url results in default file name from standard finalising function``(url : string) =
 
-        let expectedFileName = "file_" + DateTime.Now.ToString("ddMMyyyy") + "_1.mp3"
+        let expectedFileName1 = "file_" + DateTime.Now.ToString("ddMMyyyy") + "_1.mp3"
+        let expectedFileName2 = "file_" + DateTime.Now.ToString("ddMMyyyy") + "_2.mp3"
         let podcasts =
             [
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL"
+                Setup.createTestPodcast "title2" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL"
             ]
 
         let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(1,  List.length <| (snd results))
-        Assert.AreEqual(expectedFileName, podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual(2,  List.length <| (snd results))
+        Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
 
     [<Test>]
     [<TestCase("fileName.mp3")>]
@@ -86,18 +89,20 @@ type FinalisingFileNameFunctions_UnitTests() =
     [<TestCase("")>]
     member public this.``Finalising null or empty url results in default file name from alternate finalising function``(url : string) =
 
-        let expectedFileName = "file_" + DateTime.Now.ToString("ddMMyyyy") + "_1.mp3"
+        let expectedFileName1 = "file_" + DateTime.Now.ToString("ddMMyyyy") + "_1.mp3"
+        let expectedFileName2 = "file_" + DateTime.Now.ToString("ddMMyyyy") + "_2.mp3"
         let podcasts =
             [
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL"
+                Setup.createTestPodcast "title2" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL"
             ]
 
         let results = FinalisingFileNameFunctions.finaliseUsingAlternateAlgorithm podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(1,  List.length <| (snd results))
-        Assert.AreEqual(expectedFileName, podcasts.[0].FileDetails.FileName)
-
+        Assert.AreEqual(2,  List.length <| (snd results))
+        Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
 
     [<Test>]
     member public this.``Finalising urls with clashes using alternate finalising function``() =
@@ -150,7 +155,7 @@ type FinalisingFileNameFunctions_UnitTests() =
     [<TestCase("file?Name.mp3", "file-q-Name.mp3")>]
     [<TestCase("file\"Name.mp3", "file-qu-Name.mp3")>]
     [<TestCase("file<Name.mp3", "file-lt-Name.mp3")>]
-    [<TestCase("file>Name.mp3", "file-rt-Name.mp3")>]
+    [<TestCase("file>Name.mp3", "file-gt-Name.mp3")>]
     [<TestCase("file|Name.mp3", "file-b-Name.mp3")>]
     member public this.``Substitute bad file name characters``(fileName : string, expectedFileName : string) =
 
