@@ -75,6 +75,12 @@ module public FinalisingFileNameFunctions =
         let createDefaultFileName (fileCount : int) =
             "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
 
+        let getSlashIndex (url : string) =
+            let result = url.LastIndexOf('/') + 1
+            match (result) with
+            | 0 -> url.LastIndexOf('\\') + 1
+            | _ -> result
+
         let sequenceGenerator index = podcasts.Item index
 
         let appendFileExtension (name : string) : string = 
@@ -83,6 +89,9 @@ module public FinalisingFileNameFunctions =
             | _ -> name
 
         let getSecondLastFragmentFromURL (url : string) : string = 
+
+            
+
             raise (new System.NotImplementedException())
 
         let mutable existingNames = Set.empty
