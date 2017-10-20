@@ -19,12 +19,26 @@ module public FinalisingFileNameFunctions =
                                             ( "|", "-b-" )
                                         ])
 
+    let getLastSlashIndex (url : string) =
+        let result = url.LastIndexOf('/')
+        match (result) with
+        | -1 -> url.LastIndexOf('\\')
+        | _ -> result
+
+    let getLastFragmentFromURL (url : string) =
+        let firstCharacterOfFragmentIndex = (getLastSlashIndex url) + 1
+        let mp3Index = url.LastIndexOf(".mp3")
+        let mp3IndexGreaterThanSlashIndex = mp3Index - firstCharacterOfFragmentIndex > 1
+        match (mp3IndexGreaterThanSlashIndex) with
+        | true -> url.Substring(firstCharacterOfFragmentIndex, mp3Index - firstCharacterOfFragmentIndex + ".mp3".Length)
+        | _ -> url.Substring(firstCharacterOfFragmentIndex)
+
     let finaliseUsingStandardAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
 
         let createDefaultFileName (fileCount : int) =
             "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
 
-        let getLastSlashIndex (url : string) =
+        (*let getLastSlashIndex (url : string) =
             let result = url.LastIndexOf('/') + 1
             match (result) with
             | 0 -> url.LastIndexOf('\\') + 1
@@ -36,7 +50,7 @@ module public FinalisingFileNameFunctions =
             let mp3IndexGreaterThanSlashIndex = mp3Index - slashIndex > 1
             match (mp3IndexGreaterThanSlashIndex) with
             | true -> url.Substring(slashIndex, mp3Index - slashIndex + ".mp3".Length)
-            | _ -> url.Substring(slashIndex)
+            | _ -> url.Substring(slashIndex)*)
 
         let appendFileExtension (name : string) : string = 
             match (name.EndsWith(".mp3")) with
@@ -75,26 +89,12 @@ module public FinalisingFileNameFunctions =
         let createDefaultFileName (fileCount : int) =
             "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
 
-        let getLastSlashIndex (url : string) =
-            let result = url.LastIndexOf('/')
-            match (result) with
-            | -1 -> url.LastIndexOf('\\')
-            | _ -> result
-
         let sequenceGenerator index = podcasts.Item index
 
         let appendFileExtension (name : string) : string = 
             match (name.EndsWith(".mp3")) with
             | false -> name + ".mp3"
             | _ -> name
-
-        let getLastFragmentFromURL (url : string) =
-            let firstCharacterOfFragmentIndex = (getLastSlashIndex url) + 1
-            let mp3Index = url.LastIndexOf(".mp3")
-            let mp3IndexGreaterThanSlashIndex = mp3Index - firstCharacterOfFragmentIndex > 1
-            match (mp3IndexGreaterThanSlashIndex) with
-            | true -> url.Substring(firstCharacterOfFragmentIndex, mp3Index - firstCharacterOfFragmentIndex + ".mp3".Length)
-            | _ -> url.Substring(firstCharacterOfFragmentIndex)
 
         let getSecondLastFragmentFromURL (url : string) : string = 
 
