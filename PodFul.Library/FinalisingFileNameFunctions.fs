@@ -19,8 +19,6 @@ module public FinalisingFileNameFunctions =
                                             ( "|", "-b-" )
                                         ])
 
-
-
     let finaliseUsingStandardAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
 
         let createDefaultFileName (fileCount : int) =
@@ -64,8 +62,6 @@ module public FinalisingFileNameFunctions =
 
         let sequenceGenerator index = podcasts.Item index
         
-        let containsFileName (podcast : Podcast) = Set.contains podcast.FileDetails.FileName existingNames
-
         let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
                             Seq.takeWhile setPodcastFileName
         
@@ -75,7 +71,44 @@ module public FinalisingFileNameFunctions =
         | _ -> (false, podcasts)
 
     let finaliseUsingAlternateAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
-        raise (new System.NotImplementedException())
+
+        let createDefaultFileName (fileCount : int) =
+            "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
+
+        let sequenceGenerator index = podcasts.Item index
+
+        let appendFileExtension (name : string) : string = 
+            match (name.EndsWith(".mp3")) with
+            | false -> name + ".mp3"
+            | _ -> name
+
+        let getSecondLastFragmentFromURL (url : string) : string = 
+            raise (new System.NotImplementedException())
+
+        let mutable existingNames = Set.empty
+
+        let getName (url : string) =
+            match (String.IsNullOrEmpty(url)) with
+            | true -> createDefaultFileName ((Set.count existingNames) + 1)
+            | _ -> getSecondLastFragmentFromURL url |> appendFileExtension
+
+        let setPodcastFileName (podcast : Podcast) : bool = 
+            let name = getName podcast.URL
+            let b = Set.contains name existingNames
+            match (b) with
+            | false -> 
+                podcast.SetFileName name
+                existingNames <- Set.add name existingNames
+                true
+            | _ -> false
+
+        let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
+                            Seq.takeWhile setPodcastFileName
+        
+        let seqCount = Seq.length resultsSeq
+        match (podcasts.Length = seqCount) with
+        | true -> (true, podcasts)
+        | _ -> (false, podcasts)
 
     let substituteBadFileNameCharacters (fileName : string) : string = 
         fileName.Substitute(illegalCharacterSubstitutes)
