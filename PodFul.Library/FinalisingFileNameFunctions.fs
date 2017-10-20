@@ -24,14 +24,14 @@ module public FinalisingFileNameFunctions =
         let createDefaultFileName (fileCount : int) =
             "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
 
-        let getSlashIndex (url : string) =
+        let getLastSlashIndex (url : string) =
             let result = url.LastIndexOf('/') + 1
             match (result) with
             | 0 -> url.LastIndexOf('\\') + 1
             | _ -> result
 
         let getLastFragmentFromURL (url : string) =
-            let slashIndex = getSlashIndex url
+            let slashIndex = getLastSlashIndex url
             let mp3Index = url.LastIndexOf(".mp3")
             let mp3IndexGreaterThanSlashIndex = mp3Index - slashIndex > 1
             match (mp3IndexGreaterThanSlashIndex) with
@@ -75,7 +75,7 @@ module public FinalisingFileNameFunctions =
         let createDefaultFileName (fileCount : int) =
             "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
 
-        let getSlashIndex (url : string) =
+        let getLastSlashIndex (url : string) =
             let result = url.LastIndexOf('/') + 1
             match (result) with
             | 0 -> url.LastIndexOf('\\') + 1
