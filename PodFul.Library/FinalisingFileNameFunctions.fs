@@ -52,13 +52,13 @@ module public FinalisingFileNameFunctions =
 
         let setPodcastFileName (podcast : Podcast) : bool = 
             let name = getName podcast.URL
-            let b = Set.contains name existingNames
-            match (b) with
-            | false -> 
+            let nameNotUsed = not <| Set.contains name existingNames
+            match (nameNotUsed) with
+            | true -> 
                 podcast.SetFileName name
                 existingNames <- Set.add name existingNames
-                true
-            | _ -> false
+                nameNotUsed
+            | _ -> nameNotUsed
 
         let sequenceGenerator index = podcasts.Item index
         
@@ -94,13 +94,13 @@ module public FinalisingFileNameFunctions =
 
         let setPodcastFileName (podcast : Podcast) : bool = 
             let name = getName podcast.URL
-            let b = Set.contains name existingNames
-            match (b) with
-            | false -> 
+            let nameNotUsed = not <| Set.contains name existingNames
+            match (nameNotUsed) with
+            | true -> 
                 podcast.SetFileName name
                 existingNames <- Set.add name existingNames
-                true
-            | _ -> false
+                nameNotUsed
+            | _ -> nameNotUsed
 
         let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
                             Seq.takeWhile setPodcastFileName
