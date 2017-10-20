@@ -75,7 +75,17 @@ type Podcast =
                 this.SetAllFileDetails this.FileDetails.FileSize this.FileDetails.DownloadDate imageFileName
 
         member this.SetFileDetails fileSize downloadDate = 
-            this.SetAllFileDetails fileSize downloadDate this.FileDetails.ImageFileName        
+            this.SetAllFileDetails fileSize downloadDate this.FileDetails.ImageFileName  
+            
+        member this.SetFileName (fileName : string) = 
+            if (fileName <> this.FileDetails.FileName) then
+                this.FileDetails <-
+                {
+                    FileSize = this.FileDetails.FileSize
+                    DownloadDate = this.FileDetails.DownloadDate
+                    ImageFileName = this.FileDetails.ImageFileName
+                    FileName = fileName
+                }   
 
         override x.Equals other = 
             match other with
