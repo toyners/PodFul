@@ -76,9 +76,9 @@ module public FinalisingFileNameFunctions =
             "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
 
         let getLastSlashIndex (url : string) =
-            let result = url.LastIndexOf('/') + 1
+            let result = url.LastIndexOf('/')
             match (result) with
-            | 0 -> url.LastIndexOf('\\') + 1
+            | -1 -> url.LastIndexOf('\\')
             | _ -> result
 
         let sequenceGenerator index = podcasts.Item index
@@ -88,11 +88,26 @@ module public FinalisingFileNameFunctions =
             | false -> name + ".mp3"
             | _ -> name
 
+        let getLastFragmentFromURL (url : string) =
+            let firstCharacterOfFragmentIndex = (getLastSlashIndex url) + 1
+            let mp3Index = url.LastIndexOf(".mp3")
+            let mp3IndexGreaterThanSlashIndex = mp3Index - firstCharacterOfFragmentIndex > 1
+            match (mp3IndexGreaterThanSlashIndex) with
+            | true -> url.Substring(firstCharacterOfFragmentIndex, mp3Index - firstCharacterOfFragmentIndex + ".mp3".Length)
+            | _ -> url.Substring(firstCharacterOfFragmentIndex)
+
         let getSecondLastFragmentFromURL (url : string) : string = 
 
-            
+            let lastSlashIndex = getLastSlashIndex url
 
-            raise (new System.NotImplementedException())
+            let getURLWithoutLastFragment (url : string) (lastSlashIndex : int) : string = 
+                match (lastSlashIndex) with
+                | -1 -> url
+                | _ -> url.Substring(0, lastSlashIndex)
+
+            let urlWithoutLastFragment = getURLWithoutLastFragment url lastSlashIndex
+            
+            getLastFragmentFromURL urlWithoutLastFragment
 
         let mutable existingNames = Set.empty
 

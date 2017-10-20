@@ -28,11 +28,12 @@ type FinalisingFileNameFunctions_UnitTests() =
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
 
     [<Test>]
+    [<TestCase("fileName")>]
     [<TestCase("fileName.mp3")>]
-    [<TestCase("http://abc.com/fileName.mp3")>]
     [<TestCase(@"C:\abc\fileName.mp3")>]
-    [<TestCase("http://abc.com/fileName.mp3?dest-id=92518")>]
     [<TestCase("http://abc.com/fileName")>]
+    [<TestCase("http://abc.com/fileName.mp3")>]
+    [<TestCase("http://abc.com/fileName.mp3?dest-id=92518")>]
     [<TestCase("http://abc.mp3.com/fileName")>]
     member public this.``Finalising different url formats using standard finalising function``(url : string) =
 
@@ -127,15 +128,16 @@ type FinalisingFileNameFunctions_UnitTests() =
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
 
     [<Test>]
+    [<TestCase("fileName", "fileName.mp3")>]
     [<TestCase("fileName.mp3", "fileName.mp3")>]
-    [<TestCase("http://abc.com/fileName.mp3", "abc_com.mp3")>]
     [<TestCase(@"C:\abc\fileName.mp3", "abc.mp3")>]
     [<TestCase(@"C:/abc/fileName.mp3", "abc.mp3")>]
     [<TestCase(@"C:\abc\def\fileName.mp3", "def.mp3")>]
     [<TestCase(@"C:/abc/def/fileName.mp3", "def.mp3")>]
-    [<TestCase("http://abc.com/fileName.mp3?dest-id=92518", "abc_com.mp3")>]
-    [<TestCase("http://abc.com/fileName", "abc_com.mp3")>]
-    [<TestCase("http://abc.mp3.com/fileName", "abc_com.mp3")>]
+    [<TestCase("http://abc.com/fileName", "abc.com.mp3")>]
+    [<TestCase("http://abc.com/fileName.mp3", "abc.com.mp3")>]
+    [<TestCase("http://abc.com/fileName.mp3?dest-id=92518", "abc.com.mp3")>]
+    [<TestCase("http://abc.mp3.com/fileName", "abc.mp3")>]
     member public this.``Finalising different url formats using alternate finalising function``(url : string, expectedFileName : string) =
 
         let podcasts =
