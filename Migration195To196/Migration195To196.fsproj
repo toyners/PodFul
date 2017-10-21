@@ -54,7 +54,7 @@
     <Compile Include="PodcastFile195.fs" />
     <Compile Include="Podcast195.fs" />
     <Compile Include="Feed195.fs" />
-    <Compile Include="JSONFeedIO.fs" />
+    <Compile Include="FeedMigration.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
