@@ -53,12 +53,13 @@ module public FinalisingFileNameFunctions =
         let setPodcastFileName (podcast : Podcast) : bool = 
             let name = getName podcast.URL
             let nameNotUsed = not <| Set.contains name existingNames
+            let nameClash = false
             match (nameNotUsed) with
             | true -> 
                 podcast.SetFileName name
                 existingNames <- Set.add name existingNames
                 nameNotUsed
-            | _ -> nameNotUsed
+            | _ -> nameClash
 
         let sequenceGenerator index = podcasts.Item index
         
