@@ -94,5 +94,24 @@ module public FinalisingFileNameFunctions =
     let substituteBadFileNameCharacters (fileName : string) : string = 
         fileName.Substitute(illegalCharacterSubstitutes)
 
-    let finaliseFileNames (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
-        raise (new System.NotImplementedException())
+    let finaliseUsingDefaultAlgorithm (feedName : string) (podcasts : list<Podcast>) : list<Podcast> = 
+
+        let setPodcastFileName (index : int) (podcast : Podcast) = 
+            podcast.SetFileName (feedName + " episode " + (index + 1).ToString() + ".mp3")
+
+        let sequenceGenerator index = podcasts.Item index
+        let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
+                            Seq.iteri setPodcastFileName
+
+        podcasts
+
+    let finaliseFileNames (feedName : string) (podcasts : list<Podcast>) : list<Podcast> = 
+
+        let finalisingResults = finaliseUsingStandardAlgorithm podcasts
+        match (fst finalisingResults) with
+        | true -> snd finalisingResults
+        | _ ->
+            let finalisingResults = finaliseUsingAlternateAlgorithm podcasts
+            match (fst finalisingResults) with
+            | true -> snd finalisingResults
+            | _ -> finaliseUsingDefaultAlgorithm feedName podcasts
