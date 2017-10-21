@@ -17,15 +17,15 @@ type FinalisingFileNameFunctions_UnitTests() =
         let expectedFileName1 = "feed name episode 1.mp3"
         let expectedFileName2 = "feed name episode 2.mp3"
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL"
                 Setup.createTestPodcast "title2" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL"
-            ]
+            |]
 
         let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(2,  List.length <| (snd results))
+        Assert.AreEqual(2,  Array.length <| (snd results))
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
 
@@ -41,14 +41,14 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let expectedFileName = "fileName.mp3"
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL"
-            ]
+            |]
 
         let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm "" podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(1,  List.length <| (snd results))
+        Assert.AreEqual(1,  Array.length <| (snd results))
         Assert.AreEqual(expectedFileName, podcasts.[0].FileDetails.FileName)
 
     [<Test>]
@@ -59,16 +59,16 @@ type FinalisingFileNameFunctions_UnitTests() =
         let expectedFileName3 = "fileName3.mp3"
 
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" "http://abc.com/fileName1.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1"
                 Setup.createTestPodcast "title2" "description2" "http://abc.com/fileName2.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2"
                 Setup.createTestPodcast "title3" "description3" "http://abc.com/fileName3.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3"
-            ]
+            |]
             
         let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(3,  List.length <| (snd results))
+        Assert.AreEqual(3,  Array.length <| (snd results))
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
@@ -77,11 +77,11 @@ type FinalisingFileNameFunctions_UnitTests() =
     member public this.``Finalising urls with clashes using standard finalising function``() =
 
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1"
                 Setup.createTestPodcast "title2" "description2" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2"
                 Setup.createTestPodcast "title3" "description3" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3"
-            ]
+            |]
             
         let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
 
@@ -95,15 +95,15 @@ type FinalisingFileNameFunctions_UnitTests() =
         let expectedFileName1 = "feed name episode 1.mp3"
         let expectedFileName2 = "feed name episode 2.mp3"
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL"
                 Setup.createTestPodcast "title2" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL"
-            ]
+            |]
 
         let results = FinalisingFileNameFunctions.finaliseUsingAlternateAlgorithm feedName podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(2,  List.length <| (snd results))
+        Assert.AreEqual(2,  Array.length <| (snd results))
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
 
@@ -115,16 +115,16 @@ type FinalisingFileNameFunctions_UnitTests() =
         let expectedFileName3 = "episode3.mp3"
 
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1"
                 Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2"
                 Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3"
-            ]
+            |]
             
         let results = FinalisingFileNameFunctions.finaliseUsingAlternateAlgorithm feedName podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(3,  List.length <| (snd results))
+        Assert.AreEqual(3,  Array.length <| (snd results))
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
@@ -143,14 +143,14 @@ type FinalisingFileNameFunctions_UnitTests() =
     member public this.``Finalising different url formats using alternate finalising function``(url : string, expectedFileName : string) =
 
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL"
-            ]
+            |]
 
         let results = FinalisingFileNameFunctions.finaliseUsingAlternateAlgorithm feedName podcasts
 
         Assert.AreEqual(true, fst results)
-        Assert.AreEqual(1,  List.length <| (snd results))
+        Assert.AreEqual(1,  Array.length <| (snd results))
         Assert.AreEqual(expectedFileName, podcasts.[0].FileDetails.FileName)
 
     [<Test>]
@@ -175,15 +175,15 @@ type FinalisingFileNameFunctions_UnitTests() =
         let expectedFileName3 = "episode3.mp3"
 
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1"
                 Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2"
                 Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3"
-            ]
+            |]
             
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(3,  List.length results)
+        Assert.AreEqual(3,  Array.length results)
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
@@ -197,16 +197,16 @@ type FinalisingFileNameFunctions_UnitTests() =
         let expectedFileName4 = "feed name episode 4.mp3"
 
         let podcasts =
-            [
+            [|
                 Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1"
                 Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2"
                 Setup.createTestPodcast "title3" "description3" "http://abc.com/episode/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3"
                 Setup.createTestPodcast "title4" "description4" "http://abc.com/episode/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4"
-            ]
+            |]
             
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(4,  List.length results)
+        Assert.AreEqual(4,  Array.length results)
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)

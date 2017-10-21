@@ -36,7 +36,7 @@ module public FinalisingFileNameFunctions =
     let substituteBadFileNameCharacters (fileName : string) : string = 
         fileName.Substitute(illegalCharacterSubstitutes)
 
-    let finaliseUsingAlgorithm (urlProcessingFunc) (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> =
+    let finaliseUsingAlgorithm (urlProcessingFunc) (feedName : string) (podcasts : Podcast[]) : bool * Podcast[] =
 
         let mutable podcastCount = 0
         let mutable existingNames = Set.empty
@@ -67,7 +67,7 @@ module public FinalisingFileNameFunctions =
                 nameNotUsed
             | _ -> nameClash
 
-        let sequenceGenerator index = podcasts.Item index
+        let sequenceGenerator index = podcasts.[index]
         
         let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
                             Seq.takeWhile setPodcastFileName
@@ -78,10 +78,10 @@ module public FinalisingFileNameFunctions =
         | _ -> (false, podcasts)
 
 
-    let finaliseUsingStandardAlgorithm (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
+    let finaliseUsingStandardAlgorithm (feedName : string) (podcasts : Podcast[]) : bool * Podcast[] = 
         finaliseUsingAlgorithm getLastFragmentFromURL feedName podcasts
 
-    let finaliseUsingAlternateAlgorithm (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
+    let finaliseUsingAlternateAlgorithm (feedName : string) (podcasts : Podcast[]) : bool * Podcast[] = 
 
         let getSecondLastFragmentFromURL (url : string) : string = 
 
@@ -98,19 +98,19 @@ module public FinalisingFileNameFunctions =
 
         finaliseUsingAlgorithm getSecondLastFragmentFromURL feedName podcasts
 
-    let finaliseUsingDefaultAlgorithm (feedName : string) (podcasts : list<Podcast>) : list<Podcast> = 
+    let finaliseUsingDefaultAlgorithm (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
 
         let cleanFeedName = substituteBadFileNameCharacters feedName 
         let setPodcastFileName (index : int) (podcast : Podcast) = 
             (cleanFeedName + " episode " + (index + 1).ToString() + ".mp3") |> podcast.SetFileName
 
-        let sequenceGenerator index = podcasts.Item index
+        let sequenceGenerator index = podcasts.[index]
         let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
                             Seq.iteri setPodcastFileName
 
         podcasts
 
-    let finaliseFileNames (feedName : string) (podcasts : list<Podcast>) : list<Podcast> = 
+    let finaliseFileNames (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
 
         let finalisingResults = finaliseUsingStandardAlgorithm feedName podcasts
         match (fst finalisingResults) with
