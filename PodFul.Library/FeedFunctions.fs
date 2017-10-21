@@ -270,13 +270,17 @@ module public FeedFunctions =
             podcast.SetImageFileName defaultImagePath    
         feed
 
+    let private setFileNamesForPodcasts (feed : Feed) : Feed =
+        feed
+
     let public CreateFeed url saveFilePath directoryPath defaultImagePath cancelToken : Feed =
         createWebClient |>
         downloadFeedData url 5 |>
         saveToFile saveFilePath |>
         createXMLDocumentFromData |>
         createFeedRecord url directoryPath String.Empty DateTime.Now |>
-        setAllPodcastsToHaveDefaultImage defaultImagePath
+        setAllPodcastsToHaveDefaultImage defaultImagePath |>
+        setFileNamesForPodcasts
 
     let public UpdateFeed feed filePath cancelToken : Feed = 
         createWebClient |>
@@ -286,5 +290,6 @@ module public FeedFunctions =
         createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
         Feed.SetUpdatedDate feed.UpdatedDateTime |>
         Feed.SetScanningFlags feed.DoScan feed.CompleteDownloadsOnScan feed.DeliverDownloadsOnScan |> 
-        updateFileDetailsOnPodcastsForNewFeed feed
+        updateFileDetailsOnPodcastsForNewFeed feed |>
+        setFileNamesForPodcasts
 
