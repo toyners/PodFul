@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.FileDelivery.Integra
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.TestSupport", "PodFul.TestSupport\PodFul.TestSupport.fsproj", "{38F191E9-F7DC-48BB-8A82-F1156489942B}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Migration195To196", "Migration195To196\Migration195To196.fsproj", "{981AB91E-389B-485A-8B50-B7A97EBC92DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{38F191E9-F7DC-48BB-8A82-F1156489942B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38F191E9-F7DC-48BB-8A82-F1156489942B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38F191E9-F7DC-48BB-8A82-F1156489942B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{981AB91E-389B-485A-8B50-B7A97EBC92DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981AB91E-389B-485A-8B50-B7A97EBC92DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981AB91E-389B-485A-8B50-B7A97EBC92DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981AB91E-389B-485A-8B50-B7A97EBC92DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
