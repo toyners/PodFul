@@ -72,10 +72,10 @@ module public FinalisingFileNameFunctions =
         | _ -> (false, podcasts)
 
 
-    let finaliseUsingStandardAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
+    let finaliseUsingStandardAlgorithm (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
         finaliseUsingAlgorithm getLastFragmentFromURL podcasts
 
-    let finaliseUsingAlternateAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
+    let finaliseUsingAlternateAlgorithm (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
 
         let getSecondLastFragmentFromURL (url : string) : string = 
 
@@ -108,11 +108,11 @@ module public FinalisingFileNameFunctions =
 
     let finaliseFileNames (feedName : string) (podcasts : list<Podcast>) : list<Podcast> = 
 
-        let finalisingResults = finaliseUsingStandardAlgorithm podcasts
+        let finalisingResults = finaliseUsingStandardAlgorithm feedName podcasts
         match (fst finalisingResults) with
         | true -> snd finalisingResults
         | _ ->
-            let finalisingResults = finaliseUsingAlternateAlgorithm podcasts
+            let finalisingResults = finaliseUsingAlternateAlgorithm feedName podcasts
             match (fst finalisingResults) with
             | true -> snd finalisingResults
             | _ -> finaliseUsingDefaultAlgorithm feedName podcasts
