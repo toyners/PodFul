@@ -48,7 +48,7 @@ namespace PodFul.Winforms
 
         this.OnBeforeDownload?.Invoke(podcast);
 
-        var filePath = Path.Combine(directoryPath, podcast.FileName);
+        var filePath = Path.Combine(directoryPath, podcast.FileDetails.FileName);
         Task downloadTask = downloader.DownloadAsync(podcast.URL, filePath, this.cancellationToken, this.updateProgress);
 
         try

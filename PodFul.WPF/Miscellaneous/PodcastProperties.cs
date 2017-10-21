@@ -25,7 +25,7 @@ namespace PodFul.WPF.Miscellaneous
       }
       else
       {
-        this.FilePath = Path.Combine(feedDirectory, podcast.FileName);
+        this.FilePath = Path.Combine(feedDirectory, podcast.FileDetails.FileName);
         if (!File.Exists(this.FilePath))
         {
           this.FilePath = "<No File>";

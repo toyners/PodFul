@@ -52,7 +52,7 @@ namespace PodFul.WPF.Processing
       this.podcastSize = podcast.FileDetails.FileSize;
       this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
       this.percentageStepSize = this.podcastSize / 100;
-      this.FilePath = Path.Combine(feed.Directory, podcast.FileName);
+      this.FilePath = Path.Combine(feed.Directory, podcast.FileDetails.FileName);
       this.status = StatusTypes.Waiting;
       this.podcast = podcast;
       this.feed = feed;

@@ -18,7 +18,7 @@ namespace PodFul.WPF.Miscellaneous
       for (int i = 0; i < feed.Podcasts.Length; i++)
       {
         var podcast = feed.Podcasts[i];
-        var podcastFilePath = Path.Combine(feed.Directory, podcast.FileName);
+        var podcastFilePath = Path.Combine(feed.Directory, podcast.FileDetails.FileName);
         var podcastFileInfo = new FileInfo(podcastFilePath);
         if (!podcastFileInfo.Exists)
         {
