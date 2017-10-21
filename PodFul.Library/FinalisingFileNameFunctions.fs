@@ -93,3 +93,6 @@ module public FinalisingFileNameFunctions =
 
     let substituteBadFileNameCharacters (fileName : string) : string = 
         fileName.Substitute(illegalCharacterSubstitutes)
+
+    let finaliseFileNames (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
+        raise (new System.NotImplementedException())
