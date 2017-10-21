@@ -60,13 +60,13 @@
     <Compile Include="JSONFeedIO.fs" />
     <Compile Include="IFeedStorage.fs" />
     <Compile Include="FileDownloader.fs" />
+    <Compile Include="FinalisingFileNameFunctions.fs" />
     <Compile Include="FeedFunctions.fs" />
     <Compile Include="NativeFeedIO.fs" />
     <Compile Include="JSONFileStorage.fs" />
     <Compile Include="NativeFileStorage.fs" />
     <Content Include="packages.config" />
     <Compile Include="ImageFunctions.fs" />
-    <Compile Include="FinalisingFileNameFunctions.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data">

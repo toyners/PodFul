@@ -271,6 +271,7 @@ module public FeedFunctions =
         feed
 
     let private setFileNamesForPodcasts (feed : Feed) : Feed =
+        FinalisingFileNameFunctions.finaliseFileNames feed.Title feed.Podcasts |> ignore
         feed
 
     let public CreateFeed url saveFilePath directoryPath defaultImagePath cancelToken : Feed =
