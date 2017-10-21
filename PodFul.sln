@@ -32,6 +32,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PodFul.TestSupport", "PodFu
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Migration195To196", "Migration195To196\Migration195To196.fsproj", "{981AB91E-389B-485A-8B50-B7A97EBC92DD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{19CA3F0F-4F01-4BB5-BAA1-78C52E96D09A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,5 +91,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{981AB91E-389B-485A-8B50-B7A97EBC92DD} = {19CA3F0F-4F01-4BB5-BAA1-78C52E96D09A}
 	EndGlobalSection
 EndGlobal
