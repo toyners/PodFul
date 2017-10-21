@@ -12,8 +12,8 @@ type PodcastSynchroniser_IntegrationTests() =
 
     let workingDirectory = @"C:\Projects\PodFul\PodFul.WPF.IntegrationTests\Test\PodcastSynchroniser_IntegrationTests\";
 
-    let createPodcastRecord title url =
-        Setup.createTestPodcast title "Description" url DateTime.MinValue 0L DateTime.MinValue String.Empty "imageURL"
+    let createPodcastRecord title url filePath =
+        Setup.createTestPodcast title "Description" url DateTime.MinValue 0L DateTime.MinValue String.Empty "imageURL" filePath
 
     let createFeed directory podcastList =
         {
@@ -47,11 +47,12 @@ type PodcastSynchroniser_IntegrationTests() =
     [<Test>]
     member public this.``Synchronising feed with one podcast file returns correct sync count``() =
 
-        let filePath = Path.Combine(workingDirectory, "file.mp3")
+        let fileName = "file.mp3"
+        let filePath = Path.Combine(workingDirectory, fileName)
         let file = File.Create(filePath)
         file.Close()
 
-        let podcast = createPodcastRecord "title" filePath
+        let podcast = createPodcastRecord "title" filePath fileName
         let feed = createFeed workingDirectory [| podcast |]
 
         let count = PodcastSynchroniser.Synchronise(feed)

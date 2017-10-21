@@ -31,7 +31,7 @@ type ResolveImages_IntegrationTests() =
     let failWithExceptionHandlingFunctionTask = Action<string, System.Exception> failWithExceptionHandlingFunction
     
     let createTestPodcast imageFileName imageURL =
-        Setup.createTestPodcast String.Empty String.Empty String.Empty DateTime.Now 0L DateTime.Now imageFileName imageURL
+        Setup.createTestPodcast String.Empty String.Empty String.Empty DateTime.Now 0L DateTime.Now imageFileName imageURL String.Empty
 
     let runResolveImagesWithoutFeedBack (podcasts : Podcast[]) (localImageDirectory : string) (defaultImagePath : string) resolveLocalFilePathFunction =
 

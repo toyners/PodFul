@@ -32,7 +32,7 @@ module public Setup =
     let createTestFeedUsingDownloadFile url downloadFilePath = 
         FeedFunctions.CreateFeed url downloadFilePath "DirectoryPath" "" CancellationToken.None
 
-    let createTestPodcast title description url pubDate fileSize downloadDate imageFileName imageURL =
+    let createTestPodcast title description url pubDate fileSize downloadDate imageFileName imageURL fileName =
         {
             Title = title
             Description = description
@@ -44,7 +44,7 @@ module public Setup =
                     FileSize = fileSize
                     DownloadDate = downloadDate
                     ImageFileName = imageFileName
-                    FileName = ""
+                    FileName = fileName
                 }
         }
 

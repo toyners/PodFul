@@ -9,7 +9,7 @@ open PodFul.WPF.Processing
 type PodcastComparisonListCreator_UnitTests() =
 
     member private this.CreatePodcast title = 
-        Setup.createTestPodcast title "Description" "url" DateTime.MinValue 0L DateTime.MinValue "imagefilename" "imageurl"
+        Setup.createTestPodcast title "Description" "url" DateTime.MinValue 0L DateTime.MinValue "imagefilename" "imageurl" String.Empty
 
     member private this.CreatePodcastList titles =
         [for title in titles do

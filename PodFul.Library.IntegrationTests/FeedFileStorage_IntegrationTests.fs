@@ -43,7 +43,7 @@ type FeedFileStorage_IntergrationTests() =
             DeliverDownloadsOnScan = true
             Podcasts = 
             [|
-                Setup.createTestPodcast podcastTitle podcastDescription podcastURL podcastPubDate podcastFileSize (new DateTime(2017, 1, 2)) podcastImageFileName podcastImageURL
+                Setup.createTestPodcast podcastTitle podcastDescription podcastURL podcastPubDate podcastFileSize (new DateTime(2017, 1, 2)) podcastImageFileName podcastImageURL String.Empty
             |]
         }
 
