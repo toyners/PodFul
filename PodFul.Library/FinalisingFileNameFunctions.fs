@@ -33,24 +33,30 @@ module public FinalisingFileNameFunctions =
         | true -> url.Substring(firstCharacterOfFragmentIndex, mp3Index - firstCharacterOfFragmentIndex + ".mp3".Length)
         | _ -> url.Substring(firstCharacterOfFragmentIndex)
 
-    let finaliseUsingAlgorithm (urlProcessingFunc) (podcasts : list<Podcast>) : bool * list<Podcast> =
+    let substituteBadFileNameCharacters (fileName : string) : string = 
+        fileName.Substitute(illegalCharacterSubstitutes)
+
+    let finaliseUsingAlgorithm (urlProcessingFunc) (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> =
+
+        let mutable podcastCount = 0
+        let mutable existingNames = Set.empty
+        let cleanFeedName = substituteBadFileNameCharacters feedName
 
         let createDefaultFileName (fileCount : int) =
-            "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
+            cleanFeedName + " episode " + podcastCount.ToString() + ".mp3"
 
         let appendFileExtension (name : string) : string = 
             match (name.EndsWith(".mp3")) with
             | false -> name + ".mp3"
             | _ -> name
 
-        let mutable existingNames = Set.empty
-
         let getName (url : string) =
             match (String.IsNullOrEmpty(url)) with
             | true -> createDefaultFileName ((Set.count existingNames) + 1)
-            | _ -> urlProcessingFunc url |> appendFileExtension
+            | _ -> urlProcessingFunc url |> substituteBadFileNameCharacters |> appendFileExtension
 
         let setPodcastFileName (podcast : Podcast) : bool = 
+            podcastCount <- podcastCount + 1
             let name = getName podcast.URL
             let nameNotUsed = not <| Set.contains name existingNames
             let nameClash = false
@@ -73,7 +79,7 @@ module public FinalisingFileNameFunctions =
 
 
     let finaliseUsingStandardAlgorithm (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
-        finaliseUsingAlgorithm getLastFragmentFromURL podcasts
+        finaliseUsingAlgorithm getLastFragmentFromURL feedName podcasts
 
     let finaliseUsingAlternateAlgorithm (feedName : string) (podcasts : list<Podcast>) : bool * list<Podcast> = 
 
@@ -90,15 +96,13 @@ module public FinalisingFileNameFunctions =
             
             getLastFragmentFromURL urlWithoutLastFragment
 
-        finaliseUsingAlgorithm getSecondLastFragmentFromURL podcasts
-
-    let substituteBadFileNameCharacters (fileName : string) : string = 
-        fileName.Substitute(illegalCharacterSubstitutes)
+        finaliseUsingAlgorithm getSecondLastFragmentFromURL feedName podcasts
 
     let finaliseUsingDefaultAlgorithm (feedName : string) (podcasts : list<Podcast>) : list<Podcast> = 
 
+        let cleanFeedName = substituteBadFileNameCharacters feedName 
         let setPodcastFileName (index : int) (podcast : Podcast) = 
-            podcast.SetFileName (feedName + " episode " + (index + 1).ToString() + ".mp3")
+            (cleanFeedName + " episode " + (index + 1).ToString() + ".mp3") |> podcast.SetFileName
 
         let sequenceGenerator index = podcasts.Item index
         let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
