@@ -33,24 +33,10 @@ module public FinalisingFileNameFunctions =
         | true -> url.Substring(firstCharacterOfFragmentIndex, mp3Index - firstCharacterOfFragmentIndex + ".mp3".Length)
         | _ -> url.Substring(firstCharacterOfFragmentIndex)
 
-    let finaliseUsingStandardAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
+    let finaliseUsingAlgorithm (urlProcessingFunc) (podcasts : list<Podcast>) : bool * list<Podcast> =
 
         let createDefaultFileName (fileCount : int) =
             "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
-
-        (*let getLastSlashIndex (url : string) =
-            let result = url.LastIndexOf('/') + 1
-            match (result) with
-            | 0 -> url.LastIndexOf('\\') + 1
-            | _ -> result
-
-        let getLastFragmentFromURL (url : string) =
-            let slashIndex = getLastSlashIndex url
-            let mp3Index = url.LastIndexOf(".mp3")
-            let mp3IndexGreaterThanSlashIndex = mp3Index - slashIndex > 1
-            match (mp3IndexGreaterThanSlashIndex) with
-            | true -> url.Substring(slashIndex, mp3Index - slashIndex + ".mp3".Length)
-            | _ -> url.Substring(slashIndex)*)
 
         let appendFileExtension (name : string) : string = 
             match (name.EndsWith(".mp3")) with
@@ -62,7 +48,7 @@ module public FinalisingFileNameFunctions =
         let getName (url : string) =
             match (String.IsNullOrEmpty(url)) with
             | true -> createDefaultFileName ((Set.count existingNames) + 1)
-            | _ -> getLastFragmentFromURL url |> appendFileExtension
+            | _ -> urlProcessingFunc url |> appendFileExtension
 
         let setPodcastFileName (podcast : Podcast) : bool = 
             let name = getName podcast.URL
@@ -84,17 +70,11 @@ module public FinalisingFileNameFunctions =
         | true -> (true, podcasts)
         | _ -> (false, podcasts)
 
+
+    let finaliseUsingStandardAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
+        finaliseUsingAlgorithm getLastFragmentFromURL podcasts
+
     let finaliseUsingAlternateAlgorithm (podcasts : list<Podcast>) : bool * list<Podcast> = 
-
-        let createDefaultFileName (fileCount : int) =
-            "file_" + DateTime.Now.ToString("ddMMyyyy") + "_" + fileCount.ToString() + ".mp3"
-
-        let sequenceGenerator index = podcasts.Item index
-
-        let appendFileExtension (name : string) : string = 
-            match (name.EndsWith(".mp3")) with
-            | false -> name + ".mp3"
-            | _ -> name
 
         let getSecondLastFragmentFromURL (url : string) : string = 
 
@@ -109,30 +89,7 @@ module public FinalisingFileNameFunctions =
             
             getLastFragmentFromURL urlWithoutLastFragment
 
-        let mutable existingNames = Set.empty
-
-        let getName (url : string) =
-            match (String.IsNullOrEmpty(url)) with
-            | true -> createDefaultFileName ((Set.count existingNames) + 1)
-            | _ -> getSecondLastFragmentFromURL url |> appendFileExtension
-
-        let setPodcastFileName (podcast : Podcast) : bool = 
-            let name = getName podcast.URL
-            let nameNotUsed = not <| Set.contains name existingNames
-            match (nameNotUsed) with
-            | true -> 
-                podcast.SetFileName name
-                existingNames <- Set.add name existingNames
-                nameNotUsed
-            | _ -> nameNotUsed
-
-        let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
-                            Seq.takeWhile setPodcastFileName
-        
-        let seqCount = Seq.length resultsSeq
-        match (podcasts.Length = seqCount) with
-        | true -> (true, podcasts)
-        | _ -> (false, podcasts)
+        finaliseUsingAlgorithm getSecondLastFragmentFromURL podcasts
 
     let substituteBadFileNameCharacters (fileName : string) : string = 
         fileName.Substitute(illegalCharacterSubstitutes)
