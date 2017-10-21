@@ -193,7 +193,7 @@ module public FeedFunctions =
         with
         | _ as ex -> failwith ("error: " + ex.Message)          
             
-    let private upDateFileDetailsOnPodcastsForNewFeed (oldFeed : Feed) (newFeed : Feed) : Feed =
+    let private updateFileDetailsOnPodcastsForNewFeed (oldFeed : Feed) (newFeed : Feed) : Feed =
 
         let mutable newIndex = 0
         let mutable oldIndex = 0
