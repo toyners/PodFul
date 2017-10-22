@@ -1,6 +1,11 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.1.5 (1.9.6)
+1. **Changed:** Improved algorithm for setting the file name for podcasts.
+2. **Changed:** Added file size tooltips to manual downloads.
+3. **Fixed:** File size tooltip has cleaner format.
+
 ## 3.1.4 (1.9.5)
 1. **Changed:** Podcast images are resolved when manually downloaded.
 
