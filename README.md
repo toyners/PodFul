@@ -5,6 +5,7 @@
 1. **Changed:** Improved algorithm for setting the podcast file name to avoid name clashes.
 2. **Changed:** Added file size tooltips to manual downloads.
 3. **Fixed:** File size tooltip has cleaner format.
+4. **Fixed:** Small typo in text when updating the failed job count.
 
 ## 3.1.4 (1.9.5)
 1. **Changed:** Podcast images are resolved when manually downloaded.

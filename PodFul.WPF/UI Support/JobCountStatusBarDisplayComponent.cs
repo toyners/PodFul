@@ -55,7 +55,7 @@ namespace PodFul.WPF.UI_Support
       else if (failedJobCount > 0)
       {
         this.firstOptionalCountTextblock.Foreground = this.failedBrush;
-        this.firstOptionalCountTextblock.Text = "Cancelled: " + failedJobCount;
+        this.firstOptionalCountTextblock.Text = "Failed: " + failedJobCount;
       }
     }
   }
