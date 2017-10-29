@@ -3,6 +3,7 @@
 
 ## 3.1.6
 1. **Fixed:** Inner exception messages are displayed in the exception dialogue box when adding a feed fails.
+2. **Fixed:** Fixed download tooltip format so unnecessary leading zero is not shown.
 
 ## 3.1.5 (1.9.6)
 1. **Changed:** Improved algorithm for setting the podcast file name to avoid name clashes.

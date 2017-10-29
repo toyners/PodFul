@@ -11,7 +11,7 @@ module public Miscellaneous =
         
         let sizeInMb = rawSize / (1048576.0)
 
-        sizeInMb.ToString("00.0")
+        sizeInMb.ToString("#0.0")
 
     let public SwapDirectoryInFilePath directoryPath (filePath : string) =
         filePath.LastIndexOf('/') + 1 |> filePath.Substring |> combine directoryPath
