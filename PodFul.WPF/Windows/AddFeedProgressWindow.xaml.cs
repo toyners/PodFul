@@ -74,10 +74,17 @@ namespace PodFul.WPF.Windows
       {
         if (task.IsFaulted)
         {
-          this.logController.Message(MainWindow.ExceptionKey, "Trying to create new feed: " + task.Exception.Message);
+          var flattenedMessage = String.Empty;
+          var flattenedException = task.Exception.Flatten();
+          foreach(var exception in flattenedException.InnerExceptions)
+          {
+            flattenedMessage += exception.Message + " ";
+          }
+
+          this.logController.Message(MainWindow.ExceptionKey, "Trying to create new feed: " + flattenedMessage);
           Application.Current.Dispatcher.Invoke(() =>
           {
-            MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + task.Exception.Message, "Exception occurred.");
+            MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + flattenedMessage, "Exception occurred.");
           });
         }
         else if (task.IsCanceled)

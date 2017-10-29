@@ -1,6 +1,9 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.1.6
+1. **Fixed:** Inner exception messages are displayed in the exception dialogue box when adding a feed fails.
+
 ## 3.1.5 (1.9.6)
 1. **Changed:** Improved algorithm for setting the podcast file name to avoid name clashes.
 2. **Changed:** Added file size tooltips to manual downloads.
