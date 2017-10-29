@@ -26,8 +26,8 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         Assert.AreEqual(true, fst results)
         Assert.AreEqual(2,  Array.length <| (snd results))
-        Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
-        Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName2, podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName1, podcasts.[1].FileDetails.FileName)
 
     [<Test>]
     [<TestCase("fileName")>]
@@ -104,8 +104,8 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         Assert.AreEqual(true, fst results)
         Assert.AreEqual(2,  Array.length <| (snd results))
-        Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
-        Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName2, podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName1, podcasts.[1].FileDetails.FileName)
 
     [<Test>]
     member public this.``Finalising urls with clashes using alternate finalising function``() =
@@ -207,7 +207,7 @@ type FinalisingFileNameFunctions_UnitTests() =
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
         Assert.AreEqual(4,  Array.length results)
-        Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
-        Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
-        Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
-        Assert.AreEqual(expectedFileName4, podcasts.[3].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName4, podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName3, podcasts.[1].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName2, podcasts.[2].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName1, podcasts.[3].FileDetails.FileName)
