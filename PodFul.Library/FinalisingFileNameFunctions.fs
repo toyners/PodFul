@@ -36,27 +36,28 @@ module public FinalisingFileNameFunctions =
     let substituteBadFileNameCharacters (fileName : string) : string = 
         fileName.Substitute(illegalCharacterSubstitutes)
 
+    let defaultPodcastFileName (cleanFeedName : string) (count : int) (index : int) : string =
+        (cleanFeedName + " episode " + (count - index).ToString() + ".mp3")
+
     let finaliseUsingAlgorithm (urlProcessingFunc) (feedName : string) (podcasts : Podcast[]) : bool * Podcast[] =
-
-        let mutable podcastCount = 0
-        let mutable existingNames = Set.empty
-        let cleanFeedName = substituteBadFileNameCharacters feedName
-
-        let createDefaultFileName (fileCount : int) =
-            cleanFeedName + " episode " + podcastCount.ToString() + ".mp3"
 
         let appendFileExtension (name : string) : string = 
             match (name.EndsWith(".mp3")) with
             | false -> name + ".mp3"
             | _ -> name
 
+        let mutable podcastIndex = -1
+        let cleanFeedName = substituteBadFileNameCharacters feedName
+
         let getName (url : string) =
             match (String.IsNullOrEmpty(url)) with
-            | true -> createDefaultFileName ((Set.count existingNames) + 1)
+            | true -> defaultPodcastFileName cleanFeedName podcasts.Length podcastIndex
             | _ -> urlProcessingFunc url |> substituteBadFileNameCharacters |> appendFileExtension
 
+        let mutable existingNames = Set.empty
+
         let setPodcastFileName (podcast : Podcast) : bool = 
-            podcastCount <- podcastCount + 1
+            podcastIndex <- podcastIndex + 1
             let name = getName podcast.URL
             let nameNotUsed = not <| Set.contains name existingNames
             let nameClash = false
@@ -102,7 +103,7 @@ module public FinalisingFileNameFunctions =
 
         let cleanFeedName = substituteBadFileNameCharacters feedName 
         let setPodcastFileName (index : int) (podcast : Podcast) = 
-            (cleanFeedName + " episode " + (index + 1).ToString() + ".mp3") |> podcast.SetFileName
+            defaultPodcastFileName cleanFeedName podcasts.Length index |> podcast.SetFileName
 
         let sequenceGenerator index = podcasts.[index]
         let resultsSeq = Seq.init podcasts.Length sequenceGenerator |> 
