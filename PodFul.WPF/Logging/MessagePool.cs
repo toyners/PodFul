@@ -24,6 +24,17 @@ namespace PodFul.WPF.Logging
     #endregion
 
     #region Methods
+    public void Clear()
+    {
+      this.messages.Clear();
+      this.Reset();
+    }
+
+    public IEnumerator GetEnumerator()
+    {
+      return this;
+    }
+
     public void Message(String message)
     {
       this.messages.Add(message);
@@ -40,10 +51,7 @@ namespace PodFul.WPF.Logging
       this.enumeratorIndex = -1;
     }
 
-    public IEnumerator GetEnumerator()
-    {
-      return this;
-    }
+
     #endregion
   }
 }

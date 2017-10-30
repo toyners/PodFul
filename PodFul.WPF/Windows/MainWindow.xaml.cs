@@ -389,6 +389,7 @@ namespace PodFul.WPF.Windows
       };
 
       IImageResolver imageResolver = this.CreateImageResolver();
+      this.fileDeliveryLogger.Clear();
       var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 
