@@ -91,6 +91,8 @@ namespace PodFul.WPF.Processing
         {
           while (this.feedIndexes.Count > 0)
           {
+            cancelToken.ThrowIfCancellationRequested();
+
             this.FeedStartedEvent?.Invoke();
             Int32 feedIndex = this.feedIndexes.Dequeue();
 
@@ -111,6 +113,9 @@ namespace PodFul.WPF.Processing
             {
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
               newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
+
+              // Creating the new feed takes a while - check for cancellation before furthering processing.
+              cancelToken.ThrowIfCancellationRequested();
 
               message = "Searching for new podcasts ... ";
               this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
@@ -161,13 +166,16 @@ namespace PodFul.WPF.Processing
               this.logController.Message(MainWindow.UiKey, exceptionMessage + "\r\n").Message(MainWindow.ExceptionKey, exceptionMessage);
             }
           }
-
-          isScanning = false;
         }
         catch (Exception exception)
         {
           this.logController.Message(MainWindow.ExceptionKey, exception.Message);
         }
+        finally
+        {
+          isScanning = false;
+        }
+
       }, cancelToken);
 
       Task downloadingTask = Task.Factory.StartNew(
@@ -178,7 +186,10 @@ namespace PodFul.WPF.Processing
           downloadManager.StartDownloads();
           Thread.Sleep(50);
 
-          cancelToken.ThrowIfCancellationRequested();
+          if (!cancelToken.IsCancellationRequested)
+          { 
+            cancelToken.ThrowIfCancellationRequested();
+          }
         }
 
       }, cancelToken);
