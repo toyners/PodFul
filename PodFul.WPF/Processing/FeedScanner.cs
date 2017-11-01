@@ -167,6 +167,11 @@ namespace PodFul.WPF.Processing
             }
           }
         }
+        catch (OperationCanceledException ocException)
+        {
+          this.logController.Message(MainWindow.ExceptionKey, ocException.Message);
+          throw; // Rethrow so that the task state is correctly set (i.e. IsCanceled = true)
+        }
         catch (Exception exception)
         {
           this.logController.Message(MainWindow.ExceptionKey, exception.Message);

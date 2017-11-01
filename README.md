@@ -3,6 +3,7 @@
 
 ## 3.1.7 (1.9.7)
 1. **Fixed:** Fixed bug where file delivery messages from an earlier operation were being displayed at the end of the scanning.
+2. **Fixed:** Fixed bug where cancel operation only complete once the first podcast download started.
 
 ## 3.1.6 (1.9.7)
 1. **Fixed:** Inner exception messages are displayed in the exception dialogue box when adding a feed fails.
