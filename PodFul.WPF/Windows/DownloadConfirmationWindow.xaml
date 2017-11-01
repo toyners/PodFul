@@ -23,9 +23,36 @@
         </StackPanel>
         
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Style="{StaticResource StandardButton}" Width="70" Click="CancelClick" >Cancel</Button>
-          <Button Style="{StaticResource StandardButton}" Width="70" Click="SkipClick">Skip</Button>
-          <Button Name="DownloadButton" Style="{StaticResource StandardButton}" Width="70" IsEnabled="False" Click="DownloadClick">Download</Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="CancelClick" Content="Cancel" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Cancel Scan</TextBlock>
+                  <TextBlock>Cancels the scan immediately. Current Feed will not be updated.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SkipClick" Content="Skip" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Skip Downloading</TextBlock>
+                  <TextBlock>Feed will be updated but no podcasts will be downloaded.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+          <Button Name="DownloadButton" Style="{StaticResource StandardButton}" Width="70" IsEnabled="False" Click="DownloadClick" Content="Download" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Download selected Podcasts</TextBlock>
+                  <TextBlock>Feed will be updated and selected podcasts will be downloaded.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
         </StackPanel>
       </Grid>
     </Border>
