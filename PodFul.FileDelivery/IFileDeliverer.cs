@@ -15,6 +15,11 @@ namespace PodFul.FileDelivery
     /// <param name="filePath">Full path of file to be delivered.</param>
     /// <param name="fileTitle">Title of file being delivered. Not necessarily the file name.</param>
     void DeliverFileToDeliveryPoints(String filePath, String fileTitle);
+
+    /// <summary>
+    /// Finalise all delivery points after delivering all files.
+    /// </summary>
+    void FinaliseDeliverypoints();
   
     /// <summary>
     /// Initialise all delivery points before delivering any files.

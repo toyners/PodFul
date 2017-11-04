@@ -40,6 +40,17 @@ namespace PodFul.FileDelivery
     }
 
     /// <summary>
+    /// Finalise all delivery points after delivering all files.
+    /// </summary>
+    public void FinaliseDeliverypoints()
+    {
+      foreach (var deliveryPoint in this.deliveryPoints)
+      {
+        deliveryPoint.Finalise();
+      }
+    }
+
+    /// <summary>
     /// Initialise all delivery points before delivering any files.
     /// </summary>
     public void InitialiseDeliverypoints()
