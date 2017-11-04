@@ -69,6 +69,14 @@ namespace PodFul.FileDelivery
     }
 
     /// <summary>
+    /// Delete the destination directory if no files delivered there.
+    /// </summary>
+    public void Finalise()
+    {
+      throw new NotImplementedException();
+    }
+
+    /// <summary>
     /// Initialises the destination directory for file delivery. Destination directory is based on base directory path set during
     /// construction and a date timestamp. Simple counter is appended to destination directory name in case of duplicates. 
     /// </summary>

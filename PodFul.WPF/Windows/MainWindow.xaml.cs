@@ -86,7 +86,7 @@ namespace PodFul.WPF.Windows
 
         this.FeedList.Focus();
 
-        this.fileDeliverer = this.CreateFileDeliver();
+        this.fileDeliverer = this.CreateFileDeliverer();
 
         this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
 
@@ -108,7 +108,7 @@ namespace PodFul.WPF.Windows
       return Directory.GetFiles(feed.Directory, "*.mp3").Length;
     }
 
-    private IFileDeliverer CreateFileDeliver()
+    private IFileDeliverer CreateFileDeliverer()
     {
       var deliveryPoints = DeliveryPointCreator.CreateDeliveryPoints(this.settings.DeliveryPointData, this.fileDeliveryLogger, this.fileDeliveryLogger);
       return new FileDeliverer(deliveryPoints);
@@ -229,7 +229,7 @@ namespace PodFul.WPF.Windows
       settingsWindow.Owner = this;
       settingsWindow.ShowDialog();
 
-      this.fileDeliverer = this.CreateFileDeliver();
+      this.fileDeliverer = this.CreateFileDeliverer();
       this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
     }
 

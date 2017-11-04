@@ -21,9 +21,16 @@ namespace PodFul.FileDelivery
     void Deliver(String filePath, String fileTitle);
 
     /// <summary>
+    /// Finalise the delivery point after delivering all files.
+    /// </summary>
+    //void Finalise();
+
+    /// <summary>
     /// Initialise the delivery point before delivering any files.
     /// </summary>
     void Initialise();
+
+
     #endregion
   }
 }

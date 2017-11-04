@@ -44,6 +44,26 @@ namespace PodFul.FileDelivery.IntegrationTests
       // Assert
       File.Exists(expectedDestinationFilePath).ShouldBeTrue();
     }
+
+    [Test]
+    public void Finalise_FileDeliveringPointInitialised_DirectoryDoesNotExist()
+    {
+      // Arrange
+      var destinationPath = Path.Combine(workingDirectory);
+      var expectedDestinationPath = Path.Combine(destinationPath, DateTime.Now.ToString("dd-MM-yyyy") + "_1");
+
+      var fileDeliveryPoint = new FileDeliveryPoint(destinationPath, null, null);
+      fileDeliveryPoint.Initialise();
+
+      // Act
+      var directoryExistsBeforeFinalise = Directory.Exists(expectedDestinationPath);
+      fileDeliveryPoint.Finalise();
+      var directoryExistsAfterFinalise = Directory.Exists(expectedDestinationPath);
+
+      // Assert
+      directoryExistsBeforeFinalise.ShouldBeTrue();
+      directoryExistsAfterFinalise.ShouldBeFalse();
+    }
     #endregion 
   }
 }
