@@ -73,7 +73,18 @@ namespace PodFul.FileDelivery
     /// </summary>
     public void Finalise()
     {
-      throw new NotImplementedException();
+      if (Directory.Exists(this.directoryPath) && Directory.GetFiles(this.directoryPath).Length == 0)
+      {
+        try
+        {
+          Directory.Delete(this.directoryPath, true);
+        }
+        catch
+        {
+          // Ignore any exception raised when trying to delete the directory. It is not 
+          // vital that the directory remains.
+        }
+      }
     }
 
     /// <summary>
