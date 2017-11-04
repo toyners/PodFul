@@ -65,7 +65,7 @@ namespace PodFul.FileDelivery
     /// <summary>
     /// Finalises the winamp delivery point.
     /// </summary>
-    public void Finalise()
+    /*public void Finalise()
     {
       // Nothing to do 
     }
@@ -76,7 +76,7 @@ namespace PodFul.FileDelivery
     public void Initialise()
     {
       // Nothing to do 
-    }
+    }*/
     #endregion
   }
 }

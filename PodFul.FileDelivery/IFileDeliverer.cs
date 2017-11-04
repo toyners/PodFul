@@ -19,12 +19,12 @@ namespace PodFul.FileDelivery
     /// <summary>
     /// Finalise all delivery points after delivering all files.
     /// </summary>
-    void FinaliseDeliverypoints();
+    //void FinaliseDeliverypoints();
   
     /// <summary>
     /// Initialise all delivery points before delivering any files.
     /// </summary>
-    void InitialiseDeliverypoints();
+    //void InitialiseDeliverypoints();
     #endregion
   }
 }

@@ -42,7 +42,7 @@ namespace PodFul.FileDelivery
     /// <summary>
     /// Finalise all delivery points after delivering all files.
     /// </summary>
-    public void FinaliseDeliverypoints()
+    /*public void FinaliseDeliverypoints()
     {
       foreach (var deliveryPoint in this.deliveryPoints)
       {
@@ -59,7 +59,7 @@ namespace PodFul.FileDelivery
       {
         deliveryPoint.Initialise();
       }
-    }
+    }*/
     #endregion
   }
 }

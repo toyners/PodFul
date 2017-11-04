@@ -31,7 +31,7 @@ namespace PodFul.WPF.Windows
 
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
-    private IFileDeliverer fileDeliverer;
+    //private IFileDeliverer fileDeliverer;
     private Feed currentFeed;
     private LogController logController;
     private MessagePool fileDeliveryLogger;
@@ -89,7 +89,7 @@ namespace PodFul.WPF.Windows
 
         this.FeedList.Focus();
 
-        this.fileDeliverer = this.CreateFileDeliverer();
+        //this.fileDeliverer = this.CreateFileDeliverer();
 
         this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
 
@@ -234,7 +234,7 @@ namespace PodFul.WPF.Windows
       settingsWindow.Owner = this;
       settingsWindow.ShowDialog();
 
-      this.fileDeliverer = this.CreateFileDeliverer();
+      //this.fileDeliverer = this.CreateFileDeliverer();
       this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
     }
 
@@ -289,10 +289,12 @@ namespace PodFul.WPF.Windows
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       if (deliverManualDownloadsToDeliveryPoints)
       {
-        this.InitialiseDeliveryPoints();
+        //this.InitialiseDeliveryPoints();
+        var fileDeliverer = this.CreateFileDeliverer();
+
         downloadManager.JobCompletedSuccessfullyEvent += job => 
         {
-          this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
+          fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
         };
       }
 
@@ -372,24 +374,24 @@ namespace PodFul.WPF.Windows
       e.Handled = true;
     }
 
-    private void InitialiseDeliveryPoints()
+    /*private void InitialiseDeliveryPoints()
     {
       this.logController.Message(CombinedKey, "Starting delivery point initialisation");
       this.fileDeliverer.InitialiseDeliverypoints();
       this.logController.Message(CombinedKey, "Delivery point initialisation completed.");
       this.logController.Message(UiKey, String.Empty);
-    }
+    }*/
 
     private void PerformScan(Queue<Int32> feedIndexes)
     {
-      this.InitialiseDeliveryPoints();
-
+      //this.InitialiseDeliveryPoints();
+      var fileDeliverer = this.CreateFileDeliverer();
       var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       downloadManager.JobCompletedSuccessfullyEvent += job =>
       {
         if (job.DoDeliverFile)
         {
-          this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
+          fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
         }
       };
 

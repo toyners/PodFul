@@ -14,7 +14,7 @@ namespace PodFul.FileDelivery.IntegrationTests
     private String workingDirectory;
 
     #region Methods
-    [SetUp]
+    /*[SetUp]
     public void SetupBeforeEachTest()
     {
       this.workingDirectory = Path.Combine(Path.GetTempPath(), "FileDeliveryPoint_IntegrationTests");
@@ -63,7 +63,7 @@ namespace PodFul.FileDelivery.IntegrationTests
       // Assert
       directoryExistsBeforeFinalise.ShouldBeTrue();
       directoryExistsAfterFinalise.ShouldBeFalse();
-    }
+    }*/
     #endregion 
   }
 }

@@ -23,12 +23,12 @@ namespace PodFul.FileDelivery
     /// <summary>
     /// Finalise the delivery point after delivering all files.
     /// </summary>
-    void Finalise();
+    //void Finalise();
 
     /// <summary>
     /// Initialise the delivery point before delivering any files.
     /// </summary>
-    void Initialise();
+    //void Initialise();
 
 
     #endregion

@@ -71,7 +71,7 @@ namespace PodFul.FileDelivery
     /// <summary>
     /// Delete the destination directory if no files delivered there.
     /// </summary>
-    public void Finalise()
+    /*public void Finalise()
     {
       if (Directory.Exists(this.directoryPath) && Directory.GetFiles(this.directoryPath).Length == 0)
       {
@@ -106,7 +106,7 @@ namespace PodFul.FileDelivery
 
       this.directoryPath = destinationPath;
       DirectoryOperations.EnsureDirectoryExists(this.directoryPath);
-    }
+    }*/
     #endregion
   }
 }
