@@ -114,6 +114,16 @@ namespace PodFul.WPF.Windows
       this.DialogResult = true;
     }
 
+    private void PodcastList_PreviewMouseDoubleClick(Object sender, MouseButtonEventArgs e)
+    {
+      if (e.OriginalSource.GetType() == typeof(Border))
+      {
+        // The double click has happened on the border (e.g. scroll bar) of the list so ignore it.
+        // Don't want this to trigger a unplaned action (i.e. window close)
+        e.Handled = true;
+      }
+    }
+
     private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
     {
       var scrollValue = e.Delta < 0 ? 1 : -1;

@@ -269,7 +269,7 @@ namespace PodFul.WPF.Windows
     {
       Boolean deliverManualDownloadsToDeliveryPoints = false;
       var selectedIndexes = this.GetSelectedPodcasts(out deliverManualDownloadsToDeliveryPoints);
-      if (selectedIndexes != null)
+      if (selectedIndexes != null && selectedIndexes.Count > 0)
       {
         this.DownloadPodcasts(selectedIndexes, deliverManualDownloadsToDeliveryPoints);
       }

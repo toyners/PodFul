@@ -36,7 +36,7 @@
       <ListBox Name="PodcastList" HorizontalContentAlignment="Stretch" SelectionChanged="PodcastList_SelectionChanged"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="PodcastList_MouseDoubleClick"
                    PreviewMouseWheel="PodcastListMouseWheel" SelectionMode="Extended"
-                   ScrollViewer.VerticalScrollBarVisibility="Auto">
+                   ScrollViewer.VerticalScrollBarVisibility="Auto" PreviewMouseDoubleClick="PodcastList_PreviewMouseDoubleClick">
           
           <ListBox.ContextMenu>
             <ContextMenu>
