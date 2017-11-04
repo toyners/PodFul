@@ -286,21 +286,21 @@ namespace PodFul.WPF.Windows
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
 
-      var podcastDownloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
+      var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       if (deliverManualDownloadsToDeliveryPoints)
       {
         this.InitialiseDeliveryPoints();
-        podcastDownloadManager.JobCompletedSuccessfullyEvent += job => 
+        downloadManager.JobCompletedSuccessfullyEvent += job => 
         {
           this.fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
         };
       }
 
-      var podcastDownloadWindow = new PodcastDownloadWindow(podcastDownloadManager, this.settings.HideCompletedJobs);
+      var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, this.settings.HideCompletedJobs);
 
       // Add the jobs after creating the window so that job queued event will fire.
       var jobs = this.CreateDownloadJobs(selectedIndexes);
-      podcastDownloadManager.AddJobs(jobs);
+      downloadManager.AddJobs(jobs);
 
       podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();
