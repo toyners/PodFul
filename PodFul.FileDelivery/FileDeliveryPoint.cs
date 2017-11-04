@@ -53,6 +53,8 @@ namespace PodFul.FileDelivery
     {
       try
       {
+        this.EnsureDestinationDirectoryExists();
+
         var fileName = filePath.Substring(filePath.LastIndexOf('\\') + 1);
         var destinationFilePath = Path.Combine(this.directoryPath, fileName);
 
@@ -66,6 +68,27 @@ namespace PodFul.FileDelivery
         var message = String.Format("Failed to add '{0}' to '{1}': {2}", fileTitle, directoryPath, exception.Message);
         this.postExceptionMethod?.Invoke(message);
       }
+    }
+
+    private void EnsureDestinationDirectoryExists()
+    {
+      if (String.IsNullOrEmpty(this.directoryPath))
+      {
+        var count = 1;
+        var destinationPath = String.Empty;
+        var directoryName = String.Empty;
+        var today = DateTime.Today.ToString("dd-MM-yyyy");
+        do
+        {
+          directoryName = today + "_" + (count++);
+          destinationPath = Path.Combine(this.baseDirectoryPath, directoryName);
+        }
+        while (Directory.Exists(destinationPath));
+
+        this.directoryPath = destinationPath;
+      }
+
+      DirectoryOperations.EnsureDirectoryExists(this.directoryPath);
     }
 
     /// <summary>
