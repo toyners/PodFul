@@ -23,6 +23,7 @@ namespace PodFul.WPF.Windows
   /// </summary>
   public partial class MainWindow : Window
   {
+    #region Fields
     public const String CombinedKey = "INFO+UI";
     public const String ExceptionKey = "EXCEPTION";
     public const String InfoKey = "INFO";
@@ -38,7 +39,9 @@ namespace PodFul.WPF.Windows
     private IPodcastDownloadConfirmer podcastDownloadConfirmer;
     private String defaultImagePath;
     private String imageDirectory;
+    #endregion
 
+    #region Construction
     public MainWindow()
     {
       FileLogger exceptionLogger = null;
@@ -102,7 +105,9 @@ namespace PodFul.WPF.Windows
         throw;
       }
     }
+    #endregion
 
+    #region Methods
     private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
     {
       return Directory.GetFiles(feed.Directory, "*.mp3").Length;
@@ -453,5 +458,6 @@ namespace PodFul.WPF.Windows
       this.FeedList_Scroller.ScrollToVerticalOffset(this.FeedList_Scroller.VerticalOffset - e.Delta);
       e.Handled = true;
     }
+    #endregion
   }
 }
