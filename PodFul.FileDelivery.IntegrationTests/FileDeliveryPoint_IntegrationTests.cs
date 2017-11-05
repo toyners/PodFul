@@ -14,7 +14,7 @@ namespace PodFul.FileDelivery.IntegrationTests
     private String workingDirectory;
 
     #region Methods
-    /*[SetUp]
+    [SetUp]
     public void SetupBeforeEachTest()
     {
       this.workingDirectory = Path.Combine(Path.GetTempPath(), "FileDeliveryPoint_IntegrationTests");
@@ -38,32 +38,11 @@ namespace PodFul.FileDelivery.IntegrationTests
       var fileDeliveryPoint = new FileDeliveryPoint(destinationPath, null, null);
 
       // Act
-      fileDeliveryPoint.Initialise();
       fileDeliveryPoint.Deliver(filePath, "file");
 
       // Assert
       File.Exists(expectedDestinationFilePath).ShouldBeTrue();
     }
-
-    [Test]
-    public void Finalise_FileDeliveringPointInitialised_DirectoryDoesNotExist()
-    {
-      // Arrange
-      var destinationPath = Path.Combine(workingDirectory);
-      var expectedDestinationPath = Path.Combine(destinationPath, DateTime.Now.ToString("dd-MM-yyyy") + "_1");
-
-      var fileDeliveryPoint = new FileDeliveryPoint(destinationPath, null, null);
-      fileDeliveryPoint.Initialise();
-
-      // Act
-      var directoryExistsBeforeFinalise = Directory.Exists(expectedDestinationPath);
-      fileDeliveryPoint.Finalise();
-      var directoryExistsAfterFinalise = Directory.Exists(expectedDestinationPath);
-
-      // Assert
-      directoryExistsBeforeFinalise.ShouldBeTrue();
-      directoryExistsAfterFinalise.ShouldBeFalse();
-    }*/
     #endregion 
   }
 }
