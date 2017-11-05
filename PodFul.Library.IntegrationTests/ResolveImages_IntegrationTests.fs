@@ -418,6 +418,3 @@ type ResolveImages_IntegrationTests() =
       let newFeed = ImageFunctions.resolveImageForFeed feed imageDirectory defaultImagePath failWithExceptionHandlingFunctionTask
 
       Assert.AreEqual(defaultImagePath, newFeed.ImageFileName)
-
-
-
