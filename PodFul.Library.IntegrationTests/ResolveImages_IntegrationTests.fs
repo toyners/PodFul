@@ -409,3 +409,15 @@ type ResolveImages_IntegrationTests() =
         Assert.AreEqual(expectedPath, podcast1.FileDetails.ImageFileName)
         Assert.AreEqual(expectedPath, podcast2.FileDetails.ImageFileName)
         Assert.AreEqual(true, File.Exists(expectedPath))
+
+    [<Test>]
+    member public this.``Feed with no image gets default image``() =
+
+      let feed = Setup.createTestFeedFromParameters "title" "description" "website" "directory" "url" "" "" FeedFunctions.NoDateTime FeedFunctions.NoDateTime true true true
+
+      let newFeed = ImageFunctions.resolveImageForFeed feed imageDirectory defaultImagePath failWithExceptionHandlingFunctionTask
+
+      Assert.AreEqual(defaultImagePath, newFeed.ImageFileName)
+
+
+

@@ -260,10 +260,13 @@ module public FeedFunctions =
 
     let private saveToFile (filePath : string) (data : string) : string =
 
-        if String.IsNullOrEmpty(filePath) <> true then
+        match (String.IsNullOrEmpty(filePath)) with
+        | false -> 
             use writer = new StreamWriter(filePath, false)
             writer.Write(data)
-        data
+            data
+        | _ -> 
+            data
 
     let private setAllPodcastsToHaveDefaultImage (defaultImagePath : string) (feed : Feed) : Feed = 
         for podcast in feed.Podcasts do

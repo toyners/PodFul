@@ -114,6 +114,11 @@ namespace PodFul.WPF.Processing
               var feedFilePath = Path.Combine(feed.Directory, "download.rss");
               newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
 
+              if (this.imageResolver != null)
+              {
+                newFeed = this.imageResolver.ResolveFeedImage(newFeed);
+              }
+
               // Creating the new feed takes a while - check for cancellation before furthering processing.
               cancelToken.ThrowIfCancellationRequested();
 
