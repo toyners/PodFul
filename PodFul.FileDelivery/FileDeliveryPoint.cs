@@ -90,46 +90,6 @@ namespace PodFul.FileDelivery
 
       DirectoryOperations.EnsureDirectoryExists(this.directoryPath);
     }
-
-    /// <summary>
-    /// Delete the destination directory if no files delivered there.
-    /// </summary>
-    /*public void Finalise()
-    {
-      if (Directory.Exists(this.directoryPath) && Directory.GetFiles(this.directoryPath).Length == 0)
-      {
-        try
-        {
-          Directory.Delete(this.directoryPath, true);
-        }
-        catch
-        {
-          // Ignore any exception raised when trying to delete the directory. It is not 
-          // vital that the directory remains.
-        }
-      }
-    }
-
-    /// <summary>
-    /// Initialises the destination directory for file delivery. Destination directory is based on base directory path set during
-    /// construction and a date timestamp. Simple counter is appended to destination directory name in case of duplicates. 
-    /// </summary>
-    public void Initialise()
-    {
-      var count = 1;
-      var destinationPath = String.Empty;
-      var directoryName = String.Empty;
-      var today = DateTime.Today.ToString("dd-MM-yyyy");
-      do
-      {
-        directoryName = today + "_" + (count++);
-        destinationPath = Path.Combine(this.baseDirectoryPath, directoryName);
-      }
-      while (Directory.Exists(destinationPath));
-
-      this.directoryPath = destinationPath;
-      DirectoryOperations.EnsureDirectoryExists(this.directoryPath);
-    }*/
     #endregion
   }
 }

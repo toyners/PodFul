@@ -25,7 +25,7 @@ namespace PodFul.FileDelivery
     }
     #endregion
 
-    #region Construction
+    #region Methods
     /// <summary>
     /// Deliver file using all delivery points.
     /// </summary>
@@ -38,28 +38,6 @@ namespace PodFul.FileDelivery
         deliveryPoint.Deliver(filePath, title);
       }
     }
-
-    /// <summary>
-    /// Finalise all delivery points after delivering all files.
-    /// </summary>
-    /*public void FinaliseDeliverypoints()
-    {
-      foreach (var deliveryPoint in this.deliveryPoints)
-      {
-        deliveryPoint.Finalise();
-      }
-    }
-
-    /// <summary>
-    /// Initialise all delivery points before delivering any files.
-    /// </summary>
-    public void InitialiseDeliverypoints()
-    {
-      foreach (var deliveryPoint in this.deliveryPoints)
-      {
-        deliveryPoint.Initialise();
-      }
-    }*/
     #endregion
   }
 }
