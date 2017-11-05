@@ -6,6 +6,7 @@
 2. **Fixed:** Fixed an issue where cancel operation only complete once the first podcast download started.
 3. **Fixed:** Fixed an issue where a podcast download operation was kicked off with no download jobs.
 4. **Fixed:** Fixed an issue where a double click action on the scroll bar would close the podcasts list window.
+5. **Changed:** Empty directories no longer created as a by-product of delivering a podcast file.
 
 ## 3.1.6 (1.9.7)
 1. **Fixed:** Inner exception messages are displayed in the exception dialogue box when adding a feed fails.
