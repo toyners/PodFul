@@ -85,6 +85,7 @@
     <EmbeddedResource Include="Image3.jpg" />
     <EmbeddedResource Include="Image4.jpg" />
     <EmbeddedResource Include="Image1.jpg" />
+    <EmbeddedResource Include="Feed with valid Image Attribute.rss" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">

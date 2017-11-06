@@ -82,10 +82,26 @@ module public FeedFunctions =
             titleElement.Value.Replace("\r", String.Empty).Replace("\n", String.Empty).Replace("\t", String.Empty)
 
     let private getImageForChannel (channel : XElement) : string =
-        match channel with
+        let imageElement = getElementUsingLocalNameAndNamespace channel "image" "http://www.itunes.com/dtds/podcast-1.0.dtd"
+        match imageElement with
+        | null -> String.Empty
+        | _ -> 
+            let valueFromAttribute = getValueFromAttribute imageElement "href"
+            match valueFromAttribute with
+            | "" -> 
+                let valueFromURL = imageElement.Element(xn "url")
+                match valueFromURL with
+                | null -> String.Empty
+                | _ ->
+                  match String.IsNullOrEmpty(valueFromURL.Value) with
+                  | true -> String.Empty
+                  | _ -> valueFromURL.Value
+            | _ -> valueFromAttribute
+
+        (*match channel with
         | null -> String.Empty
         | _ ->
-            let image = channel.Element(xn "image")
+            let image = getElementUsingLocalNameAndNamespace channel "image" "http://www.itunes.com/dtds/podcast-1.0.dtd" //channel.Element(xn "image")
             match image with
             | null -> String.Empty
             | _ -> 
@@ -96,7 +112,7 @@ module public FeedFunctions =
                     if url.Value = null || url.Value = String.Empty then
                         String.Empty
                     else
-                        url.Value
+                        url.Value*)
 
     let private getImageForItem (item : XElement) : string =
         let imageElement = getElementUsingLocalNameAndNamespace item "image" "http://www.itunes.com/dtds/podcast-1.0.dtd"

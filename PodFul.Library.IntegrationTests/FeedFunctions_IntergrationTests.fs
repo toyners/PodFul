@@ -148,7 +148,17 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
         let feed = Setup.createTestFeed inputPath
 
-        Assert.AreEqual(String.Empty, feed.ImageFileName)
+        Assert.AreEqual(String.Empty, feed.ImageURL)
+
+    [<Test>]
+    [<TestCase("RSSFile with Missing Image.rss")>]
+    [<TestCase("Feed with valid Image Attribute.rss")>]
+    member public this.``Create feed from RSS file with feed image data``(feedFileName : string) =
+        let inputPath = workingDirectory + feedFileName;
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
+        let feed = Setup.createTestFeed inputPath
+
+        Assert.AreEqual("FeedImage.jpg", feed.ImageURL)
 
     [<Test>]
     member public this.``Update feed from RSS file``() =
