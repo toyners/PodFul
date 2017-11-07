@@ -81,27 +81,16 @@ module public FeedFunctions =
         else
             titleElement.Value.Replace("\r", String.Empty).Replace("\n", String.Empty).Replace("\t", String.Empty)
 
-    let private getImageForChannel (channel : XElement) : string =
-        let imageElement = getElementUsingLocalNameAndNamespace channel "image" "http://www.itunes.com/dtds/podcast-1.0.dtd"
+    let private getImageForEntity (element : XElement) : string =
+        let imageElement = getElementUsingLocalNameAndNamespace element "image" "http://www.itunes.com/dtds/podcast-1.0.dtd"
         match imageElement with
         | null -> String.Empty
-        | _ -> 
-            let valueFromAttribute = getValueFromAttribute imageElement "href"
-            match valueFromAttribute with
-            | "" -> 
-                let valueFromURL = imageElement.Element(xn "url")
-                match valueFromURL with
-                | null -> String.Empty
-                | _ ->
-                  match String.IsNullOrEmpty(valueFromURL.Value) with
-                  | true -> String.Empty
-                  | _ -> valueFromURL.Value
-            | _ -> valueFromAttribute
+        | _ -> getValueFromAttribute imageElement "href"
 
-        (*match channel with
-        | null -> String.Empty
-        | _ ->
-            let image = getElementUsingLocalNameAndNamespace channel "image" "http://www.itunes.com/dtds/podcast-1.0.dtd" //channel.Element(xn "image")
+    let private getImageForChannel (channel : XElement) : string =
+
+        let getImageFromURLTag (element : XElement) : string =
+            let image = channel.Element(xn "image")
             match image with
             | null -> String.Empty
             | _ -> 
@@ -109,16 +98,17 @@ module public FeedFunctions =
                 match url with
                 | null -> String.Empty
                 | _ ->
-                    if url.Value = null || url.Value = String.Empty then
-                        String.Empty
-                    else
-                        url.Value*)
+                    match url.Value with
+                    | null | "" -> String.Empty
+                    | _ -> url.Value
 
-    let private getImageForItem (item : XElement) : string =
-        let imageElement = getElementUsingLocalNameAndNamespace item "image" "http://www.itunes.com/dtds/podcast-1.0.dtd"
-        match imageElement with
-        | null -> String.Empty
-        | _ -> getValueFromAttribute imageElement "href"
+        match channel with
+            | null -> String.Empty
+            | _ ->
+                let imageValue = getImageFromURLTag channel
+                match imageValue with
+                | null | "" -> getImageForEntity channel
+                | _ -> imageValue
 
     let private getFileSizeFromElement (element : XElement) (attributeName : string) =
     
@@ -174,7 +164,7 @@ module public FeedFunctions =
           [for item in items do
             
               let baseTitle = getTitleForItem item
-              let imageURL = getImageForItem item
+              let imageURL = getImageForEntity item
               let description = getDescriptionFromItem item
               let pubDate = getPubDateFromItem item
 

@@ -13,6 +13,6 @@
 	  <title>Feed Title</title>
 	  <link>Feed Website</link>
 	  <description>Feed Description</description>
-    <itunes:image href="FeedImage.jpg" />
+    <itunes:image href="C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\FeedImage.jpg" />
 	</channel>
 </rss>

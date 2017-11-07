@@ -151,14 +151,14 @@ type FeedFunctions_IntergrationTests() =
         Assert.AreEqual(String.Empty, feed.ImageURL)
 
     [<Test>]
-    [<TestCase("RSSFile with Missing Image.rss")>]
+    [<TestCase("RSS with valid Images.rss")>]
     [<TestCase("Feed with valid Image Attribute.rss")>]
     member public this.``Create feed from RSS file with feed image data``(feedFileName : string) =
         let inputPath = workingDirectory + feedFileName;
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(feedFileName, inputPath)
         let feed = Setup.createTestFeed inputPath
 
-        Assert.AreEqual("FeedImage.jpg", feed.ImageURL)
+        Assert.AreEqual("C:\Projects\PodFul\PodFul.Library.IntegrationTests\FeedFunctions_IntergrationTests\FeedImage.jpg", feed.ImageURL)
 
     [<Test>]
     member public this.``Update feed from RSS file``() =
