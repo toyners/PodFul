@@ -1,7 +1,6 @@
 ﻿
 namespace PodFul.WPF.Processing
 {
-  using System;
   using System.Collections.Generic;
   using Library;
 
@@ -14,8 +13,8 @@ namespace PodFul.WPF.Processing
     /// Create a list of podcast comparison objects.
     /// </summary>
     /// <param name="currentPodcasts">List of current podcasts.</param>
-    /// <param name="newPodcasts">List of new podcasts</param>
-    /// <returns></returns>
+    /// <param name="newPodcasts">List of new podcasts.</param>
+    /// <returns>List of podcast comparison objects.</returns>
     public static List<PodcastComparison> Create(Podcast[] currentPodcasts, Podcast[] newPodcasts)
     {
       var currentIndex = 0;

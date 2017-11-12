@@ -58,3 +58,20 @@ type PodcastComparisonListCreator_UnitTests() =
         Assert.AreEqual("2. B", list.[1].NewTitle)
         Assert.AreEqual("2. C", list.[2].OldTitle)
         Assert.AreEqual("3. C", list.[2].NewTitle)
+
+    [<Test>]
+    member public this.``First Podcast from both lists are not equal but all other podcasts are equal.``() =
+        let oldPodcasts = this.CreatePodcastList [| "B"; "C"; "D" |]
+        let newPodcasts = this.CreatePodcastList [| "A"; "C"; "D" |]
+
+        // Act
+        let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
+        
+        // Assert
+        Assert.AreEqual(3, list.Count)
+        Assert.AreEqual(PodcastComparison.NoMatch, list.[0].OldTitle)
+        Assert.AreEqual("1. A", list.[0].NewTitle)
+        Assert.AreEqual("2. B", list.[1].OldTitle)
+        Assert.AreEqual(PodcastComparison.NoMatch, list.[1].NewTitle)
+        Assert.AreEqual("3. C", list.[2].OldTitle)
+        Assert.AreEqual("3. C", list.[2].NewTitle)
