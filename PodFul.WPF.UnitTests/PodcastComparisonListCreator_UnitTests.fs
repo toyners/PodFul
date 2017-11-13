@@ -8,6 +8,10 @@ open PodFul.WPF.Processing
 
 type PodcastComparisonListCreator_UnitTests() =
 
+    member private this.AssertPodcastComparisonIsCorrect expectedOldTitle expectedNewTitle (podcastComparison : PodcastComparison) = 
+        Assert.AreEqual(expectedOldTitle, podcastComparison.OldTitle)
+        Assert.AreEqual(expectedNewTitle, podcastComparison.NewTitle)
+
     member private this.CreatePodcast title = 
         Setup.createTestPodcast title "Description" "url" DateTime.MinValue 0L DateTime.MinValue "imagefilename" "imageurl" String.Empty
 
@@ -68,10 +72,8 @@ type PodcastComparisonListCreator_UnitTests() =
         let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
         
         // Assert
-        Assert.AreEqual(3, list.Count)
-        Assert.AreEqual(PodcastComparison.NoMatch, list.[0].OldTitle)
-        Assert.AreEqual("1. A", list.[0].NewTitle)
-        Assert.AreEqual("2. B", list.[1].OldTitle)
-        Assert.AreEqual(PodcastComparison.NoMatch, list.[1].NewTitle)
-        Assert.AreEqual("3. C", list.[2].OldTitle)
-        Assert.AreEqual("3. C", list.[2].NewTitle)
+        Assert.AreEqual(4, list.Count)
+        this.AssertPodcastComparisonIsEqual PodcastComparison.NoMatch "1. A" list.[0]
+        this.AssertPodcastComparisonIsEqual "1. B" PodcastComparison.NoMatch list.[1]
+        this.AssertPodcastComparisonIsEqual "2. C" "2. C" list.[2]
+        this.AssertPodcastComparisonIsEqual "3. D" "3. D" list.[3]
