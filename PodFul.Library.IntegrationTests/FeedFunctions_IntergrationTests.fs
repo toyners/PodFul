@@ -370,13 +370,13 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
 
         let feedFilePath = workingDirectory + "download.rss"
-        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+        let feed = Setup.createTestFeedUsingDownloadFile inputPath feedFilePath
 
         let downloadBackupExistsBeforeSecondFeedCreation = System.IO.File.Exists(feedFilePath + ".bak")
 
         Assert.AreEqual(false, downloadBackupExistsBeforeSecondFeedCreation)
 
-        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+        Setup.updateTestFeedUsingDownloadFile feed feedFilePath |> ignore
 
         let downloadBackupExistsAfterSecondFeedCreation = System.IO.File.Exists(feedFilePath + ".bak")
 
@@ -389,12 +389,12 @@ type FeedFunctions_IntergrationTests() =
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
 
         let feedFilePath = workingDirectory + "download.rss"
-        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
-        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+        let feed = Setup.createTestFeedUsingDownloadFile inputPath feedFilePath
+        let feed = Setup.updateTestFeedUsingDownloadFile feed feedFilePath
 
         let firstFileWriteTime = System.IO.File.GetLastWriteTime(feedFilePath + ".bak");
 
-        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+        Setup.updateTestFeedUsingDownloadFile feed feedFilePath |> ignore
         let secondFileWriteTime = System.IO.File.GetLastWriteTime(feedFilePath + ".bak")
 
         let firstWriteTimeIsBeforeSecondWriteTime = firstFileWriteTime < secondFileWriteTime

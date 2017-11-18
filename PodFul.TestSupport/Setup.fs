@@ -67,3 +67,6 @@ module public Setup =
 
     let updateTestFeed feed =
       FeedFunctions.UpdateFeed feed null CancellationToken.None
+
+    let updateTestFeedUsingDownloadFile feed downloadFilePath =
+      FeedFunctions.UpdateFeed feed downloadFilePath CancellationToken.None

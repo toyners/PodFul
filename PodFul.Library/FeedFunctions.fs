@@ -264,10 +264,17 @@ module public FeedFunctions =
 
         data
 
+    let private backupExistingSaveFile (filePath : string) : unit =
+      match (File.Exists(filePath)) with
+      | true -> File.Copy(filePath, filePath + ".bak", true)
+      | _ -> ()        
+
     let private saveToFile (filePath : string) (data : string) : string =
 
         match (String.IsNullOrEmpty(filePath)) with
         | false -> 
+            backupExistingSaveFile filePath |> ignore
+
             use writer = new StreamWriter(filePath, false)
             writer.Write(data)
             data
@@ -292,10 +299,10 @@ module public FeedFunctions =
         setAllPodcastsToHaveDefaultImage defaultImagePath |>
         setFileNamesForPodcasts
 
-    let public UpdateFeed feed filePath cancelToken : Feed = 
+    let public UpdateFeed feed saveFilePath cancelToken : Feed = 
         createWebClient |>
         downloadFeedData feed.URL 5 |>
-        saveToFile filePath |>
+        saveToFile saveFilePath |>
         createXMLDocumentFromData |>
         createFeedRecord feed.URL feed.Directory feed.ImageFileName feed.CreationDateTime |> 
         Feed.SetUpdatedDate feed.UpdatedDateTime |>
