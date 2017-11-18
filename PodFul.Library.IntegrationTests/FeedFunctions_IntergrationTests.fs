@@ -351,7 +351,7 @@ type FeedFunctions_IntergrationTests() =
             secondPodcastFileSize podcastPubDate String.Empty
 
     [<Test>]
-    member public this.``Create feed with duplicate enclosure and mediacontent tags per item``() =
+    member public this.``Create feed from file with duplicate enclosure and mediacontent tags per item``() =
         let inputPath = workingDirectory + itemWithDuplicateEnclosureAndMediaContentTags
         Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(itemWithDuplicateEnclosureAndMediaContentTags, inputPath)
         let feed = Setup.createTestFeed inputPath
@@ -362,4 +362,42 @@ type FeedFunctions_IntergrationTests() =
 
         Asserting.assertPodcastIsCorrect feed.Podcasts.[0] podcastTitle podcastDescription firstPodcastURL podcastImageURL
             firstPodcastFileSize podcastPubDate String.Empty
-      
+
+    [<Test>]
+    member public this.``Download file is backed up when updating feed``() =
+
+        let inputPath = workingDirectory + rssFileName
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
+
+        let feedFilePath = workingDirectory + "download.rss"
+        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+
+        let downloadBackupExistsBeforeSecondFeedCreation = System.IO.File.Exists(feedFilePath + ".bak")
+
+        Assert.AreEqual(false, downloadBackupExistsBeforeSecondFeedCreation)
+
+        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+
+        let downloadBackupExistsAfterSecondFeedCreation = System.IO.File.Exists(feedFilePath + ".bak")
+
+        Assert.AreEqual(true, downloadBackupExistsAfterSecondFeedCreation)
+
+    [<Test>]
+    member public this.``Backup download file is replaced when updating feed``() =
+
+        let inputPath = workingDirectory + rssFileName
+        Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile(rssFileName, inputPath)
+
+        let feedFilePath = workingDirectory + "download.rss"
+        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+
+        let firstFileWriteTime = System.IO.File.GetLastWriteTime(feedFilePath + ".bak");
+
+        Setup.createTestFeedUsingDownloadFile inputPath feedFilePath |> ignore
+        let secondFileWriteTime = System.IO.File.GetLastWriteTime(feedFilePath + ".bak")
+
+        let firstWriteTimeIsBeforeSecondWriteTime = firstFileWriteTime < secondFileWriteTime
+        Assert.AreEqual(true, firstWriteTimeIsBeforeSecondWriteTime)
+
+     

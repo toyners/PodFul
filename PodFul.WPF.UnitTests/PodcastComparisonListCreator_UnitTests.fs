@@ -73,7 +73,7 @@ type PodcastComparisonListCreator_UnitTests() =
         
         // Assert
         Assert.AreEqual(4, list.Count)
-        this.AssertPodcastComparisonIsEqual PodcastComparison.NoMatch "1. A" list.[0]
-        this.AssertPodcastComparisonIsEqual "1. B" PodcastComparison.NoMatch list.[1]
-        this.AssertPodcastComparisonIsEqual "2. C" "2. C" list.[2]
-        this.AssertPodcastComparisonIsEqual "3. D" "3. D" list.[3]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "1. A" list.[0]
+        this.AssertPodcastComparisonIsCorrect "1. B" PodcastComparison.NoMatch list.[1]
+        this.AssertPodcastComparisonIsCorrect "2. C" "2. C" list.[2]
+        this.AssertPodcastComparisonIsCorrect "3. D" "3. D" list.[3]
