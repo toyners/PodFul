@@ -94,3 +94,18 @@ type PodcastComparisonListCreator_UnitTests() =
         this.AssertPodcastComparisonIsCorrect "2. B" "2. B" list.[1]
         this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "3. D" list.[2]
         this.AssertPodcastComparisonIsCorrect "3. C" PodcastComparison.NoMatch list.[3]
+
+    [<Test>]
+    member public this.``New list has lost one and gained one but all other podcasts are equal.``() =
+        let oldPodcasts = this.CreatePodcastList [| "B"; "C"; "D" |]
+        let newPodcasts = this.CreatePodcastList [| "A"; "B"; "C" |]
+
+        // Act
+        let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
+        
+        // Assert
+        Assert.AreEqual(4, list.Count)
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "1. A" list.[0]
+        this.AssertPodcastComparisonIsCorrect "1. B" "2. B" list.[1]
+        this.AssertPodcastComparisonIsCorrect "2. C" "3. C" list.[2]
+        this.AssertPodcastComparisonIsCorrect "3. D" PodcastComparison.NoMatch list.[3]

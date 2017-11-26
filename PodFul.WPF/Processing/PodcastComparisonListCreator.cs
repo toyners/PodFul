@@ -97,5 +97,19 @@ namespace PodFul.WPF.Processing
 
       return list;
     }
+
+    private static List<PodcastComparison> Create3(Podcast[] currentPodcasts, Podcast[] newPodcasts)
+    {
+      if (currentPodcasts.Length == newPodcasts.Length)
+      {
+        // Either
+      }
+      else
+      {
+
+      }
+
+      throw new System.NotImplementedException();
+    }
   }
 }
