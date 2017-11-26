@@ -3,7 +3,7 @@
 
 ## 3.1.7 (1.9.8)
 1. **Fixed:** Fixed an issue where file delivery messages from an earlier operation were being displayed at the end of the scanning.
-2. **Fixed:** Fixed an issue where cancel operation only complete once the first podcast download started.
+2. **Fixed:** Fixed an issue where cancel operation only completed once the first podcast download started.
 3. **Fixed:** Fixed an issue where a podcast download operation was kicked off with no download jobs.
 4. **Fixed:** Fixed an issue where a double click action on the scroll bar would close the podcasts list window.
 5. **Changed:** Empty directories no longer created as a by-product of delivering a podcast file.
