@@ -109,3 +109,36 @@ type PodcastComparisonListCreator_UnitTests() =
         this.AssertPodcastComparisonIsCorrect "1. B" "2. B" list.[1]
         this.AssertPodcastComparisonIsCorrect "2. C" "3. C" list.[2]
         this.AssertPodcastComparisonIsCorrect "3. D" PodcastComparison.NoMatch list.[3]
+
+    [<Test>]
+    member public this.``No matches in lists of same size.``() =
+        let oldPodcasts = this.CreatePodcastList [| "A"; "B"; "C" |]
+        let newPodcasts = this.CreatePodcastList [| "D"; "E"; "F" |]
+
+        // Act
+        let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
+        
+        // Assert
+        Assert.AreEqual(6, list.Count)
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "1. D" list.[0]
+        this.AssertPodcastComparisonIsCorrect "1. A" PodcastComparison.NoMatch list.[1]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "2. E" list.[2]
+        this.AssertPodcastComparisonIsCorrect "2. B" PodcastComparison.NoMatch list.[3]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "3. F" list.[4]
+        this.AssertPodcastComparisonIsCorrect "3. C" PodcastComparison.NoMatch list.[5]
+
+    [<Test>]
+    member public this.``No matches when new list is larger.``() =
+        let oldPodcasts = this.CreatePodcastList [| "A"; "B"; |]
+        let newPodcasts = this.CreatePodcastList [| "D"; "E"; "F" |]
+
+        // Act
+        let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
+        
+        // Assert
+        Assert.AreEqual(5, list.Count)
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "1. D" list.[0]
+        this.AssertPodcastComparisonIsCorrect "1. A" PodcastComparison.NoMatch list.[1]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "2. E" list.[2]
+        this.AssertPodcastComparisonIsCorrect "2. B" PodcastComparison.NoMatch list.[3]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "3. F" list.[4]

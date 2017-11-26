@@ -17,7 +17,7 @@ namespace PodFul.WPF.Processing
     /// <returns>List of podcast comparison objects.</returns>
     public static List<PodcastComparison> Create(Podcast[] currentPodcasts, Podcast[] newPodcasts)
     {
-      return Create2(currentPodcasts, newPodcasts);
+      return Create3(currentPodcasts, newPodcasts);
       var currentIndex = 0;
       var newIndex = 0;
       var list = new List<PodcastComparison>();
@@ -102,13 +102,209 @@ namespace PodFul.WPF.Processing
     {
       if (currentPodcasts.Length == newPodcasts.Length)
       {
-        // Either
+        var podcastComparisons = new List<PodcastComparison>();
+
+        // Find the first match
+        var foundFirstMatch = false;
+        var currentIndex = 0;
+        var newIndex = 0;
+        for (; currentIndex < currentPodcasts.Length; currentIndex++)
+        {
+          newIndex = 0;
+          for (; newIndex < newPodcasts.Length; newIndex++)
+          {
+            if (currentPodcasts[currentIndex] == newPodcasts[newIndex])
+            {
+              // found match
+              foundFirstMatch = true;
+              break;
+            }
+          }
+
+          if (foundFirstMatch)
+          {
+            break;
+          }
+        }
+
+        if (!foundFirstMatch)
+        {
+          // No matches
+          for (var index = 0; index < currentPodcasts.Length; index++)
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[index], (index + 1)));
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[index], (index + 1)));
+          }
+
+          return podcastComparisons;
+        }
+
+        // All new podcasts before are not matched in the current list. Put them in now
+        var ci = 0;
+        var ni = 0;
+        while (ci < currentIndex || ni < newIndex)
+        {
+          if (ni < newIndex)
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[ni], (ni + 1)));
+            ni++;
+          }
+
+          if (ci < currentIndex)
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[ci], (ci + 1)));
+            ci++;
+          }
+        }
+
+        // Found first match between lists - use that as an anchor point for further comparison checked
+        podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithBothPodcasts(currentPodcasts[currentIndex], (currentIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
+        currentIndex++;
+        newIndex++;
+
+        // Now walk along both lists. Where current and new does not match then add new only and advance along new list
+        while (currentIndex < currentPodcasts.Length || newIndex < newPodcasts.Length)
+        {
+          if (currentIndex < currentPodcasts.Length && newIndex < newPodcasts.Length)
+          {
+            if (currentPodcasts[currentIndex] == newPodcasts[newIndex])
+            {
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithBothPodcasts(currentPodcasts[currentIndex], (currentIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
+              currentIndex++;
+              newIndex++;
+            }
+            else
+            {
+              // No match - add new comparison only and current comparison only
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[newIndex], (newIndex + 1)));
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[currentIndex], (currentIndex + 1)));
+              currentIndex++;
+              newIndex++;
+            }
+          }
+          else if (newIndex >= newPodcasts.Length)
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[currentIndex], (currentIndex + 1)));
+            currentIndex++;
+          }
+          else
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[newIndex], (newIndex + 1)));
+            newIndex++;
+          }
+        }
+
+        return podcastComparisons;
       }
-      else
+
+      if (currentPodcasts.Length < newPodcasts.Length)
       {
+        var podcastComparisons = new List<PodcastComparison>();
 
+        // Find the first match
+        var foundFirstMatch = false;
+        var currentIndex = 0;
+        var newIndex = 0;
+        for (; currentIndex < currentPodcasts.Length; currentIndex++)
+        {
+          newIndex = 0;
+          for (; newIndex < newPodcasts.Length; newIndex++)
+          {
+            if (currentPodcasts[currentIndex] == newPodcasts[newIndex])
+            {
+              // found match
+              foundFirstMatch = true;
+              break;
+            }
+          }
+
+          if (foundFirstMatch)
+          {
+            break;
+          }
+        }
+
+        if (!foundFirstMatch)
+        {
+          // No matches
+          newIndex = 0;
+          currentIndex = 0;
+          while (newIndex < newPodcasts.Length || currentIndex < currentPodcasts.Length)
+          {
+            if (newIndex < newPodcasts.Length)
+            {
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[newIndex], (newIndex + 1)));
+              newIndex++;
+            }
+
+            if (currentIndex < currentPodcasts.Length)
+            {
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[currentIndex], (currentIndex + 1)));
+              currentIndex++;
+            }
+          }
+
+          return podcastComparisons;
+        }
+
+        // All new podcasts before are not matched in the current list. Put them in now
+        var ci = 0;
+        var ni = 0;
+        while (ci < currentIndex || ni < newIndex)
+        {
+          if (ni < newIndex)
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[ni], (ni + 1)));
+            ni++;
+          }
+
+          if (ci < currentIndex)
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[ci], (ci + 1)));
+            ci++;
+          }
+        }
+
+        // Found first match between lists - use that as an anchor point for further comparison checked
+        podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithBothPodcasts(currentPodcasts[currentIndex], (currentIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
+        currentIndex++;
+        newIndex++;
+
+        // Now walk along both lists. Where current and new does not match then add new only and advance along new list
+        while (currentIndex < currentPodcasts.Length || newIndex < newPodcasts.Length)
+        {
+          if (currentIndex < currentPodcasts.Length && newIndex < newPodcasts.Length)
+          {
+            if (currentPodcasts[currentIndex] == newPodcasts[newIndex])
+            {
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithBothPodcasts(currentPodcasts[currentIndex], (currentIndex + 1), newPodcasts[newIndex], (newIndex + 1)));
+              currentIndex++;
+              newIndex++;
+            }
+            else
+            {
+              // No match - add new comparison only and current comparison only
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[newIndex], (newIndex + 1)));
+              podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[currentIndex], (currentIndex + 1)));
+              currentIndex++;
+              newIndex++;
+            }
+          }
+          else if (newIndex >= newPodcasts.Length)
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithCurrentPodcastOnly(currentPodcasts[currentIndex], (currentIndex + 1)));
+            currentIndex++;
+          }
+          else
+          {
+            podcastComparisons.Add(PodcastComparison.CreatePodcastComparisonWithNewPodcastOnly(newPodcasts[newIndex], (newIndex + 1)));
+            newIndex++;
+          }
+        }
+
+        return podcastComparisons;
       }
-
+      
       throw new System.NotImplementedException();
     }
   }
