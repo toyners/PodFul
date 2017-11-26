@@ -22,7 +22,6 @@ type PodcastComparisonListCreator_UnitTests() =
 
     [<Test>]
     member public this.``New Podcast list has two new podcasts and lost one.``() =
-        // new podcast list has two new podcasts and lost an old one
         let oldPodcasts = this.CreatePodcastList [| "C"; "D"; "E" |]
         let newPodcasts = this.CreatePodcastList [| "A"; "B"; "C"; "D"|]
 
@@ -31,20 +30,11 @@ type PodcastComparisonListCreator_UnitTests() =
         
         // Assert
         Assert.AreEqual(5, list.Count)
-        Assert.AreEqual(PodcastComparison.NoMatch, list.[0].OldTitle)
-        Assert.AreEqual("1. A", list.[0].NewTitle)
-
-        Assert.AreEqual(PodcastComparison.NoMatch, list.[1].OldTitle)
-        Assert.AreEqual("2. B", list.[1].NewTitle)
-
-        Assert.AreEqual("1. C", list.[2].OldTitle)
-        Assert.AreEqual("3. C", list.[2].NewTitle)
-
-        Assert.AreEqual("2. D", list.[3].OldTitle)
-        Assert.AreEqual("4. D", list.[3].NewTitle)
-
-        Assert.AreEqual("3. E", list.[4].OldTitle)
-        Assert.AreEqual(PodcastComparison.NoMatch, list.[4].NewTitle)
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "1. A" list.[0]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "2. B" list.[1]
+        this.AssertPodcastComparisonIsCorrect "1. C" "3. C" list.[2]
+        this.AssertPodcastComparisonIsCorrect "2. D" "4. D" list.[3]
+        this.AssertPodcastComparisonIsCorrect "3. E" PodcastComparison.NoMatch list.[4]
 
     [<Test>]
     member public this.``New Podcast list has one more podcasts only.``() =
@@ -56,12 +46,9 @@ type PodcastComparisonListCreator_UnitTests() =
         
         // Assert
         Assert.AreEqual(3, list.Count)
-        Assert.AreEqual(PodcastComparison.NoMatch, list.[0].OldTitle)
-        Assert.AreEqual("1. A", list.[0].NewTitle)
-        Assert.AreEqual("1. B", list.[1].OldTitle)
-        Assert.AreEqual("2. B", list.[1].NewTitle)
-        Assert.AreEqual("2. C", list.[2].OldTitle)
-        Assert.AreEqual("3. C", list.[2].NewTitle)
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "1. A" list.[0]
+        this.AssertPodcastComparisonIsCorrect "1. B" "2. B" list.[1]
+        this.AssertPodcastComparisonIsCorrect "2. C" "3. C" list.[2]
 
     [<Test>]
     member public this.``First Podcast from both lists are not equal but all other podcasts are equal.``() =
@@ -77,3 +64,33 @@ type PodcastComparisonListCreator_UnitTests() =
         this.AssertPodcastComparisonIsCorrect "1. B" PodcastComparison.NoMatch list.[1]
         this.AssertPodcastComparisonIsCorrect "2. C" "2. C" list.[2]
         this.AssertPodcastComparisonIsCorrect "3. D" "3. D" list.[3]
+
+    [<Test>]
+    member public this.``Middle Podcast from both lists are not equal but all other podcasts are equal.``() =
+        let oldPodcasts = this.CreatePodcastList [| "A"; "B"; "D" |]
+        let newPodcasts = this.CreatePodcastList [| "A"; "C"; "D" |]
+
+        // Act
+        let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
+        
+        // Assert
+        Assert.AreEqual(4, list.Count)
+        this.AssertPodcastComparisonIsCorrect "1. A" "1. A" list.[0]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "2. C" list.[1]
+        this.AssertPodcastComparisonIsCorrect "2. B" PodcastComparison.NoMatch list.[2]
+        this.AssertPodcastComparisonIsCorrect "3. D" "3. D" list.[3]
+
+    [<Test>]
+    member public this.``Last Podcast from both lists are not equal but all other podcasts are equal.``() =
+        let oldPodcasts = this.CreatePodcastList [| "A"; "B"; "C" |]
+        let newPodcasts = this.CreatePodcastList [| "A"; "B"; "D" |]
+
+        // Act
+        let list = PodcastComparisonListCreator.Create(oldPodcasts, newPodcasts)
+        
+        // Assert
+        Assert.AreEqual(4, list.Count)
+        this.AssertPodcastComparisonIsCorrect "1. A" "1. A" list.[0]
+        this.AssertPodcastComparisonIsCorrect "2. B" "2. B" list.[1]
+        this.AssertPodcastComparisonIsCorrect PodcastComparison.NoMatch "3. D" list.[2]
+        this.AssertPodcastComparisonIsCorrect "3. C" PodcastComparison.NoMatch list.[3]
