@@ -9,6 +9,7 @@
 5. **Changed:** Empty directories no longer created as a by-product of delivering a podcast file.
 6. **Fixed:** Fixed an issue where the feed image was not being set to the default image when required.
 7. **Changed:** Itunes:image tag now recognised when retrieving the image for a feed.
+8. **Changed:** Podcast comparison algorithm improved in situation where new podcast list is updated.
 
 ## 3.1.6 (1.9.7)
 1. **Fixed:** Inner exception messages are displayed in the exception dialogue box when adding a feed fails.
