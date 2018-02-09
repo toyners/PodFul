@@ -4,15 +4,15 @@
              xmlns:local="clr-namespace:PodFul.WPF"
              StartupUri="Windows\MainWindow.xaml">
   <Application.Resources>
-    <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
-    <local:TextTruncator x:Key="TextTruncator" />
-    <local:FileSizeConverter x:Key="FileSizeConverter" />
-    <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
-    <Style x:Key="StandardButton" TargetType="{x:Type Button}">
-      <Setter Property="Padding" Value="2.5"/>
-      <Setter Property="Margin" Value="5"/>
-      <Setter Property="VerticalContentAlignment" Value="Center"/>
-      <Setter Property="Height" Value="25" />
-    </Style>
+    <ResourceDictionary>
+      <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
+      <local:TextTruncator x:Key="TextTruncator" />
+      <local:FileSizeConverter x:Key="FileSizeConverter" />
+      <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
+
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="PodFulResourceDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </Application.Resources>
 </Application>

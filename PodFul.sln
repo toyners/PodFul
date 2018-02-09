@@ -34,6 +34,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Migration195To196", "Migrat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{19CA3F0F-4F01-4BB5-BAA1-78C52E96D09A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PodFul.WPF.Testbed", "PodFul.WPF.Testbed\PodFul.WPF.Testbed.csproj", "{80C832E3-98A9-4607-AD59-6D3FA10445AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{981AB91E-389B-485A-8B50-B7A97EBC92DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{981AB91E-389B-485A-8B50-B7A97EBC92DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{981AB91E-389B-485A-8B50-B7A97EBC92DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C832E3-98A9-4607-AD59-6D3FA10445AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C832E3-98A9-4607-AD59-6D3FA10445AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C832E3-98A9-4607-AD59-6D3FA10445AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C832E3-98A9-4607-AD59-6D3FA10445AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
