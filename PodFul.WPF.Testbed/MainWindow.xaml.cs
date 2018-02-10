@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using PodFul.WPF.Windows;
-
+﻿
 namespace PodFul.WPF.Testbed
 {
+  using System;
+  using System.Windows;
+  using PodFul.Library;
+  using PodFul.WPF.Windows;
+
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
@@ -28,7 +18,10 @@ namespace PodFul.WPF.Testbed
 
     private void Button_Click(Object sender, RoutedEventArgs e)
     {
-      var window = new DownloadConfirmationWindow(null, null);
+      var podcastDetails = new PodcastFile(String.Empty, -1, DateTime.Now, String.Empty);
+      var podcast = new Podcast("Test", String.Empty, String.Empty, String.Empty, DateTime.Now, podcastDetails);
+      var oldFeed = new Feed("OldFeed", String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, new[] { podcast }, DateTime.Now, DateTime.Now, true, true, true);
+      var window = new DownloadConfirmationWindow(oldFeed, oldFeed);
       window.ShowDialog();
     }
   }
