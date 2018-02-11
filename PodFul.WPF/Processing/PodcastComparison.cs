@@ -37,6 +37,8 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
+    public Int32 Index { get { return this.newPodcastData.Index; } }
+
     public Boolean HasNewPodcast { get { return this.newPodcastData.Title != PodcastComparison.NoMatch; } }
 
     public Boolean HasNewPodcastOnly { get { return this.HasNewPodcast && this.oldPodcastData.Title == PodcastComparison.NoMatch; } }
@@ -84,10 +86,12 @@ namespace PodFul.WPF.Processing
       public Data()
       {
         this.Title = PodcastComparison.NoMatch;
+        this.Index = -1;
       }
 
       public Data(Int32 number, Podcast podcast)
       {
+        this.Index = number - 1;
         if (podcast.FileDetails.FileSize <= 0)
         {
           this.FileSize = "File size: (unknown)";
@@ -106,13 +110,10 @@ namespace PodFul.WPF.Processing
 
       #region Properties
       public String DownloadDate { get; private set; }
-
       public String FileSize { get; private set; }
-
+      public Int32 Index { get; private set; }
       public String PubDate { get; private set; }
-
       public String Title { get; private set; }
-
       public String URL { get; private set; }
       #endregion
     }
