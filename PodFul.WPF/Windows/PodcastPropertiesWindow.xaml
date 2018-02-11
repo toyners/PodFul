@@ -38,7 +38,7 @@
 
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <Label VerticalAlignment="Center">Description:</Label>
-            <TextBlock  Text="{Binding Path=Podcast.Description, Converter={StaticResource TextTruncator}, ConverterParameter=90}" VerticalAlignment="Center" />
+            <TextBlock  Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=90}" VerticalAlignment="Center" />
           </StackPanel>
 
           <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,5,0" >

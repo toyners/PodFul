@@ -1,6 +1,11 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.1.8 (1.9.8)
+1. **Fixed:** Fixed an issue where the podcast description was not being displayed in the podcast properties dialog.
+2. **Fixed:** Fixed an issue where the selection indexes in the download confirmation dialog did not match with the indexes of the feed podcasts.
+3. **Changed:** Download confirmation dialog now states the feed name in the window title bar.
+
 ## 3.1.7 (1.9.8)
 1. **Fixed:** Fixed an issue where file delivery messages from an earlier operation were being displayed at the end of the scanning.
 2. **Fixed:** Fixed an issue where cancel operation only completed once the first podcast download started.
