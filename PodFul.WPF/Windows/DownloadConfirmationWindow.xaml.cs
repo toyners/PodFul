@@ -18,6 +18,10 @@ namespace PodFul.WPF.Windows
     private Boolean windowLoaded;
 
     private List<PodcastComparison> podcastComparisons;
+
+    private Int32[] selectAllRowIndexes;
+
+    private Int32 latestPodcastCount; // The count of latest podcasts found for this feed (no matches in the previous version of the feed)
     #endregion
 
     #region Construction
@@ -26,8 +30,33 @@ namespace PodFul.WPF.Windows
       InitializeComponent();
 
       this.podcastComparisons = PodcastComparisonListCreator.Create(oldFeed.Podcasts, newFeed.Podcasts);
+
+      // Calculate the indexes for selecting all podcasts from the new feed and also
+      // the first n podcasts to select when selecting the new podcasts only.
+      var rowIndexes = new List<Int32>(this.podcastComparisons.Count);
+      var newPodcastInFeed = true;
+      for (var index = 0; index < this.podcastComparisons.Count; index++)
+      {
+        if (newPodcastInFeed && this.podcastComparisons[index].HasNewPodcastOnly)
+        {
+          this.latestPodcastCount++;
+        }
+        else
+        {
+          newPodcastInFeed = false;
+        }
+
+        if (this.podcastComparisons[index].HasNewPodcast)
+        {
+          rowIndexes.Add(index);
+        }
+      }
+
+      this.selectAllRowIndexes = rowIndexes.ToArray();
+
       this.PodcastList.ItemsSource = podcastComparisons;
       this.Result = MessageBoxResult.None;
+      this.Title = "Confirm Podcast Downloads for '" + newFeed.Title + "' feed.";
     }
     #endregion
 
@@ -99,21 +128,10 @@ namespace PodFul.WPF.Windows
       DownloadButton.IsEnabled = (this.PodcastList.SelectedItems.Count > 0);
     }
 
-    private void Select(Func<PodcastComparison, Boolean> matchFunc)
-    {
-      var matchingCount = this.GetMatchingCount(matchFunc);
-
-      if (matchingCount > 0)
-      {
-        this.PodcastList.SelectFirstRows(matchingCount);
-        this.DownloadButton.IsEnabled = true;
-      }
-    }
-
     private void SelectAll()
     {
       this.SelectNone();
-      this.Select((p) => { return p.HasNewPodcast; });
+      this.PodcastList.SelectSpecificRows(this.selectAllRowIndexes);
     }
 
     private void SelectAllClick(Object sender, RoutedEventArgs e)
@@ -123,12 +141,12 @@ namespace PodFul.WPF.Windows
 
     private void SelectNew()
     {
-      this.Select((p) => { return p.HasNewPodcastOnly; });
+      this.SelectNone();
+      this.PodcastList.SelectFirstRows(this.latestPodcastCount);
     }
 
     private void SelectNewClick(Object sender, RoutedEventArgs e)
     {
-      this.SelectNone();
       this.SelectNew();
     }
 

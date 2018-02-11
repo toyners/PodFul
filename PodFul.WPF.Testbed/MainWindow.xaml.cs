@@ -18,8 +18,27 @@ namespace PodFul.WPF.Testbed
 
     private void Button_Click(Object sender, RoutedEventArgs e)
     {
-      var oldFeed = this.CreateFeed("OldFeed", new[] { this.CreatePodcast("Podcast B"), this.CreatePodcast("Podcast C") });
-      var newFeed = this.CreateFeed("NewFeed", new[] { this.CreatePodcast("Podcast A"), this.CreatePodcast("Podcast C") });
+      var oldFeed = this.CreateFeed("OldFeed", 
+        new[] {
+          this.CreatePodcast("Podcast B"),
+          this.CreatePodcast("Podcast C"),
+          this.CreatePodcast("Podcast E"),
+          this.CreatePodcast("Podcast F"),
+          this.CreatePodcast("Podcast H"),
+          this.CreatePodcast("Podcast I")
+
+        });
+
+      var newFeed = this.CreateFeed("NewFeed",
+        new[] {
+          this.CreatePodcast("Podcast A"),
+          this.CreatePodcast("Podcast C"),
+          this.CreatePodcast("Podcast D"),
+          this.CreatePodcast("Podcast F"),
+          this.CreatePodcast("Podcast G"),
+          this.CreatePodcast("Podcast I")
+        });
+
       var window = new DownloadConfirmationWindow(oldFeed, newFeed);
       window.ShowDialog();
     }
