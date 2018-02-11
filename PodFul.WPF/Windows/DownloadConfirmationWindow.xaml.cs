@@ -81,11 +81,16 @@ namespace PodFul.WPF.Windows
 
     private void DownloadClick(Object sender, RoutedEventArgs e)
     {
-      this.PodcastIndexes = new List<Int32>(this.PodcastList.SelectedItems.Count);
+      this.PodcastIndexes = new List<Int32>();
 
       foreach (var selectedItem in this.PodcastList.SelectedItems)
       {
-        this.PodcastIndexes.Add(this.PodcastList.Items.IndexOf(selectedItem));
+        var podcastComparisonIndex = this.PodcastList.Items.IndexOf(selectedItem);
+        var podcastIndex = this.podcastComparisons[podcastComparisonIndex].Index;
+        if (podcastIndex > -1)
+        {
+          this.PodcastIndexes.Add(podcastIndex);
+        }
       }
 
       this.Result = MessageBoxResult.Yes;
