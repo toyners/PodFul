@@ -17,9 +17,38 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectAllClick">Select All</Button>
-          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectNoneClick">Select None</Button>
-          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectNewClick">Select New</Button>
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectAllClick" Content="Select All" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Select All Podcasts</TextBlock>
+                  <TextBlock>Selects all podcasts from the feed.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectNoneClick" Content="Select None" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Clear Podcast Selection</TextBlock>
+                  <TextBlock>Unselects all podcasts from the feed.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectNewClick" Content="Select New" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Select New Podcasts</TextBlock>
+                  <TextBlock>Selects all new podcasts found in feed.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
         </StackPanel>
         
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
