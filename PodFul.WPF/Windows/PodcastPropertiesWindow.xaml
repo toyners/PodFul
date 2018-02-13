@@ -58,7 +58,7 @@
           
           <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Label VerticalAlignment="Center">Downloaded:</Label>
-            <TextBlock VerticalAlignment="Center" Text="{Binding Path=DownloadedDate, Converter={StaticResource DownloadDateTimeConverter}}" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileDetails.DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}" />
           </StackPanel>
 
           <StackPanel Grid.Row="5" Orientation="Horizontal">
