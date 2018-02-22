@@ -154,9 +154,6 @@ module public FeedFunctions =
         else
             baseTitle + " [" + fileDetailsNumber.ToString() + " of " + fileDetailsCount.ToString() + "]"
 
-    let private finaliseFileNames (podcasts : list<Podcast>) : list<Podcast> =
-        podcasts 
-
     let private createPodcastArrayFromDocument (document: XDocument) : Podcast[] =
 
         try
@@ -195,7 +192,7 @@ module public FeedFunctions =
                           }
 
                           yield podcast
-            ] |> finaliseFileNames |> List.toArray
+            ] |> List.toArray
         with
         | _ as ex -> failwith ("error: " + ex.Message)          
             
