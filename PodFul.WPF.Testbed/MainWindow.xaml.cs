@@ -53,5 +53,20 @@ namespace PodFul.WPF.Testbed
     {
       return new Feed(title, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, podcasts, DateTime.Now, DateTime.Now, true, true, true);
     }
+
+    private Feed CreateFeed(String title, String description, String website, String directory, String url, String imageFileName, DateTime creationDateTime, Podcast[] podcasts)
+    {
+      return new Feed(title, description, website, directory, url, String.Empty, imageFileName, podcasts, creationDateTime, DateTime.Now, true, true, true);
+    }
+
+    private void FeedPropertiesWindow_Click(Object sender, RoutedEventArgs e)
+    {
+      var podcast = this.CreatePodcast("Podcast 1");
+      var feed = this.CreateFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", "Test URL", 
+        @"Question-Mark.jpg",
+        new DateTime(2018, 3, 3, 7, 46, 15), new[] { podcast });
+      var window = new FeedPropertiesWindow(feed);
+      window.ShowDialog();
+    }
   }
 }

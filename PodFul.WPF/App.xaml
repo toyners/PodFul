@@ -5,7 +5,6 @@
              StartupUri="Windows\MainWindow.xaml">
   <Application.Resources>
     <ResourceDictionary>
-      <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
       <local:TextTruncator x:Key="TextTruncator" />
       <local:FileSizeConverter x:Key="FileSizeConverter" />
       <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />

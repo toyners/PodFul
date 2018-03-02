@@ -17,5 +17,6 @@
       <RowDefinition />
     </Grid.RowDefinitions>
     <Button Margin="30" Click="Button_Click">Download Confirmation Window</Button>
+    <Button Margin="30" Grid.Column="1" Click="FeedPropertiesWindow_Click">Feed Properties Window</Button>
   </Grid>
 </Window>

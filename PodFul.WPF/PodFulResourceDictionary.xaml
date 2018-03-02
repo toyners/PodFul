@@ -7,4 +7,6 @@
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Height" Value="25" />
   </Style>
+
+  <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
 </ResourceDictionary>
