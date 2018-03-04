@@ -395,23 +395,38 @@ namespace PodFul.WPF.Windows
       var propertiesWindow = new FeedPropertiesWindow(this.currentFeed);
       propertiesWindow.Owner = this;
 
-      var dataChanged = propertiesWindow.ShowDialog();
-      if (dataChanged.HasValue && dataChanged.Value)
+      var isDirty = propertiesWindow.ShowDialog();
+      Feed updatedFeed = null;
+      if (isDirty.HasValue && isDirty.Value)
       {
-        if (this.currentFeed.Directory != propertiesWindow.DirectoryPath.Text)
-        this.currentFeed = Feed.SetDirectory(propertiesWindow.DirectoryPath.Text, this.currentFeed);
+        // Properties window can be diry without the actual data changing (i.e. user put the same
+        // value in). So only update the feed if something has really changed.
 
-        this.currentFeed = Feed.SetScanningFlags(propertiesWindow.DoScan,
-          propertiesWindow.DoDownload,
-          propertiesWindow.DoDelivery,
-          this.currentFeed);
+        if (this.currentFeed.Directory != propertiesWindow.DirectoryPath.Text)
+        {
+          updatedFeed = Feed.SetDirectory(propertiesWindow.DirectoryPath.Text, this.currentFeed);
+        }
+
+        if (this.currentFeed.DoScan != propertiesWindow.DoScan ||
+            this.currentFeed.CompleteDownloadsOnScan != propertiesWindow.DoDownload ||
+            this.currentFeed.DeliverDownloadsOnScan != propertiesWindow.DoDelivery)
+        {
+          updatedFeed = Feed.SetScanningFlags(propertiesWindow.DoScan,
+            propertiesWindow.DoDownload,
+            propertiesWindow.DoDelivery,
+            this.currentFeed);
+        }
 
         UInt32 value;
         if (UInt32.TryParse(propertiesWindow.ConfirmDownloadThreshold.Text, out value) && this.currentFeed.ConfirmDownloadThreshold != value)
         {
-          this.currentFeed = Feed.SetConfirmDownloadThreshold(value, this.currentFeed);
+          updatedFeed = Feed.SetConfirmDownloadThreshold(value, this.currentFeed);
         }
+      }
 
+      if (updatedFeed != null)
+      {
+        this.currentFeed = updatedFeed;
         this.feedCollection.UpdateFeedContent(this.currentFeed);
         var index = this.feedCollection.ObservableFeeds.IndexOf(this.currentFeed);
         this.feedCollection[index] = this.currentFeed;
