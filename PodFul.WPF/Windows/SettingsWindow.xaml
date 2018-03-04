@@ -22,7 +22,6 @@
       <Grid Margin="-1,0,1,0">
         <Grid.RowDefinitions>
           <RowDefinition Height="17pt"/>
-          <RowDefinition Height="17pt"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -33,9 +32,6 @@
 
         <TextBlock Margin="6,2" VerticalAlignment="Center">Concurrent Download Count:</TextBlock>
         <TextBox Grid.Column="1" Name="ConcurrentDownloadCount" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
-
-        <TextBlock Grid.Row="1" Margin="6,2" VerticalAlignment="Center">Confirm Download Threshold:</TextBlock>
-        <TextBox Grid.Column="1" Grid.Row="1" Name="ConfirmPodcastDownloadThreshold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
 
         <CheckBox Name="HideCompletedJobs" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,0">Hide Completed Jobs</CheckBox>
       </Grid>

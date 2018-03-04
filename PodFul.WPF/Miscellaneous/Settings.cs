@@ -44,7 +44,6 @@ namespace PodFul.WPF.Miscellaneous
         this.settingsData = new SettingsData
         {
           ConcurrentDownloadCount = 3,
-          ConfirmPodcastDownloadThreshold = 3,
           DeliverManualDownloads = false,
           DeliveryData = new List<SettingsData.DeliveryPointData>()
         };
@@ -56,12 +55,6 @@ namespace PodFul.WPF.Miscellaneous
     #endregion
 
     #region Properties
-    public UInt32 ConfirmPodcastDownloadThreshold
-    {
-      get { return this.settingsData.ConfirmPodcastDownloadThreshold; }
-      set { this.settingsData.ConfirmPodcastDownloadThreshold = value; }
-    }
-
     public UInt32 ConcurrentDownloadCount
     {
       get { return this.settingsData.ConcurrentDownloadCount; }
@@ -129,8 +122,6 @@ namespace PodFul.WPF.Miscellaneous
     public class SettingsData
     {
       #region Properties
-      public UInt32 ConfirmPodcastDownloadThreshold { get; set; }
-
       public UInt32 ConcurrentDownloadCount { get; set; }
 
       public Boolean DeliverManualDownloads { get; set; }

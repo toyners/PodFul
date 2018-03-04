@@ -103,7 +103,6 @@ type Settings_IntegrationTests() =
 
         Assert.IsNotNull(settings)
         Assert.AreEqual(settings.ConcurrentDownloadCount, 3)
-        Assert.AreEqual(settings.ConfirmPodcastDownloadThreshold, 3)
 
     [<Test>]
     member public this.``Saving settings results in file being created``() =
@@ -135,6 +134,5 @@ type Settings_IntegrationTests() =
         // Assert
         Assert.AreNotSame(settingsA, settingsB)
         Assert.AreEqual(settingsA.ConcurrentDownloadCount, settingsB.ConcurrentDownloadCount)
-        Assert.AreEqual(settingsA.ConfirmPodcastDownloadThreshold, settingsB.ConfirmPodcastDownloadThreshold)
         Assert.AreEqual(settingsA.DeliveryPointData.Count, settingsB.DeliveryPointData.Count)
         

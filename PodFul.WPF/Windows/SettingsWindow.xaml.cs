@@ -112,7 +112,6 @@ namespace PodFul.WPF.Windows
     private void LoadUIFromSettings()
     {
       this.ConcurrentDownloadCount.Text = this.settings.ConcurrentDownloadCount.ToString();
-      this.ConfirmPodcastDownloadThreshold.Text = this.settings.ConfirmPodcastDownloadThreshold.ToString();
       this.DeliverManualDownloads.IsChecked = this.settings.DeliverManualDownloadsToDeliveryPoints;
       this.HideCompletedJobs.IsChecked = this.settings.HideCompletedJobs;
       this.DownloadImagesWhenAddingFeeds.IsChecked = this.settings.DownloadImagesWhenAddingFeeds;
@@ -126,7 +125,6 @@ namespace PodFul.WPF.Windows
       try
       {
         this.settings.ConcurrentDownloadCount = UInt32.Parse(this.ConcurrentDownloadCount.Text);
-        this.settings.ConfirmPodcastDownloadThreshold = UInt32.Parse(this.ConfirmPodcastDownloadThreshold.Text);
         this.settings.DeliverManualDownloadsToDeliveryPoints = (Boolean)this.DeliverManualDownloads.IsChecked;
         this.settings.HideCompletedJobs = (Boolean)this.HideCompletedJobs.IsChecked;
         this.settings.DownloadImagesWhenAddingFeeds = (Boolean)this.DownloadImagesWhenAddingFeeds.IsChecked;
