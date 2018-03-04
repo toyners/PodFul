@@ -233,6 +233,7 @@ module public FeedFunctions =
              DoScan = true
              CompleteDownloadsOnScan = true
              DeliverDownloadsOnScan = true
+             ConfirmDownloadThreshold = 3
         }
 
     let private createWebClient : WebClient = 

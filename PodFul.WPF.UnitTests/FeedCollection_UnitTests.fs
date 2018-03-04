@@ -3,6 +3,7 @@
 open System
 open NUnit.Framework
 open PodFul.Library
+open PodFul.TestSupport
 open PodFul.WPF.Miscellaneous
 
 type TestStorage(feeds) = 
@@ -18,26 +19,24 @@ type TestStorage(feeds) =
         member this.Update (feed : Feed) = ()
 
 /// <summary>
-/// Tests the different scenarios for crearting delivery point instances.
+/// Tests the different scenarios for creating delivery point instances.
 /// </summary>
 type FeedCollections_UnitTests() =
 
     let createTestFeed =
-        {
-            Title = "title"
-            Description = "description"
-            Website = "website"
-            Directory = "directory"
-            URL = "url"
-            ImageURL = "image URL"
-            ImageFileName = ""
-            Podcasts = null
-            CreationDateTime = new DateTime(2016, 2, 3)
-            UpdatedDateTime = FeedFunctions.NoDateTime
-            DoScan = true
-            CompleteDownloadsOnScan = true
-            DeliverDownloadsOnScan = true
-        }
+        Setup.createTestFeedFromParameters
+            "title"
+            "description"
+            "website"
+            "directory"
+            "url"
+            "image URL"
+            ""
+            (new DateTime(2016, 2, 3))
+            FeedFunctions.NoDateTime
+            true
+            true
+            true
 
     [<Test>]
     member public this.``Passing feed storage with no feeds throws meaningful exception``() =

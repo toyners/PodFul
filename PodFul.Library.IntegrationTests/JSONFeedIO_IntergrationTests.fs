@@ -25,6 +25,9 @@ type JSONFeedIO_IntergrationTests() =
             Podcasts = [||]
             CreationDateTime = new DateTime(2016, 2, 3)
             UpdatedDateTime = FeedFunctions.NoDateTime
+            DoScan = true
+            CompleteDownloadsOnScan = true
+            DeliverDownloadsOnScan = true
         }
 
     let writePreviousTestFeedToFile (feed : PreviousFeed) (filePath : string) =
@@ -59,6 +62,7 @@ type JSONFeedIO_IntergrationTests() =
         Assert.AreEqual(true, feed.DoScan)
         Assert.AreEqual(true, feed.CompleteDownloadsOnScan)
         Assert.AreEqual(true, feed.DeliverDownloadsOnScan)
+        Assert.AreEqual(3, feed.ConfirmDownloadThreshold)
 
     [<Test>]
     member public this.``Reading Feed JSON file containing latest format returns latest Feed object``() = 

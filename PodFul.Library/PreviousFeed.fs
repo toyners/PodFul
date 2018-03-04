@@ -14,4 +14,7 @@ type PreviousFeed =
         Podcasts : Podcast[];
         CreationDateTime : DateTime
         UpdatedDateTime : DateTime
+        DoScan : bool
+        CompleteDownloadsOnScan : bool
+        DeliverDownloadsOnScan : bool
     }

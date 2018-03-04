@@ -21,6 +21,7 @@ module public Setup =
           DoScan = true
           CompleteDownloadsOnScan = true
           DeliverDownloadsOnScan = true
+          ConfirmDownloadThreshold = 3
       }
 
     let createTestFeed url =
@@ -47,6 +48,25 @@ module public Setup =
         DoScan = doScan
         CompleteDownloadsOnScan = completeDownloadsOnScan
         DeliverDownloadsOnScan = deliverDownloadsOnScan
+        ConfirmDownloadThreshold = 3
+      }
+
+    let createTestFullFeedFromParameters title description website directory url imageURL imageFileName creationDateTime updatedDateTime doScan completeDownloadsOnScan deliverDownloadsOnScan podcasts = 
+      {
+        Title = title
+        Description = description
+        Website = website
+        Directory = directory
+        URL = url
+        ImageURL = imageURL
+        ImageFileName = imageFileName
+        Podcasts = podcasts
+        CreationDateTime = creationDateTime
+        UpdatedDateTime = updatedDateTime
+        DoScan = doScan
+        CompleteDownloadsOnScan = completeDownloadsOnScan
+        DeliverDownloadsOnScan = deliverDownloadsOnScan
+        ConfirmDownloadThreshold = 3
       }
 
     let createTestPodcast title description url pubDate fileSize downloadDate imageFileName imageURL fileName =

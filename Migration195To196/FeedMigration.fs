@@ -24,23 +24,6 @@ module FeedMigration =
             }
         }
 
-    let resolveFeedDifferences (previousFeed : Feed195) : Feed = 
-        {
-            Title = previousFeed.Title
-            Description = previousFeed.Description
-            Website = previousFeed.Website
-            Directory = previousFeed.Directory
-            URL = previousFeed.URL
-            ImageURL = previousFeed.ImageURL
-            ImageFileName = previousFeed.ImageFileName
-            Podcasts = Array.map resolvePodcastDifferences previousFeed.Podcasts
-            CreationDateTime = previousFeed.CreationDateTime
-            UpdatedDateTime = previousFeed.UpdatedDateTime
-            DoScan = previousFeed.DoScan
-            CompleteDownloadsOnScan = previousFeed.CompleteDownloadsOnScan
-            DeliverDownloadsOnScan = previousFeed.DeliverDownloadsOnScan
-        }
-
     let readFeedFromFile (filePath : string) : Feed195 =
         use reader = new StreamReader(filePath) 
         use ms = new MemoryStream(ASCIIEncoding.Default.GetBytes(reader.ReadToEnd())) 
@@ -56,6 +39,6 @@ module FeedMigration =
 
     let processFile (filePath : string) : unit =
         readFeedFromFile filePath |>
-        resolveFeedDifferences |>
-        writeFeedToFile filePath |> 
+        //resolveFeedDifferences |>
+        //writeFeedToFile filePath |> 
         ignore

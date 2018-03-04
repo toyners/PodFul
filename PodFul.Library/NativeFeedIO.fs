@@ -90,6 +90,7 @@ type NativeFeedIO() =
       DoScan = true
       CompleteDownloadsOnScan = true
       DeliverDownloadsOnScan = true
+      ConfirmDownloadThreshold = 3
     }
 
   static member public WriteFeedToFile (feed : Feed) (filePath : string) : unit =

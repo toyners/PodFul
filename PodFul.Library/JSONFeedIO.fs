@@ -7,7 +7,7 @@ open System.Text
 module JSONFeedIO =
 
   let canResolveDifferences (exceptionMessage : string) : bool =
-    exceptionMessage.Contains("The data contract type 'PodFul.Library.Feed' cannot be deserialized because the required data members 'CompleteDownloadsOnScan@, DeliverDownloadsOnScan@, DoScan@' were not found.")
+    exceptionMessage.Contains("The data contract type 'PodFul.Library.Feed' cannot be deserialized because the required data member 'ConfirmDownloadThreshold@' was not found.")
     
   let ResolveFeedDifferences (previousFeed : PreviousFeed) : Feed = 
     {
@@ -21,9 +21,10 @@ module JSONFeedIO =
         Podcasts = previousFeed.Podcasts
         CreationDateTime = previousFeed.CreationDateTime
         UpdatedDateTime = previousFeed.UpdatedDateTime
-        DoScan = true
-        CompleteDownloadsOnScan = true
-        DeliverDownloadsOnScan = true
+        DoScan = previousFeed.DoScan
+        CompleteDownloadsOnScan = previousFeed.CompleteDownloadsOnScan
+        DeliverDownloadsOnScan = previousFeed.DeliverDownloadsOnScan
+        ConfirmDownloadThreshold = 3 // Set to default
     }
 
   let ReadFeedFromFile (filePath : string) : Feed =
@@ -37,8 +38,11 @@ module JSONFeedIO =
         if not (canResolveDifferences e.Message) then
             reraise()
 
-        // Reset to the start of the data
+        // Reset to the start of the data.
         ms.Position <- 0L
+
+        // Resolve the data into an instance of PreviousFeed before casting it to the Feed instance
+        // by resolving the differences.
         let obj = (new DataContractJsonSerializer(typeof<PreviousFeed>)).ReadObject(ms)
         obj :?> PreviousFeed |> ResolveFeedDifferences
 

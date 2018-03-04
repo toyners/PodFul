@@ -28,41 +28,37 @@ type FeedFileStorage_IntergrationTests() =
     let podcastImageFileName = "Podcast #1 Image"
 
     member private this.CreateFeed =
-        {
-            Title = feedTitle
-            Description = feedDescription
-            Website = feedWebsite
-            Directory = feedDirectory
-            URL = feedFeed
-            ImageURL = feedImageURL
-            ImageFileName = feedImageFileName
-            CreationDateTime = new DateTime(2016, 2, 3)
-            UpdatedDateTime = new DateTime(2017, 4, 5)
-            DoScan = true
-            CompleteDownloadsOnScan = true
-            DeliverDownloadsOnScan = true
-            Podcasts = 
+        Setup.createTestFullFeedFromParameters
+            feedTitle
+            feedDescription
+            feedWebsite
+            feedDirectory
+            feedFeed
+            feedImageURL
+            feedImageFileName
+            (new DateTime(2016, 2, 3))
+            (new DateTime(2017, 4, 5))
+            true
+            true
+            true
             [|
                 Setup.createTestPodcast podcastTitle podcastDescription podcastURL podcastPubDate podcastFileSize (new DateTime(2017, 1, 2)) podcastImageFileName podcastImageURL String.Empty
             |]
-        }
 
     member private this.UpdateFeed (feed : Feed) : Feed =
-        {
-            Title = feed.Title
-            Description = feed.Description
-            Website = feed.Website
-            Directory = feed.Directory
-            URL = feed.URL
-            ImageURL = feed.ImageURL
-            ImageFileName = feed.ImageFileName
-            Podcasts = [||]
-            CreationDateTime = feed.CreationDateTime
-            UpdatedDateTime = feed.UpdatedDateTime
-            DoScan = true
-            CompleteDownloadsOnScan = true
-            DeliverDownloadsOnScan = true
-        }
+        Setup.createTestFeedFromParameters
+            feed.Title
+            feed.Description
+            feed.Website
+            feed.Directory
+            feed.URL
+            feed.ImageURL
+            feed.ImageFileName
+            feed.CreationDateTime
+            feed.UpdatedDateTime
+            true
+            true
+            true
 
     [<SetUp>]
     member public this.SetupBeforeEachTest() =

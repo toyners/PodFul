@@ -30,6 +30,7 @@ type PodcastSynchroniser_IntegrationTests() =
             DoScan = true
             CompleteDownloadsOnScan = true
             DeliverDownloadsOnScan = true
+            ConfirmDownloadThreshold = 3
         }
 
     [<SetUp>]

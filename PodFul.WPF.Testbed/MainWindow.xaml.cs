@@ -51,12 +51,12 @@ namespace PodFul.WPF.Testbed
 
     private Feed CreateFeed(String title, Podcast[] podcasts)
     {
-      return new Feed(title, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, podcasts, DateTime.Now, DateTime.Now, true, true, true);
+      return CreateFeed(title, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, DateTime.Now, podcasts);
     }
 
     private Feed CreateFeed(String title, String description, String website, String directory, String url, String imageFileName, DateTime creationDateTime, Podcast[] podcasts)
     {
-      return new Feed(title, description, website, directory, url, String.Empty, imageFileName, podcasts, creationDateTime, DateTime.Now, true, true, true);
+      return new Feed(title, description, website, directory, url, String.Empty, imageFileName, podcasts, creationDateTime, DateTime.Now, true, true, true, 3);
     }
 
     private void FeedPropertiesWindow_Click(Object sender, RoutedEventArgs e)
