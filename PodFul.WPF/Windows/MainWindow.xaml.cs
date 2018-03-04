@@ -398,12 +398,20 @@ namespace PodFul.WPF.Windows
       var dataChanged = propertiesWindow.ShowDialog();
       if (dataChanged.HasValue && dataChanged.Value)
       {
+        if (this.currentFeed.Directory != propertiesWindow.DirectoryPath.Text)
         this.currentFeed = Feed.SetDirectory(propertiesWindow.DirectoryPath.Text, this.currentFeed);
 
         this.currentFeed = Feed.SetScanningFlags(propertiesWindow.DoScan,
           propertiesWindow.DoDownload,
           propertiesWindow.DoDelivery,
           this.currentFeed);
+
+        UInt32 value;
+        if (UInt32.TryParse(propertiesWindow.ConfirmDownloadThreshold.Text, out value) && this.currentFeed.ConfirmDownloadThreshold != value)
+        {
+          this.currentFeed = Feed.SetConfirmDownloadThreshold(value, this.currentFeed);
+        }
+
         this.feedCollection.UpdateFeedContent(this.currentFeed);
         var index = this.feedCollection.ObservableFeeds.IndexOf(this.currentFeed);
         this.feedCollection[index] = this.currentFeed;

@@ -107,6 +107,23 @@ type Feed =
                 deliverDownloadsOnScan
                 original.ConfirmDownloadThreshold
 
+        static member SetConfirmDownloadThreshold confirmDownloadThreshold original = 
+            Feed.SetProperties
+                original.Title
+                original.Description
+                original.Website
+                original.Directory
+                original.URL
+                original.ImageURL
+                original.ImageFileName
+                original.Podcasts
+                original.CreationDateTime
+                original.UpdatedDateTime
+                original.DoScan
+                original.CompleteDownloadsOnScan
+                original.DeliverDownloadsOnScan
+                confirmDownloadThreshold
+
         override x.Equals other = 
             match other with
             | :? Feed as y -> (x.URL = y.URL)

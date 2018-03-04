@@ -74,6 +74,11 @@ namespace PodFul.WPF.Windows
       this.isDirty = true;
     }
 
+    private void DownloadConfirmationThresholdTextChanged(Object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+      this.isDirty = true;
+    }
+
     private void PerformScanChecked(Object sender, RoutedEventArgs e)
     {
       this.isDirty = true;

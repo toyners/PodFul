@@ -80,3 +80,25 @@ type Feed_UnitTest() =
         Assert.AreEqual(changedDoScanValue, feed2.DoScan)
         Assert.AreEqual(changedCompleteDownloadsOnScan, feed2.CompleteDownloadsOnScan)
         Assert.AreEqual(changedDeliverDownloadsOnScan, feed2.DeliverDownloadsOnScan)
+
+    [<Test>]
+    member public this.``Setting confirm download threshold returns new record with updated value``() =
+    
+        let feed1 = Setup.createDefaultTestFeed
+        let newConfirmDownloadThreshold = feed1.ConfirmDownloadThreshold + 1u
+        let feed2 = Feed.SetConfirmDownloadThreshold newConfirmDownloadThreshold feed1
+
+        Assert.AreNotSame(feed1, feed2)
+        Assert.AreEqual(feed1.Title, feed2.Title)
+        Assert.AreEqual(feed1.Description, feed2.Description)
+        Assert.AreEqual(feed1.Website, feed2.Website)
+        Assert.AreEqual(feed1.Directory, feed2.Directory)
+        Assert.AreEqual(feed1.URL, feed2.URL) 
+        Assert.AreEqual(feed1.ImageFileName, feed2.ImageFileName)
+        Assert.AreEqual(feed1.Podcasts, feed2.Podcasts)
+        Assert.AreEqual(feed1.CreationDateTime, feed2.CreationDateTime)
+        Assert.AreEqual(feed1.UpdatedDateTime, feed2.UpdatedDateTime)
+        Assert.AreEqual(feed1.DoScan, feed2.DoScan)
+        Assert.AreEqual(feed1.CompleteDownloadsOnScan, feed2.CompleteDownloadsOnScan)
+        Assert.AreEqual(feed1.DeliverDownloadsOnScan, feed2.DeliverDownloadsOnScan)
+        Assert.AreEqual(newConfirmDownloadThreshold, feed2.ConfirmDownloadThreshold)
