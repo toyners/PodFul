@@ -18,7 +18,7 @@ type Feed =
         DoScan : bool
         CompleteDownloadsOnScan : bool
         DeliverDownloadsOnScan : bool
-        ConfirmDownloadThreshold : int;
+        ConfirmDownloadThreshold : uint32;
     }
 
     with

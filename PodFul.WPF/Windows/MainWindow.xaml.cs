@@ -35,7 +35,6 @@ namespace PodFul.WPF.Windows
     private LogController logController;
     private MessagePool fileDeliveryLogger;
     private Settings settings;
-    private IPodcastDownloadConfirmer podcastDownloadConfirmer;
     private String defaultImagePath;
     private String imageDirectory;
     #endregion
@@ -87,8 +86,6 @@ namespace PodFul.WPF.Windows
         }
 
         this.FeedList.Focus();
-
-        this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
 
         fileLogger.Message("Main Window instantiated.");
       }
@@ -231,7 +228,6 @@ namespace PodFul.WPF.Windows
       settingsWindow.Owner = this;
       settingsWindow.ShowDialog();
 
-      this.podcastDownloadConfirmer = new PodcastDownloadConfirmer(this.settings.ConfirmPodcastDownloadThreshold);
     }
 
     private Int32 GetIndexForCurrentFeed()
@@ -383,7 +379,7 @@ namespace PodFul.WPF.Windows
 
       IImageResolver imageResolver = this.CreateImageResolver();
       this.fileDeliveryLogger.Clear();
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, this.podcastDownloadConfirmer, downloadManager);
+      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, downloadManager);
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 
         downloadManager, 

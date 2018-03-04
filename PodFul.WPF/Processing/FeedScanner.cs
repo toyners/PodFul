@@ -28,7 +28,6 @@ namespace PodFul.WPF.Processing
     private MessagePool fileDeliveryLogger;
     private IImageResolver imageResolver;
     private ILogController logController;
-    private IPodcastDownloadConfirmer podcastDownloadConfirmer;
     #endregion
 
     #region Construction
@@ -38,7 +37,6 @@ namespace PodFul.WPF.Processing
       IImageResolver imageResolver,
       MessagePool fileDeliveryLogger,
       ILogController logController,
-      IPodcastDownloadConfirmer podcastDownloadConfirmer,
       DownloadManager downloadManager)
     {
       this.feedCollection = feedCollection;
@@ -46,7 +44,6 @@ namespace PodFul.WPF.Processing
       this.imageResolver = imageResolver;
       this.fileDeliveryLogger = fileDeliveryLogger;
       this.logController = logController;
-      this.podcastDownloadConfirmer = podcastDownloadConfirmer;
       this.downloadManager = downloadManager;
     }
     #endregion
@@ -83,7 +80,8 @@ namespace PodFul.WPF.Processing
       // will start before the downloading task.
       var isScanning = true;
       var scanReport = new MessageBuilder();
-      
+      IPodcastDownloadConfirmer podcastDownloadConfirmer = new PodcastDownloadConfirmer();
+
       Task scanningTask = Task.Factory.StartNew(
       () =>
       {
@@ -133,7 +131,8 @@ namespace PodFul.WPF.Processing
               {
                 this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey), newFeed, podcastIndexes);
 
-                downloadConfirmation = this.podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
+                podcastDownloadConfirmer.ConfirmDownloadThreshold = feed.ConfirmDownloadThreshold;
+                downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
                 if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
                 {
                   var feedMessage = podcastIndexes.Count + " podcasts found";

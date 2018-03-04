@@ -18,6 +18,8 @@ namespace PodFul.WPF.Processing
   /// </summary>
   public interface IPodcastDownloadConfirmer
   {
+    UInt32 ConfirmDownloadThreshold { get; set; }
+
     DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes);
   }
 }

@@ -14,21 +14,21 @@ namespace PodFul.WPF.Processing
   /// </summary>
   public class PodcastDownloadConfirmer : IPodcastDownloadConfirmer
   {
-    #region Fields
-    private UInt32 confirmPodcastDownloadThreshold;
+    #region Construction
+    public PodcastDownloadConfirmer()
+    {
+      this.ConfirmDownloadThreshold = Miscellaneous.DefaultConfirmDownloadThreshold;
+    }
     #endregion
 
-    #region Construction
-    public PodcastDownloadConfirmer(UInt32 confirmPodcastDownloadThreshold)
-    {
-      this.confirmPodcastDownloadThreshold = confirmPodcastDownloadThreshold;
-    }
+    #region Properties
+    public UInt32 ConfirmDownloadThreshold { get; set; }
     #endregion
 
     #region Methods
     public DownloadConfirmationStatus ConfirmPodcastsForDownload(Feed oldFeed, Feed newFeed, List<Int32> podcastIndexes)
     {
-      if (podcastIndexes.Count < this.confirmPodcastDownloadThreshold)
+      if (podcastIndexes.Count < this.ConfirmDownloadThreshold)
       {
         return DownloadConfirmationStatus.ContinueDownloading;
       }

@@ -21,4 +21,6 @@ module public Miscellaneous =
         if urlPath.EndsWith(".jpg", true, null) then
             name <- name + ".jpg"
         name
+
+    let public DefaultConfirmDownloadThreshold = 3u
         

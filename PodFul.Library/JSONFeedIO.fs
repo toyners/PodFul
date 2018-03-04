@@ -24,7 +24,7 @@ module JSONFeedIO =
         DoScan = previousFeed.DoScan
         CompleteDownloadsOnScan = previousFeed.CompleteDownloadsOnScan
         DeliverDownloadsOnScan = previousFeed.DeliverDownloadsOnScan
-        ConfirmDownloadThreshold = 3 // Set to default
+        ConfirmDownloadThreshold = Miscellaneous.DefaultConfirmDownloadThreshold // Set to default
     }
 
   let ReadFeedFromFile (filePath : string) : Feed =

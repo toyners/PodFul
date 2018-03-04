@@ -21,7 +21,7 @@ module public Setup =
           DoScan = true
           CompleteDownloadsOnScan = true
           DeliverDownloadsOnScan = true
-          ConfirmDownloadThreshold = 3
+          ConfirmDownloadThreshold = Miscellaneous.DefaultConfirmDownloadThreshold
       }
 
     let createTestFeed url =
@@ -48,7 +48,7 @@ module public Setup =
         DoScan = doScan
         CompleteDownloadsOnScan = completeDownloadsOnScan
         DeliverDownloadsOnScan = deliverDownloadsOnScan
-        ConfirmDownloadThreshold = 3
+        ConfirmDownloadThreshold = Miscellaneous.DefaultConfirmDownloadThreshold
       }
 
     let createTestFullFeedFromParameters title description website directory url imageURL imageFileName creationDateTime updatedDateTime doScan completeDownloadsOnScan deliverDownloadsOnScan podcasts = 
@@ -66,7 +66,7 @@ module public Setup =
         DoScan = doScan
         CompleteDownloadsOnScan = completeDownloadsOnScan
         DeliverDownloadsOnScan = deliverDownloadsOnScan
-        ConfirmDownloadThreshold = 3
+        ConfirmDownloadThreshold = Miscellaneous.DefaultConfirmDownloadThreshold
       }
 
     let createTestPodcast title description url pubDate fileSize downloadDate imageFileName imageURL fileName =
