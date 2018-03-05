@@ -23,10 +23,9 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title2" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
             |]
 
-        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+        let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(true, fst results)
-        Assert.AreEqual(2,  Array.length <| (snd results))
+        Assert.AreEqual(2,  Array.length <| results)
         Assert.AreEqual(expectedFileName2, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName1, podcasts.[1].FileDetails.FileName)
 
@@ -45,10 +44,9 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title" "description2" url pubDate 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
             |]
 
-        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+        let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(true, fst results)
-        Assert.AreEqual(2,  Array.length <| (snd results))
+        Assert.AreEqual(2,  Array.length <| results)
         Assert.AreEqual(expectedFileName2, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName1, podcasts.[1].FileDetails.FileName)
 
@@ -65,10 +63,9 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title" "description2" url pubDate 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
             |]
 
-        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+        let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(true, fst results)
-        Assert.AreEqual(2,  Array.length <| (snd results))
+        Assert.AreEqual(2,  Array.length <| results)
         Assert.AreEqual("", podcasts.[0].FileDetails.FileName)
         Assert.AreEqual("", podcasts.[1].FileDetails.FileName)
 
@@ -83,10 +80,9 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
             |]
 
-        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+        let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(true, fst results)
-        Assert.AreEqual(2,  Array.length <| (snd results))
+        Assert.AreEqual(2,  Array.length <| results)
         Assert.AreEqual(String.Empty, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(String.Empty, podcasts.[1].FileDetails.FileName)
 
@@ -106,11 +102,10 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
             |]
 
-        // Feed name is not important for the standard algorithm
-        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm String.Empty podcasts
+        // Feed name is not important when the name can be resolved from the url
+        let results = FinalisingFileNameFunctions.finaliseFileNames String.Empty podcasts
 
-        Assert.AreEqual(true, fst results)
-        Assert.AreEqual(1,  Array.length <| (snd results))
+        Assert.AreEqual(1,  Array.length <| results)
         Assert.AreEqual(expectedFileName, podcasts.[0].FileDetails.FileName)
 
     [<Test>]
@@ -127,10 +122,9 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title3" "description3" "http://abc.com/fileName3.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
             |]
             
-        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+        let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(true, fst results)
-        Assert.AreEqual(3,  Array.length <| (snd results))
+        Assert.AreEqual(3,  Array.length <| results)
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
@@ -152,10 +146,9 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title2" "description3" "http://abc.com/fileName.mp3" pubDate 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
             |]
             
-        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+        let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
 
-        Assert.AreEqual(true, fst results)
-        Assert.AreEqual(4,  Array.length <| (snd results))
+        Assert.AreEqual(4,  Array.length <| results)
         Assert.AreEqual(expectedFileName1, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName2, podcasts.[1].FileDetails.FileName)
         Assert.AreEqual(expectedFileName3, podcasts.[2].FileDetails.FileName)
