@@ -12,10 +12,11 @@ type FinalisingFileNameFunctions_UnitTests() =
     [<Test>]
     [<TestCase(null)>]
     [<TestCase("")>]
-    member public this.``Finalising null or empty url results in default file name from standard finalising function``(url : string) =
+    member public this.``Null or empty url results in file name using feed name and podcast title``(url : string) =
 
-        let expectedFileName1 = "feed name episode 1.mp3"
-        let expectedFileName2 = "feed name episode 2.mp3"
+        let expectedFileName1 = "feed name - title1.mp3"
+        let expectedFileName2 = "feed name - title2.mp3"
+
         let podcasts =
             [|
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
@@ -28,6 +29,48 @@ type FinalisingFileNameFunctions_UnitTests() =
         Assert.AreEqual(2,  Array.length <| (snd results))
         Assert.AreEqual(expectedFileName2, podcasts.[0].FileDetails.FileName)
         Assert.AreEqual(expectedFileName1, podcasts.[1].FileDetails.FileName)
+
+    [<Test>]
+    [<TestCase(null)>]
+    [<TestCase("")>]
+    member public this.``Null or empty url results in file name using feed name and pubdate when there is a title clash``(url : string) =
+
+        let pubDate = new DateTime(2017, 6, 5, 10, 3, 56)
+        let expectedFileName1 = "feed name - title.mp3"
+        let expectedFileName2 = "feed name - 05-06-2017 10-03-56.mp3"
+
+        let podcasts =
+            [|
+                Setup.createTestPodcast "title" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description2" url pubDate 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
+            |]
+
+        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+
+        Assert.AreEqual(true, fst results)
+        Assert.AreEqual(2,  Array.length <| (snd results))
+        Assert.AreEqual(expectedFileName2, podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual(expectedFileName1, podcasts.[1].FileDetails.FileName)
+
+    [<Test>]
+    [<TestCase(null)>]
+    [<TestCase("")>]
+    member public this.``Null or empty url results in empty file name when title and pubdate clash``(url : string) =
+
+        let pubDate = new DateTime(2017, 6, 5, 10, 3, 56)
+
+        let podcasts =
+            [|
+                Setup.createTestPodcast "title" "description1" url pubDate 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description2" url pubDate 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
+            |]
+
+        let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm feedName podcasts
+
+        Assert.AreEqual(true, fst results)
+        Assert.AreEqual(2,  Array.length <| (snd results))
+        Assert.AreEqual("", podcasts.[0].FileDetails.FileName)
+        Assert.AreEqual("", podcasts.[1].FileDetails.FileName)
 
     [<Test>]
     [<TestCase("fileName")>]
@@ -45,6 +88,7 @@ type FinalisingFileNameFunctions_UnitTests() =
                 Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
             |]
 
+        // Feed name is not important for the standard algorithm
         let results = FinalisingFileNameFunctions.finaliseUsingStandardAlgorithm "" podcasts
 
         Assert.AreEqual(true, fst results)

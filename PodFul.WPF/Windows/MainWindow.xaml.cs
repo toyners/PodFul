@@ -399,7 +399,7 @@ namespace PodFul.WPF.Windows
       Feed updatedFeed = null;
       if (isDirty.HasValue && isDirty.Value)
       {
-        // Properties window can be diry without the actual data changing (i.e. user put the same
+        // Properties window can be dirty without the actual data changing (i.e. user put the same
         // value in). So only update the feed if something has really changed.
 
         if (this.currentFeed.Directory != propertiesWindow.DirectoryPath.Text)
