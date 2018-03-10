@@ -111,7 +111,7 @@ module public FinalisingFileNameFunctions =
 
         podcasts
 
-    let finaliseFileNames (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
+    let finaliseFileNames2 (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
 
         let finalisingResults = finaliseUsingStandardAlgorithm feedName podcasts
         match (fst finalisingResults) with
@@ -122,9 +122,9 @@ module public FinalisingFileNameFunctions =
             | true -> snd finalisingResults
             | _ -> finaliseUsingDefaultAlgorithm feedName podcasts
 
-    let finaliseFileNames2 (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
+    let finaliseFileNames (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
 
-        let resolvedNamesForEachPodcast = Array.empty<string * string * string>
+        let resolvedNamesForEachPodcast = Array.create (Array.length podcasts) ("","","")
         let mutable standardNames = 0
         let mutable alternativeNames = 0
         let mutable defaultNames = 0
@@ -155,21 +155,52 @@ module public FinalisingFileNameFunctions =
           | _ ->
             fileName <- resolveNameUsingStandardAlgorthim podcast
 
-            (*match (isClash fileName) with
+            match (isClash fileName) with
             | false -> 
-            resolvedNames <- Set.add fileName resolvedNames
-            standardNames <- standardNames + 1
-          | _ ->
-            let fileName = resolveNameUsingAlternativeAlgorthim
-
-          let alternativeFileName = resolveNameUsingStandardAlgorthim podcast
-          let defaultFileName = resolveNameUsingStandardAlgorthim podcast
-          Array.set resolvedNamesForEachPodcast index ("", "", "")*)
-
-        let finaliseFileNameForEachPodcast (podcast : Podcast) : unit =
-          ()
+              resolvedNames <- Set.add fileName resolvedNames
+              standardNames <- standardNames + 1
+              Array.set resolvedNamesForEachPodcast index (fileName, "", "")
+            | _ ->
+              fileName <- resolveNameUsingAlternativeAlgorthim podcast
+              
+              match (isClash fileName) with
+              | false ->
+                resolvedNames <- Set.add fileName resolvedNames
+                alternativeNames <- alternativeNames + 1
+                Array.set resolvedNamesForEachPodcast index ("", fileName, "")
+              | _ ->
+                fileName <- resolveNameUsingDefaultAlgorthim feedName podcast
+                match (isClash fileName) with
+                | false ->
+                  resolvedNames <- Set.add fileName resolvedNames
+                  Array.set resolvedNamesForEachPodcast index ("", "", fileName)
+                | _ ->
+                  Array.set resolvedNamesForEachPodcast index ("", "", "")
 
         Array.iteri resolveFileNamesForEachPodcast podcasts
 
-        Array.iter finaliseFileNameForEachPodcast podcasts
+        let getStandardName (tuple : string * string * string) : string = 
+          let t1,_,d = tuple
+          match (String.IsNullOrEmpty t1) with
+          | false -> t1
+          | _ -> d
+
+        let getAlternativeName (tuple : string * string * string) : string = 
+          let _,t2,d = tuple
+          match (String.IsNullOrEmpty t2) with
+          | false -> t2
+          | _ -> d
+
+        let finaliseFileNameForEachPodcast (podcast : Podcast) (tuple : string * string * string) : unit =
+          
+          match (alternativeNames > standardNames) with
+          | true -> getAlternativeName tuple |> podcast.SetFileName
+          | _ -> getStandardName tuple |> podcast.SetFileName 
+
+        match (alternativeNames > standardNames) with
+        | true ->
+          Array.iter2 finaliseFileNameForEachPodcast podcasts resolvedNamesForEachPodcast
+        | _ ->
+          Array.iter2 finaliseFileNameForEachPodcast podcasts resolvedNamesForEachPodcast
+      
         podcasts
