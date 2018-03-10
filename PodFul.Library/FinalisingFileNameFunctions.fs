@@ -121,3 +121,55 @@ module public FinalisingFileNameFunctions =
             match (fst finalisingResults) with
             | true -> snd finalisingResults
             | _ -> finaliseUsingDefaultAlgorithm feedName podcasts
+
+    let finaliseFileNames2 (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
+
+        let resolvedNamesForEachPodcast = Array.empty<string * string * string>
+        let mutable standardNames = 0
+        let mutable alternativeNames = 0
+        let mutable defaultNames = 0
+        let mutable resolvedNames = Set.empty<string>
+
+        let resolveNameUsingStandardAlgorthim (podcast : Podcast) : string = ""
+
+        let resolveNameUsingAlternativeAlgorthim (podcast : Podcast) : string = ""
+
+        let resolveNameUsingDefaultAlgorthim (feedName : string) (podcast : Podcast) : string = ""
+
+        let isClash (fileName : string) : bool =
+          match (Set.contains fileName resolvedNames) with
+          | false ->
+            resolvedNames <- Set.add fileName resolvedNames
+            false
+          | _ ->
+            true
+        
+        let resolveFileNamesForEachPodcast (index: int) (podcast : Podcast) : unit =
+
+          let mutable fileName = ""
+
+          match (String.IsNullOrEmpty podcast.URL) with
+          | true -> 
+            fileName <- resolveNameUsingDefaultAlgorthim feedName podcast
+            Array.set resolvedNamesForEachPodcast index ("", "", fileName)
+          | _ ->
+            fileName <- resolveNameUsingStandardAlgorthim podcast
+
+            (*match (isClash fileName) with
+            | false -> 
+            resolvedNames <- Set.add fileName resolvedNames
+            standardNames <- standardNames + 1
+          | _ ->
+            let fileName = resolveNameUsingAlternativeAlgorthim
+
+          let alternativeFileName = resolveNameUsingStandardAlgorthim podcast
+          let defaultFileName = resolveNameUsingStandardAlgorthim podcast
+          Array.set resolvedNamesForEachPodcast index ("", "", "")*)
+
+        let finaliseFileNameForEachPodcast (podcast : Podcast) : unit =
+          ()
+
+        Array.iteri resolveFileNamesForEachPodcast podcasts
+
+        Array.iter finaliseFileNameForEachPodcast podcasts
+        podcasts
