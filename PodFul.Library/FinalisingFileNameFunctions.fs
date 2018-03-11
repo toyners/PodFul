@@ -122,27 +122,69 @@ module public FinalisingFileNameFunctions =
             | true -> snd finalisingResults
             | _ -> finaliseUsingDefaultAlgorithm feedName podcasts
 
+    let getSecondLastFragmentFromURL (url : string) : string = 
+
+        let lastSlashIndex = getLastSlashIndex url
+
+        let getURLWithoutLastFragment (url : string) (lastSlashIndex : int) : string = 
+            match (lastSlashIndex) with
+            | -1 -> url
+            | _ -> url.Substring(0, lastSlashIndex)
+
+        let urlWithoutLastFragment = getURLWithoutLastFragment url lastSlashIndex
+            
+        getLastFragmentFromURL urlWithoutLastFragment
+
     let finaliseFileNames (feedName : string) (podcasts : Podcast[]) : Podcast[] = 
 
-        let resolvedNamesForEachPodcast = Array.create (Array.length podcasts) ("","","")
-        let mutable standardNames = 0
-        let mutable alternativeNames = 0
+        let resolvedNamesForEachPodcast = Array.create (Array.length podcasts) ("","")
+        let mutable alternativeNames = Set.empty<string>
+        let mutable standardNames = Set.empty<string>
+        //let mutable standardNames = 0
+        //let mutable alternativeNames = 0
         let mutable defaultNames = 0
-        let mutable resolvedNames = Set.empty<string>
+        let mutable finalNames = Set.empty<string>
+        let cleanFeedName = substituteBadFileNameCharacters feedName
+        
+        let appendFileExtensionIfRequired (name : string) : string = 
+            match (name.EndsWith(".mp3")) with
+            | false -> name + ".mp3"
+            | _ -> name
 
-        let resolveNameUsingStandardAlgorthim (podcast : Podcast) : string = ""
+        let resolveNameUsingStandardAlgorthim (podcast : Podcast) : string =
+          getLastFragmentFromURL podcast.URL |> appendFileExtensionIfRequired 
 
-        let resolveNameUsingAlternativeAlgorthim (podcast : Podcast) : string = ""
-
-        let resolveNameUsingDefaultAlgorthim (feedName : string) (podcast : Podcast) : string = ""
+        let resolveNameUsingAlternativeAlgorthim (podcast : Podcast) : string =
+          getSecondLastFragmentFromURL podcast.URL |> appendFileExtensionIfRequired 
 
         let isClash (fileName : string) : bool =
-          match (Set.contains fileName resolvedNames) with
+          match (Set.contains fileName finalNames) with
           | false ->
-            resolvedNames <- Set.add fileName resolvedNames
+            finalNames <- Set.add fileName finalNames
             false
           | _ ->
             true
+
+        let NoDateTime = DateTime.MinValue.ToUniversalTime()
+
+        let resolveNameUsingDefaultAlgorthim (feedName : string) (podcast : Podcast) : string =
+          let fileName = feedName + " - " + podcast.Title + ".mp3"
+          match (isClash fileName) with
+          | true ->
+            match (podcast.PubDate <> NoDateTime) with
+            | true ->
+              let fileName = feedName + " - " + podcast.PubDate.ToString("dd-MM-yyyy HH-mm-ss") + ".mp3"
+              match (isClash fileName) with
+              | true ->
+                ""
+              | _ ->
+                finalNames <- Set.add fileName finalNames
+                fileName
+            | _ ->
+              ""
+          | _ ->
+            finalNames <- Set.add fileName finalNames
+            appendFileExtensionIfRequired fileName
         
         let resolveFileNamesForEachPodcast (index: int) (podcast : Podcast) : unit =
 
@@ -150,36 +192,19 @@ module public FinalisingFileNameFunctions =
 
           match (String.IsNullOrEmpty podcast.URL) with
           | true -> 
-            fileName <- resolveNameUsingDefaultAlgorthim feedName podcast
-            Array.set resolvedNamesForEachPodcast index ("", "", fileName)
+            Array.set resolvedNamesForEachPodcast index ("", "")
           | _ ->
-            fileName <- resolveNameUsingStandardAlgorthim podcast
+            let standardName = resolveNameUsingStandardAlgorthim podcast
+            let alternativeName = resolveNameUsingAlternativeAlgorthim podcast
 
-            match (isClash fileName) with
-            | false -> 
-              resolvedNames <- Set.add fileName resolvedNames
-              standardNames <- standardNames + 1
-              Array.set resolvedNamesForEachPodcast index (fileName, "", "")
-            | _ ->
-              fileName <- resolveNameUsingAlternativeAlgorthim podcast
-              
-              match (isClash fileName) with
-              | false ->
-                resolvedNames <- Set.add fileName resolvedNames
-                alternativeNames <- alternativeNames + 1
-                Array.set resolvedNamesForEachPodcast index ("", fileName, "")
-              | _ ->
-                fileName <- resolveNameUsingDefaultAlgorthim feedName podcast
-                match (isClash fileName) with
-                | false ->
-                  resolvedNames <- Set.add fileName resolvedNames
-                  Array.set resolvedNamesForEachPodcast index ("", "", fileName)
-                | _ ->
-                  Array.set resolvedNamesForEachPodcast index ("", "", "")
+            standardNames <- Set.add standardName standardNames
+            alternativeNames <- Set.add alternativeName alternativeNames
+
+            Array.set resolvedNamesForEachPodcast index (standardName, alternativeName)
 
         Array.iteri resolveFileNamesForEachPodcast podcasts
 
-        let getStandardName (tuple : string * string * string) : string = 
+        (*let getStandardName (tuple : string * string * string) : string = 
           let t1,_,d = tuple
           match (String.IsNullOrEmpty t1) with
           | false -> t1
@@ -189,18 +214,29 @@ module public FinalisingFileNameFunctions =
           let _,t2,d = tuple
           match (String.IsNullOrEmpty t2) with
           | false -> t2
-          | _ -> d
+          | _ -> d*)
 
-        let finaliseFileNameForEachPodcast (podcast : Podcast) (tuple : string * string * string) : unit =
+        let getFinalName (podcast : Podcast) (name : string) : string = 
           
-          match (alternativeNames > standardNames) with
-          | true -> getAlternativeName tuple |> podcast.SetFileName
-          | _ -> getStandardName tuple |> podcast.SetFileName 
+          match (not <| String.IsNullOrEmpty(name) &&  not <| isClash name) with
+          | true ->
+            finalNames <- Set.add name finalNames
+            name
+          | _ ->
+            resolveNameUsingDefaultAlgorthim cleanFeedName podcast 
 
-        match (alternativeNames > standardNames) with
+        let useStandardFileNameForEachPodcast (podcast : Podcast) (tuple : string * string) : unit =
+          let name,_ = tuple
+          getFinalName podcast name |> podcast.SetFileName
+
+        let useAlternativeFileNameForEachPodcast (podcast : Podcast) (tuple : string * string) : unit =
+          let _,name = tuple
+          getFinalName podcast name |> podcast.SetFileName
+
+        match (Set.count standardNames >= Set.count alternativeNames) with
         | true ->
-          Array.iter2 finaliseFileNameForEachPodcast podcasts resolvedNamesForEachPodcast
+          Array.iter2 useStandardFileNameForEachPodcast podcasts resolvedNamesForEachPodcast
         | _ ->
-          Array.iter2 finaliseFileNameForEachPodcast podcasts resolvedNamesForEachPodcast
+          Array.iter2 useAlternativeFileNameForEachPodcast podcasts resolvedNamesForEachPodcast
       
         podcasts
