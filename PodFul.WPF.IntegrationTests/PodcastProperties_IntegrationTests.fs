@@ -36,7 +36,7 @@ type PodcastProperties_IntegrationTests() =
 
     [<Test>]
     member public this.``Podcast properties instance created from podcast with no download date returns No Download in file path``() =
-        let podcast = Setup.createTestPodcast "title" "description" "url" DateTime.Now 1L FeedFunctions.NoDateTime "image file name" "image url" String.Empty
+        let podcast = Setup.createTestPodcast "title" "description" "url" DateTime.Now 1L Miscellaneous.NoDateTime "image file name" "image url" String.Empty
         let podcastProperties = new PodcastProperties(podcast, "")
         
         Assert.AreEqual("<No Download>", podcastProperties.FilePath)

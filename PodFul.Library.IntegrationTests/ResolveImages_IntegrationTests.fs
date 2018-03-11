@@ -413,7 +413,7 @@ type ResolveImages_IntegrationTests() =
     [<Test>]
     member public this.``Feed with no image gets default image``() =
 
-      let feed = Setup.createTestFeedFromParameters "title" "description" "website" "directory" "url" "" "" FeedFunctions.NoDateTime FeedFunctions.NoDateTime true true true
+      let feed = Setup.createTestFeedFromParameters "title" "description" "website" "directory" "url" "" "" Miscellaneous.NoDateTime Miscellaneous.NoDateTime true true true
 
       let newFeed = ImageFunctions.resolveImageForFeed feed imageDirectory defaultImagePath failWithExceptionHandlingFunctionTask
 

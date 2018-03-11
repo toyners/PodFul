@@ -19,8 +19,8 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
-                Setup.createTestPodcast "title2" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
+                Setup.createTestPodcast "title1" "description1" url Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL" String.Empty
+                Setup.createTestPodcast "title2" "description2" url Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image2" "imageURL" String.Empty
             |]
 
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -40,8 +40,8 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
-                Setup.createTestPodcast "title" "description2" url pubDate 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description1" url Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description2" url pubDate 1L Miscellaneous.NoDateTime "image2" "imageURL" String.Empty
             |]
 
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -61,9 +61,9 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title" "description1" url pubDate 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
-                Setup.createTestPodcast "title" "description2" url pubDate 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
-                Setup.createTestPodcast "title" "description3" url pubDate 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description1" url pubDate 1L Miscellaneous.NoDateTime "image1" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description2" url pubDate 1L Miscellaneous.NoDateTime "image2" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description3" url pubDate 1L Miscellaneous.NoDateTime "image2" "imageURL" String.Empty
             |]
 
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -82,8 +82,8 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
-                Setup.createTestPodcast "title" "description2" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image2" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description1" url Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL" String.Empty
+                Setup.createTestPodcast "title" "description2" url Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image2" "imageURL" String.Empty
             |]
 
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -105,7 +105,7 @@ type FinalisingFileNameFunctions_UnitTests() =
         let expectedFileName = "fileName.mp3"
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" url FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL" String.Empty
+                Setup.createTestPodcast "title1" "description1" url Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL" String.Empty
             |]
 
         // Feed name is not important when the name can be resolved from the url
@@ -123,9 +123,9 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" "http://abc.com/fileName1.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1" String.Empty
-                Setup.createTestPodcast "title2" "description2" "http://abc.com/fileName2.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2" String.Empty
-                Setup.createTestPodcast "title3" "description3" "http://abc.com/fileName3.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
+                Setup.createTestPodcast "title1" "description1" "http://abc.com/fileName1.mp3" Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL1" String.Empty
+                Setup.createTestPodcast "title2" "description2" "http://abc.com/fileName2.mp3" Miscellaneous.NoDateTime 2L Miscellaneous.NoDateTime "image2" "imageURL2" String.Empty
+                Setup.createTestPodcast "title3" "description3" "http://abc.com/fileName3.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL3" String.Empty
             |]
             
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -146,10 +146,10 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1" String.Empty
-                Setup.createTestPodcast "title2" "description2" "http://abc.com/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2" String.Empty
-                Setup.createTestPodcast "title2" "description3" "http://abc.com/fileName.mp3" pubDate 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
-                Setup.createTestPodcast "title2" "description3" "http://abc.com/fileName.mp3" pubDate 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
+                Setup.createTestPodcast "title1" "description1" "http://abc.com/fileName.mp3" Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL1" String.Empty
+                Setup.createTestPodcast "title2" "description2" "http://abc.com/fileName.mp3" Miscellaneous.NoDateTime 2L Miscellaneous.NoDateTime "image2" "imageURL2" String.Empty
+                Setup.createTestPodcast "title2" "description3" "http://abc.com/fileName.mp3" pubDate 3L Miscellaneous.NoDateTime "image3" "imageURL3" String.Empty
+                Setup.createTestPodcast "title2" "description3" "http://abc.com/fileName.mp3" pubDate 3L Miscellaneous.NoDateTime "image3" "imageURL3" String.Empty
             |]
             
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -183,9 +183,9 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1" String.Empty
-                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2" String.Empty
-                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
+                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName.mp3" Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL1" String.Empty
+                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName.mp3" Miscellaneous.NoDateTime 2L Miscellaneous.NoDateTime "image2" "imageURL2" String.Empty
+                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL3" String.Empty
             |]
             
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -208,13 +208,13 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1" String.Empty
-                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2" String.Empty
-                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
-                Setup.createTestPodcast "title4" "description4" "http://abc.com/episode1/fileName1.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title5" "description4" "http://abc.com/episode2/fileName1.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title6" "description4" String.Empty FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title6" "description4" String.Empty FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName.mp3" Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL1" String.Empty
+                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName.mp3" Miscellaneous.NoDateTime 2L Miscellaneous.NoDateTime "image2" "imageURL2" String.Empty
+                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL3" String.Empty
+                Setup.createTestPodcast "title4" "description4" "http://abc.com/episode1/fileName1.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title5" "description4" "http://abc.com/episode2/fileName1.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title6" "description4" String.Empty Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title6" "description4" String.Empty Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
             |]
 
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -241,13 +241,13 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName1.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1" String.Empty
-                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName2.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2" String.Empty
-                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode/fileName1.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
-                Setup.createTestPodcast "title4" "description4" "http://abc.com/episode/fileName3.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title5" "description4" "http://abc.com/episode/fileName4.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title6" "description4" String.Empty FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title6" "description4" String.Empty FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName1.mp3" Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL1" String.Empty
+                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName2.mp3" Miscellaneous.NoDateTime 2L Miscellaneous.NoDateTime "image2" "imageURL2" String.Empty
+                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode/fileName1.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL3" String.Empty
+                Setup.createTestPodcast "title4" "description4" "http://abc.com/episode/fileName3.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title5" "description4" "http://abc.com/episode/fileName4.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title6" "description4" String.Empty Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title6" "description4" String.Empty Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
             |]
 
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts
@@ -274,13 +274,13 @@ type FinalisingFileNameFunctions_UnitTests() =
 
         let podcasts =
             [|
-                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName1.mp3" FeedFunctions.NoDateTime 1L FeedFunctions.NoDateTime "image1" "imageURL1" String.Empty
-                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName2.mp3" FeedFunctions.NoDateTime 2L FeedFunctions.NoDateTime "image2" "imageURL2" String.Empty
-                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName3.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL3" String.Empty
-                Setup.createTestPodcast "title4" "description4" "http://abc.com/episode1/fileName1.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title5" "description5" "http://abc.com/episode2/fileName2.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title6" "description6" "http://abc.com/episode3/fileName3.mp3" FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
-                Setup.createTestPodcast "title7" "description7" String.Empty FeedFunctions.NoDateTime 3L FeedFunctions.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title1" "description1" "http://abc.com/episode1/fileName1.mp3" Miscellaneous.NoDateTime 1L Miscellaneous.NoDateTime "image1" "imageURL1" String.Empty
+                Setup.createTestPodcast "title2" "description2" "http://abc.com/episode2/fileName2.mp3" Miscellaneous.NoDateTime 2L Miscellaneous.NoDateTime "image2" "imageURL2" String.Empty
+                Setup.createTestPodcast "title3" "description3" "http://abc.com/episode3/fileName3.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL3" String.Empty
+                Setup.createTestPodcast "title4" "description4" "http://abc.com/episode1/fileName1.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title5" "description5" "http://abc.com/episode2/fileName2.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title6" "description6" "http://abc.com/episode3/fileName3.mp3" Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
+                Setup.createTestPodcast "title7" "description7" String.Empty Miscellaneous.NoDateTime 3L Miscellaneous.NoDateTime "image3" "imageURL4" String.Empty
             |]
 
         let results = FinalisingFileNameFunctions.finaliseFileNames feedName podcasts

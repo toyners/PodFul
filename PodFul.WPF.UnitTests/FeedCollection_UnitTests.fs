@@ -33,7 +33,7 @@ type FeedCollections_UnitTests() =
             "image URL"
             ""
             (new DateTime(2016, 2, 3))
-            FeedFunctions.NoDateTime
+            Miscellaneous.NoDateTime
             true
             true
             true

@@ -11,7 +11,7 @@ type Podcast_UnitTest() =
     member public this.``Two podcast records are equal because of same title.``() =
         
         let podcast1 = Setup.createTestPodcast "title" "description1" "url1" (new DateTime(2016, 12, 31)) 1L DateTime.MaxValue "image1" "image1URL" String.Empty
-        let podcast2 = Setup.createTestPodcast "title" "description2" "url2" (new DateTime(2016, 12, 30)) 2L FeedFunctions.NoDateTime "image2" "image2URL" String.Empty
+        let podcast2 = Setup.createTestPodcast "title" "description2" "url2" (new DateTime(2016, 12, 30)) 2L Miscellaneous.NoDateTime "image2" "image2URL" String.Empty
 
         Assert.AreEqual(true, (podcast1 = podcast2))
 

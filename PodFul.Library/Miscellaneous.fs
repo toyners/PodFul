@@ -23,4 +23,7 @@ module public Miscellaneous =
         name
 
     let public DefaultConfirmDownloadThreshold = 3u
+
+    // A version of DateTime.MinValue that can be serialised. Used to indicate no date time set.
+    let public NoDateTime = DateTime.MinValue.ToUniversalTime()
         

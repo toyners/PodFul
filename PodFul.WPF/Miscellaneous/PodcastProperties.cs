@@ -19,7 +19,7 @@ namespace PodFul.WPF.Miscellaneous
       this.PublishedDate = podcast.PubDate;
       this.URL = podcast.URL;
 
-      if (podcast.FileDetails.DownloadDate == FeedFunctions.NoDateTime)
+      if (podcast.FileDetails.DownloadDate == Miscellaneous.NoDateTime)
       {
         this.FilePath = "<No Download>";
       }

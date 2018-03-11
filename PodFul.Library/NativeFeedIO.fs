@@ -37,10 +37,10 @@ type NativeFeedIO() =
     if fields.Length > index then
       let dateTime = DateTime.Parse(fields.[index])
       match (dateTime = DateTime.MinValue) with
-      | true -> FeedFunctions.NoDateTime
+      | true -> Miscellaneous.NoDateTime
       | _ -> dateTime
     else
-      FeedFunctions.NoDateTime
+      Miscellaneous.NoDateTime
 
   static member private getPodcastFromFile (reader: StreamReader) = 
     match reader.EndOfStream with
