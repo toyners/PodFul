@@ -85,7 +85,8 @@
                       </StackPanel>
 
                       <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
-                          IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownloadJobClick">
+                              IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownloadJobClick"
+                              ToolTip="Cancel Download">
                         <Image Source="..\cancel.png" Width="15" Height="15"/>
                       </Button>
                     </Grid>
@@ -139,7 +140,8 @@
                       </StackPanel>
 
                       <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
-                          IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownloadJobClick">
+                              IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownloadJobClick"
+                              ToolTip="Cancel Download">
                         <Image Source="..\cancel.png" Width="15" Height="15"/>
                       </Button>
                     </Grid>

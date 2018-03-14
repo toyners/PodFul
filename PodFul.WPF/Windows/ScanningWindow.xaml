@@ -97,7 +97,8 @@
                           </StackPanel>
 
                           <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
-                          IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click">
+                                  IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click"
+                                  ToolTip="Cancel Download">
                             <Image Source="..\cancel.png" Width="15" Height="15"/>
                           </Button>
 
@@ -152,7 +153,8 @@
                           </StackPanel>
 
                           <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
-                          IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click">
+                                  IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownload_Click"
+                                  ToolTip="Cancel Download">
                             <Image Source="..\cancel.png" Width="15" Height="15"/>
                           </Button>
 
