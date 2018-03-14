@@ -18,30 +18,6 @@
     </Grid.RowDefinitions>
     <Button Margin="30" Click="Button_Click">Download Confirmation Window</Button>
     <Button Margin="30" Grid.Column="1" Click="FeedPropertiesWindow_Click">Feed Properties Window</Button>
-    <ProgressBar Margin="10,30" Grid.Row="1">
-      <ProgressBar.Resources>
-        <Style TargetType="ProgressBar">
-          <Setter Property="ToolTip" Value="Test" />
-        </Style>
-      </ProgressBar.Resources>
-    </ProgressBar>
-    <ItemsControl Margin="10" Grid.Row="1" Grid.Column="1">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <DataTemplate.Resources>
-            <Style TargetType="ProgressBar">
-              <Setter Property="ToolTip" Value="Test" />
-            </Style>
-          </DataTemplate.Resources>
-          <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">
-            <Grid>
-              <ProgressBar Margin="0" Height="10" 
-                                   Value="{Binding ProgressValue}" 
-                                   IsIndeterminate="{Binding UseMarqueProgressStyle}" />
-            </Grid>
-          </Border>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    
   </Grid>
 </Window>

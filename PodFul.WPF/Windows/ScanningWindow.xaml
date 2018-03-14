@@ -59,10 +59,13 @@
                   <DataTemplate>
                     <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">
                       <Grid>
+                        <Grid.ToolTip>
+                          <Binding Path="Description" />
+                        </Grid.ToolTip>
                         <ProgressBar Margin="0" Height="30" 
                                    Value="{Binding ProgressValue}" 
                                    IsIndeterminate="{Binding UseMarqueProgressStyle}" />
-                        <Grid ToolTip="{Binding Description}">
+                        <Grid>
                           <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="8.5*"/>
                             <ColumnDefinition Width="*"/>
@@ -111,10 +114,13 @@
                   <DataTemplate>
                     <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">
                       <Grid>
+                        <Grid.ToolTip>
+                          <Binding Path="Description" />
+                        </Grid.ToolTip>
                         <ProgressBar Margin="0" Height="30" 
                                      Value="{Binding ProgressValue}" 
                                      IsIndeterminate="{Binding UseMarqueProgressStyle}" />
-                        <Grid ToolTip="{Binding Description}">
+                        <Grid>
                           <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="8.5*"/>
                             <ColumnDefinition Width="*"/>
