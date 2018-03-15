@@ -23,6 +23,12 @@ namespace PodFul.WPF.Windows
     public RetryWindow(IEnumerable<DownloadJob> jobs)
     {
       InitializeComponent();
+
+      if (jobs == null || jobs.Count() == 0)
+      {
+        throw new ArgumentException("No jobs passed to RetryWindow cstr");
+      }
+      
     }
   }
 }

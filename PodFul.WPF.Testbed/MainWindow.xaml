@@ -18,6 +18,6 @@
     </Grid.RowDefinitions>
     <Button Margin="30" Click="Button_Click">Download Confirmation Window</Button>
     <Button Margin="30" Grid.Column="1" Click="FeedPropertiesWindow_Click">Feed Properties Window</Button>
-    
+    <Button Margin="30" Grid.Row="1" Click="RetryWindow_Click">Retry Window</Button>
   </Grid>
 </Window>

@@ -3,8 +3,10 @@ namespace PodFul.WPF.Testbed
 {
   using System;
   using System.Windows;
+  using Miscellaneous;
   using PodFul.Library;
   using PodFul.WPF.Windows;
+  using Processing;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -67,6 +69,16 @@ namespace PodFul.WPF.Testbed
         System.IO.Path.Combine(outputDirectory, @"Question-Mark.jpg"),
         new DateTime(2018, 3, 3, 7, 46, 15), new[] { podcast }); 
       var window = new FeedPropertiesWindow(feed);
+      window.ShowDialog();
+    }
+
+    private void RetryWindow_Click(Object sender, RoutedEventArgs e)
+    {
+      var podcast = this.CreatePodcast("Podcast 1");
+      var feed = this.CreateFeed("Feed", new[] { podcast });
+      FeedCollection feedCollection = null;
+      DownloadJob[] jobs = { new DownloadJob(podcast, feed, feedCollection) };
+      var window = new RetryWindow(null);
       window.ShowDialog();
     }
   }
