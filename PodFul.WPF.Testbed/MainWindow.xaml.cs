@@ -78,7 +78,7 @@ namespace PodFul.WPF.Testbed
       var feed = this.CreateFeed("Feed", new[] { podcast });
       FeedCollection feedCollection = null;
       DownloadJob[] jobs = { new DownloadJob(podcast, feed, feedCollection) };
-      var window = new RetryWindow(null);
+      var window = new RetryWindow(jobs);
       window.ShowDialog();
     }
   }

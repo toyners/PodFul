@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
-        Title="Window1" Height="300" Width="300">
-    <Grid>
-        
-    </Grid>
+        Title="Retry Failed Downloads" Height="340" Width="600"
+        MinHeight="150" MinWidth="150"
+        Icon="baggage_cart_box_tE4_icon.ico" 
+        WindowStartupLocation="CenterOwner">
+  <DockPanel Margin="5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" >
+      <Button HorizontalAlignment="Right" Width="70" IsDefault="True" Click="CloseButtonClick" Style="{StaticResource ResourceKey=StandardButton}">Close</Button>
+    </Border>
+
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
+      <Grid>
+        <Label>Select downloads to retry:</Label>
+        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1">
+          <ScrollViewer VerticalScrollBarVisibility="Visible">
+            <Grid>
+
+            </Grid>
+          </ScrollViewer>
+        </Border>
+      </Grid>
+    </Border>
+  </DockPanel>
 </Window>

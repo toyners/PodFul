@@ -30,5 +30,10 @@ namespace PodFul.WPF.Windows
       }
       
     }
+
+    private void CloseButtonClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }
