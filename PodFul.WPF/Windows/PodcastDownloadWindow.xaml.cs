@@ -2,7 +2,6 @@
 namespace PodFul.WPF.Windows
 {
   using System;
-  using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Windows;
   using System.Windows.Controls;
@@ -25,7 +24,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Fields
-    private DownloadManager downloadManager;
+    private IDownloadManager downloadManager;
     private Boolean isLoaded;
     private ProcessingStates processingState;
     private Boolean isClosing;
@@ -35,7 +34,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction
-    public PodcastDownloadWindow(DownloadManager downloadManager, Boolean hideCompletedDownloadJobs)
+    public PodcastDownloadWindow(IDownloadManager downloadManager, Boolean hideCompletedDownloadJobs)
     {
       InitializeComponent();
 
@@ -66,12 +65,12 @@ namespace PodFul.WPF.Windows
       this.processingState = ProcessingStates.Cancelling;
       this.CommandButton.Content = "Cancelling";
       this.CommandButton.IsEnabled = false;
-      this.downloadManager.CancelAllDownloads();
+      this.downloadManager.CancelAllJobs();
     }
 
     private void CancelDownloadJobClick(Object sender, RoutedEventArgs e)
     {
-      this.downloadManager.CancelDownload((sender as Button).DataContext);
+      this.downloadManager.CancelJob((sender as Button).DataContext as DownloadJob);
     }
 
     private void CommandButtonClick(Object sender, RoutedEventArgs e)
@@ -173,7 +172,7 @@ namespace PodFul.WPF.Windows
       {
         this.processingState = ProcessingStates.Running;
         this.CommandButton.Content = "Cancel All";
-        this.downloadManager.StartDownloads();
+        this.downloadManager.StartWaitingJobs();
         
         // Ensure this functionality is only called once.
         this.isLoaded = true;

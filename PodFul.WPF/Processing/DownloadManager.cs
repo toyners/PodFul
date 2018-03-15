@@ -12,7 +12,7 @@ namespace PodFul.WPF.Processing
   using Library;
   using Logging;
 
-  public class DownloadManager
+  public class DownloadManager : IDownloadManager
   {
     #region Fields
     private UInt32 concurrentDownloads = 1;
@@ -74,7 +74,7 @@ namespace PodFul.WPF.Processing
       }
     }
 
-    public void CancelAllDownloads()
+    public void CancelAllJobs()
     {
       // Drain the waiting queue
       while (!this.waitingJobs.IsEmpty)
@@ -100,17 +100,16 @@ namespace PodFul.WPF.Processing
       }
     }
 
-    public void CancelDownload(Object dataContext)
+    public void CancelJob(DownloadJob job)
     {
-      dataContext.VerifyThatObjectIsNotNull("Parameter 'dataContext' is null.");
-      var job = (DownloadJob)dataContext;
+      job.VerifyThatObjectIsNotNull("Parameter 'job' is null.");
       job.CancelDownload();
     }
 
     /// <summary>
     /// Will start any waiting jobs up to the concurrent maximum
     /// </summary>
-    public void StartDownloads()
+    public void StartWaitingJobs()
     {
       while (this.GotWaitingJobs && this.currentDownloads < this.concurrentDownloads)
       {

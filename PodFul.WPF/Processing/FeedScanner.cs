@@ -8,7 +8,6 @@ namespace PodFul.WPF.Processing
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
-  using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.String;
   using Library;
   using Logging;
@@ -22,7 +21,7 @@ namespace PodFul.WPF.Processing
   {
     #region Fields
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-    private DownloadManager downloadManager;
+    private ISimpleDownloadManager downloadManager;
     private IFeedCollection feedCollection;
     private Queue<Int32> feedIndexes;
     private MessagePool fileDeliveryLogger;
@@ -37,7 +36,7 @@ namespace PodFul.WPF.Processing
       IImageResolver imageResolver,
       MessagePool fileDeliveryLogger,
       ILogController logController,
-      DownloadManager downloadManager)
+      ISimpleDownloadManager downloadManager)
     {
       this.feedCollection = feedCollection;
       this.feedIndexes = feedIndexes;
@@ -62,14 +61,12 @@ namespace PodFul.WPF.Processing
     public void Cancel()
     {
       this.cancellationTokenSource.Cancel();
-      this.downloadManager.CancelAllDownloads();
+      this.downloadManager.CancelAllJobs();
     }
 
     public void CancelDownload(Object dataContext)
     {
-      dataContext.VerifyThatObjectIsNotNull("Parameter 'dataContext' is null.");
-      var job = (DownloadJob)dataContext;
-      job.CancelDownload();
+      this.downloadManager.CancelJob(dataContext as DownloadJob);
     }
 
     public void Process()
@@ -190,9 +187,9 @@ namespace PodFul.WPF.Processing
       Task downloadingTask = Task.Factory.StartNew(
       () =>
       {
-        while (isScanning || downloadManager.GotIncompleteJobs)
+        while (isScanning || this.downloadManager.GotIncompleteJobs)
         {
-          downloadManager.StartDownloads();
+          this.downloadManager.StartWaitingJobs();
           Thread.Sleep(50);
 
           if (!cancelToken.IsCancellationRequested)
