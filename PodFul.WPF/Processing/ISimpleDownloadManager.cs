@@ -2,13 +2,20 @@
 namespace PodFul.WPF.Processing
 {
   using System;
+  using System.Collections.Generic;
   using System.Collections.ObjectModel;
 
   /// <summary>
-  /// Simple interface for managing download jobs
+  /// Interface for managing download jobs
   /// </summary>
   public interface ISimpleDownloadManager
   {
+    #region Properties
+    /// <summary>
+    /// Collection of all failed jobs in the download manager.
+    /// </summary>
+    ICollection<DownloadJob> FailedJobs { get; }
+
     /// <summary>
     /// True if the download manager has running jobs or waiting jobs. Otherwise false.
     /// </summary>
@@ -18,12 +25,20 @@ namespace PodFul.WPF.Processing
     /// Observable collection of all the jobs in the download manager.
     /// </summary>
     ObservableCollection<DownloadJob> Jobs { get; }
+    #endregion
 
+    #region Methods
     /// <summary>
     /// Add a job to the download manager.
     /// </summary>
     /// <param name="job">Job to add.</param>
     void AddJob(DownloadJob job);
+
+    /// <summary>
+    /// Add a collection of jobs to the download manager.
+    /// </summary>
+    /// <param name="jobs"></param>
+    void AddJobs(IEnumerable<DownloadJob> jobs);
 
     /// <summary>
     /// Cancel all running jobs and waiting jobs.
@@ -40,5 +55,6 @@ namespace PodFul.WPF.Processing
     /// Start any waiting jobs.
     /// </summary>
     void StartWaitingJobs();
+    #endregion
   }
 }

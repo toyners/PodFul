@@ -35,6 +35,8 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
+    public ICollection<DownloadJob> FailedJobs { get; private set; }
+
     public Boolean GotIncompleteJobs { get { return this.GotWaitingJobs || this.currentDownloads > 0; } }
 
     public Boolean GotWaitingJobs { get { return this.waitingJobs.Count > 0; } }

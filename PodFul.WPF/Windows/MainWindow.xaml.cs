@@ -278,17 +278,8 @@ namespace PodFul.WPF.Windows
       // in Chronological order.
       selectedIndexes.Sort((x, y) => { return y - x; });
 
-      var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
-      if (deliverManualDownloadsToDeliveryPoints)
-      {
-        var fileDeliverer = this.CreateFileDeliverer();
-
-        downloadManager.JobCompletedSuccessfullyEvent += job => 
-        {
-          fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
-        };
-      }
-
+      var fileDeliverer = (deliverManualDownloadsToDeliveryPoints ? this.CreateFileDeliverer() : null);
+      var downloadManager = this.CreateDownloadManager(fileDeliverer, this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, this.settings.HideCompletedJobs);
 
       // Add the jobs after creating the window so that job queued event will fire.
@@ -368,14 +359,8 @@ namespace PodFul.WPF.Windows
     private void PerformScan(Queue<Int32> feedIndexes)
     {
       var fileDeliverer = this.CreateFileDeliverer();
-      var downloadManager = new DownloadManager(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount);
-      downloadManager.JobCompletedSuccessfullyEvent += job =>
-      {
-        if (job.DoDeliverFile)
-        {
-          fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
-        }
-      };
+      var combinedLogger = this.logController.GetLogger(CombinedKey);
+      var downloadManager = this.CreateDownloadManager(fileDeliverer, combinedLogger, this.settings.ConcurrentDownloadCount);
 
       IImageResolver imageResolver = this.CreateImageResolver();
       this.fileDeliveryLogger.Clear();
@@ -383,11 +368,46 @@ namespace PodFul.WPF.Windows
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 
         downloadManager, 
-        this.logController.GetLogger<UILogger>(UiKey), 
         this.settings.HideCompletedJobs);
+
+      var logger = this.logController.GetLogger<UILogger>(UiKey);
+      logger.PostMessage = scanningWindow.PostMessage;
 
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
+
+      if (downloadManager.FailedJobs.Count > 0)
+      {
+        var retryWindow = new RetryWindow(downloadManager.FailedJobs);
+        var dialogResult = retryWindow.DialogResult;
+        if (dialogResult.GetValueOrDefault())
+        {
+          var retryManager = this.CreateDownloadManager(fileDeliverer, combinedLogger, this.settings.ConcurrentDownloadCount);
+          var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, this.settings.HideCompletedJobs);
+          retryManager.AddJobs(downloadManager.FailedJobs);
+
+          podcastDownloadWindow.Owner = this;
+          podcastDownloadWindow.ShowDialog();
+        }
+      }
+    }
+
+    private IDownloadManager CreateDownloadManager(IFileDeliverer fileDeliverer, ILogger combinedLogger, UInt32 concurrentDownloadCount)
+    {
+      var downloadManager = new DownloadManager(combinedLogger, concurrentDownloadCount);
+
+      if (fileDeliverer != null)
+      {
+        downloadManager.JobCompletedSuccessfullyEvent += job =>
+        {
+          if (job.DoDeliverFile)
+          {
+            fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
+          }
+        };
+      }
+
+      return downloadManager;
     }
 
     private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)

@@ -4,7 +4,7 @@ namespace PodFul.WPF.Processing
   using System;
 
   /// <summary>
-  /// Interface for setting handlers for download manager events.
+  /// Interface for managing download events.
   /// </summary>
   public interface IDownloadManager : ISimpleDownloadManager
   {

@@ -8,7 +8,6 @@ namespace PodFul.WPF.Windows
   using System.Windows.Input;
   using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.String;
-  using Logging;
   using Processing;
   using UI_Support;
 
@@ -40,10 +39,10 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, DownloadManager downloadManager, UILogger logger, Boolean hideCompletedDownloadJobs)
+    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, IDownloadManager downloadManager, Boolean hideCompletedDownloadJobs)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
-      logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
+      downloadManager.VerifyThatObjectIsNotNull("Parameter 'downloadManager' is null.");
 
       this.InitializeComponent();
 
@@ -54,14 +53,13 @@ namespace PodFul.WPF.Windows
 
       var jobCountStatusBarDisplay = new JobCountStatusBarDisplayComponent(this.WaitingCount, this.RunningCount, this.CompletedCount, this.FirstOptionalCount, this.SecondOptionalCount);
       this.jobCountDisplayManager = new JobCountDisplayManager(jobCountStatusBarDisplay);
-
-      logger.PostMessage = this.PostMessage;
+      
       downloadManager.JobQueuedEvent += this.JobQueuedEventHandler;
       downloadManager.JobFinishedEvent += this.JobFinishedEventHandler;
       downloadManager.JobStartedEvent += this.JobStartedEventHandler;
-      feedScanner.FeedStartedEvent += this.FeedStartedEventHandler;
-      feedScanner.ScanCompletedEvent += this.ScanCompletedEventHandler;
-      feedScanner.ScanCanceledEvent += this.ScanCanceledEventHandler;
+      this.feedScanner.FeedStartedEvent += this.FeedStartedEventHandler;
+      this.feedScanner.ScanCompletedEvent += this.ScanCompletedEventHandler;
+      this.feedScanner.ScanCanceledEvent += this.ScanCanceledEventHandler;
 
       this.feedsScannedCount = 0;
       this.totalFeedCount = totalFeedCount;
@@ -72,6 +70,15 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Methods
+    public void PostMessage(String message)
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.Feedback.Text += message;
+        this.FeedbackScroller.ScrollToBottom();
+      });
+    }
+
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
       this.feedScanner.CancelDownload((sender as Button).DataContext);
@@ -178,15 +185,6 @@ namespace PodFul.WPF.Windows
     private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
     {
       // TODO: Scroll podcast download list.
-    }
-
-    private void PostMessage(String message)
-    {
-      Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.Feedback.Text += message;
-        this.FeedbackScroller.ScrollToBottom();
-      });
     }
 
     private void ProcessingFinished(String titleSuffix)
