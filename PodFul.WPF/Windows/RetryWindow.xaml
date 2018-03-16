@@ -16,11 +16,35 @@
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
       <Grid>
-        <Label>Select downloads to retry:</Label>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="25" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <Label VerticalAlignment="Center">Select downloads to retry:</Label>
         <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1">
           <ScrollViewer VerticalScrollBarVisibility="Visible">
             <Grid>
+              <ItemsControl Name="Jobs" HorizontalContentAlignment="Stretch" PreviewMouseWheel="PodcastListMouseWheel">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">
+                      <Grid>
+                        <Grid.ToolTip>
+                          <Binding Path="Description" />
+                        </Grid.ToolTip>
 
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition />
+                          <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <CheckBox Grid.Column="1" />
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
             </Grid>
           </ScrollViewer>
         </Border>

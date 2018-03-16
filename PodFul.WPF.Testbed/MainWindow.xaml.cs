@@ -74,10 +74,18 @@ namespace PodFul.WPF.Testbed
 
     private void RetryWindow_Click(Object sender, RoutedEventArgs e)
     {
-      var podcast = this.CreatePodcast("Podcast 1");
-      var feed = this.CreateFeed("Feed", new[] { podcast });
+      var podcast1 = this.CreatePodcast("Podcast 1");
+      var podcast2 = this.CreatePodcast("Podcast 2");
+      var podcast3 = this.CreatePodcast("Podcast 3");
+      var feed = this.CreateFeed("Feed", new[] { podcast1, podcast2, podcast3 });
       FeedCollection feedCollection = null;
-      DownloadJob[] jobs = { new DownloadJob(podcast, feed, feedCollection) };
+
+      DownloadJob[] jobs = {
+        new DownloadJob(podcast1, feed, feedCollection),
+        new DownloadJob(podcast2, feed, feedCollection),
+        new DownloadJob(podcast3, feed, feedCollection),
+      };
+
       var window = new RetryWindow(jobs);
       window.ShowDialog();
     }
