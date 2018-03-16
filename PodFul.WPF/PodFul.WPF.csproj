@@ -84,11 +84,12 @@
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\IFeedCollection.cs" />
     <Compile Include="Processing\FeedFactory.cs" />
+    <Compile Include="Processing\IDownloadEvents.cs" />
     <Compile Include="Processing\IDownloadManager.cs" />
     <Compile Include="Processing\IFeedFactory.cs" />
     <Compile Include="Processing\IImageResolver.cs" />
     <Compile Include="Processing\ImageResolver.cs" />
-    <Compile Include="Processing\ISimpleDownloadManager.cs" />
+    <Compile Include="Processing\IDownloadFunctionality.cs" />
     <Compile Include="UI Support\IJobCountDisplayManager.cs" />
     <Compile Include="UI Support\JobCountStatusBarDisplayComponent.cs" />
     <Compile Include="UI Support\JobCountWindowTitleDisplayComponent.cs" />

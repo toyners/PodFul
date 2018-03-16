@@ -8,7 +8,7 @@ namespace PodFul.WPF.Processing
   /// <summary>
   /// Interface for managing download jobs
   /// </summary>
-  public interface ISimpleDownloadManager
+  public interface IDownloadFunctionality
   {
     #region Properties
     /// <summary>

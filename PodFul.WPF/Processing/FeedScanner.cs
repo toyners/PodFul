@@ -21,7 +21,7 @@ namespace PodFul.WPF.Processing
   {
     #region Fields
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-    private ISimpleDownloadManager downloadManager;
+    private IDownloadFunctionality downloadManager;
     private IFeedCollection feedCollection;
     private Queue<Int32> feedIndexes;
     private MessagePool fileDeliveryLogger;
@@ -36,7 +36,7 @@ namespace PodFul.WPF.Processing
       IImageResolver imageResolver,
       MessagePool fileDeliveryLogger,
       ILogController logController,
-      ISimpleDownloadManager downloadManager)
+      IDownloadFunctionality downloadManager)
     {
       this.feedCollection = feedCollection;
       this.feedIndexes = feedIndexes;

@@ -39,7 +39,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction   
-    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, IDownloadManager downloadManager, Boolean hideCompletedDownloadJobs)
+    public ScanningWindow(UInt32 totalFeedCount, FeedScanner feedScanner, IDownloadEvents downloadManager, Boolean hideCompletedDownloadJobs)
     {
       feedScanner.VerifyThatObjectIsNotNull("Parameter 'feedScanner' is null.");
       downloadManager.VerifyThatObjectIsNotNull("Parameter 'downloadManager' is null.");
