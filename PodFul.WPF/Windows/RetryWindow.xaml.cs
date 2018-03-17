@@ -33,5 +33,25 @@ namespace PodFul.WPF.Windows
     {
 
     }
+
+    private void DownloadClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void CancelClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SelectNoneClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SelectAllClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }

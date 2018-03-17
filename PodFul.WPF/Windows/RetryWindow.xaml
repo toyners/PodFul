@@ -6,12 +6,63 @@
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
         Title="Retry Failed Downloads" Height="340" Width="600"
-        MinHeight="150" MinWidth="150"
-        Icon="baggage_cart_box_tE4_icon.ico" 
+        Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" >
-      <Button HorizontalAlignment="Right" Width="70" IsDefault="True" Click="CloseButtonClick" Style="{StaticResource ResourceKey=StandardButton}">Close</Button>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectAllClick" Content="Select All" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Select All Podcasts</TextBlock>
+                  <TextBlock>Selects all podcasts to download.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="SelectNoneClick" Content="Select None" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Clear Podcast Selection</TextBlock>
+                  <TextBlock>Unselects all podcasts.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="CancelClick" Content="Cancel" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Cancel</TextBlock>
+                  <TextBlock>Perform no downloads.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+
+          <Button Name="DownloadButton" Style="{StaticResource StandardButton}" Width="70" IsEnabled="False" Click="DownloadClick" Content="Download" ToolTipService.ShowOnDisabled="True">
+            <Button.ToolTip>
+              <ToolTip>
+                <StackPanel>
+                  <TextBlock FontWeight="Bold">Download selected Podcasts</TextBlock>
+                  <TextBlock>Selected podcasts will be downloaded.</TextBlock>
+                </StackPanel>
+              </ToolTip>
+            </Button.ToolTip>
+          </Button>
+        </StackPanel>
+      </Grid>
     </Border>
 
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
@@ -38,8 +89,17 @@
                           <ColumnDefinition Width="30"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                        <CheckBox Grid.Column="1" />
+                        <Grid>
+                          <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                          </Grid.RowDefinitions>
+                          
+                          <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                          <TextBlock Grid.Row="1" Text="{Binding ExceptionMessage}" Margin="3,0" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        </Grid>
+                        
+                        <CheckBox Grid.Column="1" VerticalAlignment="Center" />
                       </Grid>
                     </Border>
                   </DataTemplate>

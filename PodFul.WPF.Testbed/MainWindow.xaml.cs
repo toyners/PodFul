@@ -86,6 +86,10 @@ namespace PodFul.WPF.Testbed
         new DownloadJob(podcast3, feed, feedCollection),
       };
 
+      jobs[0].ExceptionMessage = "The Operation has timed out.";
+      jobs[1].ExceptionMessage = "No filename given.";
+      jobs[2].ExceptionMessage = "The Operation has timed out.";
+
       var window = new RetryWindow(jobs);
       window.ShowDialog();
     }
