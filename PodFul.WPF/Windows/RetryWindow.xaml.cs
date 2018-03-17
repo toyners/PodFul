@@ -24,12 +24,12 @@ namespace PodFul.WPF.Windows
       this.Jobs.ItemsSource = jobs;
     }
 
-    private void CloseButtonClick(Object sender, RoutedEventArgs e)
+    private void CancelClick(Object sender, RoutedEventArgs e)
     {
 
     }
 
-    private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
+    private void CloseButtonClick(Object sender, RoutedEventArgs e)
     {
 
     }
@@ -39,17 +39,17 @@ namespace PodFul.WPF.Windows
 
     }
 
-    private void CancelClick(Object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void SelectNoneClick(Object sender, RoutedEventArgs e)
+    private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
     {
 
     }
 
     private void SelectAllClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SelectNoneClick(Object sender, RoutedEventArgs e)
     {
 
     }
