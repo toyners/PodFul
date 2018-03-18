@@ -16,18 +16,20 @@ namespace PodFul.WPF.Windows
   public partial class RetryWindow : Window
   {
     private ObservableCollection<RetryJob> retryJobs;
+    private CheckBox[] selectCheckBoxControls;
     private Int32 selectedCount;
 
     public RetryWindow(IEnumerable<DownloadJob> jobs)
     {
       InitializeComponent();
 
-      if (jobs == null || jobs.Any())
+      if (jobs == null || !jobs.Any())
       {
         throw new ArgumentException("No jobs passed to RetryWindow cstr");
       }
 
       this.retryJobs = new ObservableCollection<RetryJob>();
+      
       foreach (var downloadJob in jobs)
       {
         this.retryJobs.Add(new RetryJob(downloadJob));
@@ -58,22 +60,9 @@ namespace PodFul.WPF.Windows
 
     private void SelectAllClick(Object sender, RoutedEventArgs e)
     {
-      /*foreach (var job in this.retryJobs)
+      foreach (var selectCheckBoxControl in this.selectCheckBoxControls)
       {
-        job.Retry = true;
-      }*/
-
-      for (Int32 i = 0; i < this.Jobs.Items.Count; i++)
-      {
-        var container = this.Jobs
-                                 .ItemContainerGenerator
-                                 .ContainerFromIndex(i);
-
-        //var cb = container.GetDescendantByType<CheckBox>();
-        var cb = FindVisualChild<CheckBox>(container);
-        cb.IsChecked = true;
-        //var template = container.;
-        //var subPlotter = template.FindName("plotterCanal", container) as PlotterColetaCanalÚnico;
+        selectCheckBoxControl.IsChecked = true;
       }
 
       this.DownloadButton.IsEnabled = true;
@@ -100,9 +89,9 @@ namespace PodFul.WPF.Windows
 
     private void SelectNoneClick(Object sender, RoutedEventArgs e)
     {
-      foreach (var job in this.retryJobs)
+      foreach (var selectCheckBoxControl in this.selectCheckBoxControls)
       {
-        job.Retry = false;
+        selectCheckBoxControl.IsChecked = true;
       }
 
       this.DownloadButton.IsEnabled = false;
@@ -130,6 +119,18 @@ namespace PodFul.WPF.Windows
       var item = (RetryJob)((FrameworkElement) sender).DataContext;
       this.selectedCount += (item.Retry ? 1 : -1);
       this.DownloadButton.IsEnabled = (this.selectedCount > 0);
+    }
+
+    private void WindowLoaded(Object sender, RoutedEventArgs e)
+    {
+      this.selectCheckBoxControls = new CheckBox[this.retryJobs.Count];
+      for (var i = 0; i < this.retryJobs.Count; i++)
+      {
+        var container = this.Jobs
+                            .ItemContainerGenerator
+                            .ContainerFromIndex(i);
+        this.selectCheckBoxControls[i] = Jabberwocky.Toolkit.WPF.VisualTreeHelperExtensions.GetDescendantByType<CheckBox>(container);
+      }
     }
   }
 }

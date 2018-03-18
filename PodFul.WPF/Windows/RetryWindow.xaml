@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Retry Failed Downloads" Height="340" Width="600"
         Icon="baggage_cart_box_tE4_icon.ico" ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner" Loaded="WindowLoaded">
   <DockPanel Margin="5">
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" >
       <Grid>
