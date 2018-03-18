@@ -41,7 +41,7 @@ namespace PodFul.WPF.UI_Support
         case DownloadJob.StatusTypes.Waiting: this.waitingJobsCount++; break;
         case DownloadJob.StatusTypes.Running: this.runningJobsCount++; break;
         case DownloadJob.StatusTypes.Completed: this.completedJobsCount++; break;
-        case DownloadJob.StatusTypes.Canceled: this.cancelledJobsCount++; break;
+        case DownloadJob.StatusTypes.Cancelled: this.cancelledJobsCount++; break;
         case DownloadJob.StatusTypes.Failed: this.failedJobsCount++; break;
       }
 

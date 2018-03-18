@@ -15,11 +15,12 @@ namespace PodFul.WPF.Processing
     public enum StatusTypes
     {
       NotSet,
-      Canceled,
+      Cancelled,
       Completed,
       Failed,
       Running,
-      Waiting
+      Waiting,
+      NoLocation
     }
 
     #region Fields
@@ -139,7 +140,7 @@ namespace PodFul.WPF.Processing
         switch (this.status)
         {
           case StatusTypes.Completed: return "Completed";
-          case StatusTypes.Canceled: return "Canceled";
+          case StatusTypes.Cancelled: return "Canceled";
           case StatusTypes.Failed: return "Failed";
           case StatusTypes.Running: return "Running";
           default: return "Waiting...";
@@ -169,7 +170,7 @@ namespace PodFul.WPF.Processing
         switch (this.status)
         {
           case StatusTypes.Completed: return "Green";
-          case StatusTypes.Canceled: return "Orange";
+          case StatusTypes.Cancelled: return "Orange";
           case StatusTypes.Failed: return "Red";
           case StatusTypes.Running: return "Black";
           default: return "Blue";
@@ -201,7 +202,7 @@ namespace PodFul.WPF.Processing
       {
         Application.Current.Dispatcher.Invoke(() =>
         {
-          this.Status = StatusTypes.Canceled;
+          this.Status = StatusTypes.Cancelled;
           this.CancellationVisibility = Visibility.Hidden;
         });
 
@@ -226,7 +227,7 @@ namespace PodFul.WPF.Processing
         this.ProgressValue = 0;
         this.ProgressMajorSize = this.ProgressMinorSize = this.ProgressUnit = String.Empty;
         this.CancellationVisibility = Visibility.Hidden;
-        this.Status = StatusTypes.Canceled;
+        this.Status = StatusTypes.Cancelled;
       });
     }
 

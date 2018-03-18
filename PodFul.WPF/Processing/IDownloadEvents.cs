@@ -23,6 +23,8 @@ namespace PodFul.WPF.Processing
     /// </summary>
     event Action<DownloadJob> JobFinishedEvent;
 
+    event Func<DownloadJob, Boolean> JobNeedsLocationEvent;
+
     /// <summary>
     /// Event raised when job moves from waiting to running.
     /// </summary>

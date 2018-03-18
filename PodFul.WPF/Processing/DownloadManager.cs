@@ -19,10 +19,11 @@ namespace PodFul.WPF.Processing
     private Int32 currentDownloads;
     private ILogger logger;
     private ConcurrentQueue<DownloadJob> waitingJobs;
+    private Boolean treatJobsWithMissingFileNamesAsFailed;
     #endregion
 
     #region Construction
-    public DownloadManager(ILogger logger, UInt32 concurrentDownloads)
+    public DownloadManager(ILogger logger, UInt32 concurrentDownloads, Boolean treatJobsWithMissingFileNamesAsFailed)
     {
       logger.VerifyThatObjectIsNotNull("Parameter 'exceptionLogger' is null.");
       this.logger = logger;
@@ -31,6 +32,8 @@ namespace PodFul.WPF.Processing
       this.waitingJobs = new ConcurrentQueue<DownloadJob>();
 
       this.Jobs = new ObservableCollection<DownloadJob>();
+
+      this.treatJobsWithMissingFileNamesAsFailed = treatJobsWithMissingFileNamesAsFailed;
     }
     #endregion
 
@@ -46,14 +49,11 @@ namespace PodFul.WPF.Processing
 
     #region Events
     public event Action AllJobsFinishedEvent;
-
     public event Action<DownloadJob> JobCompletedSuccessfullyEvent;
-
     public event Action<DownloadJob> JobFinishedEvent;
-
     public event Action<DownloadJob> JobStartedEvent;
-
     public event Action<DownloadJob> JobQueuedEvent;
+    public event Func<DownloadJob, Boolean> JobNeedsLocationEvent;
     #endregion
 
     #region Methods
@@ -195,6 +195,22 @@ namespace PodFul.WPF.Processing
       {
         // Waiting queue is empty.
         return;
+      }
+
+      if (job.Status == DownloadJob.StatusTypes.NoLocation)
+      {
+        if (this.treatJobsWithMissingFileNamesAsFailed)
+        {
+          job.Status = DownloadJob.StatusTypes.Failed;
+        }
+        else if (this.JobNeedsLocationEvent != null)
+        {
+          Application.Current.Dispatcher.Invoke(() =>
+          {
+            var continueDownload = this.JobNeedsLocationEvent.Invoke(job);
+            job.Status = (continueDownload ? DownloadJob.StatusTypes.Waiting : DownloadJob.StatusTypes.Cancelled);
+          });
+        }
       }
 
       if (job.Status != DownloadJob.StatusTypes.Waiting)
