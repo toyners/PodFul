@@ -76,7 +76,7 @@
         <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1">
           <ScrollViewer VerticalScrollBarVisibility="Visible">
             <Grid>
-              <ItemsControl Name="Jobs" HorizontalContentAlignment="Stretch" PreviewMouseWheel="PodcastListMouseWheel">
+              <ItemsControl Name="Jobs" HorizontalContentAlignment="Stretch">
                 <ItemsControl.ItemTemplate>
                   <DataTemplate>
                     <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">

@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using Jabberwocky.Toolkit.WPF;
 using PodFul.WPF.Processing;
 
 namespace PodFul.WPF.Windows
@@ -15,10 +14,13 @@ namespace PodFul.WPF.Windows
   /// </summary>
   public partial class RetryWindow : Window
   {
+    #region Fields
     private ObservableCollection<RetryJob> retryJobs;
     private CheckBox[] selectCheckBoxControls;
     private Int32 selectedCount;
+    #endregion
 
+    #region Construction
     public RetryWindow(IEnumerable<DownloadJob> jobs)
     {
       InitializeComponent();
@@ -37,10 +39,19 @@ namespace PodFul.WPF.Windows
 
       this.Jobs.ItemsSource = retryJobs;
     }
+    #endregion
 
+    #region Methods
     private void CancelClick(Object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void CheckedClick(Object sender, RoutedEventArgs e)
+    {
+      var item = (RetryJob)((FrameworkElement)sender).DataContext;
+      this.selectedCount += (item.Retry ? 1 : -1);
+      this.DownloadButton.IsEnabled = (this.selectedCount > 0);
     }
 
     private void CloseButtonClick(Object sender, RoutedEventArgs e)
@@ -49,11 +60,6 @@ namespace PodFul.WPF.Windows
     }
 
     private void DownloadClick(Object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void PodcastListMouseWheel(Object sender, MouseWheelEventArgs e)
     {
 
     }
@@ -69,24 +75,6 @@ namespace PodFul.WPF.Windows
       this.selectedCount = this.retryJobs.Count;
     }
 
-    private childItem FindVisualChild<childItem>(DependencyObject obj)
-                   where childItem : DependencyObject
-    {
-      for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-      {
-        DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-        if (child != null && child is childItem)
-          return (childItem)child;
-        else
-        {
-          childItem childOfChild = FindVisualChild<childItem>(child);
-          if (childOfChild != null)
-            return childOfChild;
-        }
-      }
-      return null;
-    }
-
     private void SelectNoneClick(Object sender, RoutedEventArgs e)
     {
       foreach (var selectCheckBoxControl in this.selectCheckBoxControls)
@@ -98,6 +86,20 @@ namespace PodFul.WPF.Windows
       this.selectedCount = 0;
     }
 
+    private void WindowLoaded(Object sender, RoutedEventArgs e)
+    {
+      this.selectCheckBoxControls = new CheckBox[this.retryJobs.Count];
+      for (var i = 0; i < this.retryJobs.Count; i++)
+      {
+        var container = this.Jobs
+                            .ItemContainerGenerator
+                            .ContainerFromIndex(i);
+        this.selectCheckBoxControls[i] = container.GetDescendantByType<CheckBox>();
+      }
+    }
+    #endregion
+
+    #region Classes
     private class RetryJob
     {
       public String Name { get; private set; }
@@ -113,24 +115,6 @@ namespace PodFul.WPF.Windows
         this.Retry = false;
       }
     }
-
-    private void CheckedClick(Object sender, RoutedEventArgs e)
-    {
-      var item = (RetryJob)((FrameworkElement) sender).DataContext;
-      this.selectedCount += (item.Retry ? 1 : -1);
-      this.DownloadButton.IsEnabled = (this.selectedCount > 0);
-    }
-
-    private void WindowLoaded(Object sender, RoutedEventArgs e)
-    {
-      this.selectCheckBoxControls = new CheckBox[this.retryJobs.Count];
-      for (var i = 0; i < this.retryJobs.Count; i++)
-      {
-        var container = this.Jobs
-                            .ItemContainerGenerator
-                            .ContainerFromIndex(i);
-        this.selectCheckBoxControls[i] = Jabberwocky.Toolkit.WPF.VisualTreeHelperExtensions.GetDescendantByType<CheckBox>(container);
-      }
-    }
+    #endregion
   }
 }
