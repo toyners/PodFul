@@ -119,6 +119,38 @@ namespace PodFul.WPF.Processing
       }
     }
 
+    private void AddJobToFailedJobsList(DownloadJob job)
+    {
+      if (this.FailedJobs == null)
+      {
+        this.FailedJobs = new List<DownloadJob>();
+      }
+
+      this.FailedJobs.Add(job);
+    }
+
+    private DownloadJob GetNextWaitingJob()
+    {
+      DownloadJob job = null;
+      Boolean gotJob = false;
+      while (!gotJob)
+      {
+        gotJob = this.waitingJobs.TryDequeue(out job);
+        if (!gotJob && this.waitingJobs.IsEmpty)
+        {
+          return null;
+        }
+
+        if (gotJob && job.Status != DownloadJob.StatusTypes.Waiting)
+        {
+          gotJob = false;
+          Thread.Sleep(50);
+        }
+      }
+
+      return job;
+    }
+
     private void ProcessException(Exception exception, DownloadJob job)
     {
       Exception e = exception;
@@ -133,6 +165,8 @@ namespace PodFul.WPF.Processing
       }
 
       this.logger.Message(e.Message);
+
+      this.AddJobToFailedJobsList(job);
 
       Application.Current.Dispatcher.Invoke(() =>
       {
@@ -162,18 +196,14 @@ namespace PodFul.WPF.Processing
         return;
       }
 
-      this.currentDownloads++;
-
-      DownloadJob job;
-      while (!this.waitingJobs.TryDequeue(out job))
+      DownloadJob job = this.GetNextWaitingJob();
+      if (job == null)
       {
-        if (this.waitingJobs.IsEmpty)
-        {
-          return;
-        }
-
-        Thread.Sleep(50);
+        // No waiting job found.
+        return;
       }
+
+      this.currentDownloads++;
 
       job.InitialiseBeforeDownload();
 
@@ -208,6 +238,7 @@ namespace PodFul.WPF.Processing
         if (task.IsFaulted)
         {
           this.ProcessException(task.Exception, job);
+          this.FailedJobs.Add(job);
         }
         else if (task.IsCanceled)
         {

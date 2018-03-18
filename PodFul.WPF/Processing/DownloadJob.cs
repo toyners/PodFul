@@ -45,8 +45,6 @@ namespace PodFul.WPF.Processing
     #region Construction
     public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection)
     {
-      this.cancellationTokenSource = new CancellationTokenSource();
-      this.CancellationToken = this.cancellationTokenSource.Token;
       this.exceptionMessage = String.Empty;
       this.podcastSize = podcast.FileDetails.FileSize;
       this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
@@ -190,7 +188,18 @@ namespace PodFul.WPF.Processing
     #region Methods
     public void CancelDownload()
     {
-      if (this.CancellationToken.CanBeCanceled)
+      if (this.status == StatusTypes.Waiting)
+      {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          this.Status = StatusTypes.Canceled;
+          this.CancellationVisibility = Visibility.Hidden;
+        });
+
+        return;
+      }
+
+      if (this.Status == StatusTypes.Running && this.CancellationToken.CanBeCanceled)
       {
         this.cancellationTokenSource.Cancel();
       }
@@ -245,6 +254,9 @@ namespace PodFul.WPF.Processing
 
     public void InitialiseBeforeDownload()
     {
+      this.cancellationTokenSource = new CancellationTokenSource();
+      this.CancellationToken = this.cancellationTokenSource.Token;
+
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressMajorSize = "0";
