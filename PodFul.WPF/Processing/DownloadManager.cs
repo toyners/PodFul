@@ -129,23 +129,17 @@ namespace PodFul.WPF.Processing
       this.FailedJobs.Add(job);
     }
 
-    private DownloadJob GetNextWaitingJob()
+    private DownloadJob GetNextJobToProcess()
     {
       DownloadJob job = null;
-      Boolean gotJob = false;
-      while (!gotJob)
+      while (!this.waitingJobs.TryDequeue(out job))
       {
-        gotJob = this.waitingJobs.TryDequeue(out job);
-        if (!gotJob && this.waitingJobs.IsEmpty)
+        if (this.waitingJobs.IsEmpty)
         {
           return null;
         }
 
-        if (gotJob && job.Status != DownloadJob.StatusTypes.Waiting)
-        {
-          gotJob = false;
-          Thread.Sleep(50);
-        }
+        Thread.Sleep(50);
       }
 
       return job;
@@ -196,10 +190,21 @@ namespace PodFul.WPF.Processing
         return;
       }
 
-      DownloadJob job = this.GetNextWaitingJob();
+      DownloadJob job = this.GetNextJobToProcess();
       if (job == null)
       {
-        // No waiting job found.
+        // Waiting queue is empty.
+        return;
+      }
+
+      if (job.Status != DownloadJob.StatusTypes.Waiting)
+      {
+        // Job is cancelled or failed.
+        if (job.Status == DownloadJob.StatusTypes.Failed)
+        {
+          this.AddJobToFailedJobsList(job);
+        }
+
         return;
       }
 

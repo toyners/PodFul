@@ -45,12 +45,10 @@ namespace PodFul.WPF.Processing
     #region Construction
     public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection)
     {
-      this.exceptionMessage = String.Empty;
       this.podcastSize = podcast.FileDetails.FileSize;
       this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
       this.percentageStepSize = this.podcastSize / 100;
-      this.FilePath = Path.Combine(feed.Directory, podcast.FileDetails.FileName);
-      this.status = StatusTypes.Waiting;
+
       this.podcast = podcast;
       this.feed = feed;
       this.feedCollection = feedCollection;
@@ -65,6 +63,17 @@ namespace PodFul.WPF.Processing
       }
 
       this.Description = "Feed: " + this.feed.Title + "\r\nSize: " + podcastSizeForDescription;
+
+      if (String.IsNullOrEmpty(podcast.FileDetails.FileName))
+      {
+        this.exceptionMessage = "No file name given.";
+        this.status = StatusTypes.Failed;
+        return;
+      }
+
+      this.exceptionMessage = String.Empty;
+      this.FilePath = Path.Combine(feed.Directory, podcast.FileDetails.FileName);
+      this.status = StatusTypes.Waiting;
     }
 
     public DownloadJob(Podcast podcast, Feed feed, IFeedCollection feedCollection, IImageResolver imageResolver)
