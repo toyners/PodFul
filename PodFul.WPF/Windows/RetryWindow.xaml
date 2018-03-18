@@ -72,6 +72,7 @@
           <RowDefinition />
         </Grid.RowDefinitions>
         <Label VerticalAlignment="Center">Select downloads to retry:</Label>
+        
         <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1">
           <ScrollViewer VerticalScrollBarVisibility="Visible">
             <Grid>
@@ -98,8 +99,8 @@
                           <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
                           <TextBlock Grid.Row="1" Text="{Binding ExceptionMessage}" Margin="3,0" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         </Grid>
-                        
-                        <CheckBox Grid.Column="1" VerticalAlignment="Center" />
+
+                        <CheckBox Name="RetryCheckBox" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Retry, Mode=TwoWay}" Click="CheckedClick" />
                       </Grid>
                     </Border>
                   </DataTemplate>
@@ -107,7 +108,42 @@
               </ItemsControl>
             </Grid>
           </ScrollViewer>
+
+          <!--<ListView Name="Jobs">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <Border BorderBrush="Black" BorderThickness="1" Margin="2,2,2,0">
+                  <Grid>
+                    <Grid.ToolTip>
+                      <Binding Path="Description" />
+                    </Grid.ToolTip>
+
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition />
+                      <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                      <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                      </Grid.RowDefinitions>
+
+                      <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                      <TextBlock Grid.Row="1" Text="{Binding ExceptionMessage}" Margin="3,0" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    </Grid>
+
+                    <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Retry, Mode=TwoWay}" Click="CheckedClick" />
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+
+          </ListView> -->
+          
         </Border>
+        
+        
       </Grid>
     </Border>
   </DockPanel>

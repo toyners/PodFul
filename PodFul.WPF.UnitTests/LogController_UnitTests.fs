@@ -48,7 +48,7 @@ type LogController_UnitTests() =
         let logController = new LogController(loggers)
 
         try
-            logController.Message("Key", "Message")
+            logController.Message("Key", "Message") |> ignore
             testPassed <- false
         with
             | e -> 
