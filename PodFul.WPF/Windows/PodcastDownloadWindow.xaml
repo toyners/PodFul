@@ -84,8 +84,8 @@
                         <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
                       </StackPanel>
 
-                      <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding CancellationVisibility}"
-                              IsEnabled="{Binding CancellationCanBeRequested}" Click="CancelDownloadJobClick"
+                      <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                              Visibility="{Binding CancellationVisibility}" Click="CancelDownloadJobClick"
                               ToolTip="Cancel Download">
                         <Image Source="..\cancel.png" Width="15" Height="15"/>
                       </Button>

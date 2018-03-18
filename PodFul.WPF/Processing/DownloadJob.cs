@@ -23,7 +23,6 @@ namespace PodFul.WPF.Processing
     }
 
     #region Fields
-    private Boolean cancellationCanBeRequested = true;
     private Visibility cancellationVisibility = Visibility.Visible;
     private CancellationTokenSource cancellationTokenSource;
     private String exceptionMessage;
@@ -78,12 +77,6 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Properties
-    public Boolean CancellationCanBeRequested
-    {
-      get { return this.cancellationCanBeRequested; }
-      set { this.SetField(ref this.cancellationCanBeRequested, value); }
-    }
-
     public Visibility CancellationVisibility
     {
       get { return this.cancellationVisibility; }
@@ -245,6 +238,7 @@ namespace PodFul.WPF.Processing
         }
 
         this.ProgressValue = 0;
+        this.CancellationVisibility = Visibility.Hidden;
         this.Status = StatusTypes.Completed;
       });
     }

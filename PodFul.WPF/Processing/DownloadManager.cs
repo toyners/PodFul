@@ -119,7 +119,7 @@ namespace PodFul.WPF.Processing
       }
     }
 
-    private void ProcessException(Exception exception, DownloadJob podcast)
+    private void ProcessException(Exception exception, DownloadJob job)
     {
       Exception e = exception;
       if (exception is AggregateException)
@@ -136,8 +136,9 @@ namespace PodFul.WPF.Processing
 
       Application.Current.Dispatcher.Invoke(() =>
       {
-        podcast.Status = DownloadJob.StatusTypes.Failed;
-        podcast.ExceptionMessage = e.Message;
+        job.Status = DownloadJob.StatusTypes.Failed;
+        job.ExceptionMessage = e.Message;
+        job.CancellationVisibility = Visibility.Hidden;
       });
     }
 
@@ -199,7 +200,6 @@ namespace PodFul.WPF.Processing
       {
         Application.Current.Dispatcher.Invoke(() =>
         {
-          job.CancellationCanBeRequested = false;
           // If this job had an unknown file size then the progress bar was marque.
           // Regardless, ensure that the marque effect is turned off.
           job.UseMarqueProgressStyle = false;
