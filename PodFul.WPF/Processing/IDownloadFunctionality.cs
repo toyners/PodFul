@@ -12,9 +12,9 @@ namespace PodFul.WPF.Processing
   {
     #region Properties
     /// <summary>
-    /// Collection of all failed jobs in the download manager.
+    /// List of all failed jobs in the download manager.
     /// </summary>
-    ICollection<DownloadJob> FailedJobs { get; }
+    IList<DownloadJob> FailedJobs { get; }
 
     /// <summary>
     /// True if the download manager has running jobs or waiting jobs. Otherwise false.

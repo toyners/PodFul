@@ -41,10 +41,20 @@ namespace PodFul.WPF.Windows
     }
     #endregion
 
+    #region Properties
+    public List<Int32> RetryJobIndexes { get; private set; }
+    #endregion
+
     #region Methods
+    private void Cancel()
+    {
+      this.RetryJobIndexes = null;
+      this.DialogResult = false;
+    }
+
     private void CancelClick(Object sender, RoutedEventArgs e)
     {
-
+      this.Cancel();
     }
 
     private void CheckedClick(Object sender, RoutedEventArgs e)
@@ -54,14 +64,20 @@ namespace PodFul.WPF.Windows
       this.DownloadButton.IsEnabled = (this.selectedCount > 0);
     }
 
-    private void CloseButtonClick(Object sender, RoutedEventArgs e)
-    {
-
-    }
-
     private void DownloadClick(Object sender, RoutedEventArgs e)
     {
+      this.RetryJobIndexes = new List<Int32>(this.selectedCount);
 
+      for(var i = 0; i < this.selectCheckBoxControls.Length; i++)
+      {
+        if (this.selectCheckBoxControls[i].IsChecked.GetValueOrDefault())
+        {
+          this.RetryJobIndexes.Add(i);
+        }
+      }
+
+      this.DialogResult = true;
+      this.Close();
     }
 
     private void SelectAllClick(Object sender, RoutedEventArgs e)
@@ -84,6 +100,11 @@ namespace PodFul.WPF.Windows
 
       this.DownloadButton.IsEnabled = false;
       this.selectedCount = 0;
+    }
+
+    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      this.Cancel();
     }
 
     private void WindowLoaded(Object sender, RoutedEventArgs e)

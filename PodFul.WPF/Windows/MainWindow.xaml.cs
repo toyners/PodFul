@@ -384,7 +384,14 @@ namespace PodFul.WPF.Windows
         {
           var retryManager = this.CreateDownloadManager(fileDeliverer, combinedLogger, this.settings.ConcurrentDownloadCount);
           var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, this.settings.HideCompletedJobs);
-          retryManager.AddJobs(downloadManager.FailedJobs);
+
+          var retryJobs = new List<DownloadJob>(retryWindow.RetryJobIndexes.Count);          
+          foreach (var index in retryWindow.RetryJobIndexes)
+          {
+            retryJobs.Add(downloadManager.FailedJobs[index]);
+          }
+
+          retryManager.AddJobs(retryJobs);
 
           podcastDownloadWindow.Owner = this;
           podcastDownloadWindow.ShowDialog();
