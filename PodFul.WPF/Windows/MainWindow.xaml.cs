@@ -13,6 +13,7 @@ namespace PodFul.WPF.Windows
   using Jabberwocky.Toolkit.IO;
   using Jabberwocky.Toolkit.Path;
   using Logging;
+  using Microsoft.Win32;
   using Miscellaneous;
   using PodFul.FileDelivery;
   using PodFul.Library;
@@ -418,7 +419,14 @@ namespace PodFul.WPF.Windows
       {
         downloadManager.JobNeedsLocationEvent += job =>
         {
-          return true;
+          var openFileDialog = new OpenFileDialog();
+          var continueDownload = openFileDialog.ShowDialog(this).GetValueOrDefault();
+          if (continueDownload)
+          {
+            job.SetFilePath(openFileDialog.SafeFileName);
+          }
+
+          return continueDownload;
         };
       }
 

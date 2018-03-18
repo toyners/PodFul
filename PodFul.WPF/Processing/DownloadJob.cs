@@ -73,7 +73,7 @@ namespace PodFul.WPF.Processing
       }
 
       this.exceptionMessage = String.Empty;
-      this.FilePath = Path.Combine(feed.Directory, podcast.FileDetails.FileName);
+      this.SetFilePath(podcast.FileDetails.FileName);
       this.status = StatusTypes.Waiting;
     }
 
@@ -330,6 +330,11 @@ namespace PodFul.WPF.Processing
 
         this.ProgressValue = (Int32)value;
       });
+    }
+
+    public void SetFilePath(String fileName)
+    {
+      this.FilePath = Path.Combine(this.feed.Directory, fileName);
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)
