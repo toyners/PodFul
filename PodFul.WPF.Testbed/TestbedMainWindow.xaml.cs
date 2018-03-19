@@ -11,14 +11,14 @@ namespace PodFul.WPF.Testbed
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class TestbedMainWindow : Window
   {
-    public MainWindow()
+    public TestbedMainWindow()
     {
       InitializeComponent();
     }
 
-    private void Button_Click(Object sender, RoutedEventArgs e)
+    private void DownloadConfirmationWindow_Click(Object sender, RoutedEventArgs e)
     {
       var oldFeed = this.CreateFeed("OldFeed", 
         new[] {
@@ -92,6 +92,13 @@ namespace PodFul.WPF.Testbed
 
       var window = new RetryWindow(jobs);
       window.ShowDialog();
+    }
+
+    private void ConfirmDownloadLimitTest_Click(Object sender, RoutedEventArgs e)
+    {
+      // Set old feed file
+      // Set new feed file
+      // run scan 
     }
   }
 }
