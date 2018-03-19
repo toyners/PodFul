@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Testbed
 {
   using System;
+  using System.Threading;
   using System.Windows;
   using Miscellaneous;
   using PodFul.Library;
@@ -20,52 +21,52 @@ namespace PodFul.WPF.Testbed
 
     private void DownloadConfirmationWindow_Click(Object sender, RoutedEventArgs e)
     {
-      var oldFeed = this.CreateFeed("OldFeed", 
+      var oldFeed = this.CreateTestFeed("OldFeed", 
         new[] {
-          this.CreatePodcast("Podcast B"),
-          this.CreatePodcast("Podcast C"),
-          this.CreatePodcast("Podcast E"),
-          this.CreatePodcast("Podcast F"),
-          this.CreatePodcast("Podcast H"),
-          this.CreatePodcast("Podcast I")
+          this.CreateTestPodcast("Podcast B"),
+          this.CreateTestPodcast("Podcast C"),
+          this.CreateTestPodcast("Podcast E"),
+          this.CreateTestPodcast("Podcast F"),
+          this.CreateTestPodcast("Podcast H"),
+          this.CreateTestPodcast("Podcast I")
 
         });
 
-      var newFeed = this.CreateFeed("NewFeed",
+      var newFeed = this.CreateTestFeed("NewFeed",
         new[] {
-          this.CreatePodcast("Podcast A"),
-          this.CreatePodcast("Podcast C"),
-          this.CreatePodcast("Podcast D"),
-          this.CreatePodcast("Podcast F"),
-          this.CreatePodcast("Podcast G"),
-          this.CreatePodcast("Podcast I")
+          this.CreateTestPodcast("Podcast A"),
+          this.CreateTestPodcast("Podcast C"),
+          this.CreateTestPodcast("Podcast D"),
+          this.CreateTestPodcast("Podcast F"),
+          this.CreateTestPodcast("Podcast G"),
+          this.CreateTestPodcast("Podcast I")
         });
 
       var window = new DownloadConfirmationWindow(oldFeed, newFeed);
       window.ShowDialog();
     }
 
-    private Podcast CreatePodcast(String title)
+    private Podcast CreateTestPodcast(String title)
     {
       var podcastFile = new PodcastFile(String.Empty, -1, DateTime.Now, String.Empty);
       return new Podcast(title, String.Empty, String.Empty, String.Empty, DateTime.Now, podcastFile);
     }
 
-    private Feed CreateFeed(String title, Podcast[] podcasts)
+    private Feed CreateTestFeed(String title, Podcast[] podcasts)
     {
-      return CreateFeed(title, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, DateTime.Now, podcasts);
+      return CreateTestFeed(title, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, DateTime.Now, podcasts);
     }
 
-    private Feed CreateFeed(String title, String description, String website, String directory, String url, String imageFileName, DateTime creationDateTime, Podcast[] podcasts)
+    private Feed CreateTestFeed(String title, String description, String website, String directory, String url, String imageFileName, DateTime creationDateTime, Podcast[] podcasts)
     {
       return new Feed(title, description, website, directory, url, String.Empty, imageFileName, podcasts, creationDateTime, DateTime.Now, true, true, true, 3);
     }
 
     private void FeedPropertiesWindow_Click(Object sender, RoutedEventArgs e)
     {
-      var podcast = this.CreatePodcast("Podcast 1");
+      var podcast = this.CreateTestPodcast("Podcast 1");
       var outputDirectory = System.IO.Directory.GetCurrentDirectory();
-      var feed = this.CreateFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", "Test URL",
+      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", "Test URL",
         System.IO.Path.Combine(outputDirectory, @"Question-Mark.jpg"),
         new DateTime(2018, 3, 3, 7, 46, 15), new[] { podcast }); 
       var window = new FeedPropertiesWindow(feed);
@@ -74,10 +75,10 @@ namespace PodFul.WPF.Testbed
 
     private void RetryWindow_Click(Object sender, RoutedEventArgs e)
     {
-      var podcast1 = this.CreatePodcast("Podcast 1");
-      var podcast2 = this.CreatePodcast("Podcast 2");
-      var podcast3 = this.CreatePodcast("Podcast 3");
-      var feed = this.CreateFeed("Feed", new[] { podcast1, podcast2, podcast3 });
+      var podcast1 = this.CreateTestPodcast("Podcast 1");
+      var podcast2 = this.CreateTestPodcast("Podcast 2");
+      var podcast3 = this.CreateTestPodcast("Podcast 3");
+      var feed = this.CreateTestFeed("Feed", new[] { podcast1, podcast2, podcast3 });
       FeedCollection feedCollection = null;
 
       DownloadJob[] jobs = {
@@ -97,6 +98,15 @@ namespace PodFul.WPF.Testbed
     private void ConfirmDownloadLimitTest_Click(Object sender, RoutedEventArgs e)
     {
       // Set old feed file
+
+      var outputDirectory = System.IO.Directory.GetCurrentDirectory();
+      var podcast = this.CreateTestPodcast("Podcast 1");
+      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", System.IO.Path.Combine(outputDirectory, "Feed.rss"),
+        null, DateTime.MinValue, 
+        new[] { podcast });
+
+      var feedStorage = NSubstitute.Substitute.For<IFeedStorage>();
+      
       // Set new feed file
       // run scan 
     }
