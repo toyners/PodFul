@@ -280,7 +280,8 @@ namespace PodFul.WPF.Windows
       selectedIndexes.Sort((x, y) => { return y - x; });
 
       var fileDeliverer = (deliverManualDownloadsToDeliveryPoints ? this.CreateFileDeliverer() : null);
-      var downloadManager = this.CreateDownloadManager(fileDeliverer, this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount, false);
+      var jobNeedsLocationEventHandler = this.CreateJobNeedsLocationEventHandler();
+      var downloadManager = DownloadManager.Create(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, this.settings.HideCompletedJobs);
 
       // Add the jobs after creating the window so that job queued event will fire.
@@ -289,6 +290,23 @@ namespace PodFul.WPF.Windows
 
       podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();
+    }
+
+    private Func<DownloadJob, Boolean> CreateJobNeedsLocationEventHandler()
+    {
+      Func<DownloadJob, Boolean> jobNeedsLocationEventHandler = job =>
+      {
+        var openFileDialog = new OpenFileDialog();
+        var continueDownload = openFileDialog.ShowDialog(this).GetValueOrDefault();
+        if (continueDownload)
+        {
+          job.SetFilePath(openFileDialog.SafeFileName);
+        }
+
+        return continueDownload;
+      };
+
+      return jobNeedsLocationEventHandler;
     }
 
     private IImageResolver CreateImageResolver()
@@ -361,7 +379,7 @@ namespace PodFul.WPF.Windows
     {
       var fileDeliverer = this.CreateFileDeliverer();
       var combinedLogger = this.logController.GetLogger(CombinedKey);
-      var downloadManager = this.CreateDownloadManager(fileDeliverer, combinedLogger, this.settings.ConcurrentDownloadCount, true);
+      var downloadManager = DownloadManager.Create(combinedLogger, this.settings.ConcurrentDownloadCount, null, fileDeliverer);
 
       IImageResolver imageResolver = this.CreateImageResolver();
       this.fileDeliveryLogger.Clear();
@@ -383,7 +401,8 @@ namespace PodFul.WPF.Windows
         var dialogResult = retryWindow.DialogResult;
         if (dialogResult.GetValueOrDefault())
         {
-          var retryManager = this.CreateDownloadManager(fileDeliverer, combinedLogger, this.settings.ConcurrentDownloadCount, false);
+          var jobNeedsLocationEventHandler = this.CreateJobNeedsLocationEventHandler();
+          var retryManager = DownloadManager.Create(combinedLogger, this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
           var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, this.settings.HideCompletedJobs);
 
           var retryJobs = new List<DownloadJob>(retryWindow.RetryJobIndexes.Count);          
@@ -398,39 +417,6 @@ namespace PodFul.WPF.Windows
           podcastDownloadWindow.ShowDialog();
         }
       }
-    }
-
-    private IDownloadManager CreateDownloadManager(IFileDeliverer fileDeliverer, ILogger combinedLogger, UInt32 concurrentDownloadCount, Boolean treatJobsWithMissingFileNamesAsFailed)
-    {
-      var downloadManager = new DownloadManager(combinedLogger, concurrentDownloadCount, treatJobsWithMissingFileNamesAsFailed);
-
-      if (fileDeliverer != null)
-      {
-        downloadManager.JobCompletedSuccessfullyEvent += job =>
-        {
-          if (job.DoDeliverFile)
-          {
-            fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
-          }
-        };
-      }
-
-      if (!treatJobsWithMissingFileNamesAsFailed)
-      {
-        downloadManager.JobNeedsLocationEvent += job =>
-        {
-          var openFileDialog = new OpenFileDialog();
-          var continueDownload = openFileDialog.ShowDialog(this).GetValueOrDefault();
-          if (continueDownload)
-          {
-            job.SetFilePath(openFileDialog.SafeFileName);
-          }
-
-          return continueDownload;
-        };
-      }
-
-      return downloadManager;
     }
 
     private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)

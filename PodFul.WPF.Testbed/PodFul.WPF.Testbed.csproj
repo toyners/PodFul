@@ -99,6 +99,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="One Podcast.rss" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -110,6 +111,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PodFul.FileDelivery\PodFul.FileDelivery.csproj">
+      <Project>{dc45d73b-1d7a-43d4-ade5-42ec1e19078c}</Project>
+      <Name>PodFul.FileDelivery</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PodFul.Library\PodFul.Library.fsproj">
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
       <Name>PodFul.Library</Name>

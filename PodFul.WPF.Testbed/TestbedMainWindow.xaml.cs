@@ -101,12 +101,15 @@ namespace PodFul.WPF.Testbed
 
       var outputDirectory = System.IO.Directory.GetCurrentDirectory();
       var podcast = this.CreateTestPodcast("Podcast 1");
-      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", System.IO.Path.Combine(outputDirectory, "Feed.rss"),
+      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", System.IO.Path.Combine(outputDirectory, "One Podcast.rss"),
         null, DateTime.MinValue, 
         new[] { podcast });
 
       var feedStorage = NSubstitute.Substitute.For<IFeedStorage>();
-      
+
+      var downloadManager = DownloadManager.Create(null, 1, null);
+      //var feedScanner = new FeedScanner()
+      //var scanningWindow = new ScanningWindow(1u, )
       // Set new feed file
       // run scan 
     }

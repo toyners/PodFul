@@ -8,6 +8,7 @@ namespace PodFul.WPF.Processing
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows;
+  using FileDelivery;
   using Jabberwocky.Toolkit.Object;
   using Library;
   using Logging;
@@ -23,6 +24,41 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Construction
+    public static IDownloadManager Create(ILogger combinedLogger, UInt32 concurrentDownloadCount, Func<DownloadJob, Boolean> jobNeedsLocationEventHandler, IFileDeliverer fileDeliverer = null)
+    {
+      Boolean treatJobsWithMissingFileNamesAsFailed = (jobNeedsLocationEventHandler == null);
+      var downloadManager = new DownloadManager(combinedLogger, concurrentDownloadCount, treatJobsWithMissingFileNamesAsFailed);
+
+      if (fileDeliverer != null)
+      {
+        downloadManager.JobCompletedSuccessfullyEvent += job =>
+        {
+          if (job.DoDeliverFile)
+          {
+            fileDeliverer.DeliverFileToDeliveryPoints(job.FilePath, job.Name);
+          }
+        };
+      }
+
+      if (!treatJobsWithMissingFileNamesAsFailed)
+      {
+        downloadManager.JobNeedsLocationEvent = jobNeedsLocationEventHandler;
+        /*downloadManager.JobNeedsLocationEvent += job =>
+        {
+          var openFileDialog = new OpenFileDialog();
+          var continueDownload = openFileDialog.ShowDialog(this).GetValueOrDefault();
+          if (continueDownload)
+          {
+            job.SetFilePath(openFileDialog.SafeFileName);
+          }
+
+          return continueDownload;
+        };*/
+      }
+
+      return downloadManager;
+    } 
+
     public DownloadManager(ILogger logger, UInt32 concurrentDownloads, Boolean treatJobsWithMissingFileNamesAsFailed)
     {
       logger.VerifyThatObjectIsNotNull("Parameter 'exceptionLogger' is null.");
