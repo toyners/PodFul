@@ -108,7 +108,7 @@ namespace PodFul.WPF.Testbed
       var feedStorage = NSubstitute.Substitute.For<IFeedStorage>();
 
       var downloadManager = DownloadManager.Create(null, 1, null);
-      //var feedScanner = new FeedScanner()
+      //var feedScanner = new FeedScanner(null, )
       //var scanningWindow = new ScanningWindow(1u, )
       // Set new feed file
       // run scan 

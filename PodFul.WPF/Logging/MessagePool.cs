@@ -50,8 +50,6 @@ namespace PodFul.WPF.Logging
     {
       this.enumeratorIndex = -1;
     }
-
-
     #endregion
   }
 }

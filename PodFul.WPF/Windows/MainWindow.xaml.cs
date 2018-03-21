@@ -231,9 +231,11 @@ namespace PodFul.WPF.Windows
 
     }
 
-    private Int32 GetIndexForCurrentFeed()
+    private Queue<Int32> GetIndexForCurrentFeed()
     {
-      return this.FeedList.Items.IndexOf(this.currentFeed);
+      var feedIndexes = new Queue<Int32>();
+      feedIndexes.Enqueue(this.FeedList.Items.IndexOf(this.currentFeed));
+      return feedIndexes;
     }
 
     private Queue<Int32> GetIndexesForAllEnabledFeeds()
@@ -469,9 +471,7 @@ namespace PodFul.WPF.Windows
 
     private void ScanFeedContextMenuClick(Object sender, RoutedEventArgs e)
     {
-      var feedIndexes = new Queue<Int32>();
-      feedIndexes.Enqueue(this.GetIndexForCurrentFeed());
-      this.PerformScan(feedIndexes);
+      this.PerformScan(this.GetIndexForCurrentFeed());
     }
 
     private void Synchronise_Click(Object sender, RoutedEventArgs e)
