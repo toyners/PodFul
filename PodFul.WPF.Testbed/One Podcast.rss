@@ -21,7 +21,12 @@
 		  <pubDate>2 Jan 2014 01:02:03</pubDate>
 		  <description><![CDATA[Podcast #1 Description]]></description>
       <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3" length="10055415" type="audio/mpeg" />
-      <itunes:image href="Podcast #1 Image" />
+	  </item>
+    <item>
+		  <title>Podcast #2 Title</title>
+		  <pubDate>3 Jan 2014 01:02:03</pubDate>
+		  <description><![CDATA[Podcast #2 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast2.mp3" length="10055415" type="audio/mpeg" />
 	  </item>
 	</channel>
 </rss>

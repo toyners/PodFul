@@ -3,7 +3,9 @@ namespace PodFul.WPF.Testbed
 {
   using System;
   using System.Collections.Generic;
+  using System.IO;
   using System.Windows;
+  using Jabberwocky.Toolkit.IO;
   using Logging;
   using Miscellaneous;
   using NSubstitute;
@@ -67,9 +69,9 @@ namespace PodFul.WPF.Testbed
     private void FeedPropertiesWindow_Click(Object sender, RoutedEventArgs e)
     {
       var podcast = this.CreateTestPodcast("Podcast 1");
-      var outputDirectory = System.IO.Directory.GetCurrentDirectory();
+      var outputDirectory = Directory.GetCurrentDirectory();
       var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", "Test URL",
-        System.IO.Path.Combine(outputDirectory, @"Question-Mark.jpg"),
+        Path.Combine(outputDirectory, @"Question-Mark.jpg"),
         new DateTime(2018, 3, 3, 7, 46, 15), new[] { podcast }); 
       var window = new FeedPropertiesWindow(feed);
       window.ShowDialog();
@@ -101,11 +103,16 @@ namespace PodFul.WPF.Testbed
     {
       // Set old feed file
 
-      var outputDirectory = System.IO.Directory.GetCurrentDirectory();
-      var podcast = this.CreateTestPodcast("Podcast 1");
-      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "", System.IO.Path.Combine(outputDirectory, "One Podcast.rss"),
+      var outputDirectory = Directory.GetCurrentDirectory();
+      var testDirectoryName = "Test Directory";
+      var testDirectoryPath = Path.Combine(outputDirectory, testDirectoryName);
+      var testURL = Path.Combine(outputDirectory, "One Podcast.rss");
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath);
+      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", testDirectoryPath, testURL,
         null, DateTime.MinValue, 
-        new[] { podcast });
+        new Podcast[0]);
+
+      feed = Feed.SetConfirmDownloadThreshold(2, feed);
 
       var feeds = new[] { feed };
 
