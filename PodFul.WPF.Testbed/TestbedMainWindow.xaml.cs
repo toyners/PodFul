@@ -2,9 +2,11 @@
 namespace PodFul.WPF.Testbed
 {
   using System;
-  using System.Threading;
+  using System.Collections.Generic;
   using System.Windows;
+  using Logging;
   using Miscellaneous;
+  using NSubstitute;
   using PodFul.Library;
   using PodFul.WPF.Windows;
   using Processing;
@@ -101,15 +103,38 @@ namespace PodFul.WPF.Testbed
 
       var outputDirectory = System.IO.Directory.GetCurrentDirectory();
       var podcast = this.CreateTestPodcast("Podcast 1");
-      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", System.IO.Path.Combine(outputDirectory, "One Podcast.rss"),
+      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "", System.IO.Path.Combine(outputDirectory, "One Podcast.rss"),
         null, DateTime.MinValue, 
         new[] { podcast });
 
-      var feedStorage = NSubstitute.Substitute.For<IFeedStorage>();
+      var feeds = new[] { feed };
 
-      var downloadManager = DownloadManager.Create(null, 1, null);
-      //var feedScanner = new FeedScanner(null, )
-      //var scanningWindow = new ScanningWindow(1u, )
+      var feedStorage = Substitute.For<IFeedStorage>();
+      feedStorage.Feeds.Returns(feeds);
+      var feedCollection = new FeedCollection(feedStorage);
+
+      var fileLogger = new FileLogger();
+      var guiLogger = new UILogger();
+      var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
+
+      var logController = new LogController(new Dictionary<String, ILogger>{
+          { MainWindow.InfoKey, fileLogger },
+          { MainWindow.CombinedKey, combinedLogger },
+          { MainWindow.UiKey, guiLogger}});
+
+      var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
+      var feedScanner = new FeedScanner(
+        feedCollection,
+        new Queue<Int32>(new[] { 0 }),
+        null, //Image resolver not required for test
+        null,
+        logController,
+        downloadManager);
+
+      var scanningWindow = new ScanningWindow(1u, feedScanner, downloadManager, false);
+      scanningWindow.Owner = this;
+      scanningWindow.ShowDialog();
+
       // Set new feed file
       // run scan 
     }
