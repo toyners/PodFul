@@ -81,7 +81,8 @@ namespace PodFul.WPF.Windows
 
     private void CancelDownload_Click(Object sender, RoutedEventArgs e)
     {
-      this.feedScanner.CancelDownload((sender as Button).DataContext);
+      var job = (DownloadJob)(sender as Button).DataContext;
+      this.feedScanner.CancelDownload(job);
     }
 
     private void CancelScanning()
@@ -89,7 +90,7 @@ namespace PodFul.WPF.Windows
       this.processingState = ProcessingStates.Cancelling;
       this.CommandButton.Content = "Cancelling";
       this.CommandButton.IsEnabled = false;
-      this.feedScanner.Cancel();
+      this.feedScanner.CancelAll();
     }
 
     private void CommandButtonClick(Object sender, RoutedEventArgs e)

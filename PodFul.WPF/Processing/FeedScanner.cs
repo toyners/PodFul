@@ -58,15 +58,15 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Methods
-    public void Cancel()
+    public void CancelAll()
     {
       this.cancellationTokenSource.Cancel();
       this.downloadManager.CancelAllJobs();
     }
 
-    public void CancelDownload(Object dataContext)
+    public void CancelDownload(DownloadJob job)
     {
-      this.downloadManager.CancelJob(dataContext as DownloadJob);
+      this.downloadManager.CancelJob(job);
     }
 
     public void Process()
