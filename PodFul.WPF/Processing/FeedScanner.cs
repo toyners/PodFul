@@ -204,9 +204,12 @@ namespace PodFul.WPF.Processing
       (tasks) =>
       {
         // Collate the file delivery status
-        foreach (var deliveryLine in this.fileDeliveryLogger)
+        if (this.fileDeliveryLogger != null)
         {
-          scanReport.Message(deliveryLine + "\r\n");
+          foreach (var deliveryLine in this.fileDeliveryLogger)
+          {
+            scanReport.Message(deliveryLine + "\r\n");
+          }
         }
 
         if (tasks[0].IsCanceled || tasks[1].IsCanceled)
