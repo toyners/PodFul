@@ -203,9 +203,9 @@ namespace PodFul.WPF.Processing
       var completionTask = Task.Factory.ContinueWhenAll(new[] { scanningTask, downloadingTask },
       (tasks) =>
       {
-        // Collate the file delivery status
         if (this.fileDeliveryLogger != null)
         {
+          // Display the file delivery status messages
           foreach (var deliveryLine in this.fileDeliveryLogger)
           {
             scanReport.Message(deliveryLine + "\r\n");
