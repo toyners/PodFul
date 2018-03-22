@@ -127,8 +127,15 @@ namespace PodFul.WPF.Processing
     public void CancelJob(DownloadJob job)
     {
       job.VerifyThatObjectIsNotNull("Parameter 'job' is null.");
+
+      var jobNotStarted = (job.Status == DownloadJob.StatusTypes.Waiting);
+
       job.CancelDownload();
-      this.JobFinishedEvent?.Invoke(job);
+
+      if (jobNotStarted)
+      {
+        this.JobFinishedEvent?.Invoke(job);
+      }
     }
 
     /// <summary>
