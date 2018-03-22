@@ -101,20 +101,30 @@ namespace PodFul.WPF.Testbed
 
     private void ConfirmDownloadLimitTest_Click(Object sender, RoutedEventArgs e)
     {
-      // Set old feed file
-
+      // Set up both feeds to have two new podcasts found during scanning
       var outputDirectory = Directory.GetCurrentDirectory();
       var testDirectoryName = "Test Directory";
-      var testDirectoryPath = Path.Combine(outputDirectory, testDirectoryName);
-      var testURL = Path.Combine(outputDirectory, "One Podcast.rss");
-      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath);
-      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", testDirectoryPath, testURL,
+      var testDirectoryPath1 = Path.Combine(outputDirectory, testDirectoryName + " 1");
+      var testURL1 = Path.Combine(outputDirectory, "Feed 1.rss");
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath1);
+      var feed1 = this.CreateTestFeed("Test Feed 1", "Description for Test Feed 1", "Test Website 1", testDirectoryPath1, testURL1,
         null, DateTime.MinValue, 
         new Podcast[0]);
 
-      feed = Feed.SetConfirmDownloadThreshold(2, feed);
+      // First feed has a download confirm threshold of 2 so the download confirmation window will be displayed.
+      feed1 = Feed.SetConfirmDownloadThreshold(2, feed1);
 
-      var feeds = new[] { feed };
+      var testDirectoryPath2 = Path.Combine(outputDirectory, testDirectoryName + " 2");
+      var testURL2 = Path.Combine(outputDirectory, "Feed 2.rss");
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath2);
+      var feed2 = this.CreateTestFeed("Test Feed 2", "Description for Test Feed 2", "Test Website 2", testDirectoryPath2, testURL2,
+        null, DateTime.MinValue,
+        new Podcast[0]);
+
+      // Second feed has a download confirmation of 3 so download confirmation window will NOT be displayed.
+      feed2 = Feed.SetConfirmDownloadThreshold(3, feed2);
+
+      var feeds = new[] { feed1, feed2 };
 
       var feedStorage = Substitute.For<IFeedStorage>();
       feedStorage.Feeds.Returns(feeds);
@@ -132,18 +142,18 @@ namespace PodFul.WPF.Testbed
       var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
       var feedScanner = new FeedScanner(
         feedCollection,
-        new Queue<Int32>(new[] { 0 }),
-        null, //Image resolver not required for test
-        null,
+        new Queue<Int32>(new[] { 0, 1 }),
+        null, // Image resolver not required for test
+        null, // File delivery logger not required for test
         logController,
         downloadManager);
 
-      var scanningWindow = new ScanningWindow(1u, feedScanner, downloadManager, false);
+      var scanningWindow = new ScanningWindow((UInt32)feeds.Length, feedScanner, downloadManager, false);
+
+      guiLogger.PostMessage = scanningWindow.PostMessage;
+
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
-
-      // Set new feed file
-      // run scan 
     }
   }
 }

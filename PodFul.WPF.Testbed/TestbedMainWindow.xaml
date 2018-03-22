@@ -36,7 +36,14 @@
       <TextBlock FontSize="11">Retry Window</TextBlock>
     </Button>
 
-    <Button Margin="10" Grid.Column="3" Click="ConfirmDownloadLimitTest_Click" ToolTip="Tests that the feed stipulated confirm download limit works.">
+    <Button Margin="10" Grid.Column="3" Click="ConfirmDownloadLimitTest_Click" >
+      <Button.ToolTip>
+        <StackPanel>
+          <TextBlock>Two feeds are scanned. Both have two new podcasts.</TextBlock>
+          <TextBlock>First feed has a CDL of 2 so confirmation dialog will be opened.</TextBlock>
+          <TextBlock>Second feed has a CDL of 3 so confirmation dialog will NOT be opened.</TextBlock>
+        </StackPanel>
+      </Button.ToolTip>
       <TextBlock FontSize="11" TextWrapping="Wrap">Confirm Download Limit Test</TextBlock>
     </Button>
   </Grid>

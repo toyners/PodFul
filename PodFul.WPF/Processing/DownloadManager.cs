@@ -43,17 +43,6 @@ namespace PodFul.WPF.Processing
       if (!treatJobsWithMissingFileNamesAsFailed)
       {
         downloadManager.JobNeedsLocationEvent = jobNeedsLocationEventHandler;
-        /*downloadManager.JobNeedsLocationEvent += job =>
-        {
-          var openFileDialog = new OpenFileDialog();
-          var continueDownload = openFileDialog.ShowDialog(this).GetValueOrDefault();
-          if (continueDownload)
-          {
-            job.SetFilePath(openFileDialog.SafeFileName);
-          }
-
-          return continueDownload;
-        };*/
       }
 
       return downloadManager;
