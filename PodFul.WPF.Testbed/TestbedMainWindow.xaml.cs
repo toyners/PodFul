@@ -155,5 +155,49 @@ namespace PodFul.WPF.Testbed
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
     }
+
+    private void RetryTest_Click(Object sender, RoutedEventArgs e)
+    {
+      // Set up both feeds to have two new podcasts found during scanning
+      var outputDirectory = Directory.GetCurrentDirectory();
+      var testDirectoryName = "Test Directory";
+      var testDirectoryPath1 = Path.Combine(outputDirectory, testDirectoryName + " 1");
+      var testURL1 = Path.Combine(outputDirectory, "Feed with Bad URLs.rss");
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath1);
+      var feed1 = this.CreateTestFeed("Test Feed 1", "Description for Test Feed 1", "Test Website 1", testDirectoryPath1, testURL1,
+        null, DateTime.MinValue,
+        new Podcast[0]);
+
+      var feeds = new[] { feed1 };
+
+      var feedStorage = Substitute.For<IFeedStorage>();
+      feedStorage.Feeds.Returns(feeds);
+      var feedCollection = new FeedCollection(feedStorage);
+
+      var fileLogger = new FileLogger();
+      var guiLogger = new UILogger();
+      var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
+
+      var logController = new LogController(new Dictionary<String, ILogger>{
+          { MainWindow.InfoKey, fileLogger },
+          { MainWindow.CombinedKey, combinedLogger },
+          { MainWindow.UiKey, guiLogger}});
+
+      var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
+      var feedScanner = new FeedScanner(
+        feedCollection,
+        new Queue<Int32>(new[] { 0 }),
+        null, // Image resolver not required for test
+        null, // File delivery logger not required for test
+        logController,
+        downloadManager);
+
+      var scanningWindow = new ScanningWindow((UInt32)feeds.Length, feedScanner, downloadManager, false);
+
+      guiLogger.PostMessage = scanningWindow.PostMessage;
+
+      scanningWindow.Owner = this;
+      scanningWindow.ShowDialog();
+    }
   }
 }

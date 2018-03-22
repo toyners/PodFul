@@ -103,6 +103,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Feed with Bad URLs.rss">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Feed 2.rss">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
