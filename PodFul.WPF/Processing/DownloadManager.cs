@@ -112,17 +112,14 @@ namespace PodFul.WPF.Processing
           Thread.Sleep(50);
           continue;
         }
-
-        job.DownloadCanceled();
-        this.JobFinishedEvent?.Invoke(job);
       }
 
       // Cancel any running jobs
       foreach (var job in this.Jobs)
       {
-        if (job.Status == DownloadJob.StatusTypes.Running)
+        if (job.Status == DownloadJob.StatusTypes.Waiting || job.Status == DownloadJob.StatusTypes.Running)
         {
-          job.CancelDownload();
+          this.CancelJob(job);
         }
       }
     }
@@ -131,6 +128,7 @@ namespace PodFul.WPF.Processing
     {
       job.VerifyThatObjectIsNotNull("Parameter 'job' is null.");
       job.CancelDownload();
+      this.JobFinishedEvent?.Invoke(job);
     }
 
     /// <summary>
