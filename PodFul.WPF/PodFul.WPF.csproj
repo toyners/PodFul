@@ -73,13 +73,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logging\IFileDeliveryLogger.cs" />
     <Compile Include="Miscellaneous\PodcastProperties.cs" />
     <Compile Include="Logging\CombinedLogger.cs" />
     <Compile Include="Logging\MessageBuilder.cs" />
     <Compile Include="Logging\ExceptionLogger.cs" />
     <Compile Include="Logging\LogController.cs" />
     <Compile Include="Logging\ILogController.cs" />
-    <Compile Include="Logging\MessagePool.cs" />
+    <Compile Include="Logging\FileDeliveryLogger.cs" />
     <Compile Include="Miscellaneous\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\IFeedCollection.cs" />

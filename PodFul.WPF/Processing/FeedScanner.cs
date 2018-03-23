@@ -24,7 +24,7 @@ namespace PodFul.WPF.Processing
     private IDownloadFunctionality downloadManager;
     private IFeedCollection feedCollection;
     private Queue<Int32> feedIndexes;
-    private MessagePool fileDeliveryLogger;
+    private IFileDeliveryLogger fileDeliveryLogger;
     private IImageResolver imageResolver;
     private ILogController logController;
     #endregion
@@ -34,7 +34,7 @@ namespace PodFul.WPF.Processing
       IFeedCollection feedCollection,
       Queue<Int32> feedIndexes,
       IImageResolver imageResolver,
-      MessagePool fileDeliveryLogger,
+      IFileDeliveryLogger fileDeliveryLogger,
       ILogController logController,
       IDownloadFunctionality downloadManager)
     {

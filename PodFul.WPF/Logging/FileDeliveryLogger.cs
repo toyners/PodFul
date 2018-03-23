@@ -5,7 +5,7 @@ namespace PodFul.WPF.Logging
   using System.Collections;
   using System.Collections.Generic;
 
-  public class MessagePool : ILogger, IEnumerator, IEnumerable
+  public class FileDeliveryLogger : IFileDeliveryLogger
   {
     #region Fields
     private List<String> messages = new List<String>();

@@ -34,7 +34,7 @@ namespace PodFul.WPF.Windows
     private FeedCollection feedCollection;
     private Feed currentFeed;
     private LogController logController;
-    private MessagePool fileDeliveryLogger;
+    private IFileDeliveryLogger fileDeliveryLogger;
     private Settings settings;
     private String defaultImagePath;
     private String imageDirectory;
@@ -49,7 +49,7 @@ namespace PodFul.WPF.Windows
         var fileLogger = new FileLogger();
         var guiLogger = new UILogger();
         var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
-        this.fileDeliveryLogger = new MessagePool();
+        this.fileDeliveryLogger = new FileDeliveryLogger();
         exceptionLogger = new FileLogger();
 
         this.logController = new LogController(new Dictionary<String, ILogger>{
