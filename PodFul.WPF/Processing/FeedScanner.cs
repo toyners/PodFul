@@ -58,6 +58,13 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Methods
+    public static FeedScanner Create(FeedCollection feedCollection, Queue<Int32> feedIndexes, IImageResolver imageResolver, IFileDeliveryLogger fileDeliveryLogger, ILogController logController, IDownloadManager downloadManager)
+    {
+      fileDeliveryLogger.Clear();
+      var feedScanner = new FeedScanner(feedCollection, feedIndexes, imageResolver, fileDeliveryLogger, logController, downloadManager);
+      return feedScanner;
+    }
+
     public void CancelAll()
     {
       this.cancellationTokenSource.Cancel();

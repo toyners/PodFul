@@ -384,8 +384,8 @@ namespace PodFul.WPF.Windows
       var downloadManager = DownloadManager.Create(combinedLogger, this.settings.ConcurrentDownloadCount, null, fileDeliverer);
 
       IImageResolver imageResolver = this.CreateImageResolver();
-      this.fileDeliveryLogger.Clear();
-      var feedScanner = new FeedScanner(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, downloadManager);
+      var feedScanner = FeedScanner.Create(this.feedCollection, feedIndexes, imageResolver, this.fileDeliveryLogger, this.logController, downloadManager);
+
       var scanningWindow = new ScanningWindow((UInt32)feedIndexes.Count, 
         feedScanner, 
         downloadManager, 
@@ -397,28 +397,32 @@ namespace PodFul.WPF.Windows
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
 
-      if (downloadManager.FailedJobs.Count > 0)
+      if (downloadManager.FailedJobs.Count == 0)
       {
-        var retryWindow = new RetryWindow(downloadManager.FailedJobs);
-        var dialogResult = retryWindow.DialogResult;
-        if (dialogResult.GetValueOrDefault())
-        {
-          var jobNeedsLocationEventHandler = this.CreateJobNeedsLocationEventHandler();
-          var retryManager = DownloadManager.Create(combinedLogger, this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
-          var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, this.settings.HideCompletedJobs);
-
-          var retryJobs = new List<DownloadJob>(retryWindow.RetryJobIndexes.Count);          
-          foreach (var index in retryWindow.RetryJobIndexes)
-          {
-            retryJobs.Add(downloadManager.FailedJobs[index]);
-          }
-
-          retryManager.AddJobs(retryJobs);
-
-          podcastDownloadWindow.Owner = this;
-          podcastDownloadWindow.ShowDialog();
-        }
+        return;
       }
+
+      var retryWindow = new RetryWindow(downloadManager.FailedJobs);
+      var dialogResult = retryWindow.DialogResult;
+      if (!dialogResult.GetValueOrDefault())
+      {
+        return;
+      }
+
+      var jobNeedsLocationEventHandler = this.CreateJobNeedsLocationEventHandler();
+      var retryManager = DownloadManager.Create(combinedLogger, this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
+      var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, this.settings.HideCompletedJobs);
+
+      var retryJobs = new List<DownloadJob>(retryWindow.RetryJobIndexes.Count);          
+      foreach (var index in retryWindow.RetryJobIndexes)
+      {
+        retryJobs.Add(downloadManager.FailedJobs[index]);
+      }
+
+      retryManager.AddJobs(retryJobs);
+
+      podcastDownloadWindow.Owner = this;
+      podcastDownloadWindow.ShowDialog();
     }
 
     private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)
