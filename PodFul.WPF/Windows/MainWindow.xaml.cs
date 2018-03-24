@@ -271,23 +271,22 @@ namespace PodFul.WPF.Windows
       var selectedIndexes = this.GetSelectedPodcasts(out deliverManualDownloadsToDeliveryPoints);
       if (selectedIndexes != null && selectedIndexes.Count > 0)
       {
-        this.DownloadPodcasts(selectedIndexes, deliverManualDownloadsToDeliveryPoints);
+        // Sort the indexes into descending order. Podcasts will be downloaded
+        // in Chronological order.
+        selectedIndexes.Sort((x, y) => { return y - x; });
+        var jobs = this.CreateSelectedDownloadJobsFromCurrentFeed(selectedIndexes);
+        this.DownloadPodcasts(jobs, deliverManualDownloadsToDeliveryPoints);
       }
     }
 
-    private void DownloadPodcasts(List<Int32> selectedIndexes, Boolean deliverManualDownloadsToDeliveryPoints)
+    private void DownloadPodcasts(IEnumerable<DownloadJob> jobs, Boolean deliverManualDownloadsToDeliveryPoints)
     {
-      // Sort the indexes into descending order. Podcasts will be downloaded
-      // in Chronological order.
-      selectedIndexes.Sort((x, y) => { return y - x; });
-
       var fileDeliverer = (deliverManualDownloadsToDeliveryPoints ? this.CreateFileDeliverer() : null);
       var jobNeedsLocationEventHandler = this.CreateJobNeedsLocationEventHandler();
       var downloadManager = DownloadManager.Create(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, this.settings.HideCompletedJobs);
 
       // Add the jobs after creating the window so that job queued event will fire.
-      var jobs = this.CreateDownloadJobs(selectedIndexes);
       downloadManager.AddJobs(jobs);
 
       podcastDownloadWindow.Owner = this;
@@ -329,7 +328,7 @@ namespace PodFul.WPF.Windows
       return imageResolver;
     }
 
-    private IEnumerable<DownloadJob> CreateDownloadJobs(List<Int32> podcastIndexes)
+    private IEnumerable<DownloadJob> CreateSelectedDownloadJobsFromCurrentFeed(List<Int32> podcastIndexes)
     {
       List<DownloadJob> jobs = new List<DownloadJob>();
       IImageResolver imageResolver = this.CreateImageResolver();
@@ -377,6 +376,17 @@ namespace PodFul.WPF.Windows
       e.Handled = true;
     }
 
+    private IEnumerable<DownloadJob> GetSelectedRetryJobsFromFailedJobs(List<Int32> indexes, IList<DownloadJob> failedJobs)
+    {
+      var retryJobs = new List<DownloadJob>(indexes.Count);
+      foreach (var index in indexes)
+      {
+        retryJobs.Add(failedJobs[index]);
+      }
+
+      return retryJobs;
+    }
+
     private void PerformScan(Queue<Int32> feedIndexes)
     {
       var fileDeliverer = this.CreateFileDeliverer();
@@ -409,20 +419,9 @@ namespace PodFul.WPF.Windows
         return;
       }
 
-      var jobNeedsLocationEventHandler = this.CreateJobNeedsLocationEventHandler();
-      var retryManager = DownloadManager.Create(combinedLogger, this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
-      var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, this.settings.HideCompletedJobs);
+      var retryJobs = this.GetSelectedRetryJobsFromFailedJobs(retryWindow.RetryJobIndexes, downloadManager.FailedJobs);
 
-      var retryJobs = new List<DownloadJob>(retryWindow.RetryJobIndexes.Count);          
-      foreach (var index in retryWindow.RetryJobIndexes)
-      {
-        retryJobs.Add(downloadManager.FailedJobs[index]);
-      }
-
-      retryManager.AddJobs(retryJobs);
-
-      podcastDownloadWindow.Owner = this;
-      podcastDownloadWindow.ShowDialog();
+      this.DownloadPodcasts(retryJobs, true);
     }
 
     private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)
