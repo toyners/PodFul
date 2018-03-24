@@ -199,5 +199,10 @@ namespace PodFul.WPF.Testbed
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
     }
+
+    private void ManualDownloadTest_Click(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
