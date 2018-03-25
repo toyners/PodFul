@@ -289,7 +289,6 @@ namespace PodFul.WPF.Processing
         if (task.IsFaulted)
         {
           this.ProcessException(task.Exception, job);
-          this.FailedJobs.Add(job);
         }
         else if (task.IsCanceled)
         {

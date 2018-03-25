@@ -198,6 +198,25 @@ namespace PodFul.WPF.Testbed
 
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
+
+      var retryWindow = new RetryWindow(downloadManager.FailedJobs);
+      retryWindow.ShowDialog();
+      if (!retryWindow.DialogResult.GetValueOrDefault())
+      {
+        return;
+      }
+
+      var retryJobs = JobFilter.FilterJobsByIndex(downloadManager.FailedJobs, retryWindow.RetryJobIndexes);
+
+      var jobNeedsLocationEventHandler = JobNeedsLocationEventHandlerFactory.CreateJobNeedsLocationEventHandler(null);
+      var retryManager = DownloadManager.Create(logController.GetLogger(MainWindow.CombinedKey), 1, jobNeedsLocationEventHandler, null);
+      var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, false);
+
+      // Add the jobs after creating the window so that job queued event will fire.
+      retryManager.AddJobs(retryJobs);
+
+      podcastDownloadWindow.Owner = this;
+      podcastDownloadWindow.ShowDialog();
     }
 
     private void ManualDownloadTest_Click(Object sender, RoutedEventArgs e)

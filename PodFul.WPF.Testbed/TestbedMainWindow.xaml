@@ -49,6 +49,8 @@
 
     <Button Margin="10" Grid.Row="1" Click="RetryTest_Click">Retry Test</Button>
     
-    <Button Margin="10" Grid.Column="1" Grid.Row="1" Click="ManualDownloadTest_Click">Manual Download Test</Button>
+    <Button Margin="10" Grid.Column="1" Grid.Row="1" Click="ManualDownloadTest_Click">
+      <TextBlock TextWrapping="Wrap">Manual Download Test</TextBlock>
+    </Button>
   </Grid>
 </Window>

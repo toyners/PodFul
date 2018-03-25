@@ -41,7 +41,7 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-          <Button Style="{StaticResource StandardButton}" Width="70" Click="CancelClick" Content="Cancel" ToolTipService.ShowOnDisabled="True">
+          <Button Style="{StaticResource StandardButton}" Width="70" Click="CancelClick" Content="Cancel" IsCancel="True" ToolTipService.ShowOnDisabled="True">
             <Button.ToolTip>
               <ToolTip>
                 <StackPanel>

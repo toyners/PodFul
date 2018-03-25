@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -102,9 +103,12 @@ namespace PodFul.WPF.Windows
       this.selectedCount = 0;
     }
 
-    private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
+    private void WindowClosing(Object sender, CancelEventArgs e)
     {
-      this.Cancel();
+      if (this.DialogResult == null)
+      {
+        this.Cancel();
+      }
     }
 
     private void WindowLoaded(Object sender, RoutedEventArgs e)

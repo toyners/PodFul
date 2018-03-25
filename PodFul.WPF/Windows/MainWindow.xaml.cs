@@ -282,7 +282,7 @@ namespace PodFul.WPF.Windows
     private void DownloadPodcasts(IEnumerable<DownloadJob> jobs, Boolean deliverManualDownloadsToDeliveryPoints)
     {
       var fileDeliverer = (deliverManualDownloadsToDeliveryPoints ? this.CreateFileDeliverer() : null);
-      var jobNeedsLocationEventHandler = this.CreateJobNeedsLocationEventHandler();
+      var jobNeedsLocationEventHandler = JobNeedsLocationEventHandlerFactory.CreateJobNeedsLocationEventHandler(null);
       var downloadManager = DownloadManager.Create(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, this.settings.HideCompletedJobs);
 
@@ -291,23 +291,6 @@ namespace PodFul.WPF.Windows
 
       podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();
-    }
-
-    private Func<DownloadJob, Boolean> CreateJobNeedsLocationEventHandler()
-    {
-      Func<DownloadJob, Boolean> jobNeedsLocationEventHandler = job =>
-      {
-        var openFileDialog = new OpenFileDialog();
-        var continueDownload = openFileDialog.ShowDialog(this).GetValueOrDefault();
-        if (continueDownload)
-        {
-          job.SetFilePath(openFileDialog.SafeFileName);
-        }
-
-        return continueDownload;
-      };
-
-      return jobNeedsLocationEventHandler;
     }
 
     private IImageResolver CreateImageResolver()
@@ -376,17 +359,6 @@ namespace PodFul.WPF.Windows
       e.Handled = true;
     }
 
-    private IEnumerable<DownloadJob> GetSelectedRetryJobsFromFailedJobs(List<Int32> indexes, IList<DownloadJob> failedJobs)
-    {
-      var retryJobs = new List<DownloadJob>(indexes.Count);
-      foreach (var index in indexes)
-      {
-        retryJobs.Add(failedJobs[index]);
-      }
-
-      return retryJobs;
-    }
-
     private void PerformScan(Queue<Int32> feedIndexes)
     {
       var fileDeliverer = this.CreateFileDeliverer();
@@ -413,13 +385,13 @@ namespace PodFul.WPF.Windows
       }
 
       var retryWindow = new RetryWindow(downloadManager.FailedJobs);
-      var dialogResult = retryWindow.DialogResult;
+      var dialogResult = retryWindow.ShowDialog();
       if (!dialogResult.GetValueOrDefault())
       {
         return;
       }
 
-      var retryJobs = this.GetSelectedRetryJobsFromFailedJobs(retryWindow.RetryJobIndexes, downloadManager.FailedJobs);
+      var retryJobs = JobFilter.FilterJobsByIndex(downloadManager.FailedJobs, retryWindow.RetryJobIndexes);
 
       this.DownloadPodcasts(retryJobs, true);
     }
