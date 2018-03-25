@@ -22,21 +22,21 @@
       <RowDefinition />
     </Grid.RowDefinitions>
     
-    <Button Margin="10" Click="DownloadConfirmationWindow_Click" ToolTip="Displays Download Confirmation Window with current vs new test feeds.">
+    <Button Margin="5" Click="DownloadConfirmationWindow_Click" ToolTip="Displays Download Confirmation Window with current vs new test feeds.">
       <StackPanel>
         <TextBlock FontSize="11" TextWrapping="Wrap" >Download Confirmation Window</TextBlock>
       </StackPanel>
     </Button>
     
-    <Button Margin="10" Grid.Column="1" Click="FeedPropertiesWindow_Click" ToolTip="Displays the Feed Properties window.">
+    <Button Margin="5" Grid.Column="1" Click="FeedPropertiesWindow_Click" ToolTip="Displays the Feed Properties window.">
       <TextBlock FontSize="11" TextWrapping="Wrap">Feed Properties Window</TextBlock>
     </Button>
     
-    <Button Margin="10" Grid.Column="2" Click="RetryWindow_Click" ToolTip="Displays the Retry Window with three test podcasts.">
+    <Button Margin="5" Grid.Column="2" Click="RetryWindow_Click" ToolTip="Displays the Retry Window with three test podcasts.">
       <TextBlock FontSize="11">Retry Window</TextBlock>
     </Button>
 
-    <Button Margin="10" Grid.Column="3" Click="ConfirmDownloadLimitTest_Click" >
+    <Button Margin="5" Grid.Column="3" Click="ConfirmDownloadLimitTest_Click" >
       <Button.ToolTip>
         <StackPanel>
           <TextBlock>Two feeds are scanned. Both have two new podcasts.</TextBlock>
@@ -47,10 +47,13 @@
       <TextBlock FontSize="11" TextWrapping="Wrap">Confirm Download Limit Test</TextBlock>
     </Button>
 
-    <Button Margin="10" Grid.Row="1" Click="RetryTest_Click">Retry Test</Button>
+    <Button Margin="5" Grid.Row="1" Click="RetryTest_Click">Retry Test</Button>
     
-    <Button Margin="10" Grid.Column="1" Grid.Row="1" Click="ManualDownloadTest_Click">
-      <TextBlock TextWrapping="Wrap">Manual Download Test</TextBlock>
+    <Button Margin="5" Grid.Column="1" Grid.Row="1" Click="ManualDownloadWithFailingJob_Click">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap">BUG 50</TextBlock>
+        <TextBlock TextWrapping="Wrap">Manual Download with Failing Job</TextBlock>
+      </StackPanel>
     </Button>
   </Grid>
 </Window>

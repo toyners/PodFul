@@ -13,7 +13,6 @@ namespace PodFul.WPF.Windows
   using Jabberwocky.Toolkit.IO;
   using Jabberwocky.Toolkit.Path;
   using Logging;
-  using Microsoft.Win32;
   using Miscellaneous;
   using PodFul.FileDelivery;
   using PodFul.Library;
@@ -391,7 +390,7 @@ namespace PodFul.WPF.Windows
         return;
       }
 
-      var retryJobs = JobFilter.FilterJobsByIndex(downloadManager.FailedJobs, retryWindow.RetryJobIndexes);
+      var retryJobs = JobCollectionFactory.FilterJobsByIndex(downloadManager.FailedJobs, retryWindow.RetryJobIndexes);
 
       this.DownloadPodcasts(retryJobs, true);
     }

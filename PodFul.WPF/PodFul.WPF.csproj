@@ -74,7 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logging\IFileDeliveryLogger.cs" />
-    <Compile Include="Miscellaneous\JobFilter.cs" />
+    <Compile Include="Miscellaneous\JobCollectionFactory.cs" />
     <Compile Include="Miscellaneous\JobNeedsLocationEventHandlerFactory.cs" />
     <Compile Include="Miscellaneous\PodcastProperties.cs" />
     <Compile Include="Logging\CombinedLogger.cs" />
