@@ -20,14 +20,12 @@ namespace PodFul.WPF.Processing
     private Int32 currentDownloads;
     private ILogger logger;
     private ConcurrentQueue<DownloadJob> waitingJobs;
-    private Boolean treatJobsWithMissingFileNamesAsFailed;
     #endregion
 
     #region Construction
     public static IDownloadManager Create(ILogger combinedLogger, UInt32 concurrentDownloadCount, Func<DownloadJob, Boolean> jobNeedsLocationEventHandler, IFileDeliverer fileDeliverer = null)
     {
-      Boolean treatJobsWithMissingFileNamesAsFailed = (jobNeedsLocationEventHandler == null);
-      var downloadManager = new DownloadManager(combinedLogger, concurrentDownloadCount, treatJobsWithMissingFileNamesAsFailed);
+      var downloadManager = new DownloadManager(combinedLogger, concurrentDownloadCount);
 
       if (fileDeliverer != null)
       {
@@ -40,15 +38,12 @@ namespace PodFul.WPF.Processing
         };
       }
 
-      if (!treatJobsWithMissingFileNamesAsFailed)
-      {
-        downloadManager.JobNeedsLocationEvent = jobNeedsLocationEventHandler;
-      }
-
+      downloadManager.JobNeedsLocationEvent = jobNeedsLocationEventHandler;
+      
       return downloadManager;
     } 
 
-    public DownloadManager(ILogger logger, UInt32 concurrentDownloads, Boolean treatJobsWithMissingFileNamesAsFailed)
+    public DownloadManager(ILogger logger, UInt32 concurrentDownloads)
     {
       logger.VerifyThatObjectIsNotNull("Parameter 'exceptionLogger' is null.");
       this.logger = logger;
@@ -57,8 +52,6 @@ namespace PodFul.WPF.Processing
       this.waitingJobs = new ConcurrentQueue<DownloadJob>();
 
       this.Jobs = new ObservableCollection<DownloadJob>();
-
-      this.treatJobsWithMissingFileNamesAsFailed = treatJobsWithMissingFileNamesAsFailed;
     }
     #endregion
 
@@ -225,19 +218,19 @@ namespace PodFul.WPF.Processing
         return;
       }
 
-      if (job.Status == DownloadJob.StatusTypes.NoLocation)
+      if (String.IsNullOrEmpty(job.FilePath))
       {
-        if (this.treatJobsWithMissingFileNamesAsFailed)
-        {
-          job.Status = DownloadJob.StatusTypes.Failed;
-        }
-        else if (this.JobNeedsLocationEvent != null)
+        if (this.JobNeedsLocationEvent != null)
         {
           Application.Current.Dispatcher.Invoke(() =>
           {
             var continueDownload = this.JobNeedsLocationEvent.Invoke(job);
             job.Status = (continueDownload ? DownloadJob.StatusTypes.Waiting : DownloadJob.StatusTypes.Cancelled);
           });
+        }
+        else
+        {
+          job.Status = DownloadJob.StatusTypes.Failed;
         }
       }
 

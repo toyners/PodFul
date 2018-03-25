@@ -19,7 +19,7 @@ namespace PodFul.WPF.Miscellaneous
       return filteredJobs;
     }
 
-    public static IList<DownloadJob> CreateJobsFromSelectedIndexesOfFeed(Feed feed, List<Int32> indexes, IFeedCollection feedCollection, IImageResolver imageResolver)
+    public static IList<DownloadJob> CreateJobsFromSelectedIndexesOfFeed(Feed feed, IEnumerable<Int32> indexes, IFeedCollection feedCollection, IImageResolver imageResolver)
     {
       List<DownloadJob> jobs = new List<DownloadJob>();
       foreach (var index in indexes)

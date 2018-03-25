@@ -318,7 +318,7 @@ namespace PodFul.WPF.Testbed
       var successfulPodcast = this.CreateTestPodcast(
         "Good Podcast",
         @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3",
-        Path.Combine(testDirectoryPath, "Podcas.mp3"));
+        Path.Combine(testDirectoryPath, "Podcast.mp3"));
       var successfulJob = new DownloadJob(successfulPodcast, feed, feedCollection);
       var retryJobs = new[] { successfulJob };
 
@@ -327,6 +327,41 @@ namespace PodFul.WPF.Testbed
 
       // Add the jobs after creating the window so that job queued event will fire.
       retryManager.AddJobs(retryJobs);
+
+      podcastDownloadWindow.Owner = this;
+      podcastDownloadWindow.ShowDialog();
+    }
+
+    private void ManualDownloadJobWithNoFilenameTest_Click(Object sender, RoutedEventArgs e)
+    {
+      // Set up feed to have two new podcasts found during scanning. One will fail with a bad url.
+      var outputDirectory = Directory.GetCurrentDirectory();
+      var testDirectoryName = "Test Directory";
+      var testDirectoryPath = Path.Combine(outputDirectory, testDirectoryName);
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath);
+
+      var podcast = this.CreateTestPodcast(
+        "Good Podcast",
+        @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3",
+        String.Empty);
+      var feed = this.CreateTestFeed("Test Feed", new[] { podcast });
+
+      var feeds = new[] { feed };
+
+      var feedStorage = Substitute.For<IFeedStorage>();
+      feedStorage.Feeds.Returns(feeds);
+      var feedCollection = new FeedCollection(feedStorage);
+
+      var combinedLogger = new CombinedLogger(new FileLogger(), new UILogger());
+
+      var jobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(feed, new[] { 0 }, feedCollection, null);
+
+      var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
+
+      var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, false);
+
+      // Add the jobs after creating the window so that job queued event will fire.
+      downloadManager.AddJobs(jobs);
 
       podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();

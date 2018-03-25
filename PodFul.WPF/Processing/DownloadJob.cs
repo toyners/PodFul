@@ -19,8 +19,7 @@ namespace PodFul.WPF.Processing
       Completed,
       Failed,
       Running,
-      Waiting,
-      NoLocation
+      Waiting
     }
 
     #region Fields
