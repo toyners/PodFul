@@ -208,7 +208,8 @@ namespace PodFul.WPF.Processing
 
     private void StartDownload()
     {
-      if (this.waitingJobs.IsEmpty)
+      DownloadJob job = this.GetNextJobToProcess();
+      if (job == null)
       {
         // No more podcasts queued so do not start another download.
         if (this.currentDownloads == 0)
@@ -217,13 +218,6 @@ namespace PodFul.WPF.Processing
           this.AllJobsFinishedEvent?.Invoke();
         }
 
-        return;
-      }
-
-      DownloadJob job = this.GetNextJobToProcess();
-      if (job == null)
-      {
-        // Waiting queue is empty.
         return;
       }
 
@@ -249,6 +243,12 @@ namespace PodFul.WPF.Processing
         if (job.Status == DownloadJob.StatusTypes.Failed)
         {
           this.AddJobToFailedJobsList(job);
+        }
+
+        if (this.currentDownloads == 0)
+        {
+          // All current downloads have finished so nothing more to do.
+          this.AllJobsFinishedEvent?.Invoke();
         }
 
         return;
