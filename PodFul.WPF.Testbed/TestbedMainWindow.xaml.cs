@@ -356,7 +356,9 @@ namespace PodFul.WPF.Testbed
 
       var jobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(feed, new[] { 0 }, feedCollection, null);
 
-      var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
+      var jobNeedsLocationEventHandler = JobNeedsLocationEventHandlerFactory.CreateJobNeedsLocationEventHandler(null);
+
+      var downloadManager = DownloadManager.Create(combinedLogger, 1, jobNeedsLocationEventHandler);
 
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, false);
 

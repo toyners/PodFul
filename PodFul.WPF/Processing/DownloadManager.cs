@@ -225,7 +225,15 @@ namespace PodFul.WPF.Processing
           Application.Current.Dispatcher.Invoke(() =>
           {
             var continueDownload = this.JobNeedsLocationEvent.Invoke(job);
-            job.Status = (continueDownload ? DownloadJob.StatusTypes.Waiting : DownloadJob.StatusTypes.Cancelled);
+            if (continueDownload)
+            {
+              job.Status = DownloadJob.StatusTypes.Waiting;
+            }
+            else
+            {
+              job.Status = DownloadJob.StatusTypes.Cancelled;
+              job.ExceptionMessage = String.Empty;
+            }
           });
         }
         else
