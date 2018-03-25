@@ -47,12 +47,27 @@
       <TextBlock FontSize="11" TextWrapping="Wrap">Confirm Download Limit Test</TextBlock>
     </Button>
 
-    <Button Margin="5" Grid.Row="1" Click="RetryTest_Click">Retry Test</Button>
-    
-    <Button Margin="5" Grid.Column="1" Grid.Row="1" Click="ManualDownloadWithFailingJob_Click">
+    <Button Margin="5" Grid.Row="1" Click="RetryTestWithSuccessfulRetry_Click">
+      <TextBlock TextWrapping="Wrap">Retry Test with Successful Retry</TextBlock>
+    </Button>
+
+    <Button Margin="5" Grid.Row="1" Grid.Column="1" Click="RetryTestWithFailedRetry_Click">
+      <StackPanel>
+        <TextBlock>Retry Test with</TextBlock>
+        <TextBlock>Failed Retry</TextBlock>
+      </StackPanel>
+    </Button>
+
+    <Button Margin="5" Grid.Column="2" Grid.Row="1" Click="ManualDownloadWithFailingJob_Click">
       <StackPanel>
         <TextBlock TextWrapping="Wrap">BUG 50</TextBlock>
         <TextBlock TextWrapping="Wrap">Manual Download with Failing Job</TextBlock>
+      </StackPanel>
+    </Button>
+
+    <Button Margin="5" Grid.Column="3" Grid.Row="1" Click="ManualDownloadJob_Click">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap">Manual Download</TextBlock>
       </StackPanel>
     </Button>
   </Grid>

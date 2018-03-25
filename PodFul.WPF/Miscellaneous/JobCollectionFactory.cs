@@ -8,7 +8,7 @@ namespace PodFul.WPF.Miscellaneous
 
   public static class JobCollectionFactory
   {
-    public static IEnumerable<DownloadJob> FilterJobsByIndex(IList<DownloadJob> jobs, List<Int32> indexes)
+    public static IList<DownloadJob> FilterJobsByIndex(IList<DownloadJob> jobs, List<Int32> indexes)
     {
       var filteredJobs = new List<DownloadJob>(indexes.Count);
       foreach (var index in indexes)
@@ -19,7 +19,7 @@ namespace PodFul.WPF.Miscellaneous
       return filteredJobs;
     }
 
-    public static IEnumerable<DownloadJob> CreateJobsFromSelectedIndexesOfFeed(Feed feed, List<Int32> indexes, IFeedCollection feedCollection, IImageResolver imageResolver)
+    public static IList<DownloadJob> CreateJobsFromSelectedIndexesOfFeed(Feed feed, List<Int32> indexes, IFeedCollection feedCollection, IImageResolver imageResolver)
     {
       List<DownloadJob> jobs = new List<DownloadJob>();
       foreach (var index in indexes)

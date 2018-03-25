@@ -202,6 +202,10 @@ namespace PodFul.WPF.Processing
 
     private void QueueJob(DownloadJob job)
     {
+      // Ensure that the job status and last status are set correctly before processing. 
+      job.Status = DownloadJob.StatusTypes.NotSet;
+      job.Status = DownloadJob.StatusTypes.Waiting;
+
       this.JobQueuedEvent?.Invoke(job);
       this.waitingJobs.Enqueue(job);
     }
