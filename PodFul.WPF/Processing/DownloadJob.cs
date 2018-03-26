@@ -52,17 +52,17 @@ namespace PodFul.WPF.Processing
       this.podcast = podcast;
       this.feed = feed;
       this.feedCollection = feedCollection;
-      var podcastSizeForDescription = String.Empty;
+      var podcastSizeDescription = String.Empty;
       if (podcastSize <= 0)
       {
-        podcastSizeForDescription = "(unknown)";
+        podcastSizeDescription = "(unknown)";
       }
       else
       {
-        podcastSizeForDescription = Miscellaneous.GetReadableFileSize(podcastSize) + "Mb (" + podcastSize.ToString("#,##0") + " bytes)";
+        podcastSizeDescription = Miscellaneous.GetReadableFileSize(podcastSize) + "Mb (" + podcastSize.ToString("#,##0") + " bytes)";
       }
 
-      this.Description = "Feed: " + this.feed.Title + "\r\nSize: " + podcastSizeForDescription;
+      this.Description = "Feed: " + this.feed.Title + "\r\nSize: " + podcastSizeDescription;
 
       if (String.IsNullOrEmpty(podcast.FileDetails.FileName))
       {
@@ -72,7 +72,7 @@ namespace PodFul.WPF.Processing
       }
 
       this.exceptionMessage = String.Empty;
-      this.SetFilePath(podcast.FileDetails.FileName);
+      this.SetFilePath(Path.Combine(this.feed.Directory, podcast.FileDetails.FileName));
       this.status = StatusTypes.Waiting;
     }
 
@@ -159,6 +159,22 @@ namespace PodFul.WPF.Processing
           new PropertyChangedEventArgs("StatusMessage"),
           new PropertyChangedEventArgs("StatusColor"),
           new PropertyChangedEventArgs("StatusWeight"));
+
+        switch (value)
+        {
+          case StatusTypes.Cancelled:
+          {
+            this.CancellationVisibility = Visibility.Hidden;
+            this.ExceptionMessage = String.Empty;
+            break;
+          }
+
+          case StatusTypes.Waiting:
+          {
+            this.ExceptionMessage = String.Empty;
+            break;
+          }
+        }
       }
     }
 
@@ -202,7 +218,6 @@ namespace PodFul.WPF.Processing
         Application.Current.Dispatcher.Invoke(() =>
         {
           this.Status = StatusTypes.Cancelled;
-          this.CancellationVisibility = Visibility.Hidden;
         });
 
         return;
@@ -225,7 +240,6 @@ namespace PodFul.WPF.Processing
       {
         this.ProgressValue = 0;
         this.ProgressMajorSize = this.ProgressMinorSize = this.ProgressUnit = String.Empty;
-        this.CancellationVisibility = Visibility.Hidden;
         this.Status = StatusTypes.Cancelled;
       });
     }
@@ -331,9 +345,9 @@ namespace PodFul.WPF.Processing
       });
     }
 
-    public void SetFilePath(String fileName)
+    public void SetFilePath(String filePath)
     {
-      this.FilePath = Path.Combine(this.feed.Directory, fileName);
+      this.FilePath = filePath;
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)

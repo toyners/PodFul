@@ -12,11 +12,13 @@ namespace PodFul.WPF.Miscellaneous
     {
       Func<DownloadJob, Boolean> jobNeedsLocationEventHandler = job =>
       {
-        var openFileDialog = new OpenFileDialog();
-        var continueDownload = openFileDialog.ShowDialog(owner).GetValueOrDefault();
+        var saveFileDialog = new SaveFileDialog();
+        saveFileDialog.DefaultExt = "mp3";
+        saveFileDialog.Filter = "Audio File (*.mp3)|*.mp3";
+        var continueDownload = saveFileDialog.ShowDialog(owner).GetValueOrDefault();
         if (continueDownload)
         {
-          job.SetFilePath(openFileDialog.SafeFileName);
+          job.SetFilePath(saveFileDialog.FileName);
         }
 
         return continueDownload;

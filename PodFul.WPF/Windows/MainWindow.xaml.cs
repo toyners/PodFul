@@ -273,7 +273,8 @@ namespace PodFul.WPF.Windows
         // Sort the indexes into descending order. Podcasts will be downloaded
         // in Chronological order.
         selectedIndexes.Sort((x, y) => { return y - x; });
-        var jobs = this.CreateSelectedDownloadJobsFromCurrentFeed(selectedIndexes);
+        IImageResolver imageResolver = this.CreateImageResolver();
+        var jobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(this.currentFeed, selectedIndexes, this.feedCollection, imageResolver);
         this.DownloadPodcasts(jobs, deliverManualDownloadsToDeliveryPoints);
       }
     }
@@ -308,21 +309,6 @@ namespace PodFul.WPF.Windows
       };
 
       return imageResolver;
-    }
-
-    private IEnumerable<DownloadJob> CreateSelectedDownloadJobsFromCurrentFeed(List<Int32> podcastIndexes)
-    {
-      List<DownloadJob> jobs = new List<DownloadJob>();
-      IImageResolver imageResolver = this.CreateImageResolver();
-      foreach (var index in podcastIndexes)
-      { 
-        var podcast = this.currentFeed.Podcasts[index];
-        var downloadJob = new DownloadJob(podcast, this.currentFeed, this.feedCollection, imageResolver);
-
-        jobs.Add(downloadJob);
-      }
-
-      return jobs;
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
