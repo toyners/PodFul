@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Testbed"
         mc:Ignorable="d"
-        Title="WPF Testbed  " Height="350" Width="525"
+        Title="WPF Testbed  " Height="350" Width="800"
         ResizeMode="CanMinimize">
   <Grid>
     <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
       <ColumnDefinition />
       <ColumnDefinition />
       <ColumnDefinition />
@@ -36,15 +39,10 @@
       <TextBlock FontSize="11">Retry Window</TextBlock>
     </Button>
 
-    <Button Margin="5" Grid.Column="3" Click="ConfirmDownloadLimitTest_Click" >
-      <Button.ToolTip>
-        <StackPanel>
-          <TextBlock>Two feeds are scanned. Both have two new podcasts.</TextBlock>
-          <TextBlock>First feed has a CDL of 2 so confirmation dialog will be opened.</TextBlock>
-          <TextBlock>Second feed has a CDL of 3 so confirmation dialog will NOT be opened.</TextBlock>
-        </StackPanel>
-      </Button.ToolTip>
-      <TextBlock FontSize="11" TextWrapping="Wrap">Confirm Download Limit Test</TextBlock>
+    <Button Margin="5" Grid.Column="3" Click="ManualDownloadJob_Click">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap">Manual Download</TextBlock>
+      </StackPanel>
     </Button>
 
     <Button Margin="5" Grid.Row="1" Click="RetryTestWithSuccessfulRetry_Click">
@@ -58,22 +56,33 @@
       </StackPanel>
     </Button>
 
-    <Button Margin="5" Grid.Column="2" Grid.Row="1" Click="ManualDownloadWithFailingJob_Click">
+    <Button Margin="5" Grid.Row="1" Grid.Column="2" Click="ManualDownloadWithFailingJob_Click">
       <StackPanel>
         <TextBlock TextWrapping="Wrap">BUG 50</TextBlock>
         <TextBlock TextWrapping="Wrap">Manual Download with Failing Job</TextBlock>
       </StackPanel>
     </Button>
 
-    <Button Margin="5" Grid.Column="3" Grid.Row="1" Click="ManualDownloadJob_Click">
+    <Button Margin="5" Grid.Row="1" Grid.Column="3" Click="ConfirmDownloadLimitTest_Click" >
+      <Button.ToolTip>
+        <StackPanel>
+          <TextBlock>Two feeds are scanned. Both have two new podcasts.</TextBlock>
+          <TextBlock>First feed has a CDL of 2 so confirmation dialog will be opened.</TextBlock>
+          <TextBlock>Second feed has a CDL of 3 so confirmation dialog will NOT be opened.</TextBlock>
+        </StackPanel>
+      </Button.ToolTip>
+      <TextBlock FontSize="11" TextWrapping="Wrap">Confirm Download Limit Test</TextBlock>
+    </Button>
+
+    <Button Margin="5" Grid.Row="1" Grid.Column="4" Click="ManualDownloadJobWithNoFilenameTest_Click">
       <StackPanel>
-        <TextBlock TextWrapping="Wrap">Manual Download</TextBlock>
+        <TextBlock TextWrapping="Wrap">Manual Download with No Filename Test</TextBlock>
       </StackPanel>
     </Button>
 
-    <Button Margin="5" Grid.Row="2" Click="ManualDownloadJobWithNoFilenameTest_Click">
+    <Button Margin="5" Grid.Row="1" Grid.Column="5" Click="ScanFeedWithNoPodcastFilenameTest_Click">
       <StackPanel>
-        <TextBlock TextWrapping="Wrap">Manual Download with No Filename Test</TextBlock>
+        <TextBlock TextWrapping="Wrap">Scan Feed with No Podcast Filename Test</TextBlock>
       </StackPanel>
     </Button>
   </Grid>

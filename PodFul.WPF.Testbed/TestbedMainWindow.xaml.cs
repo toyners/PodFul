@@ -368,5 +368,50 @@ namespace PodFul.WPF.Testbed
       podcastDownloadWindow.Owner = this;
       podcastDownloadWindow.ShowDialog();
     }
+
+    private void ScanFeedWithNoPodcastFilenameTest_Click(Object sender, RoutedEventArgs e)
+    {
+      // Set up feed with one new podcast found during scanning. Podcast will have no URL (hence no filename)
+      // and the job will throw a Name not found exception.
+      var outputDirectory = Directory.GetCurrentDirectory();
+      var testDirectoryName = "Test Directory";
+      var testDirectoryPath = Path.Combine(outputDirectory, testDirectoryName);
+      var testURL = Path.Combine(outputDirectory, "Feed with Missing URL.rss");
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath);
+      var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", testDirectoryPath, testURL,
+        null, DateTime.MinValue,
+        new Podcast[0]);
+
+      var feeds = new[] { feed };
+
+      var feedStorage = Substitute.For<IFeedStorage>();
+      feedStorage.Feeds.Returns(feeds);
+      var feedCollection = new FeedCollection(feedStorage);
+
+      var fileLogger = new FileLogger();
+      var guiLogger = new UILogger();
+      var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
+
+      var logController = new LogController(new Dictionary<String, ILogger>{
+          { MainWindow.InfoKey, fileLogger },
+          { MainWindow.CombinedKey, combinedLogger },
+          { MainWindow.UiKey, guiLogger}});
+
+      var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
+      var feedScanner = new FeedScanner(
+        feedCollection,
+        new Queue<Int32>(new[] { 0 }),
+        null, // Image resolver not required for test
+        null, // File delivery logger not required for test
+        logController,
+        downloadManager);
+
+      var scanningWindow = new ScanningWindow((UInt32)feeds.Length, feedScanner, downloadManager, false);
+
+      guiLogger.PostMessage = scanningWindow.PostMessage;
+
+      scanningWindow.Owner = this;
+      scanningWindow.ShowDialog();
+    }
   }
 }
