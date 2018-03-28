@@ -69,12 +69,7 @@ module public FinalisingFileNameFunctions =
           getSecondLastFragmentFromURL podcast.URL |> appendFileExtensionIfRequired 
 
         let isClash (fileName : string) : bool =
-          match (Set.contains fileName finalNames) with
-          | false ->
-            finalNames <- Set.add fileName finalNames
-            false
-          | _ ->
-            true
+          Set.contains fileName finalNames
 
         let resolveNameUsingDefaultAlgorthim (feedName : string) (podcast : Podcast) : string =
           let fileName = feedName + " - " + podcast.Title + ".mp3"

@@ -1,6 +1,17 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.2.0 (1.9.9)
+1. **Changed:** Algorithm for file name resolution on podcasts has been changed. Will try to use the URL, the title and the publishing date to effort to find a unique name. Otherwise the name will be set to nothing.
+2. **Changed:** Podcast file names that are not set will cause the download job to fail during scanning. A file name can be set of use during manual download but this name will not be permanent.
+3. **Changed:** Failed download jobs can be retried after the scan. Will only retry once.
+4. **Changed:** Confirm download threshold is now set on a feed by feed basis.
+5. **Changed:** Tooltip for download job has been expanded to work on entire control group.
+6. **Changed:** Added tooltip for cancel button on download job.
+7. **Fixed:** Cancellation of waiting jobs happens immediately as opposed to waiting until the job is started.
+8. **Fixed:** Cancellation button disappears when job is cancelled, failed or completed.
+9. **Fixed:** Downloaded date in podcast properties window is now populated correctly.
+
 ## 3.1.8 (1.9.8)
 1. **Fixed:** Fixed an issue where the podcast description was not being displayed in the podcast properties dialog.
 2. **Fixed:** Fixed an issue where the selection indexes in the download confirmation dialog did not match with the indexes of the feed podcasts.
