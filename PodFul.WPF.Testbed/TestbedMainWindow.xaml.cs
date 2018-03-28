@@ -226,17 +226,17 @@ namespace PodFul.WPF.Testbed
 
     private void ManualDownloadWithFailingJob_Click(Object sender, RoutedEventArgs e)
     {
-      // Set up feed to have two podcasts for manual downloading. Last one will fail with a bad url.
+      // Create feed with two podcasts. One podcast has bad url. 
       var outputDirectory = Directory.GetCurrentDirectory();
       var testDirectoryName = "Test Directory";
-      var testDirectoryPath1 = Path.Combine(outputDirectory, testDirectoryName + " 1");
+      var testDirectoryPath1 = Path.Combine(outputDirectory, testDirectoryName);
       DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath1);
 
       var podcast1 = this.CreateTestPodcast("Podcast 1", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath1 + "Podcast1.mp3"));
       var podcast2 = this.CreateTestPodcast("Podcast 2", "bad url", String.Empty);
-      var feed1 = this.CreateTestFeed("Feed 1", new [] { podcast1, podcast2 });
+      var feed = this.CreateTestFeed("Feed", new [] { podcast1, podcast2 });
 
-      var feeds = new[] { feed1 };
+      var feeds = new[] { feed };
 
       var feedStorage = Substitute.For<IFeedStorage>();
       feedStorage.Feeds.Returns(feeds);
@@ -247,7 +247,7 @@ namespace PodFul.WPF.Testbed
       var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
 
       var indexes = new List<Int32>(new [] { 0, 1 });
-      var retryJobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(feed1, indexes , feedCollection, null);
+      var retryJobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(feed, indexes , feedCollection, null);
 
       var downloadManager = DownloadManager.Create(combinedLogger, 1, null, null);
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, false);
@@ -261,7 +261,37 @@ namespace PodFul.WPF.Testbed
 
     private void ManualDownloadJob_Click(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      // Create feed with two podcasts. One podcast has bad url. 
+      var outputDirectory = Directory.GetCurrentDirectory();
+      var testDirectoryName = "Test Directory";
+      var testDirectoryPath1 = Path.Combine(outputDirectory, testDirectoryName + " 1");
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath1);
+
+      var podcast1 = this.CreateTestPodcast("Podcast 1", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath1 + "Podcast1.mp3"));
+      var podcast2 = this.CreateTestPodcast("Podcast 2", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast2.mp3", Path.Combine(testDirectoryPath1 + "Podcast2.mp3"));
+      var feed1 = this.CreateTestFeed("Feed 1", new[] { podcast1, podcast2 });
+
+      var feeds = new[] { feed1 };
+
+      var feedStorage = Substitute.For<IFeedStorage>();
+      feedStorage.Feeds.Returns(feeds);
+      var feedCollection = new FeedCollection(feedStorage);
+
+      var fileLogger = new FileLogger();
+      var guiLogger = new UILogger();
+      var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
+
+      var indexes = new List<Int32>(new[] { 0, 1 });
+      var retryJobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(feed1, indexes, feedCollection, null);
+
+      var downloadManager = DownloadManager.Create(combinedLogger, 1, null, null);
+      var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, false);
+
+      // Add the jobs after creating the window so that job queued event will fire.
+      downloadManager.AddJobs(retryJobs);
+
+      podcastDownloadWindow.Owner = this;
+      podcastDownloadWindow.ShowDialog();
     }
 
     private void RetryTestWithSuccessfulRetry_Click(Object sender, RoutedEventArgs e)
