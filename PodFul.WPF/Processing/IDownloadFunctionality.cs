@@ -17,6 +17,11 @@ namespace PodFul.WPF.Processing
     IList<DownloadJob> FailedJobs { get; }
 
     /// <summary>
+    /// True it the download manager has failed jobs. Otherwise false.
+    /// </summary>
+    Boolean GotFailedJobs { get; }
+
+    /// <summary>
     /// True if the download manager has running jobs or waiting jobs. Otherwise false.
     /// </summary>
     Boolean GotIncompleteJobs { get; }

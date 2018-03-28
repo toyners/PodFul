@@ -364,7 +364,7 @@ namespace PodFul.WPF.Windows
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
 
-      if (downloadManager.FailedJobs.Count == 0)
+      if (!downloadManager.GotFailedJobs)
       {
         return;
       }
