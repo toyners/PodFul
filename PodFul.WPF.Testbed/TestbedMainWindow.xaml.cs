@@ -382,6 +382,8 @@ namespace PodFul.WPF.Testbed
         null, DateTime.MinValue,
         new Podcast[0]);
 
+      feed = Feed.SetConfirmDownloadThreshold(4, feed);
+
       var feeds = new[] { feed };
 
       var feedStorage = Substitute.For<IFeedStorage>();

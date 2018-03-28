@@ -231,6 +231,7 @@ namespace PodFul.WPF.Processing
         else
         {
           job.Status = DownloadJob.StatusTypes.Failed;
+          job.ExceptionMessage = "No unique file path set.";
         }
       }
 

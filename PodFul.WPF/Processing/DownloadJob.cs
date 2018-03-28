@@ -162,6 +162,12 @@ namespace PodFul.WPF.Processing
 
         switch (value)
         {
+          case StatusTypes.Failed:
+          {
+            this.CancellationVisibility = Visibility.Hidden;
+            break;
+          }
+
           case StatusTypes.Cancelled:
           {
             this.CancellationVisibility = Visibility.Hidden;
