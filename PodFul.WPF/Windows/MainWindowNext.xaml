@@ -1,0 +1,38 @@
+﻿<Window x:Class="PodFul.WPF.Windows.MainWindowNext"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PodFul.WPF.Windows"
+        mc:Ignorable="d"
+        Title="MainWindowNext" Height="600" Width="1000" 
+        MinHeight="150" MinWidth="150"
+        Icon="baggage_cart_box_tE4_icon.ico" WindowStartupLocation="CenterScreen">
+  <DockPanel Margin="5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
+          <Button Width="70" Click="AddFeedButtonClick" Style="{StaticResource StandardButton}">Add</Button>
+          <Button Name="RemoveButton" Width="70" Click="RemoveFeed_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Remove</Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
+          <Button Width="70" Click="SettingsButtonClick" Style="{StaticResource StandardButton}">Settings</Button>
+          <Button Name="PodcastsButton" Width="70" Click="Podcasts_Click" IsEnabled="False" Style="{StaticResource StandardButton}">Podcasts</Button>
+          <Button Name="ScanButton" Width="70" Click="FullScanButtonClick" IsEnabled="False" Style="{StaticResource StandardButton}">Full Scan</Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
+      <TreeView>
+
+      </TreeView>
+    </Border>
+  </DockPanel>
+</Window>
