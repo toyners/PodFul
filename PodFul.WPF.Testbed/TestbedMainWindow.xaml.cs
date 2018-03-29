@@ -445,5 +445,10 @@ namespace PodFul.WPF.Testbed
       scanningWindow.Owner = this;
       scanningWindow.ShowDialog();
     }
+
+    private void MainViewNextVersion_Click(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

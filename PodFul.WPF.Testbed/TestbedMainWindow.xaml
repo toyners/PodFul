@@ -85,5 +85,11 @@
         <TextBlock TextWrapping="Wrap">Scan Feed with No Podcast Filename Test</TextBlock>
       </StackPanel>
     </Button>
+
+    <Button Margin="5" Grid.Row="2" Click="MainViewNextVersion_Click">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap">Main View (4.0)</TextBlock>
+      </StackPanel>
+    </Button>
   </Grid>
 </Window>
