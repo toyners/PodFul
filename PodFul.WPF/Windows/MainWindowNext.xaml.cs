@@ -23,5 +23,25 @@ namespace PodFul.WPF.Windows
     {
       InitializeComponent();
     }
+
+    private void AddFeedButtonClick(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
+
+    private void FullScanButtonClick(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
+
+    private void RemoveFeedClick(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
+
+    private void SettingsButtonClick(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

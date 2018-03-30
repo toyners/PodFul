@@ -32,7 +32,7 @@ namespace PodFul.WPF.Windows
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
     private Feed currentFeed;
-    private LogController logController;
+    private ILogController logController;
     private IFileDeliveryLogger fileDeliveryLogger;
     private Settings settings;
     private String defaultImagePath;
