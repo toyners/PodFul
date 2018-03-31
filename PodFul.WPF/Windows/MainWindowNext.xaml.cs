@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PodFul.Library;
 
 namespace PodFul.WPF.Windows
 {
@@ -43,5 +44,12 @@ namespace PodFul.WPF.Windows
     {
       throw new NotImplementedException();
     }
+  }
+
+  public interface IAddFeed
+  {
+    Feed AddFeed(String directory, String url);
+
+    //Action<Int32> StartedAddingFeed;
   }
 }
