@@ -46,10 +46,14 @@ namespace PodFul.WPF.Windows
     }
   }
 
-  public interface IAddFeed
+  public interface IPodFul
   {
-    Feed AddFeed(String directory, String url);
+    IList<Feed> Feeds { get; }
+    Action<Int32> StartedAddingFeed { get; set; }
 
-    //Action<Int32> StartedAddingFeed;
+    Feed AddFeed(String directory, String url);
+    void RemoveFeed(Feed feed);
+    void RemoveFeed(Int32 index);
+    void ScanFeeds(IList<Int32> indexes);
   }
 }
