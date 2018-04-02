@@ -448,7 +448,9 @@ namespace PodFul.WPF.Testbed
 
     private void MainViewNextVersion_Click(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      var mainWindow = new MainWindowNext();
+      mainWindow.Owner = this;
+      mainWindow.ShowDialog();
     }
   }
 }
