@@ -448,7 +448,8 @@ namespace PodFul.WPF.Testbed
 
     private void MainViewNextVersion_Click(Object sender, RoutedEventArgs e)
     {
-      var mainWindow = new MainWindowNext();
+      var testFeedProcessor = new TestFeedProcessor();
+      var mainWindow = new MainWindowNext(testFeedProcessor);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }

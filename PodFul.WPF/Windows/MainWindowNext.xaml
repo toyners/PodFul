@@ -29,7 +29,12 @@
     </Border>
 
     <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
-      <TreeView>
+      <TreeView Name="FeedTree">
+        <TreeView.ItemTemplate>
+          <HierarchicalDataTemplate>
+            <TextBlock Text="{Binding Title}" />
+          </HierarchicalDataTemplate>
+        </TreeView.ItemTemplate>
 
       </TreeView>
     </Border>
