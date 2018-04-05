@@ -32,7 +32,10 @@
       <TreeView Name="FeedTree">
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate>
-            <TextBlock Text="{Binding Title}" />
+            <StackPanel>
+              <TextBlock Text="{Binding Title}" />
+              <TextBlock Text="{Binding Description}" />
+            </StackPanel>
           </HierarchicalDataTemplate>
         </TreeView.ItemTemplate>
 

@@ -28,7 +28,7 @@ namespace PodFul.WPF.Windows
       else
       {
         this.ObservableFeeds = new ObservableCollection<Feed>(this.feedProcessor.Feeds);
-      }
+      } 
 
       this.FeedTree.ItemsSource = this.ObservableFeeds;
     }
@@ -39,7 +39,8 @@ namespace PodFul.WPF.Windows
 
       // Open dialog to show progress of adding new feed to the feed processor.
 
-      throw new NotImplementedException();
+      var feed = this.feedProcessor.AddFeed("Title", "Description for Title");
+      this.ObservableFeeds.Add(feed);
     }
 
     private void FullScanButtonClick(Object sender, RoutedEventArgs e)
@@ -74,37 +75,15 @@ namespace PodFul.WPF.Windows
   {
     public IList<Feed> Feeds { get; private set; }
 
-    public Action FinishedAddingFeed
-    {
-      get
-      {
-        throw new NotImplementedException();
-      }
+    public Action FinishedAddingFeed { get; set; }
 
-      set
-      {
-        throw new NotImplementedException();
-      }
-    }
+    public Action StartedAddingFeed { get; set; }
 
-    public Action StartedAddingFeed
-    {
-      get
-      {
-        throw new NotImplementedException();
-      }
-
-      set
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    public Feed AddFeed(String directory, String url)
+    public Feed AddFeed(String title, String description)
     {
       this.StartedAddingFeed?.Invoke();
 
-      var newFeed = new Feed(directory, "Description for " + directory, "", "", url, "", "",
+      var newFeed = new Feed(title, description, "", "", "", "", "",
         new Podcast[0], DateTime.MinValue, DateTime.MinValue, true, true, true, 3u);
 
       this.FinishedAddingFeed?.Invoke();
