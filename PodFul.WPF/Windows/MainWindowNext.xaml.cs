@@ -14,23 +14,16 @@ namespace PodFul.WPF.Windows
   public partial class MainWindowNext : Window
   {
     private IFeedProcessor feedProcessor;
+    private IFeedCollectionViewModel feedCollectionViewModel;
     private ObservableCollection<Feed> ObservableFeeds;
 
     public MainWindowNext(IFeedProcessor feedProcessor)
     {
       InitializeComponent();
 
-      this.feedProcessor = feedProcessor;
-      if (this.feedProcessor.Feeds == null || this.feedProcessor.Feeds.Count == 0)
-      {
-        this.ObservableFeeds = new ObservableCollection<Feed>();
-      }
-      else
-      {
-        this.ObservableFeeds = new ObservableCollection<Feed>(this.feedProcessor.Feeds);
-      } 
+      this.feedCollectionViewModel = new FeedCollectionViewModel(feedProcessor.Feeds);
 
-      this.FeedTree.ItemsSource = this.ObservableFeeds;
+      this.FeedTree.ItemsSource = this.feedCollectionViewModel.Feeds;
     }
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)
@@ -134,5 +127,93 @@ namespace PodFul.WPF.Windows
     {
       throw new NotImplementedException();
     }
+  }
+
+  public interface IFeedCollectionViewModel
+  {
+    ObservableCollection<IFeedViewModel> Feeds { get; }
+
+    void Add(Feed feed);
+
+    void Remove(Feed feed);
+  }
+
+  public class FeedCollectionViewModel : IFeedCollectionViewModel
+  {
+    public ObservableCollection<IFeedViewModel> Feeds { get; private set; }
+
+    public FeedCollectionViewModel(IEnumerable<Feed> feeds)
+    {
+      this.Feeds = new ObservableCollection<IFeedViewModel>();
+      foreach (var feed in feeds)
+      {
+        this.Feeds.Add(new FeedViewModel(feed));  
+      }
+    }
+
+    public void Add(Feed feed)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void Remove(Feed feed)
+    {
+      throw new NotImplementedException();
+    }
+  }
+
+  public interface IFeedViewModel
+  {
+    String Image { get; }
+    String Description { get; }
+    String Title { get; }
+
+    Boolean IsSelected { get; set; }
+    Boolean IsExpanded { get; set; }
+  }
+
+  public class FeedViewModel : IFeedViewModel
+  {
+    public String Description { get; private set; }
+    public String Image { get; private set; }
+    public String Title { get; private set; }
+
+    public Boolean IsExpanded
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+
+      set
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public Boolean IsSelected
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+
+      set
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public FeedViewModel(Feed feed)
+    {
+      throw new NotImplementedException();
+    }
+  }
+
+  public interface IPodcastViewModel
+  {
+    String Title { get; }
+    String Description { get; }
+    String Image { get; }
   }
 }
