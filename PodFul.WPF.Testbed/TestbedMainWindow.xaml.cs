@@ -12,6 +12,7 @@ namespace PodFul.WPF.Testbed
   using PodFul.Library;
   using PodFul.WPF.Windows;
   using Processing;
+  using ViewModel;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -448,8 +449,9 @@ namespace PodFul.WPF.Testbed
 
     private void MainViewNextVersion_Click(Object sender, RoutedEventArgs e)
     {
-      var testFeedProcessor = new TestFeedProcessor();
-      var mainWindow = new MainWindowNext(testFeedProcessor);
+      var feedProcessor = new TestFeedProcessor();
+      var feedCollectionViewModel = new FeedCollectionViewModel(feedProcessor);
+      var mainWindow = new MainWindowNext(feedCollectionViewModel);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }

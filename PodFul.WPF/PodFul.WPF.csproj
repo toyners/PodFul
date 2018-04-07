@@ -105,6 +105,8 @@
     <Compile Include="Processing\PodcastDownloadConfirmer.cs" />
     <Compile Include="UI Support\JobCountDisplayManager.cs" />
     <Compile Include="UI Support\IJobCountDisplayComponent.cs" />
+    <Compile Include="ViewModel\FeedCollectionViewModel.cs" />
+    <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
     <Compile Include="Windows\DeliveryPointWindow.xaml.cs">
       <DependentUpon>DeliveryPointWindow.xaml</DependentUpon>
     </Compile>

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading;
 using System.Windows;
 using PodFul.Library;
 using PodFul.WPF.Logging;
 using PodFul.WPF.Processing;
+using PodFul.WPF.ViewModel;
 
 namespace PodFul.WPF.Windows
 {
@@ -13,27 +16,53 @@ namespace PodFul.WPF.Windows
   /// </summary>
   public partial class MainWindowNext : Window
   {
-    private IFeedProcessor feedProcessor;
     private IFeedCollectionViewModel feedCollectionViewModel;
-    private ObservableCollection<Feed> ObservableFeeds;
 
-    public MainWindowNext(IFeedProcessor feedProcessor)
+    public MainWindowNext(IFeedCollectionViewModel feedCollectionViewModel)
     {
       InitializeComponent();
 
-      this.feedCollectionViewModel = new FeedCollectionViewModel(feedProcessor.Feeds);
-
+      this.feedCollectionViewModel = feedCollectionViewModel;
       this.FeedTree.ItemsSource = this.feedCollectionViewModel.Feeds;
     }
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)
     {
       // Use dialog to get the feed directory and url.
+      AddFeedToken addFeedToken;
+      if (!this.TryGetFeedCreationData(out addFeedToken))
+      {
+        return;
+      }
 
       // Open dialog to show progress of adding new feed to the feed processor.
+      var addFeedProgressWindow = new AddFeedProgressWindow(this.feedCollectionViewModel, addFeedToken);
+      addFeedProgressWindow.Owner = this;
+      addFeedProgressWindow.ShowDialog();
+      Feed feed = addFeedProgressWindow.Feed;
+      if (feed == null)
+      {
+        // Cancelled or Faulted - nothing more to be done.
+        return;
+      }
 
-      var feed = this.feedProcessor.AddFeed("Title", "Description for Title");
-      this.ObservableFeeds.Add(feed);
+      //this.feedCollectionViewModel.AddFeed(directory, url);
+    }
+
+    private Boolean TryGetFeedCreationData(out AddFeedToken addFeedToken)
+    {
+      addFeedToken = default(AddFeedToken);
+
+      var addFeedWindow = new AddFeedWindow();
+      addFeedWindow.Owner = this;
+      var dialogResult = addFeedWindow.ShowDialog();
+      if (!dialogResult.HasValue || !dialogResult.Value)
+      {
+        return false;
+      }
+
+      addFeedToken = new AddFeedToken(addFeedWindow.FeedDirectory, addFeedWindow.FeedURL, "");
+      return true;
     }
 
     private void FullScanButtonClick(Object sender, RoutedEventArgs e)
@@ -58,7 +87,7 @@ namespace PodFul.WPF.Windows
     Action StartedAddingFeed { get; set; }
     Action FinishedAddingFeed { get; set; }
 
-    Feed AddFeed(String directory, String url);
+    Feed AddFeed(String directory, String url, String defaultPodcastImageFilePath, CancellationToken cancelToken);
     void RemoveFeed(Feed feed);
     void RemoveFeed(Int32 index);
     void ScanFeeds(IList<Int32> indexes);
@@ -72,11 +101,11 @@ namespace PodFul.WPF.Windows
 
     public Action StartedAddingFeed { get; set; }
 
-    public Feed AddFeed(String title, String description)
+    public Feed AddFeed(String directory, String url, String defaultPodcastImageFilePath, CancellationToken cancelToken)
     {
       this.StartedAddingFeed?.Invoke();
 
-      var newFeed = new Feed(title, description, "", "", "", "", "",
+      var newFeed = new Feed("Title", "Description", "", "", "", "", "",
         new Podcast[0], DateTime.MinValue, DateTime.MinValue, true, true, true, 3u);
 
       this.FinishedAddingFeed?.Invoke();
@@ -102,15 +131,45 @@ namespace PodFul.WPF.Windows
 
   public class FeedProcessor : IFeedProcessor
   {
+    private ILogController logController;
+
     public IList<Feed> Feeds { get; private set; }
 
     public Action FinishedAddingFeed { get; set; }
 
     public Action StartedAddingFeed { get; set; }
 
-    public Feed AddFeed(String directory, String url)
+    public Feed AddFeed(String directory, String url, String defaultPodcastImageFilePath, CancellationToken cancelToken)
     {
-      throw new NotImplementedException();
+      try
+      {
+        var feedFilePath = Path.Combine(directory, "download.rss");
+        var feed = FeedFunctions.CreateFeed(url, feedFilePath, directory, defaultPodcastImageFilePath, cancelToken);
+        this.logController.Message(MainWindow.InfoKey, "'" + feed.Title + "' added. Podcasts stored in '" + directory + "'");
+        return feed;
+      }
+      catch (OperationCanceledException oce)
+      {
+        this.logController.Message(MainWindow.InfoKey, "Adding feed from '" + url + "' was cancelled.");
+      }
+      catch (AggregateException ae)
+      {
+        var flattenedMessage = String.Empty;
+        var flattenedException = ae.Flatten();
+        foreach (var exception in flattenedException.InnerExceptions)
+        {
+          flattenedMessage += exception.Message + " ";
+        }
+
+        throw new Exception(flattenedMessage);
+      }
+      catch (Exception e)
+      {
+        this.logController.Message(MainWindow.ExceptionKey, "Trying to create new feed: " + e.Message);
+        throw e;
+      }
+
+      return null;
     }
 
     public void RemoveFeed(Int32 index)
@@ -129,36 +188,17 @@ namespace PodFul.WPF.Windows
     }
   }
 
-  public interface IFeedCollectionViewModel
+  public struct AddFeedToken
   {
-    ObservableCollection<IFeedViewModel> Feeds { get; }
+    public readonly String Directory;
+    public readonly String Url;
+    public readonly String DefaultPodcastImageFilePath;
 
-    void Add(Feed feed);
-
-    void Remove(Feed feed);
-  }
-
-  public class FeedCollectionViewModel : IFeedCollectionViewModel
-  {
-    public ObservableCollection<IFeedViewModel> Feeds { get; private set; }
-
-    public FeedCollectionViewModel(IEnumerable<Feed> feeds)
+    public AddFeedToken(String directory, String url, String defaultPodcastImageFilePath)
     {
-      this.Feeds = new ObservableCollection<IFeedViewModel>();
-      foreach (var feed in feeds)
-      {
-        this.Feeds.Add(new FeedViewModel(feed));  
-      }
-    }
-
-    public void Add(Feed feed)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void Remove(Feed feed)
-    {
-      throw new NotImplementedException();
+      this.Directory = directory;
+      this.Url = url;
+      this.DefaultPodcastImageFilePath = defaultPodcastImageFilePath;
     }
   }
 
@@ -206,7 +246,8 @@ namespace PodFul.WPF.Windows
 
     public FeedViewModel(Feed feed)
     {
-      throw new NotImplementedException();
+      this.Title = feed.Title;
+      this.Description = feed.Description;
     }
   }
 

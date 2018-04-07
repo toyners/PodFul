@@ -6,6 +6,7 @@ using Jabberwocky.Toolkit.Object;
 using PodFul.Library;
 using PodFul.WPF.Logging;
 using PodFul.WPF.Processing;
+using PodFul.WPF.ViewModel;
 
 namespace PodFul.WPF.Windows
 {
@@ -22,6 +23,8 @@ namespace PodFul.WPF.Windows
     private Int32 imageDownloadTotal;
     private Int32 imageDownloadCount;
     private IFeedFactory feedFactory;
+
+    private IFeedCollectionViewModel feedCollectionViewModel;
     #endregion
 
     #region Construction
@@ -35,6 +38,17 @@ namespace PodFul.WPF.Windows
       this.logController = logController;
 
       InitializeComponent();
+    }
+
+    private AddFeedToken addFeedToken;
+    public AddFeedProgressWindow(IFeedCollectionViewModel feedCollectionViewModel, AddFeedToken addFeedToken)
+    {
+      InitializeComponent();
+
+      this.feedCollectionViewModel = feedCollectionViewModel;
+      this.feedCollectionViewModel.CompletedDownloadNotificationEvent = this.CompletedDownloadNotificationEventHandler;
+
+      this.addFeedToken = addFeedToken;
     }
     #endregion
 
@@ -103,6 +117,28 @@ namespace PodFul.WPF.Windows
           this.imageResolver.CompletedDownloadNotificationEvent -= this.CompletedDownloadNotificationEventHandler;
         }
 
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          this.ProgressBar.IsIndeterminate = false; // Turn off marque effect
+          this.Close();
+        });
+      });
+    }
+
+    private void StartProcessing2()
+    {
+      this.ProgressBar.IsIndeterminate = true;
+      var cancelToken = cancellationTokenSource.Token;
+      this.StatusMessage.Text = "Reading feed ...";
+
+      Task addFeedTask = Task.Factory.StartNew(() =>
+      {
+        // Create the feed.
+        this.feedCollectionViewModel.AddFeed(this.addFeedToken, cancelToken);
+      }, cancelToken);
+
+      addFeedTask.ContinueWith(task =>
+      {
         Application.Current.Dispatcher.Invoke(() =>
         {
           this.ProgressBar.IsIndeterminate = false; // Turn off marque effect
