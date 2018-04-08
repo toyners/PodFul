@@ -86,9 +86,15 @@
       </StackPanel>
     </Button>
 
-    <Button Margin="5" Grid.Row="2" Click="MainViewNextVersion_Click">
+    <Button Margin="5" Grid.Row="2" Click="MainView_Click">
       <StackPanel>
-        <TextBlock TextWrapping="Wrap">Main View (4.0)</TextBlock>
+        <TextBlock TextWrapping="Wrap">Main View</TextBlock>
+      </StackPanel>
+    </Button>
+    
+    <Button Margin="5" Grid.Row="2" Grid.Column="1" Click="MainViewNext_Click">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap">Main View Next</TextBlock>
       </StackPanel>
     </Button>
   </Grid>

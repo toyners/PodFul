@@ -465,12 +465,20 @@ namespace PodFul.WPF.Testbed
       scanningWindow.ShowDialog();
     }
 
-    private void MainViewNextVersion_Click(Object sender, RoutedEventArgs e)
+    private void MainViewNext_Click(Object sender, RoutedEventArgs e)
     {
       var settings = new Settings();
       var feedProcessor = new TestFeedProcessor();
       var feedCollectionViewModel = new FeedCollectionViewModel(feedProcessor);
       var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
+      mainWindow.Owner = this;
+      mainWindow.ShowDialog();
+    }
+
+    private void MainView_Click(Object sender, RoutedEventArgs e)
+    {
+      var settings = new Settings();
+      var mainWindow = new MainWindow(settings, Directory.GetCurrentDirectory());
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }
