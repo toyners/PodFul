@@ -134,11 +134,29 @@ namespace PodFul.WPF.Windows
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
         // Create the feed.
-        this.feedCollectionViewModel.AddFeed(this.addFeedToken, cancelToken);
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          this.feedCollectionViewModel.AddFeed(this.addFeedToken, cancelToken);
+        });
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>
       {
+        if (task.IsFaulted)
+        {
+          var flattenedMessage = String.Empty;
+          var flattenedException = task.Exception.Flatten();
+          foreach (var exception in flattenedException.InnerExceptions)
+          {
+            flattenedMessage += exception.Message + " ";
+          }
+
+          Application.Current.Dispatcher.Invoke(() =>
+          {
+            MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + flattenedMessage, "Exception occurred.");
+          });
+        }
+
         Application.Current.Dispatcher.Invoke(() =>
         {
           this.ProgressBar.IsIndeterminate = false; // Turn off marque effect
@@ -207,7 +225,7 @@ namespace PodFul.WPF.Windows
       if (!this.windowLoaded)
       {
         this.windowLoaded = true;
-        this.StartProcessing();
+        this.StartProcessing2();
       }
     }
     #endregion

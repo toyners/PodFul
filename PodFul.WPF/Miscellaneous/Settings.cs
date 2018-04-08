@@ -18,6 +18,16 @@ namespace PodFul.WPF.Miscellaneous
     #endregion
 
     #region Construction
+    public Settings()
+    {
+      this.settingsData = new SettingsData
+      {
+        ConcurrentDownloadCount = 3,
+        DeliverManualDownloads = false,
+        DeliveryData = new List<SettingsData.DeliveryPointData>()
+      };
+    }
+
     public Settings(String filePath)
     {
       filePath.VerifyThatObjectIsNotNull("Parameter 'filePath' is null.");
@@ -80,6 +90,12 @@ namespace PodFul.WPF.Miscellaneous
       get { return this.settingsData.DownloadImagesWhenAddingFeeds; }
       set { this.settingsData.DownloadImagesWhenAddingFeeds = value; }
     }
+
+    public Boolean UseTreeView
+    {
+      get { return this.settingsData.UseTreeView; }
+      set { this.settingsData.UseTreeView = value; }
+    }
     #endregion
 
     #region Methods
@@ -131,6 +147,8 @@ namespace PodFul.WPF.Miscellaneous
       public Boolean HideCompletedJobs { get; set; }
 
       public Boolean DownloadImagesWhenAddingFeeds { get; set; }
+
+      public Boolean UseTreeView { get; set; }
       #endregion
 
       #region Classes

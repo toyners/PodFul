@@ -93,6 +93,7 @@
     <Compile Include="Processing\IImageResolver.cs" />
     <Compile Include="Processing\ImageResolver.cs" />
     <Compile Include="Processing\IDownloadFunctionality.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="UI Support\IJobCountDisplayManager.cs" />
     <Compile Include="UI Support\JobCountStatusBarDisplayComponent.cs" />
     <Compile Include="UI Support\JobCountWindowTitleDisplayComponent.cs" />

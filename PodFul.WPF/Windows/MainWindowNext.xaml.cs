@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Windows;
 using PodFul.Library;
 using PodFul.WPF.Logging;
-using PodFul.WPF.Processing;
+using PodFul.WPF.Miscellaneous;
 using PodFul.WPF.ViewModel;
 
 namespace PodFul.WPF.Windows
@@ -16,12 +15,14 @@ namespace PodFul.WPF.Windows
   /// </summary>
   public partial class MainWindowNext : Window
   {
+    private Settings settings;
     private IFeedCollectionViewModel feedCollectionViewModel;
 
-    public MainWindowNext(IFeedCollectionViewModel feedCollectionViewModel)
+    public MainWindowNext(Settings settings, IFeedCollectionViewModel feedCollectionViewModel)
     {
       InitializeComponent();
 
+      this.settings = settings;
       this.feedCollectionViewModel = feedCollectionViewModel;
       this.FeedTree.ItemsSource = this.feedCollectionViewModel.Feeds;
     }
@@ -45,8 +46,6 @@ namespace PodFul.WPF.Windows
         // Cancelled or Faulted - nothing more to be done.
         return;
       }
-
-      //this.feedCollectionViewModel.AddFeed(directory, url);
     }
 
     private Boolean TryGetFeedCreationData(out AddFeedToken addFeedToken)

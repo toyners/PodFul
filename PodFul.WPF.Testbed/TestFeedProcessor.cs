@@ -15,16 +15,23 @@ namespace PodFul.WPF.Testbed
 
     public Action StartedAddingFeed { get; set; }
 
+    public TestFeedProcessor()
+    {
+      this.Feeds = new List<Feed>();
+    }
+
     public Feed AddFeed(String directory, String url, String defaultPodcastImageFilePath, CancellationToken cancelToken)
     {
       this.StartedAddingFeed?.Invoke();
 
-      var newFeed = new Feed("Title", "Description", "", "", "", "", "",
+      var feed = new Feed("Title", "Description", "", "", "", "", "",
         new Podcast[0], DateTime.MinValue, DateTime.MinValue, true, true, true, 3u);
+
+      this.Feeds.Add(feed);
 
       this.FinishedAddingFeed?.Invoke();
 
-      return newFeed;
+      return feed;
     }
 
     public void RemoveFeed(Int32 index)

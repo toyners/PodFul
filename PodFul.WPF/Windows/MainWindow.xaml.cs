@@ -3,7 +3,6 @@ namespace PodFul.WPF.Windows
 {
   using System;
   using System.Collections.Generic;
-  using System.Configuration;
   using System.IO;
   using System.Linq;
   using System.Reflection;
@@ -11,7 +10,6 @@ namespace PodFul.WPF.Windows
   using System.Windows.Controls;
   using Jabberwocky.Toolkit.Assembly;
   using Jabberwocky.Toolkit.IO;
-  using Jabberwocky.Toolkit.Path;
   using Logging;
   using Miscellaneous;
   using PodFul.FileDelivery;
@@ -40,7 +38,7 @@ namespace PodFul.WPF.Windows
     #endregion
 
     #region Construction
-    public MainWindow()
+    public MainWindow(Settings settings, String feedDirectory)
     {
       FileLogger exceptionLogger = null;
       try
@@ -61,9 +59,8 @@ namespace PodFul.WPF.Windows
 
         this.DisplayTitle();
 
-        this.settings = new Settings(ConfigurationManager.AppSettings["SettingsPath"]);
+        this.settings = settings; 
 
-        var feedDirectory = PathOperations.CompleteDirectoryPath(ConfigurationManager.AppSettings["FeedDirectory"]);
         DirectoryOperations.EnsureDirectoryExists(feedDirectory);
         var feedStorage = new JSONFileStorage(feedDirectory);
         this.feedCollection = new FeedCollection(feedStorage);

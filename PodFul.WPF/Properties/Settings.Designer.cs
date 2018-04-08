@@ -22,5 +22,23 @@ namespace PodFul.WPF.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Projects\\PodFul_Test\\")]
+        public string FeedDirectory {
+            get {
+                return ((string)(this["FeedDirectory"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Projects\\PodFul_Test\\Settings.xml")]
+        public string SettingsPath {
+            get {
+                return ((string)(this["SettingsPath"]));
+            }
+        }
     }
 }
