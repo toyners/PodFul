@@ -62,7 +62,7 @@ namespace PodFul.WPF.Windows
       this.cancellationTokenSource.Cancel();
     }
 
-    private void StartProcessing()
+    private void AddFeedForListView()
     {
       this.ProgressBar.IsIndeterminate = true;
       var cancelToken = cancellationTokenSource.Token;
@@ -125,7 +125,7 @@ namespace PodFul.WPF.Windows
       });
     }
 
-    private void StartProcessing2()
+    private void AddFeedForTreeView()
     {
       this.ProgressBar.IsIndeterminate = true;
       var cancelToken = cancellationTokenSource.Token;
@@ -225,7 +225,14 @@ namespace PodFul.WPF.Windows
       if (!this.windowLoaded)
       {
         this.windowLoaded = true;
-        this.StartProcessing2();
+        if (this.feedCollectionViewModel != null)
+        {
+          this.AddFeedForTreeView();
+        }
+        else
+        {
+          this.AddFeedForListView();
+        }
       }
     }
     #endregion
