@@ -25,13 +25,14 @@ namespace PodFul.WPF.Miscellaneous
         this.feedStorage.Open();
       }
 
-      var feeds = this.feedStorage.Feeds;
-      if (feeds == null || feeds.Length == 0)
+      if (this.feedStorage.Feeds == null || this.feedStorage.Feeds.Length == 0)
       {
-        throw new Exception("Feed Storage contains no feeds");
+        this.ObservableFeeds = new ObservableCollection<Feed>();
       }
-
-      this.ObservableFeeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
+      else
+      {
+        this.ObservableFeeds = new ObservableCollection<Feed>(this.feedStorage.Feeds);
+      }
     }
     #endregion
 

@@ -39,34 +39,18 @@ type FeedCollections_UnitTests() =
             true
 
     [<Test>]
-    member public this.``Passing feed storage with no feeds throws meaningful exception``() =
+    member public this.``Passing feed storage with no feeds results in empty collection``() =
         let mutable testPassed = false
         let testStorage = new TestStorage(null)
-        
-        try
-            let feedCollection = new FeedCollection(testStorage)
-            testPassed <- false
-        with
-            | e ->
-                Assert.AreEqual("Feed Storage contains no feeds", e.Message)
-                testPassed <- true
-                
-        Assert.AreEqual(testPassed, true)
+        let feedCollection = new FeedCollection(testStorage)
+        Assert.AreEqual(0, feedCollection.Count)
 
     [<Test>]
-    member public this.``Passing feed storage with zero feeds throws meaningful exception``() =
+    member public this.``Passing feed storage with zero feeds results in empty collection``() =
         let mutable testPassed = false
         let testStorage = new TestStorage([||])
-        
-        try
-            let feedCollection = new FeedCollection(testStorage)
-            testPassed <- false
-        with
-            | e ->
-                Assert.AreEqual("Feed Storage contains no feeds", e.Message)
-                testPassed <- true
-                
-        Assert.AreEqual(testPassed, true)
+        let feedCollection = new FeedCollection(testStorage)
+        Assert.AreEqual(0, feedCollection.Count)
 
     [<Test>]
     [<TestCase(-1)>]
