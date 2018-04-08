@@ -39,8 +39,8 @@
       <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Jabberwocky.Toolkit, Version=1.0.7.7, Culture=neutral, PublicKeyToken=8994d5f40ad2f5fb, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.7\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
+    <Reference Include="Jabberwocky.Toolkit, Version=1.0.7.8, Culture=neutral, PublicKeyToken=8994d5f40ad2f5fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.8\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">

@@ -1,6 +1,10 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.2.1 (1.9.9.1)
+1. **Fixed:** Scrolling bug in Podcast window.
+2. **Fixed:** Bug where download confirmation threshold was not being set correctly during feed scan.
+
 ## 3.2.0 (1.9.9)
 1. **Changed:** Algorithm for file name resolution on podcasts has been changed. Will try to use the URL, the title and the publishing date to effort to find a unique name. Otherwise the name will be set to nothing.
 2. **Changed:** Podcast file names that are not set will cause the download job to fail during scanning. A file name can be set of use during manual download but this name will not be permanent.

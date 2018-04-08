@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">
-      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.7\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
+      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.8\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />

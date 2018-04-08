@@ -89,18 +89,36 @@ namespace PodFul.WPF.Testbed
       var podcast1 = this.CreateTestPodcast("Podcast 1");
       var podcast2 = this.CreateTestPodcast("Podcast 2");
       var podcast3 = this.CreateTestPodcast("Podcast 3");
-      var feed = this.CreateTestFeed("Feed", new[] { podcast1, podcast2, podcast3 });
+      var podcast4 = this.CreateTestPodcast("Podcast 4");
+      var podcast5 = this.CreateTestPodcast("Podcast 5");
+      var podcast6 = this.CreateTestPodcast("Podcast 6");
+      var podcast7 = this.CreateTestPodcast("Podcast 7");
+      var podcast8 = this.CreateTestPodcast("Podcast 8");
+      var podcast9 = this.CreateTestPodcast("Podcast 9");
+      var feed = this.CreateTestFeed("Feed", new[] { podcast1, podcast2, podcast3, podcast4, podcast5, podcast6, podcast7, podcast8, podcast9 });
       FeedCollection feedCollection = null;
 
       DownloadJob[] jobs = {
         new DownloadJob(podcast1, feed, feedCollection),
         new DownloadJob(podcast2, feed, feedCollection),
         new DownloadJob(podcast3, feed, feedCollection),
+        new DownloadJob(podcast4, feed, feedCollection),
+        new DownloadJob(podcast5, feed, feedCollection),
+        new DownloadJob(podcast6, feed, feedCollection),
+        new DownloadJob(podcast7, feed, feedCollection),
+        new DownloadJob(podcast8, feed, feedCollection),
+        new DownloadJob(podcast9, feed, feedCollection),
       };
 
       jobs[0].ExceptionMessage = "The Operation has timed out.";
       jobs[1].ExceptionMessage = "No filename given.";
       jobs[2].ExceptionMessage = "The Operation has timed out.";
+      jobs[3].ExceptionMessage = "The Operation has timed out.";
+      jobs[4].ExceptionMessage = "No filename given.";
+      jobs[5].ExceptionMessage = "Null reference exception.";
+      jobs[6].ExceptionMessage = "Parameter exception.";
+      jobs[7].ExceptionMessage = "Exception exception.";
+      jobs[8].ExceptionMessage = "Faking funk on nasty dunk exception.";
 
       var window = new RetryWindow(jobs);
       window.ShowDialog();
