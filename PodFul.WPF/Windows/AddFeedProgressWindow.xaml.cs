@@ -46,7 +46,7 @@ namespace PodFul.WPF.Windows
       InitializeComponent();
 
       this.feedCollectionViewModel = feedCollectionViewModel;
-      this.feedCollectionViewModel.CompletedDownloadNotificationEvent = this.CompletedDownloadNotificationEventHandler;
+      this.feedCollectionViewModel.CompletedImageDownloadNotificationEvent = this.CompletedDownloadNotificationEventHandler;
 
       this.addFeedToken = addFeedToken;
     }

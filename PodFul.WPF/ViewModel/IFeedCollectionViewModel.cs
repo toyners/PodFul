@@ -10,7 +10,10 @@ namespace PodFul.WPF.ViewModel
   {
     ObservableCollection<IFeedViewModel> Feeds { get; }
 
-    Action<Int32, String> CompletedDownloadNotificationEvent { get; set; }
+    Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
+    Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
+    Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
+    Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
 
     void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken);
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
         mc:Ignorable="d"
-        Title="MainWindow 4.0" Height="600" Width="1000" 
+        Title="MainWindow Next" Height="600" Width="1000" 
         MinHeight="150" MinWidth="150"
         Icon="baggage_cart_box_tE4_icon.ico" WindowStartupLocation="CenterScreen">
   <DockPanel Margin="5">
