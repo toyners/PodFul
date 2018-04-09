@@ -492,7 +492,7 @@ namespace PodFul.WPF.Testbed
   {
     public ObservableCollection<IFeedViewModel> Feeds { get; private set; }
     public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
-    public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
+    public Action<Int32, String> SkipImageDownloadNotificationEvent { get; set; }
     public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
     public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
 

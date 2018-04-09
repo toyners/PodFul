@@ -4,6 +4,7 @@ namespace PodFul.WPF.ViewModel
   using System;
   using System.Collections.ObjectModel;
   using System.Threading;
+  using Jabberwocky.Toolkit.Object;
   using PodFul.WPF.Windows;
   using Processing;
 
@@ -12,7 +13,7 @@ namespace PodFul.WPF.ViewModel
     private enum ImageEvents
     {
       Completed,
-      Skipped,
+      Skip,
       Start,
     }
 
@@ -20,7 +21,7 @@ namespace PodFul.WPF.ViewModel
     private IFeedProcessor feedProcessor;
     private IImageResolver imageResolver; 
     private Action<Int32, String> completedImageDownloadNotificationEvent;
-    private Action<Int32, String> skippedImageDownloadNotificationEvent;
+    private Action<Int32, String> skipImageDownloadNotificationEvent;
     private Action<Int32, String> startImageDownloadNotificationEvent;
     private Action<Int32> totalImageDownloadsRequiredEvent;
     #endregion
@@ -34,10 +35,10 @@ namespace PodFul.WPF.ViewModel
       set { this.SetImageEventHandler(this.completedImageDownloadNotificationEvent, ImageEvents.Completed, value); }
     }
 
-    public Action<Int32, String> SkippedImageDownloadNotificationEvent
+    public Action<Int32, String> SkipImageDownloadNotificationEvent
     {
-      get { return this.skippedImageDownloadNotificationEvent; }
-      set { this.SetImageEventHandler(this.skippedImageDownloadNotificationEvent, ImageEvents.Skipped, value); }
+      get { return this.skipImageDownloadNotificationEvent; }
+      set { this.SetImageEventHandler(this.skipImageDownloadNotificationEvent, ImageEvents.Skip, value); }
     }
 
     public Action<Int32, String> StartImageDownloadNotificationEvent
@@ -74,9 +75,12 @@ namespace PodFul.WPF.ViewModel
     #endregion
 
     #region Methods
-    public FeedCollectionViewModel(IFeedProcessor feedProcessor)
+    public FeedCollectionViewModel(IFeedProcessor feedProcessor, IImageResolver imageResolver)
     {
+      feedProcessor.VerifyThatObjectIsNotNull("Parameter 'feedProcessor' is null.");
+
       this.feedProcessor = feedProcessor;
+      this.imageResolver = imageResolver;
       this.Feeds = new ObservableCollection<IFeedViewModel>();
 
       if (feedProcessor.Feeds != null && feedProcessor.Feeds.Count > 0)
@@ -119,7 +123,7 @@ namespace PodFul.WPF.ViewModel
         switch (eventType)
         {
           case ImageEvents.Completed: this.imageResolver.CompletedDownloadNotificationEvent -= currentEvent; break;
-          case ImageEvents.Skipped: this.imageResolver.SkippedDownloadNotificationEvent -= currentEvent; break;
+          case ImageEvents.Skip: this.imageResolver.SkippedDownloadNotificationEvent -= currentEvent; break;
           case ImageEvents.Start: this.imageResolver.StartDownloadNotificationEvent -= currentEvent; break;
         }
       }
@@ -130,7 +134,7 @@ namespace PodFul.WPF.ViewModel
         switch (eventType)
         {
           case ImageEvents.Completed: this.imageResolver.CompletedDownloadNotificationEvent += newEvent; break;
-          case ImageEvents.Skipped: this.imageResolver.SkippedDownloadNotificationEvent += newEvent; break;
+          case ImageEvents.Skip: this.imageResolver.SkippedDownloadNotificationEvent += newEvent; break;
           case ImageEvents.Start: this.imageResolver.StartDownloadNotificationEvent += newEvent; break;
         }
       }

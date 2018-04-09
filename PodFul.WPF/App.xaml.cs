@@ -37,7 +37,7 @@ namespace PodFul.WPF
           { LoggerKeys.UiKey, guiLogger}});
         var feedStorage = new JSONFileStorage(feedDirectory);
         var feedProcessor = new FeedProcessor(feedStorage, logController);
-        var feedCollectionViewModel = new FeedCollectionViewModel(feedProcessor);
+        var feedCollectionViewModel = new FeedCollectionViewModel(feedProcessor, null);
         var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
         mainWindow.ShowDialog();
       }
