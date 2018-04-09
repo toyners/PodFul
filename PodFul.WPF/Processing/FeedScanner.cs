@@ -103,12 +103,12 @@ namespace PodFul.WPF.Processing
             if (!feed.DoScan)
             {
               message = "SKIPPING \"" + feed.Title + "\".\r\n";
-              this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
+              this.logController.Message(LoggerKeys.UiKey, message + "\r\n").Message(LoggerKeys.InfoKey, message);
               continue;
             }
 
             message = "Scanning \"" + feed.Title + "\".";
-            this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
+            this.logController.Message(LoggerKeys.UiKey, message + "\r\n").Message(LoggerKeys.InfoKey, message);
 
             Feed newFeed = null;
             try
@@ -125,7 +125,7 @@ namespace PodFul.WPF.Processing
               cancelToken.ThrowIfCancellationRequested();
 
               message = "Searching for new podcasts ... ";
-              this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
+              this.logController.Message(LoggerKeys.UiKey, message).Message(LoggerKeys.InfoKey, message);
 
               var podcastIndexes = this.BuildPodcastList(feed, newFeed);
               var feedHasNewPodcasts = (podcastIndexes.Count > 0);
@@ -133,7 +133,7 @@ namespace PodFul.WPF.Processing
               var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
               if (feedHasNewPodcasts && downloadConfirmation != DownloadConfirmationStatus.SkipDownloading)
               {
-                this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(MainWindow.InfoKey), newFeed, podcastIndexes);
+                this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey), newFeed, podcastIndexes);
 
                 podcastDownloadConfirmer.ConfirmDownloadThreshold = feed.ConfirmDownloadThreshold;
                 downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
@@ -141,7 +141,7 @@ namespace PodFul.WPF.Processing
                 {
                   var feedMessage = podcastIndexes.Count + " podcasts found";
                   var logMessage = feedMessage + " (Scan cancelled).";
-                  this.logController.Message(MainWindow.InfoKey, logMessage).Message(MainWindow.UiKey, feedMessage + "\r\n");
+                  this.logController.Message(LoggerKeys.InfoKey, logMessage).Message(LoggerKeys.UiKey, feedMessage + "\r\n");
                   scanReport.Message(feedMessage + " for \"" + feed.Title + "\".");
                   this.cancellationTokenSource.Cancel();
                   break;
@@ -171,18 +171,18 @@ namespace PodFul.WPF.Processing
             {
               var exceptionMessage = String.Format("EXCEPTION thrown for \"{0}\": {1}\r\n", feed.Title, exception.Message);
               scanReport.Message(exceptionMessage);
-              this.logController.Message(MainWindow.UiKey, exceptionMessage + "\r\n").Message(MainWindow.ExceptionKey, exceptionMessage);
+              this.logController.Message(LoggerKeys.UiKey, exceptionMessage + "\r\n").Message(LoggerKeys.ExceptionKey, exceptionMessage);
             }
           }
         }
         catch (OperationCanceledException ocException)
         {
-          this.logController.Message(MainWindow.ExceptionKey, ocException.Message);
+          this.logController.Message(LoggerKeys.ExceptionKey, ocException.Message);
           throw; // Rethrow so that the task state is correctly set (i.e. IsCanceled = true)
         }
         catch (Exception exception)
         {
-          this.logController.Message(MainWindow.ExceptionKey, exception.Message);
+          this.logController.Message(LoggerKeys.ExceptionKey, exception.Message);
         }
         finally
         {
@@ -233,11 +233,11 @@ namespace PodFul.WPF.Processing
         var text = scanReport.Text;
         if (String.IsNullOrEmpty(text))
         {
-          this.logController.Message(MainWindow.UiKey, "Nothing to report.");
+          this.logController.Message(LoggerKeys.UiKey, "Nothing to report.");
         }
         else
         {
-          this.logController.Message(MainWindow.UiKey, "Scan Report\r\n" + text);
+          this.logController.Message(LoggerKeys.UiKey, "Scan Report\r\n" + text);
         }
       });
       // No cancel token since we want this task to always run regardless
@@ -305,7 +305,7 @@ namespace PodFul.WPF.Processing
     private void FeedScanCompleted(Int32 feedIndex, Feed feed)
     {
       var message = String.Format("Updating \"{0}\" ... ", feed.Title);
-      this.logController.Message(MainWindow.UiKey, message).Message(MainWindow.InfoKey, message);
+      this.logController.Message(LoggerKeys.UiKey, message).Message(LoggerKeys.InfoKey, message);
 
       feed = Feed.SetUpdatedDate(DateTime.Now, feed);
 
@@ -318,7 +318,7 @@ namespace PodFul.WPF.Processing
       this.feedCollection.UpdateFeedContent(feed);
 
       message = "Completed.";
-      this.logController.Message(MainWindow.UiKey, message + "\r\n\r\n").Message(MainWindow.InfoKey, message);
+      this.logController.Message(LoggerKeys.UiKey, message + "\r\n\r\n").Message(LoggerKeys.InfoKey, message);
     }
 
     private void LogNewPodcastsFromFeed(ILogger logger, Feed feed, List<Int32> podcastIndexes)
@@ -355,7 +355,7 @@ namespace PodFul.WPF.Processing
         scanReport.Message(feedMessage + " for \"" + feedTitle + "\"" + downloadingSkippedMessage + ".\r\n");
       }
 
-      this.logController.Message(MainWindow.UiKey, message + "\r\n").Message(MainWindow.InfoKey, message);
+      this.logController.Message(LoggerKeys.UiKey, message + "\r\n").Message(LoggerKeys.InfoKey, message);
     }
     #endregion
   }

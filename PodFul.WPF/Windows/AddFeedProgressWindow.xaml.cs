@@ -97,7 +97,7 @@ namespace PodFul.WPF.Windows
             flattenedMessage += exception.Message + " ";
           }
 
-          this.logController.Message(MainWindow.ExceptionKey, "Trying to create new feed: " + flattenedMessage);
+          this.logController.Message(LoggerKeys.ExceptionKey, "Trying to create new feed: " + flattenedMessage);
           Application.Current.Dispatcher.Invoke(() =>
           {
             MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + flattenedMessage, "Exception occurred.");
@@ -105,11 +105,11 @@ namespace PodFul.WPF.Windows
         }
         else if (task.IsCanceled)
         {
-          this.logController.Message(MainWindow.InfoKey, "Adding feed from '" + this.feedFactory.FeedURL + "' was cancelled.");
+          this.logController.Message(LoggerKeys.InfoKey, "Adding feed from '" + this.feedFactory.FeedURL + "' was cancelled.");
         }
         else
         {
-          this.logController.Message(MainWindow.InfoKey, "'" + this.Feed.Title + "' added. Podcasts stored in '" + this.Feed.Directory + "'");
+          this.logController.Message(LoggerKeys.InfoKey, "'" + this.Feed.Title + "' added. Podcasts stored in '" + this.Feed.Directory + "'");
         }
 
         if (this.imageResolver != null)
@@ -173,7 +173,7 @@ namespace PodFul.WPF.Windows
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.ProgressBar.Value = imageDownloadCount;
-        this.logController.GetLogger<FileLogger>(MainWindow.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Completed downloading of \"" + imageFilePath + "\"");
+        this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Completed downloading of \"" + imageFilePath + "\"");
       });
     }
 
@@ -184,7 +184,7 @@ namespace PodFul.WPF.Windows
         imageDownloadCount++;
         this.StatusMessage.Text = "Skipped " + imageDownloadCount + " of " + imageDownloadTotal + " Images ...";
         this.ProgressBar.Value = imageDownloadCount;
-        this.logController.GetLogger<FileLogger>(MainWindow.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Skipped downloading of \"" + imageFilePath + "\"");
+        this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Skipped downloading of \"" + imageFilePath + "\"");
       });
     }
 

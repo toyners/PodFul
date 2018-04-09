@@ -22,10 +22,6 @@ namespace PodFul.WPF.Windows
   public partial class MainWindow : Window
   {
     #region Fields
-    public const String CombinedKey = "INFO+UI";
-    public const String ExceptionKey = "EXCEPTION";
-    public const String InfoKey = "INFO";
-    public const String UiKey = "UI";
 
     private const String defaultImageName = "Question-Mark.jpg";
     private FeedCollection feedCollection;
@@ -50,10 +46,10 @@ namespace PodFul.WPF.Windows
         exceptionLogger = new FileLogger();
 
         this.logController = new LogController(new Dictionary<String, ILogger>{
-          { InfoKey, fileLogger },
-          { ExceptionKey, exceptionLogger},
-          { CombinedKey, combinedLogger },
-          { UiKey, guiLogger}});
+          { LoggerKeys.InfoKey, fileLogger },
+          { LoggerKeys.ExceptionKey, exceptionLogger},
+          { LoggerKeys.CombinedKey, combinedLogger },
+          { LoggerKeys.UiKey, guiLogger}});
 
         InitializeComponent();
 
@@ -157,7 +153,7 @@ namespace PodFul.WPF.Windows
         var count = PodcastSynchroniser.Synchronise(feed);
 
         var message = String.Format("{0} MP3 file(s) synchronised after adding '{1}'", count, feed.Title);
-        this.logController.Message(InfoKey, message);
+        this.logController.Message(LoggerKeys.InfoKey, message);
         MessageBox.Show(String.Format("{0} MP3 file(s) synchronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
       }
 
@@ -173,7 +169,7 @@ namespace PodFul.WPF.Windows
       catch (Exception exception)
       {
         MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
-        this.logController.Message(ExceptionKey, "Trying to add new feed: " + exception.Message);
+        this.logController.Message(LoggerKeys.ExceptionKey, "Trying to add new feed: " + exception.Message);
         return;
       }
 
@@ -195,7 +191,7 @@ namespace PodFul.WPF.Windows
       var index = this.FeedList.SelectedIndex;
       var title = this.currentFeed.Title;
       this.feedCollection.RemoveFeed(this.currentFeed);
-      this.logController.Message(InfoKey, String.Format("'{0}' removed.", title));
+      this.logController.Message(LoggerKeys.InfoKey, String.Format("'{0}' removed.", title));
 
       if (this.feedCollection.Count == 0)
       {
@@ -280,7 +276,7 @@ namespace PodFul.WPF.Windows
     {
       var fileDeliverer = (deliverManualDownloadsToDeliveryPoints ? this.CreateFileDeliverer() : null);
       var jobNeedsLocationEventHandler = JobNeedsLocationEventHandlerFactory.CreateJobNeedsLocationEventHandler(null);
-      var downloadManager = DownloadManager.Create(this.logController.GetLogger(CombinedKey), this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
+      var downloadManager = DownloadManager.Create(this.logController.GetLogger(LoggerKeys.CombinedKey), this.settings.ConcurrentDownloadCount, jobNeedsLocationEventHandler, fileDeliverer);
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, this.settings.HideCompletedJobs);
 
       // Add the jobs after creating the window so that job queued event will fire.
@@ -296,13 +292,13 @@ namespace PodFul.WPF.Windows
       imageResolver.CompletedDownloadNotificationEvent += (downloadNumber, imageURL) =>
       {
         var message = "Downloaded '" + imageURL + "'";
-        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
+        this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message(message);
       };
 
       imageResolver.FailedDownloadNotificationEvent += (imageURL, exception) =>
       {
         var message = "Failed to download '" + imageURL + "'. Exception: " + exception.Message;
-        this.logController.GetLogger<FileLogger>(InfoKey).Message(message);
+        this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message(message);
       };
 
       return imageResolver;
@@ -344,7 +340,7 @@ namespace PodFul.WPF.Windows
     private void PerformScan(Queue<Int32> feedIndexes)
     {
       var fileDeliverer = this.CreateFileDeliverer();
-      var combinedLogger = this.logController.GetLogger(CombinedKey);
+      var combinedLogger = this.logController.GetLogger(LoggerKeys.CombinedKey);
       var downloadManager = DownloadManager.Create(combinedLogger, this.settings.ConcurrentDownloadCount, null, fileDeliverer);
 
       IImageResolver imageResolver = this.CreateImageResolver();
@@ -355,7 +351,7 @@ namespace PodFul.WPF.Windows
         downloadManager, 
         this.settings.HideCompletedJobs);
 
-      var logger = this.logController.GetLogger<UILogger>(UiKey);
+      var logger = this.logController.GetLogger<UILogger>(LoggerKeys.UiKey);
       logger.PostMessage = scanningWindow.PostMessage;
 
       scanningWindow.Owner = this;

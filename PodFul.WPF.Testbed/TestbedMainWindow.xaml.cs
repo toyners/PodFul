@@ -162,9 +162,9 @@ namespace PodFul.WPF.Testbed
       var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
 
       var logController = new LogController(new Dictionary<String, ILogger>{
-          { MainWindow.InfoKey, fileLogger },
-          { MainWindow.CombinedKey, combinedLogger },
-          { MainWindow.UiKey, guiLogger}});
+          { LoggerKeys.InfoKey, fileLogger },
+          { LoggerKeys.CombinedKey, combinedLogger },
+          { LoggerKeys.UiKey, guiLogger}});
 
       var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
       var feedScanner = new FeedScanner(
@@ -206,9 +206,9 @@ namespace PodFul.WPF.Testbed
       var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
 
       var logController = new LogController(new Dictionary<String, ILogger>{
-          { MainWindow.InfoKey, fileLogger },
-          { MainWindow.CombinedKey, combinedLogger },
-          { MainWindow.UiKey, guiLogger}});
+          { LoggerKeys.InfoKey, fileLogger },
+          { LoggerKeys.CombinedKey, combinedLogger },
+          { LoggerKeys.UiKey, guiLogger}});
 
       var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
       var feedScanner = new FeedScanner(
@@ -235,7 +235,7 @@ namespace PodFul.WPF.Testbed
 
       var retryJobs = JobCollectionFactory.FilterJobsByIndex(downloadManager.FailedJobs, retryWindow.RetryJobIndexes);
       
-      var retryManager = DownloadManager.Create(logController.GetLogger(MainWindow.CombinedKey), 1, null, null);
+      var retryManager = DownloadManager.Create(logController.GetLogger(LoggerKeys.CombinedKey), 1, null, null);
       var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, false);
 
       // Add the jobs after creating the window so that job queued event will fire.
@@ -338,9 +338,9 @@ namespace PodFul.WPF.Testbed
       var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
 
       var logController = new LogController(new Dictionary<String, ILogger>{
-          { MainWindow.InfoKey, fileLogger },
-          { MainWindow.CombinedKey, combinedLogger },
-          { MainWindow.UiKey, guiLogger}});
+          { LoggerKeys.InfoKey, fileLogger },
+          { LoggerKeys.CombinedKey, combinedLogger },
+          { LoggerKeys.UiKey, guiLogger}});
 
       var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
       var feedScanner = new FeedScanner(
@@ -373,7 +373,7 @@ namespace PodFul.WPF.Testbed
       var successfulJob = new DownloadJob(successfulPodcast, feed, feedCollection);
       var retryJobs = new[] { successfulJob };
 
-      var retryManager = DownloadManager.Create(logController.GetLogger(MainWindow.CombinedKey), 1, null, null);
+      var retryManager = DownloadManager.Create(logController.GetLogger(LoggerKeys.CombinedKey), 1, null, null);
       var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, false);
 
       // Add the jobs after creating the window so that job queued event will fire.
@@ -446,9 +446,9 @@ namespace PodFul.WPF.Testbed
       var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
 
       var logController = new LogController(new Dictionary<String, ILogger>{
-          { MainWindow.InfoKey, fileLogger },
-          { MainWindow.CombinedKey, combinedLogger },
-          { MainWindow.UiKey, guiLogger}});
+          { LoggerKeys.InfoKey, fileLogger },
+          { LoggerKeys.CombinedKey, combinedLogger },
+          { LoggerKeys.UiKey, guiLogger}});
 
       var downloadManager = DownloadManager.Create(combinedLogger, 1, null);
       var feedScanner = new FeedScanner(
