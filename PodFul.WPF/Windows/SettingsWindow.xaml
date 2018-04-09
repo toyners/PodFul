@@ -14,26 +14,26 @@
       <Button HorizontalAlignment="Right" Width="70" IsDefault="True" Click="CloseButtonClick" Style="{StaticResource ResourceKey=StandardButton}">Close</Button>
     </Border>
 
-    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Bottom">
-      <CheckBox Name="DownloadImagesWhenAddingFeeds" HorizontalAlignment="Right" Margin="0,2,2,2">Download images when adding feeds</CheckBox>
-    </Border>
-
     <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
       <Grid Margin="-1,0,1,0">
         <Grid.RowDefinitions>
           <RowDefinition Height="17pt"/>
+          <RowDefinition Height="17pt"/>
+          <RowDefinition Height="17pt"/>
+          <RowDefinition Height="17pt"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="4*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="8*"/>
+          <ColumnDefinition Width="5.5*"/>
+          <ColumnDefinition Width="7.5*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Margin="6,2" VerticalAlignment="Center">Concurrent Download Count:</TextBlock>
         <TextBox Grid.Column="1" Name="ConcurrentDownloadCount" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">3</TextBox>
 
-        <CheckBox Name="HideCompletedJobs" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5,0">Hide Completed Jobs</CheckBox>
+        <CheckBox Name="HideCompletedJobs" Grid.Row="1" VerticalAlignment="Center" Margin="5,0">Hide Completed Jobs</CheckBox>
+        <CheckBox Name="DownloadImagesWhenAddingFeeds" Grid.Row="2" VerticalAlignment="Center" Margin="5,0">Download images when adding feeds</CheckBox>
+        <CheckBox Name="UseTreeView" Grid.Row="3" VerticalAlignment="Center" Margin="5,0">Use Tree View (Requires Restart)</CheckBox>
       </Grid>
     </Border>
 
