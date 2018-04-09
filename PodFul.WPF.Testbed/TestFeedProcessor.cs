@@ -5,7 +5,7 @@ namespace PodFul.WPF.Testbed
   using System.Collections.Generic;
   using System.Threading;
   using Library;
-  using Windows;
+  using Processing;
 
   public class TestFeedProcessor : IFeedProcessor
   {
@@ -14,6 +14,19 @@ namespace PodFul.WPF.Testbed
     public Action FinishedAddingFeed { get; set; }
 
     public Action StartedAddingFeed { get; set; }
+
+    public Feed this[Int32 index]
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+
+      set
+      {
+        throw new NotImplementedException();
+      }
+    }
 
     public TestFeedProcessor()
     {

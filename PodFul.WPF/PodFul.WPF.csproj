@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logging\IFileDeliveryLogger.cs" />
+    <Compile Include="Logging\LoggerKeys.cs" />
     <Compile Include="Miscellaneous\JobCollectionFactory.cs" />
     <Compile Include="Miscellaneous\JobNeedsLocationEventHandlerFactory.cs" />
     <Compile Include="Miscellaneous\PodcastProperties.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Miscellaneous\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\IFeedCollection.cs" />
+    <Compile Include="Processing\FeedProcessor.cs" />
     <Compile Include="Processing\FeedFactory.cs" />
     <Compile Include="Processing\IDownloadEvents.cs" />
     <Compile Include="Processing\IDownloadManager.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Processing\IImageResolver.cs" />
     <Compile Include="Processing\ImageResolver.cs" />
     <Compile Include="Processing\IDownloadFunctionality.cs" />
+    <Compile Include="Processing\IFeedProcessor.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UI Support\IJobCountDisplayManager.cs" />
     <Compile Include="UI Support\JobCountStatusBarDisplayComponent.cs" />

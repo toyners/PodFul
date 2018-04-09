@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using System.Windows;
 using PodFul.Library;
-using PodFul.WPF.Logging;
 using PodFul.WPF.Miscellaneous;
 using PodFul.WPF.ViewModel;
 
@@ -75,77 +71,6 @@ namespace PodFul.WPF.Windows
     }
 
     private void SettingsButtonClick(Object sender, RoutedEventArgs e)
-    {
-      throw new NotImplementedException();
-    }
-  }
-
-  public interface IFeedProcessor
-  {
-    IList<Feed> Feeds { get; }
-    Action StartedAddingFeed { get; set; }
-    Action FinishedAddingFeed { get; set; }
-
-    Feed AddFeed(String directory, String url, String defaultPodcastImageFilePath, CancellationToken cancelToken);
-    void RemoveFeed(Feed feed);
-    void RemoveFeed(Int32 index);
-    void ScanFeeds(IList<Int32> indexes);
-  }
-
-  public class FeedProcessor : IFeedProcessor
-  {
-    private ILogController logController;
-
-    public IList<Feed> Feeds { get; private set; }
-
-    public Action FinishedAddingFeed { get; set; }
-
-    public Action StartedAddingFeed { get; set; }
-
-    public Feed AddFeed(String directory, String url, String defaultPodcastImageFilePath, CancellationToken cancelToken)
-    {
-      try
-      {
-        var feedFilePath = Path.Combine(directory, "download.rss");
-        var feed = FeedFunctions.CreateFeed(url, feedFilePath, directory, defaultPodcastImageFilePath, cancelToken);
-        this.logController.Message(MainWindow.InfoKey, "'" + feed.Title + "' added. Podcasts stored in '" + directory + "'");
-        return feed;
-      }
-      catch (OperationCanceledException oce)
-      {
-        this.logController.Message(MainWindow.InfoKey, "Adding feed from '" + url + "' was cancelled.");
-      }
-      catch (AggregateException ae)
-      {
-        var flattenedMessage = String.Empty;
-        var flattenedException = ae.Flatten();
-        foreach (var exception in flattenedException.InnerExceptions)
-        {
-          flattenedMessage += exception.Message + " ";
-        }
-
-        throw new Exception(flattenedMessage);
-      }
-      catch (Exception e)
-      {
-        this.logController.Message(MainWindow.ExceptionKey, "Trying to create new feed: " + e.Message);
-        throw e;
-      }
-
-      return null;
-    }
-
-    public void RemoveFeed(Int32 index)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void RemoveFeed(Feed feed)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void ScanFeeds(IList<Int32> indexes)
     {
       throw new NotImplementedException();
     }
