@@ -3,9 +3,7 @@ namespace PodFul.WPF.Testbed
 {
   using System;
   using System.Collections.Generic;
-  using System.Collections.ObjectModel;
   using System.IO;
-  using System.Threading;
   using System.Windows;
   using Jabberwocky.Toolkit.IO;
   using Logging;
@@ -14,7 +12,6 @@ namespace PodFul.WPF.Testbed
   using PodFul.Library;
   using PodFul.WPF.Windows;
   using Processing;
-  using ViewModel;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -472,7 +469,6 @@ namespace PodFul.WPF.Testbed
       var settings = new Settings();
       var feedProcessor = new TestFeedProcessor();
 
-      //var feedCollectionViewModel = new FeedCollectionViewModel(feedProcessor);
       var feedCollectionViewModel = new TestFeedCollectionViewModel();
       var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
       mainWindow.Owner = this;
@@ -485,25 +481,6 @@ namespace PodFul.WPF.Testbed
       var mainWindow = new MainWindow(settings, Directory.GetCurrentDirectory());
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
-    }
-  }
-
-  public class TestFeedCollectionViewModel : IFeedCollectionViewModel
-  {
-    public ObservableCollection<IFeedViewModel> Feeds { get; private set; }
-    public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
-    public Action<Int32, String> SkipImageDownloadNotificationEvent { get; set; }
-    public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
-    public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
-
-    public void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void RemoveFeed(Int32 index)
-    {
-      throw new NotImplementedException();
     }
   }
 }

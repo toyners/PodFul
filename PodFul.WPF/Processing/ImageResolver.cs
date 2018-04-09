@@ -24,15 +24,15 @@ namespace PodFul.WPF.Processing
     #endregion
 
     #region Events
-    public event Action<Int32> TotalDownloadsRequiredEvent;
+    public Action<Int32> TotalDownloadsRequiredEvent { get; set; }
 
-    public event Action<Int32, String> StartDownloadNotificationEvent;
+    public Action<Int32, String> StartDownloadNotificationEvent { get; set; }
 
-    public event Action<Int32, String> SkippedDownloadNotificationEvent;
+    public Action<Int32, String> SkippedDownloadNotificationEvent { get; set; }
 
-    public event Action<Int32, String> CompletedDownloadNotificationEvent;
+    public Action<Int32, String> CompletedDownloadNotificationEvent { get; set; }
 
-    public event Action<String, Exception> FailedDownloadNotificationEvent;
+    public Action<String, Exception> FailedDownloadNotificationEvent { get; set; }
     #endregion
 
     #region Methods

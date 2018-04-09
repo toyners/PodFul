@@ -47,7 +47,7 @@ namespace PodFul.WPF.Windows
 
       this.feedCollectionViewModel = feedCollectionViewModel;
       this.feedCollectionViewModel.CompletedImageDownloadNotificationEvent = this.CompletedDownloadNotificationEventHandler;
-      this.feedCollectionViewModel.SkipImageDownloadNotificationEvent = this.SkipDownloadNotificationEventHandler;
+      this.feedCollectionViewModel.SkippedImageDownloadNotificationEvent = this.SkipDownloadNotificationEventHandler;
       this.feedCollectionViewModel.StartImageDownloadNotificationEvent = this.StartDownloadNotificationEventHandler;
       this.feedCollectionViewModel.TotalImageDownloadsRequiredEvent = this.TotalDownloadsRequiredEventHandler;
 
@@ -69,7 +69,7 @@ namespace PodFul.WPF.Windows
     {
       this.ProgressBar.IsIndeterminate = true;
       var cancelToken = cancellationTokenSource.Token;
-      this.StatusMessage.Text = "Reading feed ...";
+      this.StatusMessage.Text = "Reading feed information ...";
 
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
@@ -78,7 +78,7 @@ namespace PodFul.WPF.Windows
         
         if (this.imageResolver != null)
         {
-          this.imageResolver.TotalDownloadsRequiredEvent += this.TotalDownloadsRequiredEventHandler;
+          this.imageResolver.TotalDownloadsRequiredEvent = this.TotalDownloadsRequiredEventHandler;
           this.imageResolver.StartDownloadNotificationEvent += this.StartDownloadNotificationEventHandler;
           this.imageResolver.SkippedDownloadNotificationEvent += this.SkipDownloadNotificationEventHandler;
           this.imageResolver.CompletedDownloadNotificationEvent += this.CompletedDownloadNotificationEventHandler;
@@ -137,10 +137,10 @@ namespace PodFul.WPF.Windows
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
         // Create the feed.
-        Application.Current.Dispatcher.Invoke(() =>
-        {
+        //Application.Current.Dispatcher.Invoke(() =>
+        ///{
           this.feedCollectionViewModel.AddFeed(this.addFeedToken, cancelToken);
-        });
+        //});
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>
@@ -172,8 +172,7 @@ namespace PodFul.WPF.Windows
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.ProgressBar.Value = imageDownloadCount;
-        this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Completed downloading of \"" + imageFilePath + "\"");
+        this.ProgressBar.Value = this.imageDownloadCount;
       });
     }
 
@@ -181,10 +180,9 @@ namespace PodFul.WPF.Windows
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        imageDownloadCount++;
-        this.StatusMessage.Text = "Skipped " + imageDownloadCount + " of " + imageDownloadTotal + " Images ...";
-        this.ProgressBar.Value = imageDownloadCount;
-        this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Skipped downloading of \"" + imageFilePath + "\"");
+        this.imageDownloadCount++;
+        this.StatusMessage.Text = "Skipped " + this.imageDownloadCount + " of " + this.imageDownloadTotal + " Images ...";
+        this.ProgressBar.Value = this.imageDownloadCount;
       });
     }
 
@@ -192,8 +190,8 @@ namespace PodFul.WPF.Windows
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        imageDownloadCount++;
-        this.StatusMessage.Text = "Downloading " + imageDownloadCount + " of " + imageDownloadTotal + " Images ...";
+        this.imageDownloadCount++;
+        this.StatusMessage.Text = "Downloading " + this.imageDownloadCount + " of " + this.imageDownloadTotal + " Images ...";
       });
     }
 
@@ -205,7 +203,7 @@ namespace PodFul.WPF.Windows
       {
         this.CancelButton.Content = "Skip";
         this.ProgressBar.IsIndeterminate = false;
-        this.ProgressBar.Maximum = totalDownloads;
+        this.ProgressBar.Maximum = totalDownloads - 1;
         this.ProgressBar.Value = 0; 
       });
     }

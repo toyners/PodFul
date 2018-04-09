@@ -4,7 +4,9 @@ namespace PodFul.WPF.ViewModel
   using System;
   using System.Collections.ObjectModel;
   using System.Threading;
+  using System.Windows;
   using Jabberwocky.Toolkit.Object;
+  using Logging;
   using PodFul.WPF.Windows;
   using Processing;
 
@@ -19,67 +21,32 @@ namespace PodFul.WPF.ViewModel
 
     #region Fields
     private IFeedProcessor feedProcessor;
-    private IImageResolver imageResolver; 
-    private Action<Int32, String> completedImageDownloadNotificationEvent;
-    private Action<Int32, String> skipImageDownloadNotificationEvent;
-    private Action<Int32, String> startImageDownloadNotificationEvent;
-    private Action<Int32> totalImageDownloadsRequiredEvent;
+    private IImageResolver imageResolver;
+    private ILogController logController;
+    private Int32 imageDownloadCount;
+    private Int32 imageDownloadTotal;
     #endregion
 
     #region Properties
     public ObservableCollection<IFeedViewModel> Feeds { get; private set; }
 
-    public Action<Int32, String> CompletedImageDownloadNotificationEvent
-    {
-      get { return this.completedImageDownloadNotificationEvent; }
-      set { this.SetImageEventHandler(this.completedImageDownloadNotificationEvent, ImageEvents.Completed, value); }
-    }
+    public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
 
-    public Action<Int32, String> SkipImageDownloadNotificationEvent
-    {
-      get { return this.skipImageDownloadNotificationEvent; }
-      set { this.SetImageEventHandler(this.skipImageDownloadNotificationEvent, ImageEvents.Skip, value); }
-    }
+    public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
 
-    public Action<Int32, String> StartImageDownloadNotificationEvent
-    {
-      get { return this.startImageDownloadNotificationEvent; }
-      set { this.SetImageEventHandler(this.startImageDownloadNotificationEvent, ImageEvents.Start, value); }
-    }
+    public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
 
-    public Action<Int32> TotalImageDownloadsRequiredEvent
-    {
-      get { return this.totalImageDownloadsRequiredEvent; }
-      set
-      {
-        // Handling the strict event handling on IImageResolver by hooking and unhooking the action 
-        // based on the value passed in. Strip this out if the event handling in IImageResolver moves
-        // to an action based model (as it should - multi-chaining of event handlers is not required)
-        if (this.imageResolver == null)
-        {
-          return;
-        }
-
-        if (this.totalImageDownloadsRequiredEvent != null)
-        {
-          this.imageResolver.TotalDownloadsRequiredEvent -= this.totalImageDownloadsRequiredEvent;
-        }
-
-        if (value != null)
-        {
-          this.totalImageDownloadsRequiredEvent = value;
-          this.imageResolver.TotalDownloadsRequiredEvent += value;
-        }
-      }
-    }
+    public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
     #endregion
 
-    #region Methods
-    public FeedCollectionViewModel(IFeedProcessor feedProcessor, IImageResolver imageResolver)
+    #region Construction
+    public FeedCollectionViewModel(IFeedProcessor feedProcessor, ILogController logController, IImageResolver imageResolver)
     {
       feedProcessor.VerifyThatObjectIsNotNull("Parameter 'feedProcessor' is null.");
+      logController.VerifyThatObjectIsNotNull("Parameter 'logController' is null.");
 
       this.feedProcessor = feedProcessor;
+      this.logController = logController;
       this.imageResolver = imageResolver;
       this.Feeds = new ObservableCollection<IFeedViewModel>();
 
@@ -90,17 +57,32 @@ namespace PodFul.WPF.ViewModel
           this.Feeds.Add(new FeedViewModel(feed));
         }
       }
-    }
 
+      if (this.imageResolver != null)
+      {
+        this.imageResolver.CompletedDownloadNotificationEvent = this.CompletedImageDownloadNotificationEventHandler;
+        this.imageResolver.SkippedDownloadNotificationEvent = this.SkippedImageDownloadNotificationEventHandler;
+        this.imageResolver.StartDownloadNotificationEvent = this.StartImageDownloadNotificationEventHandler;
+        this.imageResolver.TotalDownloadsRequiredEvent = this.TotalImageDownloadsRequiredEventHandler;
+      }
+    }
+    #endregion
+
+    #region Methods
     public void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken)
     {
+      this.imageDownloadCount = 0;
       var feed = this.feedProcessor.AddFeed(addFeedToken.Directory, addFeedToken.Url, addFeedToken.DefaultPodcastImageFilePath, cancelToken);
       if (this.imageResolver != null)
       {
         this.imageResolver.ResolvePodcastImagesForFeed(feed, cancelToken);
       }
 
-      this.Feeds.Add(new FeedViewModel(feed));
+      // Need to add the feed on the UI thread since the feed collection is tied to the UI.
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.Feeds.Add(new FeedViewModel(feed));
+      });
     }
 
     public void RemoveFeed(Int32 index)
@@ -108,36 +90,28 @@ namespace PodFul.WPF.ViewModel
       throw new NotImplementedException();
     }
 
-    private void SetImageEventHandler(Action<Int32, String> currentEvent, ImageEvents eventType, Action<Int32, String> newEvent)
+    private void CompletedImageDownloadNotificationEventHandler(Int32 number, String imageFilePath)
     {
-      // Handling the strict event handling on IImageResolver by hooking and unhooking the action 
-      // based on the value passed in. Strip this out if the event handling in IImageResolver moves
-      // to an action based model (as it should - multi-chaining of event handlers is not required)
-      if (this.imageResolver == null)
-      {
-        return;
-      }
+      this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Completed downloading of \"" + imageFilePath + "\"");
+      this.CompletedImageDownloadNotificationEvent?.Invoke(number, imageFilePath);
+    }
 
-      if (currentEvent != null)
-      {
-        switch (eventType)
-        {
-          case ImageEvents.Completed: this.imageResolver.CompletedDownloadNotificationEvent -= currentEvent; break;
-          case ImageEvents.Skip: this.imageResolver.SkippedDownloadNotificationEvent -= currentEvent; break;
-          case ImageEvents.Start: this.imageResolver.StartDownloadNotificationEvent -= currentEvent; break;
-        }
-      }
+    private void SkippedImageDownloadNotificationEventHandler(Int32 number, String imageFilePath)
+    {
+      this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey).Message("[" + imageDownloadCount + " of " + imageDownloadTotal + "]: Skipped downloading of \"" + imageFilePath + "\"");
+      this.SkippedImageDownloadNotificationEvent?.Invoke(number, imageFilePath);
+    }
 
-      if (newEvent != null)
-      {
-        currentEvent = newEvent;
-        switch (eventType)
-        {
-          case ImageEvents.Completed: this.imageResolver.CompletedDownloadNotificationEvent += newEvent; break;
-          case ImageEvents.Skip: this.imageResolver.SkippedDownloadNotificationEvent += newEvent; break;
-          case ImageEvents.Start: this.imageResolver.StartDownloadNotificationEvent += newEvent; break;
-        }
-      }
+    private void StartImageDownloadNotificationEventHandler(Int32 number, String filePath)
+    {
+      this.imageDownloadCount++;
+      this.StartImageDownloadNotificationEvent?.Invoke(number, filePath);
+    }
+
+    private void TotalImageDownloadsRequiredEventHandler(Int32 total)
+    {
+      this.imageDownloadTotal = total;
+      this.TotalImageDownloadsRequiredEvent?.Invoke(total);
     }
     #endregion
   }

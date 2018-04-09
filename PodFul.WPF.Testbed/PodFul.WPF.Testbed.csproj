@@ -80,6 +80,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestFeedCollectionViewModel.cs" />
     <Compile Include="TestFeedProcessor.cs" />
     <Compile Include="TestbedMainWindow.xaml.cs">
       <DependentUpon>TestbedMainWindow.xaml</DependentUpon>
