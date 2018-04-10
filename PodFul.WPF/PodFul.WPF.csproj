@@ -84,7 +84,7 @@
     <Compile Include="Logging\LogController.cs" />
     <Compile Include="Logging\ILogController.cs" />
     <Compile Include="Logging\FileDeliveryLogger.cs" />
-    <Compile Include="Miscellaneous\DataGridExtensions.cs" />
+    <Compile Include="UI Support\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\IFeedCollection.cs" />
     <Compile Include="Processing\FeedProcessor.cs" />
@@ -109,6 +109,9 @@
     <Compile Include="Processing\PodcastDownloadConfirmer.cs" />
     <Compile Include="UI Support\JobCountDisplayManager.cs" />
     <Compile Include="UI Support\IJobCountDisplayComponent.cs" />
+    <Compile Include="ViewModel\IPodcastViewModel.cs" />
+    <Compile Include="ViewModel\FeedViewModel.cs" />
+    <Compile Include="ViewModel\IFeedViewModel.cs" />
     <Compile Include="ViewModel\FeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
     <Compile Include="Windows\DeliveryPointWindow.xaml.cs">
