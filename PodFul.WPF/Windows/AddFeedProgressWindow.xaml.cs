@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using Jabberwocky.Toolkit.Object;
 using PodFul.Library;
 using PodFul.WPF.Logging;
@@ -23,6 +24,7 @@ namespace PodFul.WPF.Windows
     private Int32 imageDownloadTotal;
     private Int32 imageDownloadCount;
     private IFeedFactory feedFactory;
+    private Object collectionLock = new Object();
 
     private IFeedCollectionViewModel feedCollectionViewModel;
     #endregion
@@ -134,13 +136,13 @@ namespace PodFul.WPF.Windows
       var cancelToken = cancellationTokenSource.Token;
       this.StatusMessage.Text = "Reading feed ...";
 
+      // Allow synchronization on the feeds collection so that we can add a feed on the worker thread even
+      // though the collection is owned by the UI thread.
+      BindingOperations.EnableCollectionSynchronization(this.feedCollectionViewModel.Feeds, collectionLock);
+
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
-        // Create the feed.
-        //Application.Current.Dispatcher.Invoke(() =>
-        ///{
-          this.feedCollectionViewModel.AddFeed(this.addFeedToken, cancelToken);
-        //});
+        this.feedCollectionViewModel.AddFeed(this.addFeedToken, cancelToken);
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>
@@ -218,7 +220,12 @@ namespace PodFul.WPF.Windows
 
     private void WindowClosing(Object sender, System.ComponentModel.CancelEventArgs e)
     {
+      // Ensure that any processing is cancelled as the window is closed.
       this.cancellationTokenSource.Cancel();
+
+      // Disable synchronisation when closing the window so that synchronisation is properly enabled
+      // next time a feed is added. Also so  that the locking instance can be garbage collected.
+      BindingOperations.DisableCollectionSynchronization(this.feedCollectionViewModel.Feeds);
     }
 
     private void WindowLoaded(Object sender, RoutedEventArgs e)
