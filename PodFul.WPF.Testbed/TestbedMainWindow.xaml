@@ -45,6 +45,12 @@
       </StackPanel>
     </Button>
 
+    <Button Margin="5" Grid.Column="4" Click="SettingsWindow_Click">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap">Settings Window</TextBlock>
+      </StackPanel>
+    </Button>
+
     <Button Margin="5" Grid.Row="1" Click="RetryTestWithSuccessfulRetry_Click">
       <TextBlock TextWrapping="Wrap">Retry Test with Successful Retry</TextBlock>
     </Button>

@@ -99,12 +99,19 @@ namespace PodFul.WPF.Miscellaneous
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Saves the settings to the file path passed into the instance as part of construction. If
+    /// no file path is available then the settings are not saved.
+    /// </summary>
     public void Save()
     {
-      var serializer = new XmlSerializer(typeof(SettingsData));
-      using (var fileStream = new FileStream(this.filePath, FileMode.Create))
+      if (this.filePath != null)
       {
-        serializer.Serialize(fileStream, this.settingsData);
+        var serializer = new XmlSerializer(typeof(SettingsData));
+        using (var fileStream = new FileStream(this.filePath, FileMode.Create))
+        {
+          serializer.Serialize(fileStream, this.settingsData);
+        }
       }
     }
 

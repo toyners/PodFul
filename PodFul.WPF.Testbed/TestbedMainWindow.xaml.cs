@@ -482,5 +482,11 @@ namespace PodFul.WPF.Testbed
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }
+
+    private void SettingsWindow_Click(Object sender, RoutedEventArgs e)
+    {
+      var window = new SettingsWindow(new Settings());
+      window.ShowDialog();
+    }
   }
 }
