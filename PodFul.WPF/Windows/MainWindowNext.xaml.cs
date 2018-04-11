@@ -20,7 +20,7 @@ namespace PodFul.WPF.Windows
 
       this.settings = settings;
       this.feedCollectionViewModel = feedCollectionViewModel;
-      this.FeedTree.ItemsSource = this.feedCollectionViewModel.Feeds;
+      this.FeedTree.DataContext = this.feedCollectionViewModel;
     }
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)

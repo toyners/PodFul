@@ -2,6 +2,7 @@
 namespace PodFul.WPF.ViewModel
 {
   using System;
+  using System.Collections.ObjectModel;
 
   public interface IFeedViewModel
   {
@@ -11,5 +12,7 @@ namespace PodFul.WPF.ViewModel
 
     Boolean IsSelected { get; set; }
     Boolean IsExpanded { get; set; }
+
+    ObservableCollection<IPodcastViewModel> Podcasts { get; }
   }
 }
