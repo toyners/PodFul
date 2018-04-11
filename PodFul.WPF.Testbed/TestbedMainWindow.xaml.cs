@@ -488,5 +488,15 @@ namespace PodFul.WPF.Testbed
       var window = new SettingsWindow(new Settings());
       window.ShowDialog();
     }
+
+    private void AddFeeds_Click(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
+
+    private void SingleFeedWithMultiplePodcasts_Click(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

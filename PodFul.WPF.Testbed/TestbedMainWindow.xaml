@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Testbed"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="WPF Testbed  " Height="350" Width="800"
         ResizeMode="CanMinimize">
@@ -98,10 +99,16 @@
       </StackPanel>
     </Button>
     
-    <Button Margin="5" Grid.Row="2" Grid.Column="1" Click="MainViewNext_Click">
+    <xctk:SplitButton Margin="5" Grid.Row="2" Grid.Column="1" Click="MainViewNext_Click">
       <StackPanel>
         <TextBlock TextWrapping="Wrap">Main View Next</TextBlock>
       </StackPanel>
-    </Button>
+      <xctk:SplitButton.DropDownContent>
+        <StackPanel>
+          <Button Content="Add Feeds" Margin="2" Padding="2" HorizontalContentAlignment="Left" Click="AddFeeds_Click"/>
+          <Button Content="Single Feed with Multiple Podcasts" Margin="2" Padding="2" HorizontalContentAlignment="Left" Click="SingleFeedWithMultiplePodcasts_Click"/>
+        </StackPanel>
+      </xctk:SplitButton.DropDownContent>
+    </xctk:SplitButton>
   </Grid>
 </Window>
