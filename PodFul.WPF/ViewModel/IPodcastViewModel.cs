@@ -7,6 +7,6 @@ namespace PodFul.WPF.ViewModel
   {
     String Title { get; }
     String Description { get; }
-    String Image { get; }
+    String ImageFilePath { get; }
   }
 }

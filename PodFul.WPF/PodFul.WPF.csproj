@@ -114,6 +114,7 @@
     <Compile Include="ViewModel\IFeedViewModel.cs" />
     <Compile Include="ViewModel\FeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
+    <Compile Include="ViewModel\PodcastViewModel.cs" />
     <Compile Include="Windows\DeliveryPointWindow.xaml.cs">
       <DependentUpon>DeliveryPointWindow.xaml</DependentUpon>
     </Compile>

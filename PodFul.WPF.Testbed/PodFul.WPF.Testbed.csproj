@@ -96,6 +96,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />
     <Page Include="TestbedMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,7 +105,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestFeedCollectionViewModel.cs" />
+    <Compile Include="ViewModel\AddFeedCollectionViewModel.cs" />
     <Compile Include="TestFeedProcessor.cs" />
     <Compile Include="TestbedMainWindow.xaml.cs">
       <DependentUpon>TestbedMainWindow.xaml</DependentUpon>
@@ -162,6 +163,10 @@
       <Project>{070b485b-b472-4da6-a026-92a91a44ed94}</Project>
       <Name>PodFul.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PodFul.TestSupport\PodFul.TestSupport.fsproj">
+      <Project>{38f191e9-f7dc-48bb-8a82-f1156489942b}</Project>
+      <Name>PodFul.TestSupport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PodFul.WPF\PodFul.WPF.csproj">
       <Project>{ACC61FE2-7DCB-4B41-9C2D-3DE3016DCF69}</Project>
       <Name>PodFul.WPF</Name>
@@ -180,6 +185,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

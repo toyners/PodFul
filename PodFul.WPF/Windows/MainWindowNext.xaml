@@ -48,10 +48,31 @@
 
         <TreeView.ItemTemplate>
           <HierarchicalDataTemplate>
-            <StackPanel>
-              <TextBlock Text="{Binding Title}" />
-              <TextBlock Text="{Binding Description}" />
-            </StackPanel>
+            <Grid Margin="0,2">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <Image Source="{Binding ImageFilePath}" Margin="0,0,2,0" />
+
+              <Grid Grid.Column="1" Margin="4,0,0,0">
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock>
+                  <TextBlock.Inlines>
+                    <Run FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+                  </TextBlock.Inlines>
+                </TextBlock>
+
+                <TextBlock Grid.Row="1"
+                           VerticalAlignment="Top" Text="{Binding Path=Description}"
+                           TextWrapping="WrapWithOverflow" />
+              </Grid>
+            </Grid>
           </HierarchicalDataTemplate>
         </TreeView.ItemTemplate>
 

@@ -99,14 +99,30 @@
       </StackPanel>
     </Button>
     
-    <xctk:SplitButton Margin="5" Grid.Row="2" Grid.Column="1" Click="MainViewNext_Click">
+    <xctk:SplitButton Margin="5" Grid.Row="2" Grid.Column="1">
       <StackPanel>
         <TextBlock TextWrapping="Wrap">Main View Next</TextBlock>
       </StackPanel>
       <xctk:SplitButton.DropDownContent>
         <StackPanel>
-          <Button Content="Add Feeds" Margin="2" Padding="2" HorizontalContentAlignment="Left" Click="AddFeeds_Click"/>
-          <Button Content="Single Feed with Multiple Podcasts" Margin="2" Padding="2" HorizontalContentAlignment="Left" Click="SingleFeedWithMultiplePodcasts_Click"/>
+          <Button Content="Story 1: Add Test Feed to empty Collection" Margin="2" Padding="2" HorizontalContentAlignment="Left" Click="AddFeeds_Click">
+            <Button.ToolTip>
+              <StackPanel>
+                <TextBlock>Feed collection is empty.</TextBlock>
+                <TextBlock>Real feeds cannot be added. No dialog windows used.</TextBlock>
+                <TextBlock>Adding feeds will not allow real feeds to be added. Instead a test feed will be added.</TextBlock>
+              </StackPanel>
+            </Button.ToolTip>
+          </Button>
+          <Button Content="Story 2: Multiple Feeds with Multiple Podcasts" Margin="2" Padding="2" HorizontalContentAlignment="Left" Click="MultipleFeedsWithMultiplePodcasts_Click">
+            <Button.ToolTip>
+              <StackPanel>
+                <TextBlock>Feed collection contains multiple feeds</TextBlock>
+                <TextBlock>Each Feed contains multiple podcasts</TextBlock>
+                <TextBlock>Adding/Removing Feed will throw exception</TextBlock>
+              </StackPanel>
+            </Button.ToolTip>
+          </Button>
         </StackPanel>
       </xctk:SplitButton.DropDownContent>
     </xctk:SplitButton>

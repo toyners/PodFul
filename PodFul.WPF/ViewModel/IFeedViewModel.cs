@@ -6,7 +6,7 @@ namespace PodFul.WPF.ViewModel
 
   public interface IFeedViewModel
   {
-    String Image { get; }
+    String ImageFilePath { get; }
     String Description { get; }
     String Title { get; }
 

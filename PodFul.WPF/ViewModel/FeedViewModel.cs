@@ -12,7 +12,7 @@ namespace PodFul.WPF.ViewModel
     private Boolean isExpanded;
 
     public String Description { get; private set; }
-    public String Image { get; private set; }
+    public String ImageFilePath { get; private set; }
     public String Title { get; private set; }
 
     public Boolean IsExpanded
@@ -51,6 +51,7 @@ namespace PodFul.WPF.ViewModel
 
     public FeedViewModel(Feed feed)
     {
+      this.ImageFilePath = feed.ImageFileName;
       this.Title = feed.Title;
       this.Description = feed.Description;
     }

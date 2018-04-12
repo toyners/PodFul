@@ -4,12 +4,12 @@ namespace PodFul.WPF.Testbed
   using System;
   using System.Collections.ObjectModel;
   using System.Threading;
-  using ViewModel;
   using Windows;
+  using WPF.ViewModel;
 
-  public class TestFeedCollectionViewModel : IFeedCollectionViewModel
+  public class AddFeedCollectionViewModel : IFeedCollectionViewModel
   {
-    public TestFeedCollectionViewModel()
+    public AddFeedCollectionViewModel()
     {
       this.Feeds = new ObservableCollection<IFeedViewModel>();
     }

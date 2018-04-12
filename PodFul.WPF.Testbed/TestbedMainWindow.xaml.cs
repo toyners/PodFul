@@ -12,6 +12,7 @@ namespace PodFul.WPF.Testbed
   using PodFul.Library;
   using PodFul.WPF.Windows;
   using Processing;
+  using ViewModel;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -464,17 +465,6 @@ namespace PodFul.WPF.Testbed
       scanningWindow.ShowDialog();
     }
 
-    private void MainViewNext_Click(Object sender, RoutedEventArgs e)
-    {
-      var settings = new Settings();
-      var feedProcessor = new TestFeedProcessor();
-
-      var feedCollectionViewModel = new TestFeedCollectionViewModel();
-      var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
-      mainWindow.Owner = this;
-      mainWindow.ShowDialog();
-    }
-
     private void MainView_Click(Object sender, RoutedEventArgs e)
     {
       var settings = new Settings();
@@ -491,12 +481,20 @@ namespace PodFul.WPF.Testbed
 
     private void AddFeeds_Click(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      var settings = new Settings();
+      var feedCollectionViewModel = new AddFeedCollectionViewModel();
+      var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
+      mainWindow.Owner = this;
+      mainWindow.ShowDialog();
     }
 
-    private void SingleFeedWithMultiplePodcasts_Click(Object sender, RoutedEventArgs e)
+    private void MultipleFeedsWithMultiplePodcasts_Click(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      var settings = new Settings();
+      var feedCollectionViewModel = new MultipleFeedCollectionViewModel();
+      var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
+      mainWindow.Owner = this;
+      mainWindow.ShowDialog();
     }
   }
 }
