@@ -74,12 +74,15 @@
                 <TextBlock Grid.Row="1"
                            VerticalAlignment="Top" Text="{Binding Path=Description}"
                            TextWrapping="WrapWithOverflow" />
-
-                <TreeView Grid.Row="2" ItemsSource="{Binding Settings}" />
-
-
               </Grid>
             </Grid>
+          </HierarchicalDataTemplate>
+
+          <HierarchicalDataTemplate 
+            DataType="{x:Type local2:FeedSettingsCollectionViewModel}" ItemsSource="{Binding Children}">
+            <StackPanel Margin="0,2">
+              <TextBlock FontWeight="Bold" FontSize="14">Settings</TextBlock>
+            </StackPanel>
           </HierarchicalDataTemplate>
 
           <DataTemplate 

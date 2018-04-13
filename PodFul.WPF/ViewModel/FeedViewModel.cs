@@ -23,7 +23,7 @@ namespace PodFul.WPF.ViewModel
         this.Children.Add(new PodcastViewModel(podcast));
       }
 
-      this.Children.Add(new FeedSettingsViewModel());
+      this.Children.Add(new FeedSettingsCollectionViewModel());
     }
 
     public String Description { get; private set; }
@@ -68,6 +68,17 @@ namespace PodFul.WPF.ViewModel
     {
       this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+  }
+
+  public class FeedSettingsCollectionViewModel : BaseViewModel
+  {
+    public FeedSettingsCollectionViewModel()
+    {
+      this.Children = new ObservableCollection<BaseViewModel>();
+      this.Children.Add(new FeedSettingsViewModel());
+    }
+
+    public ObservableCollection<BaseViewModel> Children { get; private set; }
   }
 
   public class FeedSettingsViewModel : BaseViewModel
