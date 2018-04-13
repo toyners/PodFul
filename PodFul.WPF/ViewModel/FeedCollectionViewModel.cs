@@ -28,7 +28,7 @@ namespace PodFul.WPF.ViewModel
     #endregion
 
     #region Properties
-    public ObservableCollection<IFeedViewModel> Feeds { get; private set; }
+    public ObservableCollection<BaseViewModel> Feeds { get; private set; }
 
     public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
 
@@ -48,7 +48,7 @@ namespace PodFul.WPF.ViewModel
       this.feedProcessor = feedProcessor;
       this.logController = logController;
       this.imageResolver = imageResolver;
-      this.Feeds = new ObservableCollection<IFeedViewModel>();
+      this.Feeds = new ObservableCollection<BaseViewModel>();
 
       if (feedProcessor.Feeds != null && feedProcessor.Feeds.Count > 0)
       {

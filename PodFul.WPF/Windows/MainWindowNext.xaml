@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Windows"
+        xmlns:local2="clr-namespace:PodFul.WPF.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow Next" Height="600" Width="1000" 
         MinHeight="150" MinWidth="150"
@@ -46,8 +47,9 @@
           </Style>
         </TreeView.ItemContainerStyle>
 
-        <TreeView.ItemTemplate>
-          <HierarchicalDataTemplate>
+        <TreeView.Resources>
+          <HierarchicalDataTemplate 
+            DataType="{x:Type local2:FeedViewModel}" ItemsSource="{Binding Children}">
             <Grid Margin="0,2">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50" />
@@ -58,6 +60,7 @@
 
               <Grid Grid.Column="1" Margin="4,0,0,0">
                 <Grid.RowDefinitions>
+                  <RowDefinition />
                   <RowDefinition />
                   <RowDefinition />
                 </Grid.RowDefinitions>
@@ -71,11 +74,35 @@
                 <TextBlock Grid.Row="1"
                            VerticalAlignment="Top" Text="{Binding Path=Description}"
                            TextWrapping="WrapWithOverflow" />
+
+                <TreeView Grid.Row="2" ItemsSource="{Binding Settings}" />
+
+
               </Grid>
             </Grid>
           </HierarchicalDataTemplate>
-        </TreeView.ItemTemplate>
 
+          <DataTemplate 
+            DataType="{x:Type local2:PodcastViewModel}">
+            <StackPanel Margin="0,2">
+              <TextBlock>
+                <TextBlock.Inlines>
+                  <Run FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+                </TextBlock.Inlines>
+              </TextBlock>
+
+              <TextBlock VerticalAlignment="Top" Text="{Binding Path=Description}"
+                         TextWrapping="WrapWithOverflow" />
+            </StackPanel>
+          </DataTemplate>
+
+          <DataTemplate 
+            DataType="{x:Type local2:FeedSettingsViewModel}">
+            <StackPanel Margin="0,2">
+              <CheckBox IsChecked="{Binding DoScan}">Do Scan</CheckBox>
+            </StackPanel>
+          </DataTemplate>
+        </TreeView.Resources>
       </TreeView>
     </Border>
   </DockPanel>

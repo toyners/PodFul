@@ -13,6 +13,6 @@ namespace PodFul.WPF.ViewModel
     Boolean IsSelected { get; set; }
     Boolean IsExpanded { get; set; }
 
-    ObservableCollection<IPodcastViewModel> Podcasts { get; }
+    ObservableCollection<BaseViewModel> Children { get; }
   }
 }
