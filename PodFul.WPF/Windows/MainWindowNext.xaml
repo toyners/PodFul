@@ -88,12 +88,7 @@
           <DataTemplate 
             DataType="{x:Type local2:PodcastViewModel}">
             <StackPanel Margin="0,2">
-              <TextBlock>
-                <TextBlock.Inlines>
-                  <Run FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
-                </TextBlock.Inlines>
-              </TextBlock>
-
+              <TextBlock FontSize="14" Text="{Binding Title, Mode=OneWay}" />
               <TextBlock VerticalAlignment="Top" Text="{Binding Path=Description}"
                          TextWrapping="WrapWithOverflow" />
             </StackPanel>
