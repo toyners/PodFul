@@ -11,10 +11,10 @@ namespace PodFul.WPF.Testbed
   {
     public AddFeedCollectionViewModel()
     {
-      this.Feeds = new ObservableCollection<BaseViewModel>();
+      this.Feeds = new ObservableCollection<TreeViewItemViewModel>();
     }
 
-    public ObservableCollection<BaseViewModel> Feeds { get; private set; }
+    public ObservableCollection<TreeViewItemViewModel> Feeds { get; private set; }
     public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
     public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
     public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }

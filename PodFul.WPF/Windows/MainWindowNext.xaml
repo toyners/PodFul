@@ -79,7 +79,7 @@
           </HierarchicalDataTemplate>
 
           <HierarchicalDataTemplate 
-            DataType="{x:Type local2:FeedSettingsCollectionViewModel}" ItemsSource="{Binding Children}">
+            DataType="{x:Type local2:FeedSettingsExpandableViewModel}" ItemsSource="{Binding Children}">
             <StackPanel Margin="0,2">
               <TextBlock FontWeight="Bold" FontSize="14">Settings</TextBlock>
             </StackPanel>

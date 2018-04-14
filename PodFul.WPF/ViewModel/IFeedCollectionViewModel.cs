@@ -8,7 +8,7 @@ namespace PodFul.WPF.ViewModel
 
   public interface IFeedCollectionViewModel
   {
-    ObservableCollection<BaseViewModel> Feeds { get; }
+    ObservableCollection<TreeViewItemViewModel> Feeds { get; }
 
     Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
     Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }

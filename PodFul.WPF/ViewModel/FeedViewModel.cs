@@ -3,91 +3,50 @@ namespace PodFul.WPF.ViewModel
 {
   using System;
   using System.Collections.ObjectModel;
-  using System.ComponentModel;
   using Library;
 
-  public class FeedViewModel : BaseViewModel, IFeedViewModel, INotifyPropertyChanged
+  public class FeedViewModel : TreeViewItemViewModel, IFeedViewModel
   {
-    private Boolean isSelected;
-    private Boolean isExpanded;
-
     public FeedViewModel(Feed feed)
     {
       this.ImageFilePath = feed.ImageFileName;
       this.Title = feed.Title;
       this.Description = feed.Description;
-      this.Children = new ObservableCollection<BaseViewModel>();
+      this.Children = new ObservableCollection<TreeViewItemViewModel>();
 
       foreach (var podcast in feed.Podcasts)
       {
         this.Children.Add(new PodcastViewModel(podcast));
       }
 
-      this.Children.Add(new FeedSettingsCollectionViewModel());
+      this.Children.Add(new FeedSettingsExpandableViewModel(feed));
     }
 
     public String Description { get; private set; }
     public String ImageFilePath { get; private set; }
     public String Title { get; private set; }
 
-    public Boolean IsExpanded
-    {
-      get { return this.isExpanded; }
-      set
-      {
-        if (this.isExpanded == value)
-        {
-          return;
-        }
-
-        this.isExpanded = value;
-        this.OnPropertyChanged("IsExpanded");
-      }
-    }
-
-    public Boolean IsSelected
-    {
-      get { return this.isSelected; }
-      set
-      {
-        if (this.isSelected == value)
-        {
-          return;
-        }
-
-        this.isSelected = value;
-        this.OnPropertyChanged("IsSelected");
-      }
-    }
-
-    public ObservableCollection<BaseViewModel> Children { get; private set; }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    private void OnPropertyChanged(String propertyName)
-    {
-      this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    public ObservableCollection<TreeViewItemViewModel> Children { get; private set; }
   }
 
-  public class FeedSettingsCollectionViewModel : BaseViewModel
+  public class FeedSettingsExpandableViewModel : TreeViewItemViewModel
   {
-    public FeedSettingsCollectionViewModel()
+    public FeedSettingsExpandableViewModel(Feed feed)
     {
-      this.Children = new ObservableCollection<BaseViewModel>();
-      this.Children.Add(new FeedSettingsViewModel());
+      this.Children = new ObservableCollection<TreeViewItemViewModel>();
+      this.Children.Add(new FeedSettingsViewModel(feed));
     }
 
-    public ObservableCollection<BaseViewModel> Children { get; private set; }
+    public ObservableCollection<TreeViewItemViewModel> Children { get; private set; }
   }
 
-  public class FeedSettingsViewModel : BaseViewModel
+  public class FeedSettingsViewModel : TreeViewItemViewModel
   {
+    public FeedSettingsViewModel(Feed feed)
+    {
+      this.DoScan = feed.DoScan;
+    }
+
     public Boolean DoScan { get; set; }
-  }
-
-  public class BaseViewModel
-  {
-
   }
 }

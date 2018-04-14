@@ -38,13 +38,13 @@ namespace PodFul.WPF.Testbed.ViewModel
         true, true, true,
         podcasts2);
 
-      this.Feeds = new ObservableCollection<BaseViewModel>();
+      this.Feeds = new ObservableCollection<TreeViewItemViewModel>();
       this.Feeds.Add(new FeedViewModel(feed1));
       this.Feeds.Add(new FeedViewModel(feed2));
     }
 
     public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
-    public ObservableCollection<BaseViewModel> Feeds { get; private set; }
+    public ObservableCollection<TreeViewItemViewModel> Feeds { get; private set; }
     public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
     public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
     public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
