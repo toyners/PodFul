@@ -86,7 +86,7 @@
           </HierarchicalDataTemplate>
 
           <HierarchicalDataTemplate 
-            DataType="{x:Type local2:FeedPodcastsExpandableViewModel}" ItemsSource="{Binding Pages}">
+            DataType="{x:Type local2:FeedPodcastsExpandableViewModel}" ItemsSource="{Binding CurrentPage}">
             <StackPanel Margin="0,2">
               <TextBlock FontWeight="Bold" FontSize="14">Podcasts</TextBlock>
             </StackPanel>
@@ -94,7 +94,13 @@
 
           <DataTemplate 
             DataType="{x:Type local2:PodcastPageViewModel}">
-            <StackPanel Margin="0,2">
+            <DockPanel Margin="0,2">
+              <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                <Button>First</Button>
+                <Button>Previous</Button>
+                <TextBlock>1 of 1</TextBlock>
+                <Button IsEnabled="{Binding IsEnabled}" Click="NextPageClick">End</Button>
+              </StackPanel>
               <ListBox ItemsSource="{Binding Podcasts}">
                 <ListBox.ItemTemplate>
                   <DataTemplate>
@@ -106,7 +112,7 @@
                   </DataTemplate>
                 </ListBox.ItemTemplate>
               </ListBox>
-            </StackPanel>
+            </DockPanel>
           </DataTemplate>
 
           <DataTemplate 

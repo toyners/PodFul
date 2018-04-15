@@ -78,6 +78,11 @@ namespace PodFul.WPF.Windows
     {
       throw new NotImplementedException();
     }
+
+    private void NextPageClick(Object sender, RoutedEventArgs e)
+    {
+      var i = 0;
+    }
   }
 
   public struct AddFeedToken

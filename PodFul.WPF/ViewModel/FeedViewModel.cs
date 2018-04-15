@@ -14,7 +14,7 @@ namespace PodFul.WPF.ViewModel
       this.Title = feed.Title;
       this.Description = feed.Description;
       this.Children = new ObservableCollection<TreeViewItemViewModel>();
-      this.Children.Add(new FeedPodcastsExpandableViewModel(feed.Podcasts));
+      this.Children.Add(new FeedPodcastsExpandableViewModel(feed.Podcasts, 1));
       this.Children.Add(new FeedSettingsExpandableViewModel(feed));
     }
 
@@ -38,23 +38,39 @@ namespace PodFul.WPF.ViewModel
 
   public class FeedPodcastsExpandableViewModel : TreeViewItemViewModel
   {
-    public FeedPodcastsExpandableViewModel(IList<Podcast> podcasts)
+    private Int32 pageIndex;
+    private ObservableCollection<PodcastPageViewModel> currentPage = new ObservableCollection<PodcastPageViewModel>();
+    public FeedPodcastsExpandableViewModel()
+    { }
+    public FeedPodcastsExpandableViewModel(IList<Podcast> podcasts, Int32 count)
     {
       this.Pages = new ObservableCollection<PodcastPageViewModel>();
-      this.Pages.Add(new PodcastPageViewModel(podcasts));
+      for (var index = 0; index < podcasts.Count; index+=count)
+      {
+        this.Pages.Add(new PodcastPageViewModel(podcasts, index, (index + count - 1)));
+      }
+
+      this.currentPage.Add(this.Pages[0]);
     }
 
     public ObservableCollection<PodcastPageViewModel> Pages { get; private set; }
+
+    public ObservableCollection<PodcastPageViewModel> CurrentPage { get { return this.currentPage; } }
+
+    public void Next()
+    {
+
+    }
   }
 
   public class PodcastPageViewModel
   {
-    public PodcastPageViewModel(IList<Podcast> podcasts)
+    public PodcastPageViewModel(IList<Podcast> podcasts, Int32 first, Int32 last)
     {
       this.Podcasts = new ObservableCollection<PodcastViewModel>();
-      foreach(var podcast in podcasts)
+      while (first <= last)
       {
-        this.Podcasts.Add(new PodcastViewModel(podcast));
+        this.Podcasts.Add(new PodcastViewModel(podcasts[first++]));
       }
     }
 
