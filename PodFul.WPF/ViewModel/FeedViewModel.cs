@@ -2,6 +2,7 @@
 namespace PodFul.WPF.ViewModel
 {
   using System;
+  using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using Library;
 
@@ -13,12 +14,7 @@ namespace PodFul.WPF.ViewModel
       this.Title = feed.Title;
       this.Description = feed.Description;
       this.Children = new ObservableCollection<TreeViewItemViewModel>();
-
-      foreach (var podcast in feed.Podcasts)
-      {
-        this.Children.Add(new PodcastViewModel(podcast));
-      }
-
+      this.Children.Add(new FeedPodcastsExpandableViewModel(feed.Podcasts));
       this.Children.Add(new FeedSettingsExpandableViewModel(feed));
     }
 
@@ -40,13 +36,40 @@ namespace PodFul.WPF.ViewModel
     public ObservableCollection<TreeViewItemViewModel> Children { get; private set; }
   }
 
+  public class FeedPodcastsExpandableViewModel : TreeViewItemViewModel
+  {
+    public FeedPodcastsExpandableViewModel(IList<Podcast> podcasts)
+    {
+      this.Pages = new ObservableCollection<PodcastPageViewModel>();
+      this.Pages.Add(new PodcastPageViewModel(podcasts));
+    }
+
+    public ObservableCollection<PodcastPageViewModel> Pages { get; private set; }
+  }
+
+  public class PodcastPageViewModel
+  {
+    public PodcastPageViewModel(IList<Podcast> podcasts)
+    {
+      this.Podcasts = new ObservableCollection<PodcastViewModel>();
+      foreach(var podcast in podcasts)
+      {
+        this.Podcasts.Add(new PodcastViewModel(podcast));
+      }
+    }
+
+    public ObservableCollection<PodcastViewModel> Podcasts { get; private set; }
+  }
+
   public class FeedSettingsViewModel : TreeViewItemViewModel
   {
     public FeedSettingsViewModel(Feed feed)
     {
       this.DoScan = feed.DoScan;
+      this.CompleteDownloadsOnScan = feed.CompleteDownloadsOnScan;
     }
 
     public Boolean DoScan { get; set; }
+    public Boolean CompleteDownloadsOnScan { get; set; }
   }
 }

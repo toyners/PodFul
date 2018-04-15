@@ -85,6 +85,30 @@
             </StackPanel>
           </HierarchicalDataTemplate>
 
+          <HierarchicalDataTemplate 
+            DataType="{x:Type local2:FeedPodcastsExpandableViewModel}" ItemsSource="{Binding Pages}">
+            <StackPanel Margin="0,2">
+              <TextBlock FontWeight="Bold" FontSize="14">Podcasts</TextBlock>
+            </StackPanel>
+          </HierarchicalDataTemplate>
+
+          <DataTemplate 
+            DataType="{x:Type local2:PodcastPageViewModel}">
+            <StackPanel Margin="0,2">
+              <ListBox ItemsSource="{Binding Podcasts}">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel>
+                      <TextBlock FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+                      <TextBlock VerticalAlignment="Top" Text="{Binding Path=Description}"
+                         TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </StackPanel>
+          </DataTemplate>
+
           <DataTemplate 
             DataType="{x:Type local2:PodcastViewModel}">
             <StackPanel Margin="0,2">
@@ -98,6 +122,7 @@
             DataType="{x:Type local2:FeedSettingsViewModel}">
             <StackPanel Margin="0,2">
               <CheckBox IsChecked="{Binding DoScan}">Do Scan</CheckBox>
+              <CheckBox IsChecked="{Binding CompleteDownloadsOnScan}">Complete Downloads during Scan</CheckBox>
             </StackPanel>
           </DataTemplate>
         </TreeView.Resources>
