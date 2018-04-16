@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using PodFul.Library;
 using PodFul.WPF.Miscellaneous;
 using PodFul.WPF.ViewModel;
@@ -81,7 +82,26 @@ namespace PodFul.WPF.Windows
 
     private void NextPageClick(Object sender, RoutedEventArgs e)
     {
-      var i = 0;
+      var navigation = ((sender as Button).DataContext) as PodcastPageNavigationViewModel;
+      navigation.MoveForward();
+    }
+
+    private void PreviousPageClick(Object sender, RoutedEventArgs e)
+    {
+      var navigation = ((sender as Button).DataContext) as PodcastPageNavigationViewModel;
+      navigation.MoveBack();
+    }
+
+    private void FirstPageClick(Object sender, RoutedEventArgs e)
+    {
+      var navigation = ((sender as Button).DataContext) as PodcastPageNavigationViewModel;
+      navigation.MoveToFirstPage();
+    }
+
+    private void LastPageClick(Object sender, RoutedEventArgs e)
+    {
+      var navigation = ((sender as Button).DataContext) as PodcastPageNavigationViewModel;
+      navigation.MoveToLastPage();
     }
   }
 

@@ -38,12 +38,12 @@
           <Style TargetType="{x:Type TreeViewItem}">
             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-            <Setter Property="FontWeight" Value="Normal" />
+            <!--<Setter Property="FontWeight" Value="Normal" />
             <Style.Triggers>
               <Trigger Property="IsSelected" Value="True">
                 <Setter Property="FontWeight" Value="Bold" />
               </Trigger>
-            </Style.Triggers>
+            </Style.Triggers>-->
           </Style>
         </TreeView.ItemContainerStyle>
 
@@ -86,22 +86,25 @@
           </HierarchicalDataTemplate>
 
           <HierarchicalDataTemplate 
-            DataType="{x:Type local2:FeedPodcastsExpandableViewModel}" ItemsSource="{Binding CurrentPage}">
+            DataType="{x:Type local2:FeedPodcastsExpandableViewModel}" ItemsSource="{Binding Navigation}">
             <StackPanel Margin="0,2">
               <TextBlock FontWeight="Bold" FontSize="14">Podcasts</TextBlock>
             </StackPanel>
           </HierarchicalDataTemplate>
-
+          
           <DataTemplate 
-            DataType="{x:Type local2:PodcastPageViewModel}">
+            DataType="{x:Type local2:PodcastPageNavigationViewModel}">
             <DockPanel Margin="0,2">
               <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                <Button>First</Button>
-                <Button>Previous</Button>
-                <TextBlock>1 of 1</TextBlock>
-                <Button IsEnabled="{Binding IsEnabled}" Click="NextPageClick">End</Button>
+                <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
+                <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
+                <TextBox Text="{Binding PageNumber, Mode=TwoWay}"></TextBox>
+                <TextBlock> of </TextBlock>
+                <TextBlock Text="{Binding TotalPages}" />
+                <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
+                <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
               </StackPanel>
-              <ListBox ItemsSource="{Binding Podcasts}">
+              <ListBox DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}">
                 <ListBox.ItemTemplate>
                   <DataTemplate>
                     <StackPanel>

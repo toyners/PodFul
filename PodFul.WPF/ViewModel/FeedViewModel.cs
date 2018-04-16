@@ -4,6 +4,7 @@ namespace PodFul.WPF.ViewModel
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
+  using System.ComponentModel;
   using Library;
 
   public class FeedViewModel : TreeViewItemViewModel, IFeedViewModel
@@ -38,28 +39,79 @@ namespace PodFul.WPF.ViewModel
 
   public class FeedPodcastsExpandableViewModel : TreeViewItemViewModel
   {
-    private Int32 pageIndex;
-    private ObservableCollection<PodcastPageViewModel> currentPage = new ObservableCollection<PodcastPageViewModel>();
-    public FeedPodcastsExpandableViewModel()
-    { }
     public FeedPodcastsExpandableViewModel(IList<Podcast> podcasts, Int32 count)
     {
-      this.Pages = new ObservableCollection<PodcastPageViewModel>();
-      for (var index = 0; index < podcasts.Count; index+=count)
-      {
-        this.Pages.Add(new PodcastPageViewModel(podcasts, index, (index + count - 1)));
-      }
-
-      this.currentPage.Add(this.Pages[0]);
+      this.Navigation = new ObservableCollection<PodcastPageNavigationViewModel>();
+      this.Navigation.Add(new PodcastPageNavigationViewModel(podcasts, count));
     }
 
-    public ObservableCollection<PodcastPageViewModel> Pages { get; private set; }
+    public ObservableCollection<PodcastPageNavigationViewModel> Navigation { get; private set; }
+  }
 
-    public ObservableCollection<PodcastPageViewModel> CurrentPage { get { return this.currentPage; } }
+  public class PodcastPageNavigationViewModel : INotifyPropertyChanged
+  {
+    private List<PodcastPageViewModel> pages;
+    private Int32 pageNumber = 1;
 
-    public void Next()
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public PodcastPageNavigationViewModel(IList<Podcast> podcasts, Int32 count)
     {
+      this.pages = new List<PodcastPageViewModel>();
+      for (var index = 0; index < podcasts.Count; index += count)
+      {
+        this.pages.Add(new PodcastPageViewModel(podcasts, index, (index + count - 1)));
+      }
 
+      this.CurrentPage = new ObservableCollection<PodcastPageViewModel>();
+      this.CurrentPage.Add(this.pages[0]);
+    }
+
+    public Boolean CanMoveBack { get { return this.PageNumber > 1; } }
+    public Boolean CanMoveForward { get { return this.PageNumber < this.TotalPages; } }
+    public ObservableCollection<PodcastPageViewModel> CurrentPage { get; private set; }
+    public Int32 PageNumber
+    {
+      get { return this.pageNumber; }
+      set
+      {
+        if (this.pageNumber == value)
+        {
+          return;
+        }
+
+        this.pageNumber = value;
+        this.CurrentPage[0] = this.pages[this.pageNumber - 1];
+        if (this.PropertyChanged != null)
+        {
+          this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PageNumber"));
+          this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanMoveBack"));
+          this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanMoveForward"));
+          this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanMoveBack"));
+          this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanMoveForward"));
+        }
+      }
+    }
+    public Int32 TotalPages { get { return this.pages.Count; } }
+
+    public void MoveBack()
+    {
+      this.PageNumber--;
+    }
+
+    public void MoveForward()
+    {
+      this.PageNumber++;
+    }
+
+    public void MoveToFirstPage()
+    {
+      this.PageNumber = 1;
+    }
+
+    public void MoveToLastPage()
+    {
+      this.PageNumber = this.TotalPages;
     }
   }
 
