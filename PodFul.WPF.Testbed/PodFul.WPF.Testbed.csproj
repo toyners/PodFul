@@ -96,7 +96,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SimpleTreeWindow.xaml.cs">
+      <DependentUpon>SimpleTreeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />
+    <Page Include="SimpleTreeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TestbedMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

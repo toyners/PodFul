@@ -126,5 +126,11 @@
         </StackPanel>
       </xctk:SplitButton.DropDownContent>
     </xctk:SplitButton>
+
+    <Button Margin="5" Grid.Row="2" Grid.Column="2" Click="SimpleTreeView_Click">
+      <StackPanel>
+        <TextBlock TextWrapping="Wrap">Simple Tree View</TextBlock>
+      </StackPanel>
+    </Button>
   </Grid>
 </Window>

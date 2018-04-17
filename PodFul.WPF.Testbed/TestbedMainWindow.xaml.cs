@@ -496,5 +496,12 @@ namespace PodFul.WPF.Testbed
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }
+
+    private void SimpleTreeView_Click(Object sender, RoutedEventArgs e)
+    {
+      var mainWindow = new SimpleTreeWindow();
+      mainWindow.Owner = this;
+      mainWindow.ShowDialog();
+    }
   }
 }
