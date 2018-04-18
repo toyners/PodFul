@@ -11,17 +11,22 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PodFul.WPF.ViewModel;
 
 namespace PodFul.WPF.Testbed
 {
   /// <summary>
-  /// Interaction logic for SimpleTreeWindow.xaml
+  /// Interaction logic for TileListWindow.xaml
   /// </summary>
-  public partial class SimpleTreeWindow : Window
+  public partial class TileListWindow : Window
   {
-    public SimpleTreeWindow()
+    private IFeedCollectionViewModel feedCollectionViewModel;
+
+    public TileListWindow(IFeedCollectionViewModel feedCollectionViewModel)
     {
       InitializeComponent();
+
+      this.feedCollectionViewModel = feedCollectionViewModel;
     }
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)

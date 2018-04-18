@@ -497,9 +497,10 @@ namespace PodFul.WPF.Testbed
       mainWindow.ShowDialog();
     }
 
-    private void SimpleTreeView_Click(Object sender, RoutedEventArgs e)
+    private void TileListView_Click(Object sender, RoutedEventArgs e)
     {
-      var mainWindow = new SimpleTreeWindow();
+      var feedCollectionViewModel = new TileListViewModel();
+      var mainWindow = new TileListWindow(feedCollectionViewModel);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }

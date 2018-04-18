@@ -1,0 +1,110 @@
+﻿
+namespace PodFul.WPF.Testbed.ViewModel
+{
+  using System;
+  using System.Collections.ObjectModel;
+  using System.IO;
+  using System.Threading;
+  using TestSupport;
+  using Windows;
+  using WPF.ViewModel;
+
+  public class TileListViewModel : IFeedCollectionViewModel
+  {
+    public TileListViewModel()
+    {
+      var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
+      var podcasts1 = new[]
+      {
+        Setup.createTestPodcast("Podcast1-A", "Description for Podcast1-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast1-B", "Description for Podcast1-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast1-C", "Description for Podcast1-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+      };
+
+      var feed1 = Setup.createTestFullFeedFromParameters("Feed 1", "Description for Feed1", "", "", feedImageFilePath, "", "",
+        DateTime.MinValue, DateTime.MinValue,
+        true, true, true,
+        podcasts1);
+
+      var podcasts2 = new[]
+      {
+        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
+      };
+
+      var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",
+        DateTime.MinValue, DateTime.MinValue,
+        true, true, true,
+        podcasts2);
+
+      this.Feeds = new ObservableCollection<TreeViewItemViewModel>();
+      this.Feeds.Add(new FeedViewModel(feed1));
+      this.Feeds.Add(new FeedViewModel(feed2));
+    }
+
+    public Action<Int32, String> CompletedImageDownloadNotificationEvent
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+
+      set
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public ObservableCollection<TreeViewItemViewModel> Feeds { get; private set; }
+
+    public Action<Int32, String> SkippedImageDownloadNotificationEvent
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+
+      set
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public Action<Int32, String> StartImageDownloadNotificationEvent
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+
+      set
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public Action<Int32> TotalImageDownloadsRequiredEvent
+    {
+      get
+      {
+        throw new NotImplementedException();
+      }
+
+      set
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    public void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void RemoveFeed(Int32 index)
+    {
+      throw new NotImplementedException();
+    }
+  }
+}
