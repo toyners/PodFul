@@ -48,5 +48,20 @@ namespace PodFul.WPF.Testbed
     {
 
     }
+
+    private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void FeedList_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
+    {
+
+    }
+
+    private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
+    {
+
+    }
   }
 }
