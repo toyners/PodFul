@@ -27,6 +27,7 @@ namespace PodFul.WPF.Testbed
       InitializeComponent();
 
       this.feedCollectionViewModel = feedCollectionViewModel;
+      this.FeedList.DataContext = this.feedCollectionViewModel;
     }
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)

@@ -52,7 +52,6 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <Button Width="70" Click="SettingsButtonClick">Settings</Button>
           <Button Name="ScanButton" Width="70" Click="FullScanButtonClick" IsEnabled="False">Full Scan</Button>
-          <ToggleButton Name="toggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" />
         </StackPanel>
       </Grid>
     </Border>
@@ -61,101 +60,40 @@
       <ScrollViewer Name="FeedList_Scroller" VerticalScrollBarVisibility="Visible" >
         <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick"
-                   PreviewMouseWheel="FeedList_MouseWheel">
+                   PreviewMouseWheel="FeedList_MouseWheel" ItemsSource="{Binding Feeds}">
           <ListBox.ItemTemplate>
             <DataTemplate>
               <Grid Margin="0,2">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="50" />
-                  <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
 
-                <Image Source="{Binding ImageFileName}" Margin="0,0,2,0" />
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="1" Margin="4,0,0,0">
-                  <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                  </Grid.RowDefinitions>
+                  <ToggleButton Name="toggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" />
 
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="3*" />
-                      <ColumnDefinition Width="0.5*" />
-                      <ColumnDefinition Width="1.75*" />
-                      <ColumnDefinition Width="0.75*" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock>
-                      <TextBlock.Inlines>
-                        <Run FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
-                      </TextBlock.Inlines>
-                    </TextBlock>
-
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" >
-                      <!--<Image Source="..\donotscan.png" Margin="0,2,4,0" Width="16" Height="16">
-                        <Image.Style>
-                          <Style TargetType="Image">
-                            <Setter Property="Visibility" Value="Hidden" />
-                            <Style.Triggers>
-                              <DataTrigger Binding="{Binding DoScan}" Value="False">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="ToolTip" Value="Will not take part in a full scan. Scanning can still be completed on an individual basis via context menu"/>
-                              </DataTrigger>
-                            </Style.Triggers>
-                          </Style>
-                        </Image.Style>
-                      </Image>
-
-                      <Image Source="..\donotdownload.png" Margin="0,2,4,0" Width="16" Height="16">
-                        <Image.Style>
-                          <Style TargetType="Image">
-                            <Setter Property="Visibility" Value="Hidden" />
-                            <Style.Triggers>
-                              <DataTrigger Binding="{Binding CompleteDownloadsOnScan}" Value="False">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="ToolTip" Value="Will not download new podcasts during scan (full or individual)"/>
-                              </DataTrigger>
-                            </Style.Triggers>
-                          </Style>
-                        </Image.Style>
-                      </Image>
-
-                      <Image Source="..\donotdeliver.png" Margin="0,2,0,0" Width="16" Height="16">
-                        <Image.Style>
-                          <Style TargetType="Image">
-                            <Setter Property="Visibility" Value="Hidden" />
-                            <Style.Triggers>
-                              <DataTrigger Binding="{Binding DeliverDownloadsOnScan}" Value="False">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="ToolTip" Value="Will not deliver new podcasts to delivery points during scan (full or individual)"/>
-                              </DataTrigger>
-                            </Style.Triggers>
-                          </Style>
-                        </Image.Style>
-                      </Image>-->
-                    </StackPanel>
-
-                    <TextBlock Grid.Column="2" HorizontalAlignment="Right">
-                      <TextBlock.Inlines>
-                        <Run Text="Last Updated: "/>
-                        <Run FontWeight="Bold" Text="{Binding UpdatedDateTime, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
-                      </TextBlock.Inlines>
-                    </TextBlock>
-
-                    <TextBlock Grid.Column="3" Margin="20,0,0,0" HorizontalAlignment="Right">
-                      <TextBlock.Inlines>
-                        <Run Text="Podcasts: " />
-                        <Run FontWeight="Bold" Text="{Binding Podcasts.Length, Mode=OneWay}" />
-                      </TextBlock.Inlines>
-                    </TextBlock>
-
-                  </Grid>
-
-                  <!--<TextBlock Grid.Row="1"
-                               VerticalAlignment="Top" Text="{Binding Path=Description, Converter={StaticResource TextTruncator}, ConverterParameter=250}"
-                               TextWrapping="WrapWithOverflow" />-->
+                  <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
                 </Grid>
+
+                <StackPanel Name="PodcastPanel" Grid.Row="1" Orientation="Horizontal">
+                  <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=toggleButton, Path=IsChecked}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </StackPanel.Style>
+                  <TextBlock>Test 1</TextBlock>
+                  <TextBlock>Test 2</TextBlock>
+                </StackPanel>
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
