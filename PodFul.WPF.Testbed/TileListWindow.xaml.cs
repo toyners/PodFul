@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PodFul.WPF.Testbed.ViewModel;
 using PodFul.WPF.ViewModel;
 
 namespace PodFul.WPF.Testbed
@@ -67,7 +68,8 @@ namespace PodFul.WPF.Testbed
 
     private void NextPageClick(Object sender, RoutedEventArgs e)
     {
-
+      var navigation = ((sender as Button).DataContext) as PodcastPageNavigation;
+      navigation.MoveToNextPage();
     }
 
     private void LastPageClick(Object sender, RoutedEventArgs e)

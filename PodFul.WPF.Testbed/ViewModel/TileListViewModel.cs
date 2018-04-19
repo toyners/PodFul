@@ -138,6 +138,11 @@ namespace PodFul.WPF.Testbed.ViewModel
     public ObservableCollection<PodcastPageViewModel2> Pages { get; set; }
 
     public PodcastPageViewModel2 CurrentPage { get; set; }
+
+    public void MoveToNextPage()
+    {
+      throw new NotImplementedException();
+    }
   }
 
   public class PodcastPageViewModel2
