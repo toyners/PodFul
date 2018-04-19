@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Testbed"
+        xmlns:viewmodel="clr-namespace:PodFul.WPF.Testbed.ViewModel"
         mc:Ignorable="d"
         Title="Tile List" Height="600" Width="1000" 
         MinHeight="150" MinWidth="150"
@@ -80,9 +81,9 @@
                   <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
                 </Grid>
 
-                <StackPanel Name="PodcastPanel" Grid.Row="1" Orientation="Horizontal">
-                  <StackPanel.Style>
-                    <Style TargetType="StackPanel">
+                <Grid Name="PodcastPanel" Grid.Row="1">
+                  <Grid.Style>
+                    <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=toggleButton, Path=IsChecked}" Value="True">
@@ -90,10 +91,42 @@
                         </DataTrigger>
                       </Style.Triggers>
                     </Style>
-                  </StackPanel.Style>
-                  <TextBlock>Test 1</TextBlock>
-                  <TextBlock>Test 2</TextBlock>
-                </StackPanel>
+                  </Grid.Style>
+
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+
+                  <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding Navigation}">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                      <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
+                      <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
+                      <TextBox Text="{Binding PageNumber, Mode=TwoWay}"></TextBox>
+                      <TextBlock> of</TextBlock>
+                      <TextBlock Text="{Binding TotalPages}" />
+                      <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
+                      <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
+                    </StackPanel>
+                    <ListBox DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
+                      <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
+                          <Grid Margin="0,2">
+                            <Grid.RowDefinitions>
+                              <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel>
+                              <TextBlock Text="{Binding Title}" />
+                              <TextBlock>Test</TextBlock>
+                            </StackPanel>
+                          </Grid>
+                        </DataTemplate>
+                      </ListBox.ItemTemplate>
+                    </ListBox>
+                  </DockPanel>
+                  
+                </Grid>
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>

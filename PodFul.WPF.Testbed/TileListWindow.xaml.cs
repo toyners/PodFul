@@ -20,9 +20,9 @@ namespace PodFul.WPF.Testbed
   /// </summary>
   public partial class TileListWindow : Window
   {
-    private IFeedCollectionViewModel feedCollectionViewModel;
+    private ViewModel.TileListViewModel feedCollectionViewModel;
 
-    public TileListWindow(IFeedCollectionViewModel feedCollectionViewModel)
+    public TileListWindow(ViewModel.TileListViewModel feedCollectionViewModel)
     {
       InitializeComponent();
 
@@ -61,6 +61,26 @@ namespace PodFul.WPF.Testbed
     }
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
+    {
+
+    }
+
+    private void NextPageClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void LastPageClick(Object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void FirstPageClick(Object sender, RoutedEventArgs e)
+    {
+      var i = 0;
+    }
+
+    private void PreviousPageClick(Object sender, RoutedEventArgs e)
     {
 
     }
