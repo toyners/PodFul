@@ -68,23 +68,26 @@ namespace PodFul.WPF.Testbed
 
     private void NextPageClick(Object sender, RoutedEventArgs e)
     {
-      var navigation = ((sender as Button).DataContext) as PodcastPageNavigation;
-      navigation.MoveToNextPage();
+      var pageNavigation = ((sender as Button).DataContext) as PodcastPageNavigation;
+      pageNavigation.MoveToNextPage();
     }
 
     private void LastPageClick(Object sender, RoutedEventArgs e)
     {
-
+      var pageNavigation = ((sender as Button).DataContext) as PodcastPageNavigation;
+      pageNavigation.MoveToLastPage();
     }
 
     private void FirstPageClick(Object sender, RoutedEventArgs e)
     {
-      var i = 0;
+      var pageNavigation = ((sender as Button).DataContext) as PodcastPageNavigation;
+      pageNavigation.MoveToFirstPage();
     }
 
     private void PreviousPageClick(Object sender, RoutedEventArgs e)
     {
-
+      var pageNavigation = ((sender as Button).DataContext) as PodcastPageNavigation;
+      pageNavigation.MoveToPreviousPage();
     }
   }
 }

@@ -102,8 +102,8 @@
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
                       <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
                       <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
-                      <TextBox Text="{Binding PageNumber, Mode=TwoWay}"></TextBox>
-                      <TextBlock> of</TextBlock>
+                      <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
+                      <TextBlock> of </TextBlock>
                       <TextBlock Text="{Binding TotalPages}" />
                       <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
                       <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
@@ -118,7 +118,6 @@
 
                             <StackPanel>
                               <TextBlock Text="{Binding Title}" />
-                              <TextBlock>Test</TextBlock>
                             </StackPanel>
                           </Grid>
                         </DataTemplate>

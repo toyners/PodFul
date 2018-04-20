@@ -4,12 +4,13 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
+  using System.ComponentModel;
   using System.IO;
   using System.Threading;
+  using Jabberwocky.Toolkit.WPF;
   using Library;
   using TestSupport;
   using Windows;
-  using WPF.ViewModel;
 
   public class TileListViewModel
   {
@@ -122,38 +123,86 @@ namespace PodFul.WPF.Testbed.ViewModel
     public PodcastPageNavigation Navigation { get; set; }
   }
 
-  public class PodcastPageNavigation
+  public class PodcastPageNavigation : NotifyPropertyChangedBase
   {
-    public PodcastPageNavigation(IList<Podcast> podcasts)
+    private Int32 pageNumber = 1;
+    private PodcastPageViewModel2 currentPage;
+    private ObservableCollection<PodcastPageViewModel2> pages;
+
+    public PodcastPageNavigation(IList<Podcast> podcasts, Int32 podcastCount = 1)
     {
-      this.Pages = new ObservableCollection<PodcastPageViewModel2>();
-      for (var index = 0; index < podcasts.Count; index++)
+      this.pages = new ObservableCollection<PodcastPageViewModel2>();
+      for (var index = 0; index < podcasts.Count; index += podcastCount)
       {
-        this.Pages.Add(new PodcastPageViewModel2(podcasts, index));
+        this.pages.Add(new PodcastPageViewModel2(podcasts, index, index + podcastCount - 1));
       }
 
-      this.CurrentPage = this.Pages[0];
+      this.currentPage = this.pages[0];
     }
 
-    public ObservableCollection<PodcastPageViewModel2> Pages { get; set; }
+    public PodcastPageViewModel2 CurrentPage { get { return this.currentPage; } }
 
-    public PodcastPageViewModel2 CurrentPage { get; set; }
+    public Int32 TotalPages { get { return this.pages.Count; } }
+
+    public Boolean CanMoveBack { get { return this.pageNumber > 1; } }
+
+    public Boolean CanMoveForward { get { return this.pageNumber < this.TotalPages; } }
+
+    public Int32 PageNumber
+    {
+      get { return this.pageNumber; }
+      set
+      {
+        if (this.pageNumber == value)
+        {
+          return;
+        }
+
+        this.pageNumber = value;
+        this.currentPage = this.pages[this.pageNumber - 1];
+        this.TryInvokePropertyChanged(new[]
+        {
+           new PropertyChangedEventArgs("CurrentPage"),
+           new PropertyChangedEventArgs("PageNumber"),
+           new PropertyChangedEventArgs("CanMoveBack"),
+           new PropertyChangedEventArgs("CanMoveForward"),
+        });
+      }
+    }
 
     public void MoveToNextPage()
     {
-      throw new NotImplementedException();
+      this.PageNumber++;
+    }
+
+    public void MoveToFirstPage()
+    {
+      this.PageNumber = 1;
+    }
+
+    public void MoveToPreviousPage()
+    {
+      this.PageNumber--;
+    }
+
+    public void MoveToLastPage()
+    {
+      this.PageNumber = this.pages.Count;
     }
   }
 
   public class PodcastPageViewModel2
   {
-    public PodcastPageViewModel2(IList<Podcast> podcasts, Int32 index)
+    public PodcastPageViewModel2(IList<Podcast> podcasts, Int32 firstPodcastIndex, Int32 lastPodcastIndex)
     {
-      this.Podcasts = new ObservableCollection<PodcastViewModel2>();
-      this.Podcasts.Add(new PodcastViewModel2(podcasts[index]));
+      this.Podcasts = new List<PodcastViewModel2>(lastPodcastIndex - firstPodcastIndex + 1);
+      while (firstPodcastIndex <= lastPodcastIndex)
+      {
+        this.Podcasts.Add(new PodcastViewModel2(podcasts[firstPodcastIndex++]));
+      }
     }
 
-    public ObservableCollection<PodcastViewModel2> Podcasts { get; set; }
+    public List<PodcastViewModel2> Podcasts { get; private set; }
   }
 
   public class PodcastViewModel2
