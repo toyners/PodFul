@@ -38,6 +38,8 @@
   </Window.Resources>
 
   <DockPanel Margin="5">
+    
+    <!-- Feed and Scan action bar --> 
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -57,6 +59,7 @@
       </Grid>
     </Border>
 
+    <!-- Feed tile list -->
     <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
       <ScrollViewer Name="FeedList_Scroller" VerticalScrollBarVisibility="Visible" >
         <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
@@ -65,12 +68,18 @@
           <ListBox.ItemTemplate>
             <DataTemplate>
               <Grid Margin="0,2">
+                
+                <!-- 
+                Two rows: First row is feed title bar containing toggle button and feed title 
+                Second row is the feed content panel and is collapsed by default. It contains the
+                podcast list and feed settings.
+                -->
                 <Grid.RowDefinitions>
                   <RowDefinition />
                   <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <!-- Main toggle and title panel -->
+                <!-- Feed title bar -->
                 <Grid Grid.Row="0">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
@@ -82,8 +91,13 @@
                   <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
                 </Grid>
 
-                <!-- Main expandable panel -->
+                <!-- Feed content panel -->
                 <Grid Grid.Row="1" Margin="0,2">
+                  
+                  <!-- 
+                  Grid is styled to be collapsed initally (i.e. MainToggleButton.IsChecked = false). 
+                  When the MainToggleButton.IsChecked = true then the grid is made visible (i.e. expanded)
+                  -->
                   <Grid.Style>
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
@@ -95,6 +109,7 @@
                     </Style>
                   </Grid.Style>
 
+                  <!-- Dock panel contains Settings, Podcast list and podcast page navigation controls -->
                   <DockPanel Margin="0,2" DataContext="{Binding Navigation}">
 
                       <Grid DockPanel.Dock="Bottom">
