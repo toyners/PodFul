@@ -70,61 +70,81 @@
                   <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Grid>
+                <!-- Main toggle and title panel -->
+                <Grid Grid.Row="0">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <ToggleButton Name="toggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" />
+                  <ToggleButton Name="MainToggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" />
 
                   <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
                 </Grid>
 
-                <Grid Name="PodcastPanel" Grid.Row="1">
+                <!-- Main expandable panel -->
+                <Grid Grid.Row="1" Margin="0,2">
                   <Grid.Style>
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=toggleButton, Path=IsChecked}" Value="True">
+                        <DataTrigger Binding="{Binding ElementName=MainToggleButton, Path=IsChecked}" Value="True">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                       </Style.Triggers>
                     </Style>
                   </Grid.Style>
 
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25" />
-                    <ColumnDefinition />
-                  </Grid.ColumnDefinitions>
+                  <DockPanel Margin="0,2" DataContext="{Binding Navigation}">
 
-                  <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding Navigation}">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                      <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
-                      <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
-                      <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
-                      <TextBlock> of </TextBlock>
-                      <TextBlock Text="{Binding TotalPages}" />
-                      <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
-                      <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
-                    </StackPanel>
-                    <ListBox DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
-                      <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
-                          <Grid Margin="0,2">
-                            <Grid.RowDefinitions>
-                              <RowDefinition />
-                            </Grid.RowDefinitions>
+                      <Grid DockPanel.Dock="Bottom">
+                        <Grid.RowDefinitions>
+                          <RowDefinition />
+                          <RowDefinition />
+                        </Grid.RowDefinitions>
 
-                            <StackPanel>
-                              <TextBlock Text="{Binding Title}" />
-                            </StackPanel>
-                          </Grid>
-                        </DataTemplate>
-                      </ListBox.ItemTemplate>
-                    </ListBox>
-                  </DockPanel>
-                  
+                        <!-- Settings toggle and title panel -->
+                        <Grid Grid.Row="0">
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition />
+                          </Grid.ColumnDefinitions>
+                          <ToggleButton Name="SettingsToggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" />
+
+                          <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="Settings" />
+                        </Grid>
+
+                        <!-- Settings expandable panel -->
+                        <Grid Grid.Row="1">
+                      </Grid>
+                      </Grid>
+
+                      <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                        <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
+                        <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
+                        <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
+                        <TextBlock> of</TextBlock>
+                        <TextBlock Text="{Binding TotalPages}" />
+                        <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
+                        <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
+                      </StackPanel>
+
+                      <ListBox DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                          <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
+                            <Grid Margin="0,2">
+                              <Grid.RowDefinitions>
+                                <RowDefinition />
+                              </Grid.RowDefinitions>
+
+                              <StackPanel>
+                                <TextBlock Text="{Binding Title}" />
+                              </StackPanel>
+                            </Grid>
+                          </DataTemplate>
+                        </ListBox.ItemTemplate>
+                      </ListBox>
+                    </DockPanel>
                 </Grid>
               </Grid>
             </DataTemplate>
