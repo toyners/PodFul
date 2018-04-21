@@ -86,9 +86,13 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <ToggleButton Name="MainToggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" />
+                  <ToggleButton Name="MainToggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" VerticalAlignment="Top" />
 
-                  <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+                  <StackPanel Grid.Column="1" >
+                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+                    <TextBlock FontSize="14" Text="{Binding Description, Mode=OneWay}" />
+                  </StackPanel>
+                  
                 </Grid>
 
                 <!-- Feed content panel -->
@@ -142,8 +146,8 @@
                       <!-- Settings content panel -->
                       <Grid Grid.Row="1" Margin="0,2">
                         <!-- 
-                        Grid is styled to be collapsed initally (i.e. MainToggleButton.IsChecked = false). 
-                        When the MainToggleButton.IsChecked = true then the grid is made visible (i.e. expanded)
+                        Grid is styled to be collapsed initally (i.e. SettingsToggleButton.IsChecked = false). 
+                        When the SettingsToggleButton.IsChecked = true then the grid is made visible (i.e. expanded)
                         -->
                         <Grid.Style>
                           <Style TargetType="Grid">

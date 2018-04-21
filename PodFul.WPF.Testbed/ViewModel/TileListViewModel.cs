@@ -116,10 +116,12 @@ namespace PodFul.WPF.Testbed.ViewModel
     public FeedViewModel2(Feed feed)
     {
       this.Title = feed.Title;
+      this.Description = feed.Description;
       this.Navigation = new PodcastPageNavigation(feed.Podcasts);
     }
 
     public String Title { get; private set; }
+    public String Description { get; private set; }
     public PodcastPageNavigation Navigation { get; set; }
   }
 
