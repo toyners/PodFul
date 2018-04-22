@@ -10,7 +10,7 @@
         MinHeight="150" MinWidth="150"
         WindowStartupLocation="CenterScreen">
   <Window.Resources>
-    <SolidColorBrush x:Key="GlyphBrush" Color="#444" />
+    <SolidColorBrush x:Key="GlyphBrush" Color="Black" /> <!--- Color="#444" -->
     <ControlTemplate x:Key="toggleButtonTemplate" TargetType="ToggleButton">
       <Grid
             Width="15"
@@ -32,9 +32,6 @@
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Style x:Key="toggleButtonStyle" TargetType="ToggleButton">
-      <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
-    </Style>
   </Window.Resources>
 
   <DockPanel Margin="5">
@@ -54,7 +51,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <Button Width="70" Click="SettingsButtonClick">Settings</Button>
-          <Button Name="ScanButton" Width="70" Click="FullScanButtonClick" IsEnabled="False">Full Scan</Button>
+          <Button Name="ScanButton" Width="70" Click="FullScanButtonClick" IsEnabled="True">Full Scan</Button>
         </StackPanel>
       </Grid>
     </Border>
@@ -67,7 +64,7 @@
                    PreviewMouseWheel="FeedList_MouseWheel" ItemsSource="{Binding Feeds}">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <Grid Margin="0,2">
+              <Grid Name="FeedContent" Margin="0,2">
                 
                 <!-- 
                 Two rows: First row is feed title bar containing toggle button and feed title 
@@ -80,13 +77,25 @@
                 </Grid.RowDefinitions>
 
                 <!-- Feed title bar -->
-                <Grid Grid.Row="0">
+                <Grid Name="FeedTitleBar" Grid.Row="0">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <ToggleButton Name="MainToggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" VerticalAlignment="Top" />
+                  <ToggleButton Name="MainToggleButton" Height="20" Width="20" VerticalAlignment="Top">
+                    <ToggleButton.Style>
+                      <Style TargetType="ToggleButton">
+                        <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding Path=IsScanning}" Value="True">
+                            <Setter Property="Visibility" Value="Hidden" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </ToggleButton.Style>
+                  </ToggleButton>
 
                   <StackPanel Grid.Column="1" >
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
@@ -96,7 +105,7 @@
                 </Grid>
 
                 <!-- Feed content panel -->
-                <Grid Grid.Row="1" Margin="0,2">
+                <Grid Name="FeedContentPanel" Grid.Row="1" Margin="0,2">
                   
                   <!-- 
                   Grid is styled to be collapsed initally (i.e. MainToggleButton.IsChecked = false). 
@@ -106,8 +115,17 @@
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=MainToggleButton, Path=IsChecked}" Value="True">
-                          <Setter Property="Visibility" Value="Visible"/>
+                        <MultiDataTrigger>
+                          <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding ElementName=MainToggleButton, Path=IsChecked}" Value="True" />
+                            <Condition Binding="{Binding ElementName=MainToggleButton, Path=Visibility}" Value="Visible" />
+                          </MultiDataTrigger.Conditions>
+                          <MultiDataTrigger.Setters>
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=MainToggleButton, Path=Visibility}" Value="Hidden">
+                          <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                       </Style.Triggers>
                     </Style>
@@ -121,7 +139,7 @@
                   <!-- Dock panel contains Podcast list, podcast page navigation controls and feed settings -->
                   <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding Navigation}">
 
-                    <Grid DockPanel.Dock="Bottom" Margin="0,2">
+                    <Grid Name="FeedSettings" DockPanel.Dock="Bottom" Margin="0,2">
 
                       <!-- 
                       Two rows: First row is settings title bar containing toggle button and settings label 
@@ -138,9 +156,16 @@
                           <ColumnDefinition Width="25" />
                           <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <ToggleButton Name="SettingsToggleButton" Height="20" Width="20" Style="{StaticResource toggleButtonStyle}" />
 
-                        <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="Settings" />
+                        <ToggleButton Name="SettingsToggleButton" Height="20" Width="20">
+                          <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                              <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
+                            </Style>
+                          </ToggleButton.Style>
+                        </ToggleButton>
+
+                          <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="Settings" />
                       </Grid>
 
                       <!-- Settings content panel -->
@@ -170,7 +195,7 @@
                       </Grid>
                     </Grid>
 
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                    <StackPanel Name="PodcastPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
                       <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
                       <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
                       <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
@@ -180,7 +205,7 @@
                       <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
                     </StackPanel>
 
-                    <ListBox DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
+                    <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
                       <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
                           <Grid Margin="0,2">
@@ -196,6 +221,48 @@
                       </ListBox.ItemTemplate>
                     </ListBox>
                   </DockPanel>
+                </Grid>
+
+                <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2">
+                  <Grid.Style>
+                    <Style TargetType="Grid">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsScanning}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
+
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+
+                  <DockPanel Grid.Column="1" Margin="0,2">
+
+                    <StackPanel Name="FeedScanControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                      <Button>Cancel All</Button>
+                    </StackPanel>
+
+                    <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
+                      <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
+                          <Grid Margin="0,2">
+                            <Grid.RowDefinitions>
+                              <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel>
+                              <TextBlock Text="{Binding Title}" />
+                            </StackPanel>
+                          </Grid>
+                        </DataTemplate>
+                      </ListBox.ItemTemplate>
+                    </ListBox>
+                  </DockPanel>
+
                 </Grid>
               </Grid>
             </DataTemplate>

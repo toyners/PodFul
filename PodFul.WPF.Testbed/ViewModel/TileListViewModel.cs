@@ -111,8 +111,10 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
   }
 
-  public class FeedViewModel2
+  public class FeedViewModel2 : NotifyPropertyChangedBase
   {
+    private Boolean isScanning;
+
     public FeedViewModel2(Feed feed)
     {
       this.Title = feed.Title;
@@ -123,6 +125,14 @@ namespace PodFul.WPF.Testbed.ViewModel
     public String Title { get; private set; }
     public String Description { get; private set; }
     public PodcastPageNavigation Navigation { get; set; }
+    public Boolean IsScanning
+    {
+      get { return this.isScanning; }
+      set
+      {
+        this.SetField(ref this.isScanning, value, "IsScanning");
+      }
+    }
   }
 
   public class PodcastPageNavigation : NotifyPropertyChangedBase

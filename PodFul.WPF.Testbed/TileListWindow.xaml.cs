@@ -21,9 +21,9 @@ namespace PodFul.WPF.Testbed
   /// </summary>
   public partial class TileListWindow : Window
   {
-    private ViewModel.TileListViewModel feedCollectionViewModel;
+    private TileListViewModel feedCollectionViewModel;
 
-    public TileListWindow(ViewModel.TileListViewModel feedCollectionViewModel)
+    public TileListWindow(TileListViewModel feedCollectionViewModel)
     {
       InitializeComponent();
 
@@ -48,7 +48,10 @@ namespace PodFul.WPF.Testbed
 
     private void FullScanButtonClick(Object sender, RoutedEventArgs e)
     {
-
+      foreach(var feedViewModel in this.feedCollectionViewModel.Feeds)
+      {
+        feedViewModel.IsScanning = true;
+      }
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
