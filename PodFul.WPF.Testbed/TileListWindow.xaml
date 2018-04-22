@@ -137,7 +137,7 @@
                   </Grid.ColumnDefinitions>
 
                   <!-- Dock panel contains Podcast list, podcast page navigation controls and feed settings -->
-                  <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding Navigation}">
+                  <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
 
                     <Grid Name="FeedSettings" DockPanel.Dock="Bottom" Margin="0,2">
 
@@ -240,13 +240,21 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <DockPanel Grid.Column="1" Margin="0,2">
+                  <!-- Dock panel contains Jobs list, job page navigation and cancellation controls -->
+                  <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding JobNavigation}">
 
-                    <StackPanel Name="FeedScanControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                    <StackPanel Name="JobPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                      <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
+                      <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
+                      <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
+                      <TextBlock> of</TextBlock>
+                      <TextBlock Text="{Binding TotalPages}" />
+                      <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
+                      <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
                       <Button>Cancel All</Button>
                     </StackPanel>
 
-                    <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
+                    <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Jobs}" HorizontalContentAlignment="Stretch">
                       <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
                           <Grid Margin="0,2">

@@ -119,12 +119,21 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.Title = feed.Title;
       this.Description = feed.Description;
-      this.Navigation = new PodcastPageNavigation(feed.Podcasts);
+      this.PodcastNavigation = new PodcastPageNavigation(feed.Podcasts);
+
+      var jobs = new List<TestDownloadJob>();
+      for (var number = 1; number < feed.Podcasts.Length; number++)
+      {
+        jobs.Add(new TestDownloadJob { Title = "DownloadJob " + number });
+      }
+
+      this.JobNavigation = new JobPageNavigation(jobs);
     }
 
     public String Title { get; private set; }
     public String Description { get; private set; }
-    public PodcastPageNavigation Navigation { get; set; }
+    public PodcastPageNavigation PodcastNavigation { get; set; }
+    public JobPageNavigation JobNavigation { get; set; }
     public Boolean IsScanning
     {
       get { return this.isScanning; }
@@ -225,5 +234,102 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
 
     public String Title { get; private set; }
+  }
+
+  public class JobPageNavigation : NotifyPropertyChangedBase
+  {
+    private Int32 pageNumber = 1;
+    private JobPageViewModel currentPage;
+    private ObservableCollection<JobPageViewModel> pages;
+
+    public JobPageNavigation(IList<TestDownloadJob> jobs, Int32 jobCount = 1)
+    {
+      this.pages = new ObservableCollection<JobPageViewModel>();
+      for (var index = 0; index < jobs.Count; index += jobCount)
+      {
+        this.pages.Add(new JobPageViewModel(jobs, index, index + jobCount - 1));
+      }
+
+      this.currentPage = this.pages[0];
+    }
+
+    public JobPageViewModel CurrentPage { get { return this.currentPage; } }
+
+    public Int32 TotalPages { get { return this.pages.Count; } }
+
+    public Boolean CanMoveBack { get { return this.pageNumber > 1; } }
+
+    public Boolean CanMoveForward { get { return this.pageNumber < this.TotalPages; } }
+
+    public Int32 PageNumber
+    {
+      get { return this.pageNumber; }
+      set
+      {
+        if (this.pageNumber == value)
+        {
+          return;
+        }
+
+        this.pageNumber = value;
+        this.currentPage = this.pages[this.pageNumber - 1];
+        this.TryInvokePropertyChanged(new[]
+        {
+           new PropertyChangedEventArgs("CurrentPage"),
+           new PropertyChangedEventArgs("PageNumber"),
+           new PropertyChangedEventArgs("CanMoveBack"),
+           new PropertyChangedEventArgs("CanMoveForward"),
+        });
+      }
+    }
+
+    public void MoveToNextPage()
+    {
+      this.PageNumber++;
+    }
+
+    public void MoveToFirstPage()
+    {
+      this.PageNumber = 1;
+    }
+
+    public void MoveToPreviousPage()
+    {
+      this.PageNumber--;
+    }
+
+    public void MoveToLastPage()
+    {
+      this.PageNumber = this.pages.Count;
+    }
+  }
+
+  public class JobPageViewModel
+  {
+    public JobPageViewModel(IList<TestDownloadJob> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
+    {
+      this.Jobs = new List<JobViewModel>(lastJobIndex - firstJobIndex + 1);
+      while (firstJobIndex <= lastJobIndex)
+      {
+        this.Jobs.Add(new JobViewModel(jobs[firstJobIndex++]));
+      }
+    }
+
+    public List<JobViewModel> Jobs { get; private set; }
+  }
+
+  public class JobViewModel
+  {
+    public JobViewModel(TestDownloadJob job)
+    {
+      this.Title = job.Title;
+    }
+
+    public String Title { get; private set; }
+  }
+
+  public class TestDownloadJob
+  {
+    public String Title;
   }
 }
