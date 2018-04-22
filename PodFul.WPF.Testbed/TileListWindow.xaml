@@ -240,10 +240,18 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <!-- Dock panel contains Jobs list, job page navigation and cancellation controls -->
+                  <!-- Dock panel contains scan progress, jobs list, job page navigation and cancellation controls -->
                   <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding JobNavigation}">
 
-                    <StackPanel Name="JobPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" DockPanel.Dock="Top">
+                      <Grid>
+                        <ProgressBar Margin="0" Height="20" 
+                                  Value="{Binding ProgressValue}" 
+                                  IsIndeterminate="{Binding UseMarqueProgressStyle}" />
+                      </Grid>
+                    </Border>
+                    
+                    <StackPanel Name="JobPageNavigationControls" Orientation="Horizontal" Margin="0,2,0,0" DockPanel.Dock="Bottom">
                       <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
                       <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
                       <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
@@ -254,18 +262,60 @@
                       <Button>Cancel All</Button>
                     </StackPanel>
 
-                    <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Jobs}" HorizontalContentAlignment="Stretch">
+                    <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Jobs}" HorizontalContentAlignment="Stretch" Margin="0,2,0,0">
                       <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
-                          <Grid Margin="0,2">
-                            <Grid.RowDefinitions>
-                              <RowDefinition />
-                            </Grid.RowDefinitions>
+                        <DataTemplate>
+                          <Border BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="20">
+                            <Grid>
+                              <Grid.ToolTip>
+                                <Binding Path="Description" />
+                              </Grid.ToolTip>
+                              <ProgressBar Margin="0" Height="20" 
+                                   Value="{Binding ProgressValue}" 
+                                   IsIndeterminate="{Binding UseMarqueProgressStyle}" />
+                              <Grid>
+                                <Grid.ColumnDefinitions>
+                                  <ColumnDefinition Width="8.5*"/>
+                                  <ColumnDefinition Width="*"/>
+                                  <ColumnDefinition Width="0.5*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel>
-                              <TextBlock Text="{Binding Title}" />
-                            </StackPanel>
-                          </Grid>
+                                <Grid>
+                                  <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                  </Grid.RowDefinitions>
+
+                                  <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                                  <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                      <ColumnDefinition Width="*"/>
+                                      <ColumnDefinition Width="7*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding StatusMessage}" Margin="3,0" FontSize="10" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                  </Grid>
+                                </Grid>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                  <TextBlock Text="{Binding ProgressMajorSize}" FontSize="20" FontWeight="Bold"/>
+                                  <TextBlock Text="{Binding ProgressMinorSize}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
+                                  <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                  Visibility="{Binding CancellationVisibility}" 
+                                        ToolTip="Cancel Download">
+                                        <!-- Click="CancelDownload_Click" -->
+                                  <Button.Width>15</Button.Width>
+                                  <Button.Height>15</Button.Height>
+                                  <!--<Image Source="..\cancel.png" Width="15" Height="15"/>-->
+                                </Button>
+
+                              </Grid>
+                            </Grid>
+                          </Border>
                         </DataTemplate>
                       </ListBox.ItemTemplate>
                     </ListBox>
