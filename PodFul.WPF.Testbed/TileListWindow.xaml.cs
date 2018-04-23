@@ -50,7 +50,7 @@ namespace PodFul.WPF.Testbed
     {
       foreach(var feedViewModel in this.feedCollectionViewModel.Feeds)
       {
-        feedViewModel.IsScanning = true;
+        feedViewModel.Scan();
       }
     }
 
