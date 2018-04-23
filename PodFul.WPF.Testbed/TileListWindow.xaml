@@ -240,17 +240,12 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <!-- Dock panel contains scan progress, jobs list, job page navigation and cancellation controls -->
+                  <!-- Dock panel contains scan status, jobs list, job page navigation and cancellation controls -->
                   <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding JobNavigation}">
 
-                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" DockPanel.Dock="Top">
-                      <Grid>
-                        <ProgressBar Margin="0" Height="20" 
-                                  Value="{Binding ProgressValue}" 
-                                  IsIndeterminate="{Binding UseMarqueProgressStyle}" />
-                      </Grid>
-                    </Border>
+                    <TextBlock DockPanel.Dock="Top">Scan Status</TextBlock>
                     
+                    <!-- Job action bar -->
                     <StackPanel Name="JobPageNavigationControls" Orientation="Horizontal" Margin="0,2,0,0" DockPanel.Dock="Bottom">
                       <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
                       <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
@@ -259,10 +254,11 @@
                       <TextBlock Text="{Binding TotalPages}" />
                       <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
                       <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
-                      <Button>Cancel All</Button>
+                      <Button>Cancel</Button>
                     </StackPanel>
 
-                    <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Jobs}" HorizontalContentAlignment="Stretch" Margin="0,2,0,0">
+                    <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Jobs}" 
+                             HorizontalContentAlignment="Stretch" Margin="0,2,0,0" Padding="0">
                       <ListBox.ItemTemplate>
                         <DataTemplate>
                           <Border BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="20">
@@ -280,21 +276,28 @@
                                   <ColumnDefinition Width="0.5*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Grid>
+                                <!-- Download data overlay containing title, status and progress value -->
+                                <Grid Grid.Column="0">
                                   <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
                                   </Grid.RowDefinitions>
 
-                                  <TextBlock Text="{Binding Name}" Margin="3,0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                  <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="3,0" FontSize="12" 
+                                             FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
+                                  <!-- Download status and exception message -->
                                   <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
                                       <ColumnDefinition Width="*"/>
                                       <ColumnDefinition Width="7*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding StatusMessage}" Margin="3,0" FontSize="10" Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                                    <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Margin="3,0" FontSize="10" 
+                                               Foreground="{Binding StatusColor}" FontWeight="{Binding StatusWeight}" 
+                                               VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" FontSize="10" 
+                                               TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" 
+                                               HorizontalAlignment="Left" />
                                   </Grid>
                                 </Grid>
 
