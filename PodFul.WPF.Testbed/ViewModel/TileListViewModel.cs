@@ -31,9 +31,9 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       var podcasts2 = new[]
       {
-        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
       };
 
       var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",
@@ -122,12 +122,12 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.PodcastNavigation = new PodcastPageNavigation(feed.Podcasts);
 
       var jobs = new List<TestDownloadJob>();
-      for (var number = 1; number < feed.Podcasts.Length; number++)
+      for (var number = 1; number <= feed.Podcasts.Length; number++)
       {
         jobs.Add(new TestDownloadJob { Title = "DownloadJob " + number });
       }
 
-      this.JobNavigation = new JobPageNavigation(jobs);
+      this.JobNavigation = new JobPageNavigation(jobs, 2);
     }
 
     public String Title { get; private set; }
@@ -247,7 +247,13 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.pages = new ObservableCollection<JobPageViewModel>();
       for (var index = 0; index < jobs.Count; index += jobCount)
       {
-        this.pages.Add(new JobPageViewModel(jobs, index, index + jobCount - 1));
+        var lastIndex = index + jobCount - 1;
+        if (lastIndex >= jobs.Count)
+        {
+          lastIndex = jobs.Count - 1;
+        }
+
+        this.pages.Add(new JobPageViewModel(jobs, index, lastIndex));
       }
 
       this.currentPage = this.pages[0];
