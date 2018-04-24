@@ -48,10 +48,8 @@ namespace PodFul.WPF.Testbed
 
     private void FullScanButtonClick(Object sender, RoutedEventArgs e)
     {
-      foreach(var feedViewModel in this.feedCollectionViewModel.Feeds)
-      {
-        feedViewModel.Scan();
-      }
+      var feedScanner = new FeedScanner();
+      feedScanner.ScanFeeds();
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
@@ -98,6 +96,14 @@ namespace PodFul.WPF.Testbed
     {
       var pageNavigation = ((sender as Button).DataContext) as PodcastPageNavigation;
       pageNavigation.MoveToPreviousPage();
+    }
+  }
+
+  public class FeedScanner
+  {
+    public void ScanFeeds()
+    {
+
     }
   }
 }
