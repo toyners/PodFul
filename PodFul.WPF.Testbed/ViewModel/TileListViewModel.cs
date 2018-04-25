@@ -109,6 +109,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }
     public Boolean IsScanning { get; private set; }
+    public String ScanStatus { get; private set; }
 
     public void Scan()
     {
@@ -118,12 +119,34 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
       });
 
+      this.UpdateScanStatus("Scanning feed");
       Thread.Sleep(2000);
+
+      this.UpdateScanStatus("Searching for new podcasts ... ");
+      Thread.Sleep(2000);
+
+      this.UpdateScanStatus(1 + " podcasts found.");
+      this.JobNavigation.HasJobs = true;
+      Thread.Sleep(2000);
+
+      this.UpdateScanStatus("Updating feed");
+      Thread.Sleep(2000);
+
+      this.UpdateScanStatus("Done");
 
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
         this.IsScanning = false;
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
+      });
+    }
+
+    private void UpdateScanStatus(String scanStatus)
+    {
+      System.Windows.Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.ScanStatus = scanStatus;
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanStatus"));
       });
     }
   }
@@ -225,6 +248,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Int32 pageNumber = 1;
     private JobPageViewModel currentPage;
     private ObservableCollection<JobPageViewModel> pages;
+    private Boolean hasJobs;
 
     public JobPageNavigation(IList<TestDownloadJob> jobs, Int32 jobCount = 1)
     {
@@ -250,6 +274,15 @@ namespace PodFul.WPF.Testbed.ViewModel
     public Boolean CanMoveBack { get { return this.pageNumber > 1; } }
 
     public Boolean CanMoveForward { get { return this.pageNumber < this.TotalPages; } }
+
+    public Boolean HasJobs
+    {
+      get { return this.hasJobs; }
+      set
+      {
+        this.SetField(ref this.hasJobs, value, "HasJobs");
+      }
+    }
 
     public Int32 PageNumber
     {

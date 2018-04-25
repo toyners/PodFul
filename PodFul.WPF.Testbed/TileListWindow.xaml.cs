@@ -97,6 +97,11 @@ namespace PodFul.WPF.Testbed
       var pageNavigation = ((sender as Button).DataContext) as PodcastPageNavigation;
       pageNavigation.MoveToPreviousPage();
     }
+
+    private void FeedCancelButtonClick(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
   }
 
   public class Scanner
