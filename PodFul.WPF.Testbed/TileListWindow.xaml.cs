@@ -48,8 +48,8 @@ namespace PodFul.WPF.Testbed
 
     private void FullScanButtonClick(Object sender, RoutedEventArgs e)
     {
-      var feedScanner = new FeedScanner();
-      feedScanner.ScanFeeds();
+      var scanner = new Scanner();
+      scanner.ScanFeeds(this.feedCollectionViewModel.Feeds);
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
@@ -99,11 +99,17 @@ namespace PodFul.WPF.Testbed
     }
   }
 
-  public class FeedScanner
+  public class Scanner
   {
-    public void ScanFeeds()
+    public void ScanFeeds(IList<FeedViewModel2> feeds)
     {
-
+      Task.Factory.StartNew(() => 
+      {
+        foreach (var feed in feeds)
+        {
+          feed.Scan();
+        }
+      });
     }
   }
 }

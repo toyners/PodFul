@@ -9,41 +9,17 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Threading;
   using Jabberwocky.Toolkit.WPF;
   using Library;
-  using TestSupport;
   using Windows;
 
   public class TileListViewModel
   {
-    public TileListViewModel()
+    public TileListViewModel(IList<Feed> feeds)
     {
-      var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
-      var podcasts1 = new[]
-      {
-        Setup.createTestPodcast("Podcast1-A", "Description for Podcast1-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast1-B", "Description for Podcast1-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast1-C", "Description for Podcast1-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-      };
-
-      var feed1 = Setup.createTestFullFeedFromParameters("Feed 1", "Description for Feed1", "", "", feedImageFilePath, "", "",
-        DateTime.MinValue, DateTime.MinValue,
-        true, true, true,
-        podcasts1);
-
-      var podcasts2 = new[]
-      {
-        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-      };
-
-      var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",
-        DateTime.MinValue, DateTime.MinValue,
-        true, true, true,
-        podcasts2);
-
       this.Feeds = new ObservableCollection<FeedViewModel2>();
-      this.Feeds.Add(new FeedViewModel2(feed1));
-      this.Feeds.Add(new FeedViewModel2(feed2));
+      foreach(var feed in feeds)
+      {
+        this.Feeds.Add(new FeedViewModel2(feed));
+      }
     }
 
     public Action<Int32, String> CompletedImageDownloadNotificationEvent
@@ -136,21 +112,18 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void Scan()
     {
-      this.IsScanning = true;
-      this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
-
-      var downloadTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+      System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
-        Thread.Sleep(2000);
+        this.IsScanning = true;
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
       });
 
-      downloadTask.ContinueWith(t => 
+      Thread.Sleep(2000);
+
+      System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
-        System.Windows.Application.Current.Dispatcher.Invoke(() =>
-        {
-          this.IsScanning = false;
-          this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
-        });
+        this.IsScanning = false;
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
       });
     }
   }

@@ -12,6 +12,7 @@ namespace PodFul.WPF.Testbed
   using PodFul.Library;
   using PodFul.WPF.Windows;
   using Processing;
+  using TestSupport;
   using ViewModel;
 
   /// <summary>
@@ -26,7 +27,7 @@ namespace PodFul.WPF.Testbed
 
     private void DownloadConfirmationWindow_Click(Object sender, RoutedEventArgs e)
     {
-      var oldFeed = this.CreateTestFeed("OldFeed", 
+      var oldFeed = this.CreateTestFeed("OldFeed",
         new[] {
           this.CreateTestPodcast("Podcast B"),
           this.CreateTestPodcast("Podcast C"),
@@ -79,7 +80,7 @@ namespace PodFul.WPF.Testbed
       var outputDirectory = Directory.GetCurrentDirectory();
       var feed = this.CreateTestFeed("Test Feed", "Description for Test Feed", "Test Website", "Test Directory", "Test URL",
         Path.Combine(outputDirectory, @"Question-Mark.jpg"),
-        new DateTime(2018, 3, 3, 7, 46, 15), new[] { podcast }); 
+        new DateTime(2018, 3, 3, 7, 46, 15), new[] { podcast });
       var window = new FeedPropertiesWindow(feed);
       window.ShowDialog();
     }
@@ -133,7 +134,7 @@ namespace PodFul.WPF.Testbed
       var testURL1 = Path.Combine(outputDirectory, "Feed 1.rss");
       DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath1);
       var feed1 = this.CreateTestFeed("Test Feed 1", "Description for Test Feed 1", "Test Website 1", testDirectoryPath1, testURL1,
-        null, DateTime.MinValue, 
+        null, DateTime.MinValue,
         new Podcast[0]);
 
       // First feed has a download confirm threshold of 2 so the download confirmation window will be displayed.
@@ -232,7 +233,7 @@ namespace PodFul.WPF.Testbed
       }
 
       var retryJobs = JobCollectionFactory.FilterJobsByIndex(downloadManager.FailedJobs, retryWindow.RetryJobIndexes);
-      
+
       var retryManager = DownloadManager.Create(logController.GetLogger(LoggerKeys.CombinedKey), 1, null, null);
       var podcastDownloadWindow = new PodcastDownloadWindow(retryManager, false);
 
@@ -266,7 +267,7 @@ namespace PodFul.WPF.Testbed
       var combinedLogger = new CombinedLogger(fileLogger, guiLogger);
 
       var indexes = new List<Int32>(new [] { 0, 1 });
-      var retryJobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(feed, indexes , feedCollection, null);
+      var retryJobs = JobCollectionFactory.CreateJobsFromSelectedIndexesOfFeed(feed, indexes, feedCollection, null);
 
       var downloadManager = DownloadManager.Create(combinedLogger, 1, null, null);
       var podcastDownloadWindow = new PodcastDownloadWindow(downloadManager, false);
@@ -499,10 +500,41 @@ namespace PodFul.WPF.Testbed
 
     private void TileListView_Click(Object sender, RoutedEventArgs e)
     {
-      var feedCollectionViewModel = new TileListViewModel();
+      var feeds = this.CreateTestFeeds();
+      var feedCollectionViewModel = new TileListViewModel(feeds);
       var mainWindow = new TileListWindow(feedCollectionViewModel);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
+    }
+
+    private IList<Feed> CreateTestFeeds()
+    {
+      var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
+      var podcasts1 = new[]
+      {
+        Setup.createTestPodcast("Podcast1-A", "Description for Podcast1-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast1-B", "Description for Podcast1-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast1-C", "Description for Podcast1-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+      };
+
+      var feed1 = Setup.createTestFullFeedFromParameters("Feed 1", "Description for Feed1", "", "", feedImageFilePath, "", "",
+        DateTime.MinValue, DateTime.MinValue,
+        true, true, true,
+        podcasts1);
+
+      var podcasts2 = new[]
+      {
+        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+      };
+
+      var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",
+        DateTime.MinValue, DateTime.MinValue,
+        true, true, true,
+        podcasts2);
+
+      return new[] { feed1, feed2 };
     }
   }
 }
