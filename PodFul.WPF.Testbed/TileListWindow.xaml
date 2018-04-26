@@ -137,7 +137,7 @@
                   </Grid.ColumnDefinitions>
 
                   <!-- Dock panel contains Podcast list, podcast page navigation controls and feed settings -->
-                  <DockPanel Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
+                  <DockPanel Name="PodcastListPanel" Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
 
                     <Grid Name="FeedSettings" DockPanel.Dock="Bottom" Margin="0,2">
 

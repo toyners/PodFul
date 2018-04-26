@@ -126,7 +126,10 @@ namespace PodFul.WPF.Testbed.ViewModel
         jobs.Add(new TestDownloadJob { Title = "DownloadJob " + number });
       }
 
-      this.JobNavigation.AddJobs(jobs, 2);
+      System.Windows.Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.JobNavigation.AddJobs(jobs, 2);
+      });
 
       Thread.Sleep(2000);
 
@@ -246,14 +249,14 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class JobPageNavigation : NotifyPropertyChangedBase
   {
-    private Int32 pageNumber = 1;
+    private Int32 pageNumber;
     private JobPageViewModel currentPage;
-    private ObservableCollection<JobPageViewModel> pages;
+    private ObservableCollection<JobPageViewModel> pages = new ObservableCollection<JobPageViewModel>();
     private Boolean hasJobs;
 
     public JobPageViewModel CurrentPage { get { return this.currentPage; } }
 
-    public Int32 TotalPages { get { return this.pages == null ? 0 : this.pages.Count; } }
+    public Int32 TotalPages { get { return this.pages.Count; } }
 
     public Boolean CanMoveBack { get { return this.pageNumber > 1; } }
 
@@ -288,13 +291,14 @@ namespace PodFul.WPF.Testbed.ViewModel
            new PropertyChangedEventArgs("CanMoveForward")
         );
 
-        this.currentPage.SetCurrent();
+        //this.currentPage.SetCurrent();
       }
     }
 
     public void AddJobs(IList<TestDownloadJob> jobs, Int32 jobCount)
     {
-      this.pages = new ObservableCollection<JobPageViewModel>();
+      this.pages.Clear();
+      this.pageNumber = 0;
       for (var index = 0; index < jobs.Count; index += jobCount)
       {
         var lastIndex = index + jobCount - 1;
@@ -337,16 +341,11 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     public JobPageViewModel(IList<TestDownloadJob> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
     {
-      this.Jobs = new List<JobViewModel>(lastJobIndex - firstJobIndex + 1);
+      this.Jobs = new List<JobViewModel>();
       while (firstJobIndex <= lastJobIndex)
       {
         this.Jobs.Add(new JobViewModel(jobs[firstJobIndex++]));
       }
-    }
-
-    public void SetCurrent()
-    {
-      this.TryInvokePropertyChanged(new PropertyChangedEventArgs("Jobs"));
     }
 
     public List<JobViewModel> Jobs { get; private set; }
@@ -360,6 +359,17 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
 
     public String Title { get; private set; }
+    /*public String Description { get { return ""; } }
+    public Int32 ProgressValue { get; set; }
+    public Boolean UseMarqueProgressStyle { get { return false; } }
+    public String StatusMessage { get { return ""; } }
+    public String StatusColor { get { return ""; } }
+    public String StatusWeight { get { return ""; } }
+    public String ExceptionMessage { get { return ""; } }
+
+    public String ProgressMajorSize { get { return ""; } }
+    public String ProgressMinorSize { get { return ""; } }
+    public String ProgressUnit { get { return ""; } }*/
   }
 
   public class TestDownloadJob
