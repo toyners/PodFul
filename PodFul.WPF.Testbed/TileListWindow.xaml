@@ -253,7 +253,7 @@
                     </Grid>
                     
                     <!-- Dock panel contains jobs list, job page navigation and job cancel controls -->
-                    <DockPanel Margin="0,2" DataContext="{Binding JobNavigation}">
+                    <DockPanel Name="JobListPanel" Margin="0,2" DataContext="{Binding JobNavigation}">
 
                       <DockPanel.Style>
                         <Style TargetType="DockPanel">
@@ -303,7 +303,7 @@
                                       <RowDefinition />
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0" Text="{Binding Name}" Margin="3,0" FontSize="12" 
+                                    <TextBlock Grid.Row="0" Text="{Binding Title}" Margin="3,0" FontSize="12" 
                                                FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                                     <!-- Download status and exception message -->

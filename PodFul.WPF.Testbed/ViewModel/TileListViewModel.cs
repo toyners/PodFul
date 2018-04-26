@@ -5,7 +5,6 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.ComponentModel;
-  using System.IO;
   using System.Threading;
   using Jabberwocky.Toolkit.WPF;
   using Library;
@@ -94,14 +93,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.Title = feed.Title;
       this.Description = feed.Description;
       this.PodcastNavigation = new PodcastPageNavigation(feed.Podcasts);
-
-      var jobs = new List<TestDownloadJob>();
-      for (var number = 1; number <= feed.Podcasts.Length; number++)
-      {
-        jobs.Add(new TestDownloadJob { Title = "DownloadJob " + number });
-      }
-
-      this.JobNavigation = new JobPageNavigation(jobs, 2);
+      this.JobNavigation = new JobPageNavigation();
     }
 
     public String Title { get; private set; }
@@ -125,8 +117,17 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.UpdateScanStatus("Searching for new podcasts ... ");
       Thread.Sleep(2000);
 
-      this.UpdateScanStatus(1 + " podcasts found.");
-      this.JobNavigation.HasJobs = true;
+      var newPodcastCount = 1;
+      this.UpdateScanStatus(newPodcastCount + " podcasts found.");
+
+      var jobs = new List<TestDownloadJob>();
+      for (var number = 1; number <= newPodcastCount; number++)
+      {
+        jobs.Add(new TestDownloadJob { Title = "DownloadJob " + number });
+      }
+
+      this.JobNavigation.AddJobs(jobs, 2);
+
       Thread.Sleep(2000);
 
       this.UpdateScanStatus("Updating feed");
@@ -250,26 +251,9 @@ namespace PodFul.WPF.Testbed.ViewModel
     private ObservableCollection<JobPageViewModel> pages;
     private Boolean hasJobs;
 
-    public JobPageNavigation(IList<TestDownloadJob> jobs, Int32 jobCount = 1)
-    {
-      this.pages = new ObservableCollection<JobPageViewModel>();
-      for (var index = 0; index < jobs.Count; index += jobCount)
-      {
-        var lastIndex = index + jobCount - 1;
-        if (lastIndex >= jobs.Count)
-        {
-          lastIndex = jobs.Count - 1;
-        }
-
-        this.pages.Add(new JobPageViewModel(jobs, index, lastIndex));
-      }
-
-      this.currentPage = this.pages[0];
-    }
-
     public JobPageViewModel CurrentPage { get { return this.currentPage; } }
 
-    public Int32 TotalPages { get { return this.pages.Count; } }
+    public Int32 TotalPages { get { return this.pages == null ? 0 : this.pages.Count; } }
 
     public Boolean CanMoveBack { get { return this.pageNumber > 1; } }
 
@@ -278,7 +262,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public Boolean HasJobs
     {
       get { return this.hasJobs; }
-      set
+      private set
       {
         this.SetField(ref this.hasJobs, value, "HasJobs");
       }
@@ -296,14 +280,36 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.pageNumber = value;
         this.currentPage = this.pages[this.pageNumber - 1];
-        this.TryInvokePropertyChanged(new[]
-        {
+        
+        this.TryInvokePropertyChanged(
            new PropertyChangedEventArgs("CurrentPage"),
            new PropertyChangedEventArgs("PageNumber"),
            new PropertyChangedEventArgs("CanMoveBack"),
-           new PropertyChangedEventArgs("CanMoveForward"),
-        });
+           new PropertyChangedEventArgs("CanMoveForward")
+        );
+
+        this.currentPage.SetCurrent();
       }
+    }
+
+    public void AddJobs(IList<TestDownloadJob> jobs, Int32 jobCount)
+    {
+      this.pages = new ObservableCollection<JobPageViewModel>();
+      for (var index = 0; index < jobs.Count; index += jobCount)
+      {
+        var lastIndex = index + jobCount - 1;
+        if (lastIndex >= jobs.Count)
+        {
+          lastIndex = jobs.Count - 1;
+        }
+
+        this.pages.Add(new JobPageViewModel(jobs, index, lastIndex));
+      }
+
+      this.PageNumber = 1;
+      this.HasJobs = true;
+      this.TryInvokePropertyChanged(
+        new PropertyChangedEventArgs("TotalPages"));
     }
 
     public void MoveToNextPage()
@@ -327,7 +333,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
   }
 
-  public class JobPageViewModel
+  public class JobPageViewModel : NotifyPropertyChangedBase
   {
     public JobPageViewModel(IList<TestDownloadJob> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
     {
@@ -336,6 +342,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.Jobs.Add(new JobViewModel(jobs[firstJobIndex++]));
       }
+    }
+
+    public void SetCurrent()
+    {
+      this.TryInvokePropertyChanged(new PropertyChangedEventArgs("Jobs"));
     }
 
     public List<JobViewModel> Jobs { get; private set; }
