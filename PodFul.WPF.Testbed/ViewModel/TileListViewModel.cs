@@ -88,6 +88,12 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class FeedViewModel2 : NotifyPropertyChangedBase
   {
+    public enum ScanStates
+    {
+      Running,
+      Completed
+    }
+
     public FeedViewModel2(Feed feed)
     {
       this.Title = feed.Title;
@@ -102,6 +108,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public JobPageNavigation JobNavigation { get; set; }
     public Boolean IsScanning { get; private set; }
     public String ScanStatus { get; private set; }
+    public ScanStates ScanState { get; private set; }
 
     public void Scan()
     {
