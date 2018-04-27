@@ -35,8 +35,8 @@
   </Window.Resources>
 
   <DockPanel Margin="5">
-    
-    <!-- Feed and Scan action bar --> 
+
+    <!-- Feed and Scan action bar -->
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -65,7 +65,7 @@
           <ListBox.ItemTemplate>
             <DataTemplate>
               <Grid Name="FeedContent" Margin="0,2">
-                
+
                 <!-- 
                 Two rows: First row is feed title bar containing toggle button and feed title 
                 Second row is the feed content panel and is collapsed by default. It contains the
@@ -101,12 +101,12 @@
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
                     <TextBlock FontSize="14" Text="{Binding Description, Mode=OneWay}" />
                   </StackPanel>
-                  
+
                 </Grid>
 
                 <!-- Feed content panel -->
                 <Grid Name="FeedContentPanel" Grid.Row="1" Margin="0,2">
-                  
+
                   <!-- 
                   Grid is styled to be collapsed initally (i.e. MainToggleButton.IsChecked = false). 
                   When the MainToggleButton.IsChecked = true then the grid is made visible (i.e. expanded)
@@ -136,91 +136,43 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <!-- Dock panel contains Podcast list, podcast page navigation controls and feed settings -->
-                  <DockPanel Name="PodcastListPanel" Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
+                  <!-- Tab control with two panels: Podcast list and feed settings  -->
+                  <TabControl Grid.Column="1" Height="100">
+                    <TabItem Header="Podcasts" >
+                      
+                      <!-- Dock panel contains Podcast list and podcast page navigation controls -->
+                      <DockPanel Name="PodcastListPanel" Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
+                        <StackPanel Name="PodcastPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                          <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
+                          <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
+                          <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
+                          <TextBlock> of</TextBlock>
+                          <TextBlock Text="{Binding TotalPages}" />
+                          <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
+                          <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
+                        </StackPanel>
 
-                    <Grid Name="FeedSettings" DockPanel.Dock="Bottom" Margin="0,2">
+                        <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
+                          <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
+                              <Grid Margin="0,2">
+                                <Grid.RowDefinitions>
+                                  <RowDefinition />
+                                </Grid.RowDefinitions>
 
-                      <!-- 
-                      Two rows: First row is settings title bar containing toggle button and settings label 
-                      Second row is the feed settings content panel and is collapsed by default.
-                      -->
-                      <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                      </Grid.RowDefinitions>
+                                <StackPanel>
+                                  <TextBlock Text="{Binding Title}" />
+                                </StackPanel>
+                              </Grid>
+                            </DataTemplate>
+                          </ListBox.ItemTemplate>
+                        </ListBox>
+                      </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Settings">
 
-                      <!-- Settings title bar -->
-                      <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                          <ColumnDefinition Width="25" />
-                          <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <ToggleButton Name="SettingsToggleButton" Height="20" Width="20">
-                          <ToggleButton.Style>
-                            <Style TargetType="ToggleButton">
-                              <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
-                            </Style>
-                          </ToggleButton.Style>
-                        </ToggleButton>
-
-                          <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="Settings" />
-                      </Grid>
-
-                      <!-- Settings content panel -->
-                      <Grid Grid.Row="1" Margin="0,2">
-                        <!-- 
-                        Grid is styled to be collapsed initally (i.e. SettingsToggleButton.IsChecked = false). 
-                        When the SettingsToggleButton.IsChecked = true then the grid is made visible (i.e. expanded)
-                        -->
-                        <Grid.Style>
-                          <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                              <DataTrigger Binding="{Binding ElementName=SettingsToggleButton, Path=IsChecked}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                              </DataTrigger>
-                            </Style.Triggers>
-                          </Style>
-                        </Grid.Style>
-
-                        <Grid.ColumnDefinitions>
-                          <ColumnDefinition Width="25" />
-                          <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <CheckBox Grid.Column="1">Do Not Scan</CheckBox>
-
-                      </Grid>
-                    </Grid>
-
-                    <StackPanel Name="PodcastPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
-                      <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
-                      <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
-                      <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
-                      <TextBlock> of</TextBlock>
-                      <TextBlock Text="{Binding TotalPages}" />
-                      <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
-                      <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
-                    </StackPanel>
-
-                    <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
-                      <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel2}">
-                          <Grid Margin="0,2">
-                            <Grid.RowDefinitions>
-                              <RowDefinition />
-                            </Grid.RowDefinitions>
-
-                            <StackPanel>
-                              <TextBlock Text="{Binding Title}" />
-                            </StackPanel>
-                          </Grid>
-                        </DataTemplate>
-                      </ListBox.ItemTemplate>
-                    </ListBox>
-                  </DockPanel>
+                    </TabItem>
+                  </TabControl>
                 </Grid>
 
                 <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2">
@@ -247,11 +199,11 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="100"/>
                       </Grid.ColumnDefinitions>
-                    
+
                       <TextBlock Grid.Column="0" Text="{Binding ScanStatus}" />
                       <Button Grid.Column="1" Click="FeedCancelButtonClick">Cancel</Button>
                     </Grid>
-                    
+
                     <!-- Dock panel contains jobs list, job page navigation and job cancel controls -->
                     <DockPanel Name="JobListPanel" Margin="0,2" DataContext="{Binding JobNavigation}">
 
@@ -281,12 +233,12 @@
                                HorizontalContentAlignment="Stretch" Margin="0,2,0,0" Padding="0">
                         <ListBox.ItemTemplate>
                           <DataTemplate>
-                            <Border BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="20">
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="30">
                               <Grid>
                                 <Grid.ToolTip>
                                   <Binding Path="Description" />
                                 </Grid.ToolTip>
-                                <ProgressBar Margin="0" Height="20" 
+                                <ProgressBar Margin="0" Height="30" 
                                      Value="{Binding ProgressValue}" 
                                      IsIndeterminate="{Binding UseMarqueProgressStyle}" />
                                 <Grid>
