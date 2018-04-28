@@ -107,8 +107,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }
     public Boolean IsScanning { get; private set; }
-    public String ScanStatus { get; private set; }
-    public ScanStates ScanState { get; private set; }
+    public String FeedScanProgressMessage { get; private set; }
+    public ScanStates FeedScanState { get; private set; }
 
     public void Scan()
     {
@@ -152,11 +152,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       });
     }
 
-    private void UpdateScanStatus(String scanStatus)
+    private void UpdateScanStatus(String progressMessage)
     {
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
-        this.ScanStatus = scanStatus;
+        this.FeedScanProgressMessage = progressMessage;
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanStatus"));
       });
     }

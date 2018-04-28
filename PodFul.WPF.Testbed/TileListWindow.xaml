@@ -200,7 +200,7 @@
                         <ColumnDefinition Width="100"/>
                       </Grid.ColumnDefinitions>
 
-                      <TextBlock Grid.Column="0" Text="{Binding ScanStatus}" />
+                      <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />
                       <Button Grid.Column="1" Click="FeedCancelButtonClick">Cancel</Button>
                     </Grid>
 
