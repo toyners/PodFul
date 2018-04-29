@@ -90,6 +90,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     public enum ScanStates
     {
+      Idle,
       Running,
       Completed
     }
@@ -106,7 +107,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     public String Description { get; private set; }
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }
-    public Boolean IsScanning { get; private set; }
     public String FeedScanProgressMessage { get; private set; }
     public ScanStates FeedScanState { get; private set; }
 
@@ -114,8 +114,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
-        this.IsScanning = true;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
+        this.FeedScanState = ScanStates.Running;
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanState"));
       });
 
       this.UpdateScanProgressMessage("Scanning feed");
@@ -133,22 +133,26 @@ namespace PodFul.WPF.Testbed.ViewModel
         jobs.Add(new TestDownloadJob { Title = "DownloadJob " + number });
       }
 
-      System.Windows.Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.JobNavigation.AddJobs(jobs, 2);
-      });
-
-      Thread.Sleep(2000);
-
       this.UpdateScanProgressMessage("Updating feed");
       Thread.Sleep(2000);
+
+      this.UpdateScanProgressMessage("Downloading podcasts");
+      this.JobNavigation.AddJobs(jobs, 2);
+
+      var downloadJobProcessor = new DownloadJobProcessor();
+      downloadJobProcessor.Progress = v =>
+      {
+      };
+
+      //downloadJobProcessor.Process(jobs);
+
 
       this.UpdateScanProgressMessage("Done");
 
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
-        this.IsScanning = false;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
+        this.FeedScanState = ScanStates.Completed;
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanState"));
       });
     }
 
@@ -297,8 +301,6 @@ namespace PodFul.WPF.Testbed.ViewModel
            new PropertyChangedEventArgs("CanMoveBack"),
            new PropertyChangedEventArgs("CanMoveForward")
         );
-
-        //this.currentPage.SetCurrent();
       }
     }
 
@@ -366,9 +368,9 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
 
     public String Title { get; private set; }
-    /*public String Description { get { return ""; } }
+    public String Description { get { return ""; } }
     public Int32 ProgressValue { get; set; }
-    public Boolean UseMarqueProgressStyle { get { return false; } }
+    /*public Boolean UseMarqueProgressStyle { get { return false; } }
     public String StatusMessage { get { return ""; } }
     public String StatusColor { get { return ""; } }
     public String StatusWeight { get { return ""; } }
@@ -382,5 +384,31 @@ namespace PodFul.WPF.Testbed.ViewModel
   public class TestDownloadJob
   {
     public String Title;
+  }
+
+  public class DownloadJobProcessor
+  {
+    public Action<Int32> Progress;
+
+    public void Process(IList<JobViewModel> jobs)
+    {
+      foreach (var job in jobs)
+      {
+        job.ProgressValue = 20;
+        Thread.Sleep(500);
+
+        job.ProgressValue = 40;
+        Thread.Sleep(500);
+
+        job.ProgressValue = 60;
+        Thread.Sleep(500);
+
+        job.ProgressValue = 80;
+        Thread.Sleep(500);
+
+        job.ProgressValue = 100;
+        Thread.Sleep(500);
+      }
+    }
   }
 }

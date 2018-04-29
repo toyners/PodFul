@@ -89,7 +89,7 @@
                         <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
-                          <DataTrigger Binding="{Binding Path=IsScanning}" Value="True">
+                          <DataTrigger Binding="{Binding Path=FeedScanStatus}" Value="Idle">
                             <Setter Property="Visibility" Value="Hidden" />
                           </DataTrigger>
                         </Style.Triggers>
@@ -180,7 +180,7 @@
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsScanning}" Value="True">
+                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                       </Style.Triggers>
