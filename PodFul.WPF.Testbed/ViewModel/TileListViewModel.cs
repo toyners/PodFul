@@ -118,14 +118,14 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("IsScanning"));
       });
 
-      this.UpdateScanStatus("Scanning feed");
+      this.UpdateScanProgressMessage("Scanning feed");
       Thread.Sleep(2000);
 
-      this.UpdateScanStatus("Searching for new podcasts ... ");
+      this.UpdateScanProgressMessage("Searching for new podcasts ... ");
       Thread.Sleep(2000);
 
       var newPodcastCount = 1;
-      this.UpdateScanStatus(newPodcastCount + " podcasts found.");
+      this.UpdateScanProgressMessage(newPodcastCount + " podcasts found.");
 
       var jobs = new List<TestDownloadJob>();
       for (var number = 1; number <= newPodcastCount; number++)
@@ -140,10 +140,10 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       Thread.Sleep(2000);
 
-      this.UpdateScanStatus("Updating feed");
+      this.UpdateScanProgressMessage("Updating feed");
       Thread.Sleep(2000);
 
-      this.UpdateScanStatus("Done");
+      this.UpdateScanProgressMessage("Done");
 
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
@@ -152,12 +152,12 @@ namespace PodFul.WPF.Testbed.ViewModel
       });
     }
 
-    private void UpdateScanStatus(String progressMessage)
+    private void UpdateScanProgressMessage(String progressMessage)
     {
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
         this.FeedScanProgressMessage = progressMessage;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanStatus"));
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanProgressMessage"));
       });
     }
   }
