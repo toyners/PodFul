@@ -23,6 +23,9 @@ namespace PodFul.WPF.Processing
     /// </summary>
     event Action<DownloadJob> JobFinishedEvent;
 
+    /// <summary>
+    /// Event raised when job needs a file location to be set before downloading file.
+    /// </summary>
     event Func<DownloadJob, Boolean> JobNeedsLocationEvent;
 
     /// <summary>
