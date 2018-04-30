@@ -127,10 +127,10 @@ namespace PodFul.WPF.Testbed.ViewModel
       var newPodcastCount = 1;
       this.UpdateScanProgressMessage(newPodcastCount + " podcasts found.");
 
-      var jobs = new List<TestDownloadJob>();
+      var jobs = new List<JobViewModel>();
       for (var number = 1; number <= newPodcastCount; number++)
       {
-        jobs.Add(new TestDownloadJob { Title = "DownloadJob " + number });
+        jobs.Add(new JobViewModel(new TestDownloadJob { Title = "DownloadJob " + number }));
       }
 
       this.UpdateScanProgressMessage("Updating feed");
@@ -140,12 +140,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.JobNavigation.AddJobs(jobs, 2);
 
       var downloadJobProcessor = new DownloadJobProcessor();
-      downloadJobProcessor.Progress = v =>
-      {
-      };
-
-      //downloadJobProcessor.Process(jobs);
-
+      downloadJobProcessor.Process(jobs);
 
       this.UpdateScanProgressMessage("Done");
 
@@ -262,7 +257,8 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     private Int32 pageNumber;
     private JobPageViewModel currentPage;
-    private ObservableCollection<JobPageViewModel> pages = new ObservableCollection<JobPageViewModel>();
+    //private ObservableCollection<JobPageViewModel> pages = new ObservableCollection<JobPageViewModel>();
+    private List<JobPageViewModel> pages = new List<JobPageViewModel>();
     private Boolean hasJobs;
 
     public JobPageViewModel CurrentPage { get { return this.currentPage; } }
@@ -304,7 +300,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public void AddJobs(IList<TestDownloadJob> jobs, Int32 jobCount)
+    public void AddJobs(IList<JobViewModel> jobs, Int32 jobCount)
     {
       this.pages.Clear();
       this.pageNumber = 0;
@@ -348,20 +344,22 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class JobPageViewModel : NotifyPropertyChangedBase
   {
-    public JobPageViewModel(IList<TestDownloadJob> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
+    public JobPageViewModel(IList<JobViewModel> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
     {
       this.Jobs = new List<JobViewModel>();
       while (firstJobIndex <= lastJobIndex)
       {
-        this.Jobs.Add(new JobViewModel(jobs[firstJobIndex++]));
+        this.Jobs.Add(jobs[firstJobIndex++]);
       }
     }
 
     public List<JobViewModel> Jobs { get; private set; }
   }
 
-  public class JobViewModel
+  public class JobViewModel : NotifyPropertyChangedBase
   {
+    private Int32 progressValue;
+
     public JobViewModel(TestDownloadJob job)
     {
       this.Title = job.Title;
@@ -369,7 +367,14 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public String Title { get; private set; }
     public String Description { get { return ""; } }
-    public Int32 ProgressValue { get; set; }
+    public Int32 ProgressValue
+    {
+      get { return this.progressValue; }
+      set
+      {
+        this.SetField(ref this.progressValue, value, "ProgressValue");
+      }
+    }
     /*public Boolean UseMarqueProgressStyle { get { return false; } }
     public String StatusMessage { get { return ""; } }
     public String StatusColor { get { return ""; } }
@@ -388,8 +393,6 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class DownloadJobProcessor
   {
-    public Action<Int32> Progress;
-
     public void Process(IList<JobViewModel> jobs)
     {
       foreach (var job in jobs)
