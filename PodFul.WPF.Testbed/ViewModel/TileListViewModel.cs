@@ -21,59 +21,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public Action<Int32, String> CompletedImageDownloadNotificationEvent
-    {
-      get
-      {
-        throw new NotImplementedException();
-      }
-
-      set
-      {
-        throw new NotImplementedException();
-      }
-    }
-
+    public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
     public ObservableCollection<FeedViewModel2> Feeds { get; private set; }
-
-    public Action<Int32, String> SkippedImageDownloadNotificationEvent
-    {
-      get
-      {
-        throw new NotImplementedException();
-      }
-
-      set
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    public Action<Int32, String> StartImageDownloadNotificationEvent
-    {
-      get
-      {
-        throw new NotImplementedException();
-      }
-
-      set
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    public Action<Int32> TotalImageDownloadsRequiredEvent
-    {
-      get
-      {
-        throw new NotImplementedException();
-      }
-
-      set
-      {
-        throw new NotImplementedException();
-      }
-    }
+    public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
+    public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
+    public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
 
     public void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken)
     {
