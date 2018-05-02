@@ -8,6 +8,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Threading;
   using Jabberwocky.Toolkit.WPF;
   using Library;
+  using Processing;
   using Windows;
 
   public class TileListViewModel
@@ -40,6 +41,8 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class FeedViewModel2 : NotifyPropertyChangedBase
   {
+    private Feed feed;
+
     public enum ScanStates
     {
       Idle,
@@ -49,20 +52,19 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public FeedViewModel2(Feed feed)
     {
-      this.Title = feed.Title;
-      this.Description = feed.Description;
+      this.feed = feed;
       this.PodcastNavigation = new PodcastPageNavigation(feed.Podcasts);
       this.JobNavigation = new JobPageNavigation();
     }
 
-    public String Title { get; private set; }
-    public String Description { get; private set; }
+    public String Title { get { return this.feed.Title; } }
+    public String Description { get { return this.feed.Description; } }
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }
     public String FeedScanProgressMessage { get; private set; }
     public ScanStates FeedScanState { get; private set; }
 
-    public void Scan()
+    public void Scan(IDownloadManagerFactory downloadManagerFactory)
     {
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
@@ -79,10 +81,10 @@ namespace PodFul.WPF.Testbed.ViewModel
       var newPodcastCount = 1;
       this.UpdateScanProgressMessage(newPodcastCount + " podcasts found.");
 
-      var jobs = new List<JobViewModel>();
+      var jobs = new List<DownloadJob>();
       for (var number = 1; number <= newPodcastCount; number++)
       {
-        jobs.Add(new JobViewModel(new TestDownloadJob { Title = "DownloadJob " + number }));
+        jobs.Add(new DownloadJob(null, feed, null));
       }
 
       this.UpdateScanProgressMessage("Updating feed");
@@ -91,8 +93,8 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.UpdateScanProgressMessage("Downloading podcasts");
       this.JobNavigation.AddJobs(jobs, 2);
 
-      var downloadJobProcessor = new DownloadJobProcessor();
-      downloadJobProcessor.Process(jobs);
+      var downloadManager = downloadManagerFactory.Create();
+      downloadManager.AddJobs(jobs);
 
       this.UpdateScanProgressMessage("Done");
 
@@ -252,7 +254,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public void AddJobs(IList<JobViewModel> jobs, Int32 jobCount)
+    public void AddJobs(IList<DownloadJob> jobs, Int32 jobCount)
     {
       this.pages.Clear();
       this.pageNumber = 0;
@@ -296,16 +298,16 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class JobPageViewModel : NotifyPropertyChangedBase
   {
-    public JobPageViewModel(IList<JobViewModel> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
+    public JobPageViewModel(IList<DownloadJob> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
     {
-      this.Jobs = new List<JobViewModel>();
+      this.Jobs = new List<DownloadJob>();
       while (firstJobIndex <= lastJobIndex)
       {
         this.Jobs.Add(jobs[firstJobIndex++]);
       }
     }
 
-    public List<JobViewModel> Jobs { get; private set; }
+    public List<DownloadJob> Jobs { get; private set; }
   }
 
   public class JobViewModel : NotifyPropertyChangedBase

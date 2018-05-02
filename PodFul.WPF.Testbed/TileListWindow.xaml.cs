@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PodFul.WPF.Processing;
 using PodFul.WPF.Testbed.ViewModel;
 using PodFul.WPF.ViewModel;
 
@@ -110,11 +111,26 @@ namespace PodFul.WPF.Testbed
     {
       Task.Factory.StartNew(() => 
       {
+        var downloadManagerFactory = new DownloadManagerFactory();
         foreach (var feed in feeds)
         {
-          feed.Scan();
+          feed.Scan(downloadManagerFactory);
         }
       });
+    }
+  }
+
+  public interface IDownloadManagerFactory
+  {
+    Processing.IDownloadManager Create();
+  }
+
+
+  public class DownloadManagerFactory : IDownloadManagerFactory
+  {
+    public IDownloadManager Create()
+    {
+      throw new NotImplementedException();
     }
   }
 }
