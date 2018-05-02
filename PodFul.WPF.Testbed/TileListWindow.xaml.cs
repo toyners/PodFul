@@ -46,10 +46,10 @@ namespace PodFul.WPF.Testbed
 
     }
 
-    private void FullScanButtonClick(Object sender, RoutedEventArgs e)
+    private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
-      var scanner = new Scanner();
-      scanner.ScanFeeds(this.feedCollectionViewModel.Feeds);
+        var scanner = new Scanner();
+        scanner.ScanFeeds(this.feedCollectionViewModel.Feeds);
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)

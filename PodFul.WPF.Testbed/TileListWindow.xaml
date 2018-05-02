@@ -51,7 +51,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
           <Button Width="70" Click="SettingsButtonClick">Settings</Button>
-          <Button Name="ScanButton" Width="70" Click="FullScanButtonClick" IsEnabled="True">Full Scan</Button>
+          <Button Name="CommandButton" Width="70" Click="CommandButtonClick">Scan All</Button>
         </StackPanel>
       </Grid>
     </Border>
