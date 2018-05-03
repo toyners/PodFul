@@ -130,7 +130,7 @@ namespace PodFul.WPF.Testbed
   {
     public IDownloadManager Create()
     {
-      throw new NotImplementedException();
+      return new DownloadManager(null, 1);
     }
   }
 }

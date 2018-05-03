@@ -61,7 +61,7 @@ namespace PodFul.WPF.Testbed
     private Podcast CreateTestPodcast(String title, String url, String fileName)
     {
       var podcastFile = new PodcastFile(fileName, -1, DateTime.Now, String.Empty);
-      return new Podcast(title, String.Empty, url, String.Empty, DateTime.Now, podcastFile);
+      return new Podcast(title, "Description for " + title, url, String.Empty, DateTime.Now, podcastFile);
     }
 
     private Feed CreateTestFeed(String title, Podcast[] podcasts)
@@ -509,12 +509,17 @@ namespace PodFul.WPF.Testbed
 
     private IList<Feed> CreateTestFeeds()
     {
+      var outputDirectory = Directory.GetCurrentDirectory();
+      var testDirectoryName = "Test Directory";
+      var testDirectoryPath = Path.Combine(outputDirectory, testDirectoryName);
+      DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath);
+
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcasts1 = new[]
       {
-        Setup.createTestPodcast("Podcast1-A", "Description for Podcast1-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast1-B", "Description for Podcast1-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast1-C", "Description for Podcast1-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        this.CreateTestPodcast("Podcast 1-A", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast1-A.mp3")),
+        this.CreateTestPodcast("Podcast 1-B", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast1-B.mp3")),
+        this.CreateTestPodcast("Podcast 1-C", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast1-C.mp3")),
       };
 
       var feed1 = Setup.createTestFullFeedFromParameters("Feed 1", "Description for Feed1", "", "", feedImageFilePath, "", "",
@@ -524,9 +529,9 @@ namespace PodFul.WPF.Testbed
 
       var podcasts2 = new[]
       {
-        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        this.CreateTestPodcast("Podcast 2-A", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast2-A.mp3")),
+        this.CreateTestPodcast("Podcast 2-B", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast2-B.mp3")),
+        this.CreateTestPodcast("Podcast 2-C", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast2-C.mp3")),
       };
 
       var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",

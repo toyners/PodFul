@@ -82,9 +82,9 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.UpdateScanProgressMessage(newPodcastCount + " podcasts found.");
 
       var jobs = new List<DownloadJob>();
-      for (var number = 1; number <= newPodcastCount; number++)
+      foreach (var podcast in this.feed.Podcasts)
       {
-        jobs.Add(new DownloadJob(null, feed, null));
+        jobs.Add(new DownloadJob(podcast, feed, null));
       }
 
       this.UpdateScanProgressMessage("Updating feed");
