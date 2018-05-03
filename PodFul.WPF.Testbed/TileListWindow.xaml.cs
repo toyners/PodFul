@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Jabberwocky.Toolkit.Object;
+using PodFul.WPF.Logging;
 using PodFul.WPF.Processing;
 using PodFul.WPF.Testbed.ViewModel;
 using PodFul.WPF.ViewModel;
@@ -111,7 +113,7 @@ namespace PodFul.WPF.Testbed
     {
       Task.Factory.StartNew(() => 
       {
-        var downloadManagerFactory = new DownloadManagerFactory();
+        var downloadManagerFactory = new DownloadManagerFactory(null);
         foreach (var feed in feeds)
         {
           feed.Scan(downloadManagerFactory);
@@ -128,9 +130,17 @@ namespace PodFul.WPF.Testbed
 
   public class DownloadManagerFactory : IDownloadManagerFactory
   {
+    private ILogger logger;
+
+    public DownloadManagerFactory(ILogger logger)
+    {
+      logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
+      this.logger = logger;
+    }
+
     public IDownloadManager Create()
     {
-      return new DownloadManager(null, 1);
+      return new DownloadManager(this.logger, 1);
     }
   }
 }
