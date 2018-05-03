@@ -306,6 +306,22 @@ namespace PodFul.WPF.Processing
       });
     }
 
+    public void Download()
+    {
+      this.InitialiseBeforeDownload();
+
+      var downloader = new FileDownloader();
+      downloader.Download(this.URL, this.FilePath, this.CancellationToken, this.ProgressEventHandler);
+
+      var fileInfo = new FileInfo(this.FilePath);
+      if (!fileInfo.Exists)
+      {
+        throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
+      }
+
+      this.DownloadCompleted();
+    }
+
     public void ProgressEventHandler(int bytesWrittenToFile)
     {
       this.downloadedSize += bytesWrittenToFile;
