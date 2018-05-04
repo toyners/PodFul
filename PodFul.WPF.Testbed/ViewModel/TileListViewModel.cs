@@ -81,10 +81,10 @@ namespace PodFul.WPF.Testbed.ViewModel
       var newPodcastCount = 1;
       this.UpdateScanProgressMessage(newPodcastCount + " podcasts found.");
 
-      var jobs = new List<DownloadJob>();
+      var jobs = new List<JobViewModel>();
       foreach (var podcast in this.feed.Podcasts)
       {
-        jobs.Add(new DownloadJob(podcast, feed, null));
+        jobs.Add(new JobViewModel(podcast, feed));
       }
 
       this.UpdateScanProgressMessage("Updating feed");
@@ -94,7 +94,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.JobNavigation.AddJobs(jobs, 2);
 
       var downloadManager = downloadManagerFactory.Create();
-      downloadManager.AddJobs(jobs);
+      //downloadManager.AddJobs(jobs);
       downloadManager.StartWaitingJobs();
 
       this.UpdateScanProgressMessage("Done");
@@ -254,7 +254,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public void AddJobs(IList<DownloadJob> jobs, Int32 jobCount)
+    public void AddJobs(IList<JobViewModel> jobs, Int32 jobCount)
     {
       this.pages.Clear();
       this.pageNumber = 0;
@@ -298,15 +298,15 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class JobPageViewModel : NotifyPropertyChangedBase
   {
-    public JobPageViewModel(IList<DownloadJob> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
+    public JobPageViewModel(IList<JobViewModel> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
     {
-      this.Jobs = new List<DownloadJob>();
+      this.Jobs = new List<JobViewModel>();
       while (firstJobIndex <= lastJobIndex)
       {
         this.Jobs.Add(jobs[firstJobIndex++]);
       }
     }
 
-    public List<DownloadJob> Jobs { get; private set; }
+    public List<JobViewModel> Jobs { get; private set; }
   }
 }
