@@ -311,36 +311,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     public List<DownloadJob> Jobs { get; private set; }
   }
 
-  public class JobViewModel : NotifyPropertyChangedBase
-  {
-    private Int32 progressValue;
-
-    public JobViewModel(TestDownloadJob job)
-    {
-      this.Title = job.Title;
-    }
-
-    public String Title { get; private set; }
-    public String Description { get { return ""; } }
-    public Int32 ProgressValue
-    {
-      get { return this.progressValue; }
-      set
-      {
-        this.SetField(ref this.progressValue, value, "ProgressValue");
-      }
-    }
-    /*public Boolean UseMarqueProgressStyle { get { return false; } }
-    public String StatusMessage { get { return ""; } }
-    public String StatusColor { get { return ""; } }
-    public String StatusWeight { get { return ""; } }
-    public String ExceptionMessage { get { return ""; } }
-
-    public String ProgressMajorSize { get { return ""; } }
-    public String ProgressMinorSize { get { return ""; } }
-    public String ProgressUnit { get { return ""; } }*/
-  }
-
   public class TestDownloadJob
   {
     public String Title;

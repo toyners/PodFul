@@ -99,6 +99,7 @@
     <Compile Include="TileListWindow.xaml.cs">
       <DependentUpon>TileListWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\JobViewModel.cs" />
     <Compile Include="ViewModel\TileListViewModel.cs" />
     <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />
     <Page Include="TileListWindow.xaml">
