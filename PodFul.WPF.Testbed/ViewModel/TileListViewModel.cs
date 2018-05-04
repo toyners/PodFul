@@ -212,7 +212,6 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     private Int32 pageNumber;
     private JobPageViewModel currentPage;
-    //private ObservableCollection<JobPageViewModel> pages = new ObservableCollection<JobPageViewModel>();
     private List<JobPageViewModel> pages = new List<JobPageViewModel>();
     private Boolean hasJobs;
 
