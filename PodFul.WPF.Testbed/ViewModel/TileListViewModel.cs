@@ -310,33 +310,4 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public List<DownloadJob> Jobs { get; private set; }
   }
-
-  public class TestDownloadJob
-  {
-    public String Title;
-  }
-
-  public class DownloadJobProcessor
-  {
-    public void Process(IList<JobViewModel> jobs)
-    {
-      foreach (var job in jobs)
-      {
-        job.ProgressValue = 20;
-        Thread.Sleep(500);
-
-        job.ProgressValue = 40;
-        Thread.Sleep(500);
-
-        job.ProgressValue = 60;
-        Thread.Sleep(500);
-
-        job.ProgressValue = 80;
-        Thread.Sleep(500);
-
-        job.ProgressValue = 100;
-        Thread.Sleep(500);
-      }
-    }
-  }
 }
