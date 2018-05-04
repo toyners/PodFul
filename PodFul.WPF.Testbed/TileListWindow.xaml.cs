@@ -51,8 +51,10 @@ namespace PodFul.WPF.Testbed
 
     private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
-        var scanner = new Scanner();
-        scanner.ScanFeeds(this.feedCollectionViewModel.Feeds);
+      var mockLogger = new MockLogger();
+      var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
+      var scanner = new Scanner();
+      scanner.ScanFeeds(this.feedCollectionViewModel.Feeds, downloadManagerFactory);
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
@@ -109,11 +111,10 @@ namespace PodFul.WPF.Testbed
 
   public class Scanner
   {
-    public void ScanFeeds(IList<FeedViewModel2> feeds)
+    public void ScanFeeds(IList<FeedViewModel2> feeds, IDownloadManagerFactory downloadManagerFactory)
     {
-      Task.Factory.StartNew(() => 
+      Task.Factory.StartNew(() =>
       {
-        var downloadManagerFactory = new DownloadManagerFactory(null);
         foreach (var feed in feeds)
         {
           feed.Scan(downloadManagerFactory);
@@ -141,6 +142,13 @@ namespace PodFul.WPF.Testbed
     public IDownloadManager Create()
     {
       return new DownloadManager(this.logger, 1);
+    }
+  }
+
+  public class MockLogger : ILogger
+  {
+    public void Message(String message)
+    {
     }
   }
 }
