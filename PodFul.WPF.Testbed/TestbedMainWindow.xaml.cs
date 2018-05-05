@@ -11,9 +11,9 @@ namespace PodFul.WPF.Testbed
   using NSubstitute;
   using PodFul.Library;
   using PodFul.WPF.Windows;
-  using Processing;
   using TestSupport;
   using ViewModel;
+  using WPF.Processing;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml

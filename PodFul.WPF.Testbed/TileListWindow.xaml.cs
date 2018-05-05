@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Jabberwocky.Toolkit.Object;
 using PodFul.WPF.Logging;
 using PodFul.WPF.Processing;
+using PodFul.WPF.Testbed.Processing;
 using PodFul.WPF.Testbed.ViewModel;
 using PodFul.WPF.ViewModel;
 
@@ -106,49 +107,6 @@ namespace PodFul.WPF.Testbed
     private void FeedCancelButtonClick(Object sender, RoutedEventArgs e)
     {
       throw new NotImplementedException();
-    }
-  }
-
-  public class Scanner
-  {
-    public void ScanFeeds(IList<FeedViewModel2> feeds, IDownloadManagerFactory downloadManagerFactory)
-    {
-      Task.Factory.StartNew(() =>
-      {
-        foreach (var feed in feeds)
-        {
-          feed.Scan(downloadManagerFactory);
-        }
-      });
-    }
-  }
-
-  public interface IDownloadManagerFactory
-  {
-    Processing.IDownloadManager Create();
-  }
-
-
-  public class DownloadManagerFactory : IDownloadManagerFactory
-  {
-    private ILogger logger;
-
-    public DownloadManagerFactory(ILogger logger)
-    {
-      logger.VerifyThatObjectIsNotNull("Parameter 'logger' is null.");
-      this.logger = logger;
-    }
-
-    public IDownloadManager Create()
-    {
-      return new DownloadManager(this.logger, 1);
-    }
-  }
-
-  public class MockLogger : ILogger
-  {
-    public void Message(String message)
-    {
     }
   }
 }

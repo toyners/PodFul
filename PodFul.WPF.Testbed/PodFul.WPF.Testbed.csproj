@@ -96,6 +96,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Processing\DownloadClasses.cs" />
+    <Compile Include="Processing\Scanner.cs" />
     <Compile Include="TileListWindow.xaml.cs">
       <DependentUpon>TileListWindow.xaml</DependentUpon>
     </Compile>

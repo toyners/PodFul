@@ -5,7 +5,7 @@ namespace PodFul.WPF.Testbed
   using System.Collections.Generic;
   using System.Threading;
   using Library;
-  using Processing;
+  using WPF.Processing;
 
   public class TestFeedProcessor : IFeedProcessor
   {

@@ -94,7 +94,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.JobNavigation.AddJobs(jobs, 2);
 
       var downloadManager = downloadManagerFactory.Create();
-      //downloadManager.AddJobs(jobs);
+      downloadManager.AddJobs(jobs);
       downloadManager.StartWaitingJobs();
 
       this.UpdateScanProgressMessage("Done");
