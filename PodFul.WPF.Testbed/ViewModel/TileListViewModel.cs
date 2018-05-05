@@ -78,14 +78,13 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.UpdateScanProgressMessage("Searching for new podcasts ... ");
       Thread.Sleep(2000);
 
-      var newPodcastCount = 1;
-      this.UpdateScanProgressMessage(newPodcastCount + " podcasts found.");
-
       var jobs = new List<JobViewModel>();
       foreach (var podcast in this.feed.Podcasts)
       {
         jobs.Add(new JobViewModel(podcast, feed));
       }
+
+      this.UpdateScanProgressMessage(jobs.Count + " podcasts found.");
 
       this.UpdateScanProgressMessage("Updating feed");
       Thread.Sleep(2000);

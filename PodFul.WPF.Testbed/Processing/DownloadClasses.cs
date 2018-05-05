@@ -14,19 +14,6 @@ namespace PodFul.WPF.Testbed.Processing
     void StartWaitingJobs();
   }
 
-  public class DownloadManager : IDownloadManager
-  {
-    public void AddJobs(IEnumerable<JobViewModel> jobViewModels)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void StartWaitingJobs()
-    {
-      throw new NotImplementedException();
-    }
-  }
-
   public interface IDownloadManagerFactory
   {
     IDownloadManager Create();
@@ -44,7 +31,7 @@ namespace PodFul.WPF.Testbed.Processing
 
     public IDownloadManager Create()
     {
-      return new DownloadManager();
+      return new NewDownloadManager();
     }
   }
 
