@@ -9,7 +9,6 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Threading.Tasks;
   using Jabberwocky.Toolkit.WPF;
   using Library;
-  using static Processing.DownloadJob;
 
   public class JobViewModel : NotifyPropertyChangedBase
   {
@@ -21,7 +20,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private String progressMinorSize;
     private String progressUnit;
     private Int32 progressValue;
-    private StatusTypes status;
+    private DownloadJobStatus status;
 
     public JobViewModel(Podcast podcast, Feed feed)
     {
@@ -45,13 +44,13 @@ namespace PodFul.WPF.Testbed.ViewModel
       if (String.IsNullOrEmpty(this.podcast.FileDetails.FileName))
       {
         this.exceptionMessage = "No file name given.";
-        this.status = StatusTypes.Failed;
+        this.status = DownloadJobStatus.Failed;
         return;
       }
 
       this.exceptionMessage = String.Empty;
       this.FilePath = Path.Combine(feed.Directory, this.podcast.FileDetails.FileName);
-      this.status = StatusTypes.Waiting;
+      this.status = DownloadJobStatus.Waiting;
     }
 
     public String Title { get { return this.podcast.Title; } }
