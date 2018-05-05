@@ -20,6 +20,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Int64 downloadedSize;
     private String exceptionMessage;
     private Boolean fileSizeNotKnown;
+    private DownloadJobStatus lastStatus = DownloadJobStatus.NotSet;
     private Podcast podcast;
     private Int64 podcastSize;
     private Int64 percentageStepSize;
@@ -27,7 +28,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private String progressMinorSize;
     private String progressUnit;
     private Int32 progressValue;
-    private DownloadJobStatus status;
+    private DownloadJobStatus status = DownloadJobStatus.Waiting;
     private String url;
 
     public JobViewModel(Podcast podcast, Feed feed)

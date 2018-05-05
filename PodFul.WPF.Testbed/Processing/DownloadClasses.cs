@@ -9,7 +9,9 @@ namespace PodFul.WPF.Testbed.Processing
 
   public interface IDownloadManager
   {
-    void AddJobs(IEnumerable<JobViewModel> jobViewModels);
+    Action<JobViewModel> JobQueuedEvent { get; set; }
+
+    void AddJobs(IList<JobViewModel> jobViewModels);
 
     void StartWaitingJobs();
   }
