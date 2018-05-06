@@ -2,13 +2,9 @@
 namespace PodFul.WPF.Testbed.ViewModel
 {
   using System;
-  using System.Collections.Generic;
   using System.ComponentModel;
   using System.IO;
-  using System.Linq;
-  using System.Text;
   using System.Threading;
-  using System.Threading.Tasks;
   using System.Windows;
   using Jabberwocky.Toolkit.WPF;
   using Library;
@@ -30,6 +26,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Int32 progressValue;
     private DownloadJobStatus status = DownloadJobStatus.Waiting;
     private String url;
+    private Boolean useMarqueProgressStyle;
 
     public JobViewModel(Podcast podcast, Feed feed)
     {
@@ -101,6 +98,12 @@ namespace PodFul.WPF.Testbed.ViewModel
       private set { this.SetField(ref this.progressMinorSize, value); }
     }
 
+    public String ProgressUnit
+    {
+      get { return this.progressUnit; }
+      private set { this.SetField(ref this.progressUnit, value); }
+    }
+
     public DownloadJobStatus Status
     {
       get { return this.status; }
@@ -114,7 +117,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           new PropertyChangedEventArgs("StatusColor"),
           new PropertyChangedEventArgs("StatusWeight"));
 
-        switch (value)
+        switch (this.status)
         {
           case DownloadJobStatus.Failed:
           {
@@ -138,10 +141,18 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    //public String ProgressUnit { get { return ""; } }
+    public Boolean UseMarqueProgressStyle
+    {
+      get { return this.useMarqueProgressStyle; }
+      set { this.SetField(ref this.useMarqueProgressStyle, value); }
+    }
 
     public void Download()
     {
+      this.InitialiseBeforeDownload();
+
+      this.Status = DownloadJobStatus.Running;
+
       var fileDownloader = new FileDownloader();
       fileDownloader.Download(this.url, this.FilePath, this.CancellationToken, this.ProgressEventHandler);
 
@@ -149,6 +160,26 @@ namespace PodFul.WPF.Testbed.ViewModel
       if (!fileInfo.Exists)
       {
         throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
+      }
+    }
+
+    public void InitialiseBeforeDownload()
+    {
+      this.cancellationTokenSource = new CancellationTokenSource();
+      this.CancellationToken = this.cancellationTokenSource.Token;
+
+      this.ProgressMajorSize = "0";
+      this.ProgressMinorSize = ".0";
+
+      if (this.podcastSize > 0)
+      {
+        this.ProgressUnit = "%";
+        this.UseMarqueProgressStyle = this.fileSizeNotKnown = false;
+      }
+      else
+      {
+        this.ProgressUnit = " MB";
+        this.UseMarqueProgressStyle = this.fileSizeNotKnown = true;
       }
     }
 

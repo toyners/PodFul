@@ -60,7 +60,14 @@ namespace PodFul.WPF.Testbed
 
     private Podcast CreateTestPodcast(String title, String url, String fileName)
     {
-      var podcastFile = new PodcastFile(fileName, -1, DateTime.Now, String.Empty);
+      Int64 fileSize = -1;
+      var fileInfo = new FileInfo(url);
+      if (fileInfo.Exists)
+      {
+        fileSize = fileInfo.Length;
+      }
+
+      var podcastFile = new PodcastFile(fileName, fileSize, DateTime.Now, String.Empty);
       return new Podcast(title, "Description for " + title, url, String.Empty, DateTime.Now, podcastFile);
     }
 
@@ -514,12 +521,14 @@ namespace PodFul.WPF.Testbed
       var testDirectoryPath = Path.Combine(outputDirectory, testDirectoryName);
       DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath);
 
+      var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3";
+
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcasts1 = new[]
       {
-        this.CreateTestPodcast("Podcast 1-A", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast1-A.mp3")),
-        this.CreateTestPodcast("Podcast 1-B", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast1-B.mp3")),
-        this.CreateTestPodcast("Podcast 1-C", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast1-C.mp3")),
+        this.CreateTestPodcast("Podcast 1-A", originalFileURL, Path.Combine(testDirectoryPath + "Podcast1-A.mp3")),
+        this.CreateTestPodcast("Podcast 1-B", originalFileURL, Path.Combine(testDirectoryPath + "Podcast1-B.mp3")),
+        this.CreateTestPodcast("Podcast 1-C", originalFileURL, Path.Combine(testDirectoryPath + "Podcast1-C.mp3")),
       };
 
       var feed1 = Setup.createTestFullFeedFromParameters("Feed 1", "Description for Feed1", "", "", feedImageFilePath, "", "",
@@ -529,9 +538,9 @@ namespace PodFul.WPF.Testbed
 
       var podcasts2 = new[]
       {
-        this.CreateTestPodcast("Podcast 2-A", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast2-A.mp3")),
-        this.CreateTestPodcast("Podcast 2-B", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast2-B.mp3")),
-        this.CreateTestPodcast("Podcast 2-C", @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3", Path.Combine(testDirectoryPath + "Podcast2-C.mp3")),
+        this.CreateTestPodcast("Podcast 2-A", originalFileURL, Path.Combine(testDirectoryPath + "Podcast2-A.mp3")),
+        this.CreateTestPodcast("Podcast 2-B", originalFileURL, Path.Combine(testDirectoryPath + "Podcast2-B.mp3")),
+        this.CreateTestPodcast("Podcast 2-C", originalFileURL, Path.Combine(testDirectoryPath + "Podcast2-C.mp3")),
       };
 
       var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",
