@@ -9,6 +9,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Text;
   using System.Threading.Tasks;
   using Jabberwocky.Toolkit.WPF;
+  using Library;
 
   public class PageViewModel<V> where V : new()
   {
@@ -20,20 +21,61 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public interface INavigationPageFactory<T>
   {
-    T CreatePage();
+    T GetPage();
     void Reset();
   }
 
   public class PodcastPageFactory : INavigationPageFactory<PodcastPageViewModel2>
   {
-    public PodcastPageViewModel2 CreatePage()
+    private List<PodcastPageViewModel2> pages;
+    private Int32 pageIndex;
+
+    public PodcastPageFactory(IList<Podcast> podcasts, Int32 podcastCountPerPage)
     {
-      throw new NotImplementedException();
+      this.pages = new List<PodcastPageViewModel2>();
+      for (var index = 0; index < podcasts.Count; index += podcastCountPerPage)
+      {
+        this.pages.Add(new PodcastPageViewModel2(podcasts, index, index + podcastCountPerPage - 1));
+      }
+
+      this.Reset();
+    }
+
+    public PodcastPageViewModel2 GetPage()
+    {
+      return this.pages[this.pageIndex++];
     }
 
     public void Reset()
     {
-      throw new NotImplementedException();
+      this.pageIndex = 0;
+    }
+  }
+
+  public class JobPageFactory : INavigationPageFactory<JobPageViewModel>
+  {
+    private List<JobPageViewModel> pages;
+    private Int32 pageIndex;
+
+    public JobPageFactory(IList<JobViewModel> jobs, Int32 jobCountPerPage)
+    {
+      this.pages = new List<JobPageViewModel>();
+      for (var index = 0; index < jobs.Count; index += jobCountPerPage)
+      {
+        this.pages.Add(new JobPageViewModel(jobs, index, index + jobCountPerPage - 1));
+      }
+
+      this.Reset();
+    }
+
+    public JobPageViewModel GetPage()
+    {
+      return this.pages[this.pageIndex++];
+    }
+
+    public void Reset()
+    {
+      this.pageIndex = 0;
     }
   }
 
@@ -43,16 +85,9 @@ namespace PodFul.WPF.Testbed.ViewModel
     private T currentPage;
     private ObservableCollection<T> pages;
 
-    public PageNavigation(INavigationPageFactory<T> navigationPageFactory)
+    public PageNavigation()
     {
       this.pages = new ObservableCollection<T>();
-      var page = navigationPageFactory.CreatePage();
-      while (page != null)
-      {
-        this.pages.Add(page);
-      }
-
-      this.currentPage = this.pages[0];
     }
 
     public T CurrentPage { get { return this.currentPage; } }
@@ -85,6 +120,18 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
+    public void SetPages(INavigationPageFactory<T> navigationPageFactory)
+    {
+      this.pages.Clear();
+      var page = navigationPageFactory.GetPage();
+      while (page != null)
+      {
+        this.pages.Add(page);
+      }
+
+      this.currentPage = this.pages[0];
+    }
+
     public void MoveToNextPage()
     {
       this.PageNumber++;
@@ -108,8 +155,19 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class PodcastPageNavigation : PageNavigation<PodcastPageViewModel2>
   {
-    public PodcastPageNavigation(INavigationPageFactory<PodcastPageViewModel2> navigationPageFactory) : base(navigationPageFactory)
+  }
+
+  public class JobPageNavigation : PageNavigation<JobPageViewModel>
+  {
+    private Boolean hasJobs;
+
+    public Boolean HasJobs
     {
+      get { return this.hasJobs; }
+      private set
+      {
+        this.SetField(ref this.hasJobs, value, "HasJobs");
+      }
     }
   }
 }
