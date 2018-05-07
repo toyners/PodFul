@@ -183,6 +183,9 @@
                         <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
                       </Style.Triggers>
                     </Style>
                   </Grid.Style>
