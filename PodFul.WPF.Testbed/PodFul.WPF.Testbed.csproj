@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="ViewModel\DownloadJobStatusTypes.cs" />
     <Compile Include="ViewModel\JobViewModel.cs" />
+    <Compile Include="ViewModel\PageNavigation.cs" />
     <Compile Include="ViewModel\TileListViewModel.cs" />
     <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />
     <Page Include="TileListWindow.xaml">

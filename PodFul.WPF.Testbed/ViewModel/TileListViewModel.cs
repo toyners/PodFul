@@ -115,7 +115,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
   }
 
-  public class PodcastPageNavigation : NotifyPropertyChangedBase
+  /*public class PodcastPageNavigation : NotifyPropertyChangedBase
   {
     private Int32 pageNumber = 1;
     private PodcastPageViewModel2 currentPage;
@@ -181,7 +181,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.PageNumber = this.pages.Count;
     }
-  }
+  }*/
 
   public class PodcastPageViewModel2
   {
