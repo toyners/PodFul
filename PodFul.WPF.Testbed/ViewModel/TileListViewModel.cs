@@ -53,7 +53,10 @@ namespace PodFul.WPF.Testbed.ViewModel
     public FeedViewModel2(Feed feed)
     {
       this.feed = feed;
-      this.PodcastNavigation = new PodcastPageNavigation(feed.Podcasts);
+      var podcastPageFactory = new PodcastPageFactory(this.feed.Podcasts, 2);
+      this.PodcastNavigation = new PodcastPageNavigation();
+      this.PodcastNavigation.SetPages(podcastPageFactory);
+
       this.JobNavigation = new JobPageNavigation();
     }
 
@@ -90,7 +93,8 @@ namespace PodFul.WPF.Testbed.ViewModel
       Thread.Sleep(2000);
 
       this.UpdateScanProgressMessage("Downloading podcasts");
-      this.JobNavigation.AddJobs(jobs, 2);
+      var jobPageFactory = new JobPageFactory(jobs, 2);
+      this.JobNavigation.SetPages(jobPageFactory);
 
       var downloadManager = downloadManagerFactory.Create();
       downloadManager.AddJobs(jobs);
@@ -115,7 +119,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
   }
 
-  public class PodcastPageNavigation : NotifyPropertyChangedBase
+  /*public class PodcastPageNavigation : NotifyPropertyChangedBase
   {
     private Int32 pageNumber = 1;
     private PodcastPageViewModel2 currentPage;
@@ -181,7 +185,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.PageNumber = this.pages.Count;
     }
-  }
+  }*/
 
   public class PodcastPageViewModel2
   {
@@ -207,7 +211,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public String Title { get; private set; }
   }
 
-  public class JobPageNavigation : NotifyPropertyChangedBase
+  /*public class JobPageNavigation : NotifyPropertyChangedBase
   {
     private Int32 pageNumber;
     private JobPageViewModel currentPage;
@@ -293,7 +297,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.PageNumber = this.pages.Count;
     }
-  }
+  }*/
 
   public class JobPageViewModel : NotifyPropertyChangedBase
   {
