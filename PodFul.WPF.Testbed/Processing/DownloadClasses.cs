@@ -36,12 +36,4 @@ namespace PodFul.WPF.Testbed.Processing
       return new NewDownloadManager();
     }
   }
-
-  public class MockLogger : ILogger
-  {
-    public void Message(String message)
-    {
-      throw new NotImplementedException();
-    }
-  }
 }
