@@ -204,7 +204,18 @@
                       </Grid.ColumnDefinitions>
 
                       <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />
-                      <Button Grid.Column="1" Click="FeedCancelButtonClick">Cancel</Button>
+                      <Button Grid.Column="1" Click="FeedCancelButtonClick" Content="Cancel">
+                        <Button.Style>
+                          <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                              <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                              </DataTrigger>
+                            </Style.Triggers>
+                          </Style>
+                        </Button.Style>
+                      </Button>
                     </Grid>
 
                     <!-- Dock panel contains jobs list, job page navigation and job cancel controls -->
