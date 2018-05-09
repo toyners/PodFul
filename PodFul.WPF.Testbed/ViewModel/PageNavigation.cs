@@ -33,9 +33,15 @@ namespace PodFul.WPF.Testbed.ViewModel
     public PodcastPageFactory(IList<Podcast> podcasts, Int32 podcastCountPerPage)
     {
       this.pages = new List<PodcastPageViewModel2>();
-      for (var index = 0; index < podcasts.Count; index += podcastCountPerPage)
+      for (var firstPodcastIndex = 0; firstPodcastIndex < podcasts.Count; firstPodcastIndex += podcastCountPerPage)
       {
-        this.pages.Add(new PodcastPageViewModel2(podcasts, index, index + podcastCountPerPage - 1));
+        var lastPodcastIndex = firstPodcastIndex + podcastCountPerPage - 1;
+        if (lastPodcastIndex >= podcasts.Count)
+        {
+          lastPodcastIndex = podcasts.Count - 1;
+        }
+
+        this.pages.Add(new PodcastPageViewModel2(podcasts, firstPodcastIndex, lastPodcastIndex));
       }
 
       this.Reset();
@@ -43,6 +49,11 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public PodcastPageViewModel2 GetPage()
     {
+      if (this.pageIndex == this.pages.Count)
+      {
+        return null;
+      }
+
       return this.pages[this.pageIndex++];
     }
 
@@ -60,9 +71,15 @@ namespace PodFul.WPF.Testbed.ViewModel
     public JobPageFactory(IList<JobViewModel> jobs, Int32 jobCountPerPage)
     {
       this.pages = new List<JobPageViewModel>();
-      for (var index = 0; index < jobs.Count; index += jobCountPerPage)
+      for (var firstJobIndex = 0; firstJobIndex < jobs.Count; firstJobIndex += jobCountPerPage)
       {
-        this.pages.Add(new JobPageViewModel(jobs, index, index + jobCountPerPage - 1));
+        var lastJobIndex = firstJobIndex + jobCountPerPage - 1;
+        if (lastJobIndex >= jobs.Count)
+        {
+          lastJobIndex = jobs.Count - 1;
+        }
+
+        this.pages.Add(new JobPageViewModel(jobs, firstJobIndex, lastJobIndex));
       }
 
       this.Reset();
@@ -70,6 +87,11 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public JobPageViewModel GetPage()
     {
+      if (this.pageIndex == this.pages.Count)
+      {
+        return null;
+      }
+
       return this.pages[this.pageIndex++];
     }
 
@@ -81,7 +103,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class PageNavigation<T> : NotifyPropertyChangedBase where T : class
   {
-    private Int32 pageNumber = 1;
+    private Int32 pageNumber;
     private T currentPage;
     private ObservableCollection<T> pages;
 
@@ -120,16 +142,18 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public void SetPages(INavigationPageFactory<T> navigationPageFactory)
+    public virtual void SetPages(INavigationPageFactory<T> navigationPageFactory)
     {
       this.pages.Clear();
-      var page = navigationPageFactory.GetPage();
-      while (page != null)
+      T page = null;
+      while ((page = navigationPageFactory.GetPage()) != null)
       {
         this.pages.Add(page);
       }
 
       this.currentPage = this.pages[0];
+      this.PageNumber = 1;
+      this.TryInvokePropertyChanged(new PropertyChangedEventArgs("TotalPages"));
     }
 
     public void MoveToNextPage()
@@ -167,6 +191,16 @@ namespace PodFul.WPF.Testbed.ViewModel
       private set
       {
         this.SetField(ref this.hasJobs, value, "HasJobs");
+      }
+    }
+
+    public override void SetPages(INavigationPageFactory<JobPageViewModel> navigationPageFactory)
+    {
+      base.SetPages(navigationPageFactory);
+
+      if (this.TotalPages > 0)
+      {
+        this.HasJobs = true;
       }
     }
   }
