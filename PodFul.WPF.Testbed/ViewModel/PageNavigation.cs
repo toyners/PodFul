@@ -103,8 +103,6 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public interface IPageNavigation
   {
-    //Boolean CanMoveBack { get; }
-    //Boolean CanMoveForward { get; }
     void MoveToNextPage();
     void MoveToFirstPage();
     void MoveToPreviousPage();
