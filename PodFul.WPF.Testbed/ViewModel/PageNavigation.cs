@@ -101,7 +101,17 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
   }
 
-  public class PageNavigation<T> : NotifyPropertyChangedBase where T : class
+  public interface IPageNavigation
+  {
+    //Boolean CanMoveBack { get; }
+    //Boolean CanMoveForward { get; }
+    void MoveToNextPage();
+    void MoveToFirstPage();
+    void MoveToPreviousPage();
+    void MoveToLastPage();
+  }
+
+  public class PageNavigation<T> : NotifyPropertyChangedBase, IPageNavigation where T : class
   {
     private Int32 pageNumber;
     private T currentPage;
