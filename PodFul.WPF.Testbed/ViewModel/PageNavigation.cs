@@ -5,101 +5,8 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.ComponentModel;
-  using System.Linq;
-  using System.Text;
-  using System.Threading.Tasks;
   using Jabberwocky.Toolkit.WPF;
   using Library;
-
-  public class PageViewModel<V> where V : new()
-  {
-    public PageViewModel(IList<V> items, Int32 firstIndex, Int32 lastIndex)
-    {
-
-    }
-  }
-
-  public interface INavigationPageFactory<T>
-  {
-    T GetPage();
-    void Reset();
-  }
-
-  public class PodcastPageFactory : INavigationPageFactory<PodcastPageViewModel2>
-  {
-    private List<PodcastPageViewModel2> pages;
-    private Int32 pageIndex;
-
-    public PodcastPageFactory(IList<Podcast> podcasts, Int32 podcastCountPerPage)
-    {
-      this.pages = new List<PodcastPageViewModel2>();
-      for (var firstPodcastIndex = 0; firstPodcastIndex < podcasts.Count; firstPodcastIndex += podcastCountPerPage)
-      {
-        var lastPodcastIndex = firstPodcastIndex + podcastCountPerPage - 1;
-        if (lastPodcastIndex >= podcasts.Count)
-        {
-          lastPodcastIndex = podcasts.Count - 1;
-        }
-
-        this.pages.Add(new PodcastPageViewModel2(podcasts, firstPodcastIndex, lastPodcastIndex));
-      }
-
-      this.Reset();
-    }
-
-    public PodcastPageViewModel2 GetPage()
-    {
-      if (this.pageIndex == this.pages.Count)
-      {
-        return null;
-      }
-
-      return this.pages[this.pageIndex++];
-    }
-
-    public void Reset()
-    {
-      this.pageIndex = 0;
-    }
-  }
-
-  public class JobPageFactory : INavigationPageFactory<JobPageViewModel>
-  {
-    private List<JobPageViewModel> pages;
-    private Int32 pageIndex;
-
-    public JobPageFactory(IList<JobViewModel> jobs, Int32 jobCountPerPage)
-    {
-      this.pages = new List<JobPageViewModel>();
-      for (var firstJobIndex = 0; firstJobIndex < jobs.Count; firstJobIndex += jobCountPerPage)
-      {
-        var lastJobIndex = firstJobIndex + jobCountPerPage - 1;
-        if (lastJobIndex >= jobs.Count)
-        {
-          lastJobIndex = jobs.Count - 1;
-        }
-
-        this.pages.Add(new JobPageViewModel(jobs, firstJobIndex, lastJobIndex));
-      }
-
-      this.Reset();
-    }
-
-    public JobPageViewModel GetPage()
-    {
-      if (this.pageIndex == this.pages.Count)
-      {
-        return null;
-      }
-
-      return this.pages[this.pageIndex++];
-    }
-
-    public void Reset()
-    {
-      this.pageIndex = 0;
-    }
-  }
 
   public interface IPageNavigation
   {
@@ -109,16 +16,11 @@ namespace PodFul.WPF.Testbed.ViewModel
     void MoveToLastPage();
   }
 
-  public class PageNavigation<T> : NotifyPropertyChangedBase, IPageNavigation where T : class
+  public class PageNavigation<T, U> : NotifyPropertyChangedBase, IPageNavigation where T : class where U : class
   {
     private Int32 pageNumber;
     private T currentPage;
-    private ObservableCollection<T> pages;
-
-    public PageNavigation()
-    {
-      this.pages = new ObservableCollection<T>();
-    }
+    private ObservableCollection<T> pages = new ObservableCollection<T>();
 
     public T CurrentPage { get { return this.currentPage; } }
 
@@ -150,12 +52,20 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public virtual void SetPages(INavigationPageFactory<T> navigationPageFactory)
+    public virtual void SetPages(IList<U> items, Int32 itemCountPerPage)
     {
       this.pages.Clear();
-      T page = null;
-      while ((page = navigationPageFactory.GetPage()) != null)
+
+      for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)
       {
+        var lastItemIndex = firstItemIndex + itemCountPerPage - 1;
+        if (lastItemIndex >= items.Count)
+        {
+          lastItemIndex = items.Count - 1;
+        }
+
+        var args = new Object[] { items, firstItemIndex, lastItemIndex };
+        T page = Activator.CreateInstance(typeof(T), args) as T;
         this.pages.Add(page);
       }
 
@@ -185,30 +95,22 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
   }
 
-  public class PodcastPageNavigation : PageNavigation<PodcastPageViewModel2>
+  public class PodcastPageNavigation : PageNavigation<PodcastPageViewModel2, Podcast>
   {
   }
 
-  public class JobPageNavigation : PageNavigation<JobPageViewModel>
+  public class JobPageNavigation : PageNavigation<JobPageViewModel, JobViewModel>
   {
-    private Boolean hasJobs;
+    public Boolean HasJobs { get; private set; }
 
-    public Boolean HasJobs
+    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage)
     {
-      get { return this.hasJobs; }
-      private set
-      {
-        this.SetField(ref this.hasJobs, value, "HasJobs");
-      }
-    }
-
-    public override void SetPages(INavigationPageFactory<JobPageViewModel> navigationPageFactory)
-    {
-      base.SetPages(navigationPageFactory);
+      base.SetPages(items, itemCountPerPage);
 
       if (this.TotalPages > 0)
       {
         this.HasJobs = true;
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("HasJobs"));
       }
     }
   }
