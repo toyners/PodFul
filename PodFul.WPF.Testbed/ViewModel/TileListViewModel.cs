@@ -54,8 +54,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.feed = feed;
       this.PodcastNavigation = new PodcastPageNavigation();
-      this.PodcastNavigation.SetPages(this.feed.Podcasts, 2);
-
+      this.PodcastNavigation.SetPages(this.feed.Podcasts, 2, (podcasts, firstIndex, lastIndex) => { return new PodcastPageViewModel2(podcasts, firstIndex, lastIndex); });
       this.JobNavigation = new JobPageNavigation();
     }
 
@@ -92,7 +91,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       Thread.Sleep(2000);
 
       this.UpdateScanProgressMessage("Downloading podcasts");
-      this.JobNavigation.SetPages(jobs, 2);
+      this.JobNavigation.SetPages(jobs, 2, (j, f, l) => { return new JobPageViewModel(j, f, l); });
 
       var downloadManager = downloadManagerFactory.Create();
       downloadManager.AddJobs(jobs);

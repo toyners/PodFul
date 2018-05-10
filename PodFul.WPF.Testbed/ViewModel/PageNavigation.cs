@@ -21,7 +21,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Int32 pageNumber;
     private T currentPage;
     private ObservableCollection<T> pages = new ObservableCollection<T>();
-
+    
     public T CurrentPage { get { return this.currentPage; } }
 
     public Int32 TotalPages { get { return this.pages.Count; } }
@@ -52,28 +52,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public virtual void SetPages(IList<U> items, Int32 itemCountPerPage)
-    {
-      this.pages.Clear();
-
-      for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)
-      {
-        var lastItemIndex = firstItemIndex + itemCountPerPage - 1;
-        if (lastItemIndex >= items.Count)
-        {
-          lastItemIndex = items.Count - 1;
-        }
-
-        var args = new Object[] { items, firstItemIndex, lastItemIndex };
-        T page = Activator.CreateInstance(typeof(T), args) as T;
-        this.pages.Add(page);
-      }
-
-      this.currentPage = this.pages[0];
-      this.PageNumber = 1;
-      this.TryInvokePropertyChanged(new PropertyChangedEventArgs("TotalPages"));
-    }
-
     public void MoveToNextPage()
     {
       this.PageNumber++;
@@ -93,6 +71,25 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.PageNumber = this.pages.Count;
     }
+
+    public virtual void SetPages(IList<U> items, Int32 itemCountPerPage, Func<IList<U>, Int32, Int32, T> instanceCreateFunction)
+    {
+      for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)
+      {
+        var lastItemIndex = firstItemIndex + itemCountPerPage - 1;
+        if (lastItemIndex >= items.Count)
+        {
+          lastItemIndex = items.Count - 1;
+        }
+
+        T page = instanceCreateFunction(items, firstItemIndex, lastItemIndex);
+        this.pages.Add(page);
+      }
+
+      this.currentPage = this.pages[0];
+      this.PageNumber = 1;
+      this.TryInvokePropertyChanged(new PropertyChangedEventArgs("TotalPages"));
+    }
   }
 
   public class PodcastPageNavigation : PageNavigation<PodcastPageViewModel2, Podcast>
@@ -103,9 +100,9 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     public Boolean HasJobs { get; private set; }
 
-    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage)
+    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage, Func<IList<JobViewModel>, Int32, Int32, JobPageViewModel> instanceCreateFunction)
     {
-      base.SetPages(items, itemCountPerPage);
+      base.SetPages(items, itemCountPerPage, instanceCreateFunction);
 
       if (this.TotalPages > 0)
       {
