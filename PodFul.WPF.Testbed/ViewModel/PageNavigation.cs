@@ -6,15 +6,6 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Collections.ObjectModel;
   using System.ComponentModel;
   using Jabberwocky.Toolkit.WPF;
-  using Library;
-
-  public interface IPageNavigation
-  {
-    void MoveToNextPage();
-    void MoveToFirstPage();
-    void MoveToPreviousPage();
-    void MoveToLastPage();
-  }
 
   public class PageNavigation<T, U> : NotifyPropertyChangedBase, IPageNavigation where T : class where U : class
   {
@@ -89,26 +80,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.currentPage = this.pages[0];
       this.PageNumber = 1;
       this.TryInvokePropertyChanged(new PropertyChangedEventArgs("TotalPages"));
-    }
-  }
-
-  public class PodcastPageNavigation : PageNavigation<PodcastPageViewModel2, Podcast>
-  {
-  }
-
-  public class JobPageNavigation : PageNavigation<JobPageViewModel, JobViewModel>
-  {
-    public Boolean HasJobs { get; private set; }
-
-    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage, Func<IList<JobViewModel>, Int32, Int32, JobPageViewModel> instanceCreateFunction)
-    {
-      base.SetPages(items, itemCountPerPage, instanceCreateFunction);
-
-      if (this.TotalPages > 0)
-      {
-        this.HasJobs = true;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("HasJobs"));
-      }
     }
   }
 }
