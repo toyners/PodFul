@@ -81,11 +81,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       private set { this.SetField(ref this.progressValue, value); }
     }
 
-    /*public Boolean UseMarqueProgressStyle { get { return false; } }
-    public String StatusMessage { get { return ""; } }
-    public String StatusColor { get { return ""; } }
-    public String StatusWeight { get { return ""; } }*/
-
     public String ProgressMajorSize
     {
       get { return this.progressMajorSize; }
@@ -138,6 +133,44 @@ namespace PodFul.WPF.Testbed.ViewModel
             break;
           }
         }
+      }
+    }
+
+        public String StatusColor
+    {
+      get
+      {
+        switch (this.status)
+        {
+          case DownloadJobStatus.Completed: return "Green";
+          case DownloadJobStatus.Cancelled: return "Orange";
+          case DownloadJobStatus.Failed: return "Red";
+          case DownloadJobStatus.Running: return "Black";
+          default: return "Blue";
+        }
+      }
+    }
+
+    public String StatusMessage
+    {
+      get
+      {
+        switch (this.status)
+        {
+          case DownloadJobStatus.Completed: return "Completed";
+          case DownloadJobStatus.Cancelled: return "Canceled";
+          case DownloadJobStatus.Failed: return "Failed";
+          case DownloadJobStatus.Running: return "Running";
+          default: return "Waiting...";
+        }
+      }
+    }
+
+    public FontWeight StatusWeight
+    {
+      get
+      {
+        return (this.status != DownloadJobStatus.Waiting ? FontWeights.Bold : FontWeights.Normal);
       }
     }
 
