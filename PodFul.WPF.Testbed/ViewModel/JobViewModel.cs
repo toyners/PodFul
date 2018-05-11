@@ -136,7 +136,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-        public String StatusColor
+    public String StatusColor
     {
       get
       {
