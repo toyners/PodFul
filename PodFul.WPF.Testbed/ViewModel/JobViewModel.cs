@@ -182,18 +182,51 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void Download()
     {
-      this.InitialiseBeforeDownload();
+      try
+      {
+        this.InitialiseBeforeDownload();
 
-      this.Status = DownloadJobStatus.Running;
+        this.Status = DownloadJobStatus.Running;
 
-      var fileDownloader = new FileDownloader();
-      fileDownloader.Download(this.url, this.FilePath, this.CancellationToken, this.ProgressEventHandler);
+        var fileDownloader = new FileDownloader();
+        fileDownloader.Download(this.url, this.FilePath, this.CancellationToken, this.ProgressEventHandler);
 
+        this.DownloadCompleted();
+        this.Status = DownloadJobStatus.Completed;
+      }
+      catch (Exception e)
+      {
+        this.ExceptionMessage = e.Message;
+        this.Status = DownloadJobStatus.Failed;
+      }
+    }
+
+    public void DownloadCompleted()
+    {
       var fileInfo = new FileInfo(this.FilePath);
       if (!fileInfo.Exists)
       {
         throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
       }
+
+      /*if (this.imageResolver != null)
+      {
+        this.imageResolver.ResolvePodcastImage(this.podcast);
+      }
+
+      this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
+      this.feedCollection.UpdateFeedContent(this.feed);*/
+
+      if (!this.fileSizeNotKnown)
+      {
+        // File size is known so set percentage to 100%
+        this.ProgressMajorSize = "100";
+        this.ProgressMinorSize = ".0";
+      }
+
+      this.ProgressValue = 0;
+      this.CancellationVisibility = Visibility.Hidden;
+      this.Status = DownloadJobStatus.Completed;
     }
 
     public void InitialiseBeforeDownload()
