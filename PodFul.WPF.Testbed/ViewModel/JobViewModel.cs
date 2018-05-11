@@ -184,7 +184,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       try
       {
-        this.InitialiseBeforeDownload();
+        this.InitialiseDownload();
 
         this.Status = DownloadJobStatus.Running;
 
@@ -192,7 +192,6 @@ namespace PodFul.WPF.Testbed.ViewModel
         fileDownloader.Download(this.url, this.FilePath, this.CancellationToken, this.ProgressEventHandler);
 
         this.DownloadCompleted();
-        this.Status = DownloadJobStatus.Completed;
       }
       catch (Exception e)
       {
@@ -229,7 +228,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.Status = DownloadJobStatus.Completed;
     }
 
-    public void InitialiseBeforeDownload()
+    public void InitialiseDownload()
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       this.CancellationToken = this.cancellationTokenSource.Token;
