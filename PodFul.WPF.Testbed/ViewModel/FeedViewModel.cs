@@ -67,11 +67,14 @@ namespace PodFul.WPF.Testbed.ViewModel
       var jobFinishedCount = 0;
       downloadManager.JobFinishedEvent = j => 
       {
-        jobFinishedCount++;
-        if (jobFinishedCount % 2 == 0)
+        System.Windows.Application.Current.Dispatcher.Invoke(() =>
         {
-          this.JobNavigation.PageNumber += 1;
-        }
+          jobFinishedCount++;
+          if (jobFinishedCount % 2 == 0)
+          {
+            this.JobNavigation.PageNumber += 1;
+          }
+        });
       };
 
       downloadManager.AddJobs(jobs);
