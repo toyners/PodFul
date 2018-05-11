@@ -39,8 +39,8 @@ namespace PodFul.WPF.Testbed.ViewModel
         podcasts2);
 
       this.Feeds = new ObservableCollection<TreeViewItemViewModel>();
-      this.Feeds.Add(new FeedViewModel(feed1));
-      this.Feeds.Add(new FeedViewModel(feed2));
+      this.Feeds.Add(new WPF.ViewModel.FeedViewModel(feed1));
+      this.Feeds.Add(new WPF.ViewModel.FeedViewModel(feed2));
     }
 
     public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }

@@ -7,7 +7,7 @@ namespace PodFul.WPF.Testbed.Processing
 
   public class Scanner
   {
-    public void ScanFeeds(IList<FeedViewModel2> feeds, IDownloadManagerFactory downloadManagerFactory)
+    public void ScanFeeds(IList<FeedViewModel> feeds, IDownloadManagerFactory downloadManagerFactory)
     {
       Task.Factory.StartNew(() =>
       {
