@@ -10,6 +10,7 @@ namespace PodFul.WPF.Testbed.Processing
   {
     private Queue<JobViewModel> jobs;
 
+    public Action<JobViewModel> JobFinishedEvent { get; set; }
     public Action<JobViewModel> JobQueuedEvent { get; set; }
 
     public void AddJobs(IList<JobViewModel> jobViewModels)
@@ -34,6 +35,7 @@ namespace PodFul.WPF.Testbed.Processing
       {
         var job = this.jobs.Dequeue();
         job.Download();
+        this.JobFinishedEvent?.Invoke(job);
       }
     }
   }

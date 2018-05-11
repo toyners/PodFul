@@ -64,6 +64,16 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.JobNavigation.SetPages(jobs, 2, (j, f, l) => { return new JobPageViewModel(j, f, l); });
 
       var downloadManager = downloadManagerFactory.Create();
+      var jobFinishedCount = 0;
+      downloadManager.JobFinishedEvent = j => 
+      {
+        jobFinishedCount++;
+        if (jobFinishedCount % 2 == 0)
+        {
+          this.JobNavigation.PageNumber += 1;
+        }
+      };
+
       downloadManager.AddJobs(jobs);
       downloadManager.StartWaitingJobs();
 
