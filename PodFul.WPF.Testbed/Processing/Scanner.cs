@@ -1,12 +1,15 @@
 ﻿
 namespace PodFul.WPF.Testbed.Processing
 {
+  using System;
   using System.Collections.Generic;
   using System.Threading.Tasks;
   using ViewModel;
 
   public class Scanner
   {
+    public Action ScanCompletedEvent { get; set; }
+
     public void ScanFeeds(IList<FeedViewModel> feeds, IDownloadManagerFactory downloadManagerFactory)
     {
       Task.Factory.StartNew(() =>
@@ -15,6 +18,8 @@ namespace PodFul.WPF.Testbed.Processing
         {
           feed.Scan(downloadManagerFactory);
         }
+
+        this.ScanCompletedEvent?.Invoke();
       });
     }
   }

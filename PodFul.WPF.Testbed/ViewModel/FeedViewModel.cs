@@ -35,6 +35,11 @@ namespace PodFul.WPF.Testbed.ViewModel
     public String FeedScanProgressMessage { get; private set; }
     public ScanStates FeedScanState { get; private set; }
 
+    public void Reset()
+    {
+      this.FeedScanState = ScanStates.Idle;
+    }
+
     public void Scan(IDownloadManagerFactory downloadManagerFactory)
     {
       System.Windows.Application.Current.Dispatcher.Invoke(() =>

@@ -38,12 +38,53 @@ namespace PodFul.WPF.Testbed
 
     }
 
+    private enum ScanStates
+    {
+      Idle,
+      Running,
+      Completed,
+    }
+
+    private ScanStates scanState = ScanStates.Idle;
+
     private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
-      var mockLogger = new MockLogger();
-      var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
-      var scanner = new Scanner();
-      scanner.ScanFeeds(this.feedCollectionViewModel.Feeds, downloadManagerFactory);
+      if (this.scanState == ScanStates.Idle)
+      {
+        this.CommandButton.Content = "Cancel All";
+        this.scanState = ScanStates.Running;
+
+        var mockLogger = new MockLogger();
+        var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
+        var scanner = new Scanner();
+        scanner.ScanCompletedEvent = this.ScanCompletedEventHandler;
+        scanner.ScanFeeds(this.feedCollectionViewModel.Feeds, downloadManagerFactory);
+      }
+      else if (this.scanState == ScanStates.Running)
+      {
+        // Start cancelling all feeds
+
+      }
+      else if (this.scanState == ScanStates.Completed)
+      {
+        // Reset after scanning all feeds
+        this.CommandButton.Content = "Scan All";
+        this.scanState = ScanStates.Idle; 
+
+        foreach (var feed in this.feedCollectionViewModel.Feeds)
+        {
+          feed.Reset();
+        }
+      }
+    }
+
+    private void ScanCompletedEventHandler()
+    {
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.CommandButton.Content = "Reset";
+        this.scanState = ScanStates.Completed;
+      });
     }
 
     private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
