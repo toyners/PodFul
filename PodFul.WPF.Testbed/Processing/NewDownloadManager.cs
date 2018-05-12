@@ -3,7 +3,6 @@ namespace PodFul.WPF.Testbed.Processing
 {
   using System;
   using System.Collections.Generic;
-  using Library;
   using ViewModel;
 
   public class NewDownloadManager : IDownloadManager

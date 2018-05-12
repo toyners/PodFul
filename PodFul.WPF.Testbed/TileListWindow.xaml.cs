@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Jabberwocky.Toolkit.Object;
-using PodFul.WPF.Logging;
-using PodFul.WPF.Processing;
-using PodFul.WPF.Testbed.Processing;
-using PodFul.WPF.Testbed.ViewModel;
-using PodFul.WPF.ViewModel;
-
+﻿
 namespace PodFul.WPF.Testbed
 {
+  using System;
+  using System.Windows;
+  using System.Windows.Controls;
+  using System.Windows.Input;
+  using Processing;
+  using ViewModel;
+
   /// <summary>
   /// Interaction logic for TileListWindow.xaml
   /// </summary>

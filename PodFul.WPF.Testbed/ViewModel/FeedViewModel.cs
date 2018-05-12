@@ -70,7 +70,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         System.Windows.Application.Current.Dispatcher.Invoke(() =>
         {
           jobFinishedCount++;
-          if (jobFinishedCount % 2 == 0)
+          if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
           {
             this.JobNavigation.PageNumber += 1;
           }
