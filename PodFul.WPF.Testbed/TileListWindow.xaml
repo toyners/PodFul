@@ -69,7 +69,7 @@
                 <!-- 
                 Two rows: First row is feed title bar containing toggle button and feed title 
                 Second row is the feed content panel and is collapsed by default. It contains the
-                podcast list and feed settings.
+                feed description, podcast list and feed settings.
                 -->
                 <Grid.RowDefinitions>
                   <RowDefinition />
@@ -99,7 +99,7 @@
 
                   <StackPanel Grid.Column="1" >
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
-                    <TextBlock FontSize="14" Text="{Binding Description, Mode=OneWay}" />
+                    <!--<TextBlock FontSize="14" Text="{Binding Description, Mode=OneWay}" />-->
                   </StackPanel>
 
                 </Grid>
@@ -136,8 +136,12 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <!-- Tab control with two panels: Podcast list and feed settings  -->
+                  <!-- Tab control with three panels: Feed description, Podcast list and feed settings  -->
                   <TabControl Grid.Column="1" Height="100">
+                    <TabItem Header="Description">
+                      <TextBlock Text="{Binding Description, Mode=OneWay}" />
+                    </TabItem>
+                    
                     <TabItem Header="Podcasts" >
                       
                       <!-- Dock panel contains Podcast list and podcast page navigation controls -->
@@ -169,6 +173,7 @@
                         </ListBox>
                       </DockPanel>
                     </TabItem>
+                    
                     <TabItem Header="Settings">
 
                     </TabItem>
