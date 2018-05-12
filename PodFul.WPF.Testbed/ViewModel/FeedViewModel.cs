@@ -44,10 +44,10 @@ namespace PodFul.WPF.Testbed.ViewModel
       });
 
       this.UpdateScanProgressMessage("Scanning feed");
-      Thread.Sleep(2000);
+      Thread.Sleep(1000);
 
       this.UpdateScanProgressMessage("Searching for new podcasts ... ");
-      Thread.Sleep(2000);
+      Thread.Sleep(1000);
 
       var jobs = new List<JobViewModel>();
       foreach (var podcast in this.feed.Podcasts)
@@ -58,7 +58,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.UpdateScanProgressMessage(jobs.Count + " podcasts found.");
 
       this.UpdateScanProgressMessage("Updating feed");
-      Thread.Sleep(2000);
+      Thread.Sleep(1000);
 
       this.UpdateScanProgressMessage("Downloading podcasts");
       this.JobNavigation.SetPages(jobs, 2, (j, f, l) => { return new JobPageViewModel(j, f, l); });

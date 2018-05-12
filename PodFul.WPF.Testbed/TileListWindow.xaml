@@ -10,7 +10,8 @@
         MinHeight="150" MinWidth="150"
         WindowStartupLocation="CenterScreen">
   <Window.Resources>
-    <SolidColorBrush x:Key="GlyphBrush" Color="Black" /> <!--- Color="#444" -->
+    <SolidColorBrush x:Key="GlyphBrush" Color="Black" />
+    <SolidColorBrush x:Key="DisabledBrush" Color="LightGray" />
     <ControlTemplate x:Key="toggleButtonTemplate" TargetType="ToggleButton">
       <Grid
             Width="15"
@@ -29,6 +30,12 @@
           <Setter Property="Data"
                   TargetName="ExpandPath"
                   Value="M 0 4 L 8 4 L 4 8 Z"/>
+        </Trigger>
+        <Trigger Property="IsEnabled"
+                 Value="False">
+          <Setter Property="Fill"
+                  TargetName="ExpandPath"
+                  Value="{StaticResource DisabledBrush}" />          
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -89,8 +96,12 @@
                         <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
-                          <DataTrigger Binding="{Binding Path=FeedScanStatus}" Value="Idle">
-                            <Setter Property="Visibility" Value="Hidden" />
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                            <Setter Property="IsChecked" Value="False" />
+                            <Setter Property="IsEnabled" Value="False" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                            <Setter Property="IsEnabled" Value="False" />
                           </DataTrigger>
                         </Style.Triggers>
                       </Style>
@@ -99,7 +110,6 @@
 
                   <StackPanel Grid.Column="1" >
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
-                    <!--<TextBlock FontSize="14" Text="{Binding Description, Mode=OneWay}" />-->
                   </StackPanel>
 
                 </Grid>
@@ -115,16 +125,13 @@
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <MultiDataTrigger>
-                          <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding ElementName=MainToggleButton, Path=IsChecked}" Value="True" />
-                            <Condition Binding="{Binding ElementName=MainToggleButton, Path=Visibility}" Value="Visible" />
-                          </MultiDataTrigger.Conditions>
-                          <MultiDataTrigger.Setters>
-                            <Setter Property="Visibility" Value="Visible"/>
-                          </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                        <DataTrigger Binding="{Binding ElementName=MainToggleButton, Path=Visibility}" Value="Hidden">
+                        <DataTrigger Binding="{Binding ElementName=MainToggleButton, Path=IsChecked}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
                           <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                       </Style.Triggers>
