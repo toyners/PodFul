@@ -63,6 +63,13 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.PageNumber = this.pages.Count;
     }
 
+    public virtual void Reset()
+    {
+      this.pages.Clear();
+      this.currentPage = null;
+      this.pageNumber = 0;
+    }
+
     public virtual void SetPages(IList<U> items, Int32 itemCountPerPage, Func<IList<U>, Int32, Int32, T> instanceCreateFunction)
     {
       for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)

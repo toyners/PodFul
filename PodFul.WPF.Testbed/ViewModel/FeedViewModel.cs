@@ -50,6 +50,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void Reset()
     {
+      this.JobNavigation.Reset();
       this.FeedScanState = ScanStates.Idle;
     }
 

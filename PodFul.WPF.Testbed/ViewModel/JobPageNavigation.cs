@@ -19,5 +19,12 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("HasJobs"));
       }
     }
+
+    public override void Reset()
+    {
+      base.Reset();
+      this.HasJobs = false;
+      this.TryInvokePropertyChanged(new PropertyChangedEventArgs("HasJobs"));
+    }
   }
 }
