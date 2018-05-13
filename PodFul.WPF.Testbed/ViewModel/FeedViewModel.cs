@@ -12,6 +12,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   public class FeedViewModel : NotifyPropertyChangedBase
   {
     private Feed feed;
+    private ScanStates scanState;
 
     public enum ScanStates
     {
@@ -33,7 +34,19 @@ namespace PodFul.WPF.Testbed.ViewModel
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }
     public String FeedScanProgressMessage { get; private set; }
-    public ScanStates FeedScanState { get; private set; }
+    public ScanStates FeedScanState
+    {
+      get { return this.scanState; }
+      private set
+      {
+        if (this.scanState == value)
+        {
+          return;
+        }
+
+        this.SetField(ref this.scanState, value, "FeedScanState");
+      }
+    }
 
     public void Reset()
     {
@@ -45,7 +58,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
         this.FeedScanState = ScanStates.Running;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanState"));
       });
 
       this.UpdateScanProgressMessage("Scanning feed");
@@ -70,7 +82,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       var downloadManager = downloadManagerFactory.Create();
       var jobFinishedCount = 0;
-      downloadManager.JobFinishedEvent = j => 
+      downloadManager.JobFinishedEvent = j =>
       {
         System.Windows.Application.Current.Dispatcher.Invoke(() =>
         {
@@ -90,7 +102,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
       {
         this.FeedScanState = ScanStates.Completed;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanState"));
       });
     }
 
