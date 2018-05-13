@@ -9,9 +9,9 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     public Boolean HasJobs { get; private set; }
 
-    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage, Func<IList<JobViewModel>, Int32, Int32, JobPageViewModel> instanceCreateFunction)
+    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage)
     {
-      base.SetPages(items, itemCountPerPage, instanceCreateFunction);
+      base.SetPages(items, itemCountPerPage);
 
       if (this.TotalPages > 0)
       {
@@ -25,6 +25,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       base.Reset();
       this.HasJobs = false;
       this.TryInvokePropertyChanged(new PropertyChangedEventArgs("HasJobs"));
+    }
+
+    protected override JobPageViewModel CreatePage(IList<JobViewModel> items, Int32 firstIndex, Int32 lastIndex)
+    {
+      return new JobPageViewModel(items, firstIndex, lastIndex);
     }
   }
 }

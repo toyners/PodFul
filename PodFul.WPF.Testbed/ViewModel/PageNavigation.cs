@@ -7,7 +7,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.ComponentModel;
   using Jabberwocky.Toolkit.WPF;
 
-  public class PageNavigation<T, U> : NotifyPropertyChangedBase, IPageNavigation where T : class where U : class
+  public abstract class PageNavigation<T, U> : NotifyPropertyChangedBase, IPageNavigation where T : class where U : class
   {
     private Int32 pageNumber;
     private T currentPage;
@@ -70,7 +70,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.pageNumber = 0;
     }
 
-    public virtual void SetPages(IList<U> items, Int32 itemCountPerPage, Func<IList<U>, Int32, Int32, T> instanceCreateFunction)
+    public virtual void SetPages(IList<U> items, Int32 itemCountPerPage)
     {
       for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)
       {
@@ -80,7 +80,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           lastItemIndex = items.Count - 1;
         }
 
-        T page = instanceCreateFunction(items, firstItemIndex, lastItemIndex);
+        T page = this.CreatePage(items, firstItemIndex, lastItemIndex);
         this.pages.Add(page);
       }
 
@@ -88,5 +88,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.PageNumber = 1;
       this.TryInvokePropertyChanged(new PropertyChangedEventArgs("TotalPages"));
     }
+
+    protected abstract T CreatePage(IList<U> items, Int32 firstIndex, Int32 lastIndex);
   }
 }
