@@ -88,9 +88,10 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition />
+                    <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <ToggleButton Name="MainToggleButton" Height="20" Width="20" VerticalAlignment="Top">
+                  <ToggleButton Name="MainToggleButton" Grid.Column="0" Height="20" Width="20" VerticalAlignment="Top">
                     <ToggleButton.Style>
                       <Style TargetType="ToggleButton">
                         <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
@@ -112,10 +113,18 @@
                     </ToggleButton.Style>
                   </ToggleButton>
 
-                  <StackPanel Grid.Column="1" >
-                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
-                  </StackPanel>
+                  <!--<StackPanel Grid.Column="1" >-->
+                  <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+                  <!--</StackPanel>-->
 
+                  <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />
+                    <Button Grid.Column="1">Cancel</Button>
+                  </Grid>
                 </Grid>
 
                 <!-- Feed content panel -->
@@ -219,7 +228,7 @@
                         <ColumnDefinition Width="100"/>
                       </Grid.ColumnDefinitions>
 
-                      <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />
+                      <!--<TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />-->
                       <Button Grid.Column="1" Click="FeedCancelButtonClick" Content="Cancel">
                         <Button.Style>
                           <Style TargetType="Button">
