@@ -17,6 +17,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public enum ScanStates
     {
       Idle,
+      Waiting,
       Running,
       Completed
     }
@@ -46,6 +47,11 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.SetField(ref this.scanState, value, "FeedScanState");
       }
+    }
+
+    public void InitialiseForScan()
+    {
+      this.FeedScanState = ScanStates.Waiting;
     }
 
     public void Reset()

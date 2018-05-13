@@ -96,6 +96,10 @@
                         <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Waiting">
+                            <Setter Property="IsChecked" Value="False" />
+                            <Setter Property="IsEnabled" Value="False" />
+                          </DataTrigger>
                           <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
                             <Setter Property="IsChecked" Value="False" />
                             <Setter Property="IsEnabled" Value="False" />

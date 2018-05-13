@@ -53,6 +53,10 @@ namespace PodFul.WPF.Testbed
       {
         this.CommandButton.Content = "Cancel All";
         this.scanState = ScanStates.Running;
+        foreach (var feed in this.feedCollectionViewModel.Feeds)
+        {
+          feed.InitialiseForScan();
+        }
 
         var mockLogger = new MockLogger();
         var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
