@@ -35,7 +35,7 @@
                  Value="False">
           <Setter Property="Fill"
                   TargetName="ExpandPath"
-                  Value="{StaticResource DisabledBrush}" />          
+                  Value="{StaticResource DisabledBrush}" />
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -88,7 +88,7 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="270"/>
                   </Grid.ColumnDefinitions>
 
                   <ToggleButton Name="MainToggleButton" Grid.Column="0" Height="20" Width="20" VerticalAlignment="Top">
@@ -113,17 +113,26 @@
                     </ToggleButton.Style>
                   </ToggleButton>
 
-                  <!--<StackPanel Grid.Column="1" >-->
                   <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
-                  <!--</StackPanel>-->
 
                   <Grid Grid.Column="2">
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition />
-                      <ColumnDefinition />
+                      <ColumnDefinition Width="200"/>
+                      <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />
-                    <Button Grid.Column="1">Cancel</Button>
+                    <Button Grid.Column="1" Click="FeedCancelButtonClick" Content="Cancel">
+                      <Button.Style>
+                        <Style TargetType="Button">
+                          <Setter Property="Visibility" Value="Hidden"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                              <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </Button.Style>
+                    </Button>
                   </Grid>
                 </Grid>
 
@@ -161,9 +170,9 @@
                     <TabItem Header="Description">
                       <TextBlock Text="{Binding Description, Mode=OneWay}" />
                     </TabItem>
-                    
+
                     <TabItem Header="Podcasts" >
-                      
+
                       <!-- Dock panel contains Podcast list and podcast page navigation controls -->
                       <DockPanel Name="PodcastListPanel" Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
                         <StackPanel Name="PodcastPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
@@ -193,7 +202,7 @@
                         </ListBox>
                       </DockPanel>
                     </TabItem>
-                    
+
                     <TabItem Header="Settings">
 
                     </TabItem>
@@ -229,7 +238,7 @@
                       </Grid.ColumnDefinitions>
 
                       <!--<TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />-->
-                      <Button Grid.Column="1" Click="FeedCancelButtonClick" Content="Cancel">
+                      <!--<Button Grid.Column="1" Click="FeedCancelButtonClick" Content="Cancel">
                         <Button.Style>
                           <Style TargetType="Button">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -240,7 +249,7 @@
                             </Style.Triggers>
                           </Style>
                         </Button.Style>
-                      </Button>
+                      </Button>-->
                     </Grid>
 
                     <!-- Dock panel contains jobs list, job page navigation and job cancel controls -->

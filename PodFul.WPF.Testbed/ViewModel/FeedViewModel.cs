@@ -57,6 +57,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public void Reset()
     {
       this.JobNavigation.Reset();
+      this.UpdateScanProgressMessage(String.Empty);
       this.FeedScanState = ScanStates.Idle;
     }
 
@@ -79,12 +80,10 @@ namespace PodFul.WPF.Testbed.ViewModel
         jobs.Add(new JobViewModel(podcast, feed));
       }
 
-      this.UpdateScanProgressMessage(jobs.Count + " podcasts found.");
-
-      this.UpdateScanProgressMessage("Updating feed");
+      this.UpdateScanProgressMessage("Updating feed (" + jobs.Count + " podcasts found).");
       Thread.Sleep(1000);
 
-      this.UpdateScanProgressMessage("Downloading podcasts");
+      this.UpdateScanProgressMessage("Downloading " + jobs.Count + " podcasts");
       this.JobNavigation.SetPages(jobs, 2);
 
       var downloadManager = downloadManagerFactory.Create();
