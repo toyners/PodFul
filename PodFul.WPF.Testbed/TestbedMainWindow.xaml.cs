@@ -536,19 +536,24 @@ namespace PodFul.WPF.Testbed
         true, true, true,
         podcasts1);
 
-      var podcasts2 = new[]
-      {
-        this.CreateTestPodcast("Podcast 2-A", originalFileURL, Path.Combine(testDirectoryPath + "Podcast2-A.mp3")),
-        this.CreateTestPodcast("Podcast 2-B", originalFileURL, Path.Combine(testDirectoryPath + "Podcast2-B.mp3")),
-        this.CreateTestPodcast("Podcast 2-C", originalFileURL, Path.Combine(testDirectoryPath + "Podcast2-C.mp3")),
-      };
-
       var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
-        podcasts2);
+        new Podcast[0]);
 
-      return new[] { feed1, feed2 };
+      var podcasts3 = new[]
+      {
+        this.CreateTestPodcast("Podcast 3-A", originalFileURL, Path.Combine(testDirectoryPath + "Podcast3-A.mp3")),
+        this.CreateTestPodcast("Podcast 3-B", originalFileURL, Path.Combine(testDirectoryPath + "Podcast3-B.mp3")),
+        this.CreateTestPodcast("Podcast 3-C", originalFileURL, Path.Combine(testDirectoryPath + "Podcast3-C.mp3")),
+      };
+
+      var feed3 = Setup.createTestFullFeedFromParameters("Feed 3", "Description for Feed3", "", "", feedImageFilePath, "", "",
+        DateTime.MinValue, DateTime.MinValue,
+        true, true, true,
+        podcasts3);
+
+      return new[] { feed1, feed2, feed3 };
     }
   }
 }

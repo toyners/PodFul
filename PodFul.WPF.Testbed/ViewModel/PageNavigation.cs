@@ -84,8 +84,12 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.pages.Add(page);
       }
 
-      this.currentPage = this.pages[0];
-      this.PageNumber = 1;
+      if (this.pages.Count > 0)
+      {
+        this.currentPage = this.pages[0];
+        this.PageNumber = 1;
+      }
+
       this.TryInvokePropertyChanged(new PropertyChangedEventArgs("TotalPages"));
     }
 
