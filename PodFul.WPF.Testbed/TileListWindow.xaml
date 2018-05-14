@@ -168,7 +168,7 @@
 
                   <!-- Tab control with three panels: Feed description, Podcast list and feed settings  -->
                   <TabControl Grid.Column="1" Height="100">
-                    <TabItem Header="Description">
+                    <TabItem Header="Details">
                       <TextBlock Text="{Binding Description, Mode=OneWay}" />
                     </TabItem>
 
