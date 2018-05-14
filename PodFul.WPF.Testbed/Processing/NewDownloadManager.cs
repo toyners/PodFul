@@ -28,6 +28,11 @@ namespace PodFul.WPF.Testbed.Processing
       }
     }
 
+    public void CancelJobs()
+    {
+      throw new NotImplementedException();
+    }
+
     public void StartWaitingJobs()
     {
       while (this.jobs.Count > 0)

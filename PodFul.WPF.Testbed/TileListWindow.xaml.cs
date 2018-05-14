@@ -132,7 +132,8 @@ namespace PodFul.WPF.Testbed
 
     private void FeedCancelButtonClick(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      var feedViewModel = (sender as Button).DataContext as FeedViewModel;
+      feedViewModel.CancelScan();
     }
   }
 }

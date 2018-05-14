@@ -14,6 +14,8 @@ namespace PodFul.WPF.Testbed.Processing
 
     void AddJobs(IList<JobViewModel> jobViewModels);
 
+    void CancelJobs();
+
     void StartWaitingJobs();
   }
 

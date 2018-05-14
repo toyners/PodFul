@@ -75,6 +75,7 @@
 
                 <!-- 
                 Two rows: First row is feed title bar containing toggle button and feed title 
+                (and scan controls: text and cancel button)
                 Second row is the feed content panel and is collapsed by default. It contains the
                 feed description, podcast list and feed settings.
                 -->

@@ -13,13 +13,16 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     private Feed feed;
     private ScanStates scanState;
+    private IDownloadManager downloadManager;
 
     public enum ScanStates
     {
       Idle,
       Waiting,
       Running,
-      Completed
+      Completed,
+      Cancelled,
+      Failed
     }
 
     public FeedViewModel(Feed feed)
@@ -46,6 +49,28 @@ namespace PodFul.WPF.Testbed.ViewModel
         }
 
         this.SetField(ref this.scanState, value, "FeedScanState");
+      }
+    }
+
+    public void CancelScan()
+    {
+      if (this.scanState == ScanStates.Completed)
+      {
+        return;
+      }
+
+      try
+      {
+        if (this.downloadManager != null)
+        {
+          this.downloadManager.CancelJobs();
+          return;
+        }
+      }
+      finally
+      {
+        this.scanState = ScanStates.Cancelled;
+        this.UpdateScanProgressMessage("Cancelled");
       }
     }
 
