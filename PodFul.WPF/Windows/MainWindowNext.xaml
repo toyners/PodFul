@@ -49,7 +49,7 @@
 
         <TreeView.Resources>
           <HierarchicalDataTemplate 
-            DataType="{x:Type local2:FeedViewModel}" ItemsSource="{Binding Children}">
+            DataType="{x:Type local2:FeedViewModelBad}" ItemsSource="{Binding Children}">
             <Grid Margin="0,2">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50" />
@@ -119,7 +119,7 @@
           </DataTemplate>
 
           <DataTemplate 
-            DataType="{x:Type local2:PodcastViewModel}">
+            DataType="{x:Type local2:PodcastViewModelBad}">
             <StackPanel Margin="0,2">
               <TextBlock FontSize="14" Text="{Binding Title, Mode=OneWay}" />
               <TextBlock VerticalAlignment="Top" Text="{Binding Path=Description}"

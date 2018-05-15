@@ -10,7 +10,7 @@ namespace PodFul.WPF.ViewModel
   using PodFul.WPF.Windows;
   using Processing;
 
-  public class FeedCollectionViewModel : IFeedCollectionViewModel
+  public class FeedCollectionViewModelBad : IFeedCollectionViewModel
   {
     private enum ImageEvents
     {
@@ -28,7 +28,7 @@ namespace PodFul.WPF.ViewModel
     #endregion
 
     #region Properties
-    public ObservableCollection<TreeViewItemViewModel> Feeds { get; private set; }
+    public ObservableCollection<TreeViewItemViewModelBad> Feeds { get; private set; }
 
     public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
 
@@ -40,7 +40,7 @@ namespace PodFul.WPF.ViewModel
     #endregion
 
     #region Construction
-    public FeedCollectionViewModel(IFeedProcessor feedProcessor, ILogController logController, IImageResolver imageResolver)
+    public FeedCollectionViewModelBad(IFeedProcessor feedProcessor, ILogController logController, IImageResolver imageResolver)
     {
       feedProcessor.VerifyThatObjectIsNotNull("Parameter 'feedProcessor' is null.");
       logController.VerifyThatObjectIsNotNull("Parameter 'logController' is null.");
@@ -48,13 +48,13 @@ namespace PodFul.WPF.ViewModel
       this.feedProcessor = feedProcessor;
       this.logController = logController;
       this.imageResolver = imageResolver;
-      this.Feeds = new ObservableCollection<TreeViewItemViewModel>();
+      this.Feeds = new ObservableCollection<TreeViewItemViewModelBad>();
 
       if (feedProcessor.Feeds != null && feedProcessor.Feeds.Count > 0)
       {
         foreach (var feed in feedProcessor.Feeds)
         {
-          this.Feeds.Add(new FeedViewModel(feed));
+          this.Feeds.Add(new FeedViewModelBad(feed));
         }
       }
 
@@ -81,7 +81,7 @@ namespace PodFul.WPF.ViewModel
       // Need to add the feed on the UI thread since the feed collection is tied to the UI.
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.Feeds.Add(new FeedViewModel(feed));
+        this.Feeds.Add(new FeedViewModelBad(feed));
       });
     }
 

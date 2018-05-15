@@ -11,10 +11,10 @@ namespace PodFul.WPF.Testbed
   {
     public AddFeedCollectionViewModel()
     {
-      this.Feeds = new ObservableCollection<TreeViewItemViewModel>();
+      this.Feeds = new ObservableCollection<TreeViewItemViewModelBad>();
     }
 
-    public ObservableCollection<TreeViewItemViewModel> Feeds { get; private set; }
+    public ObservableCollection<TreeViewItemViewModelBad> Feeds { get; private set; }
     public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
     public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
     public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
@@ -22,7 +22,7 @@ namespace PodFul.WPF.Testbed
     
     public void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken)
     {
-      this.Feeds.Add(new FeedViewModel(new Library.Feed("title", "", "", "", "", "", "", new Library.Podcast[0], DateTime.MinValue, DateTime.MinValue, true, true, true, 3u)));
+      this.Feeds.Add(new FeedViewModelBad(new Library.Feed("title", "", "", "", "", "", "", new Library.Podcast[0], DateTime.MinValue, DateTime.MinValue, true, true, true, 3u)));
 
       TotalImageDownloadsRequiredEvent?.Invoke(5);
 

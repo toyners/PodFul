@@ -4,7 +4,7 @@ namespace PodFul.WPF.ViewModel
   using System;
   using System.ComponentModel;
 
-  public class TreeViewItemViewModel : INotifyPropertyChanged
+  public class TreeViewItemViewModelBad : INotifyPropertyChanged
   {
     private Boolean isSelected;
     private Boolean isExpanded;

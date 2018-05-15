@@ -4,9 +4,9 @@ namespace PodFul.WPF.ViewModel
   using System;
   using Library;
 
-  public class PodcastViewModel : TreeViewItemViewModel, IPodcastViewModel
+  public class PodcastViewModelBad : TreeViewItemViewModelBad, IPodcastViewModel
   {
-    public PodcastViewModel(Podcast podcast)
+    public PodcastViewModelBad(Podcast podcast)
     {
       this.Title = podcast.Title;
       this.Description = podcast.Description;

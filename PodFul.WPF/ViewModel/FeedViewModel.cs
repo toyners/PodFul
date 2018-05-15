@@ -7,14 +7,14 @@ namespace PodFul.WPF.ViewModel
   using System.ComponentModel;
   using Library;
 
-  public class FeedViewModel : TreeViewItemViewModel, IFeedViewModel
+  public class FeedViewModelBad : TreeViewItemViewModelBad, IFeedViewModel
   {
-    public FeedViewModel(Feed feed)
+    public FeedViewModelBad(Feed feed)
     {
       this.ImageFilePath = feed.ImageFileName;
       this.Title = feed.Title;
       this.Description = feed.Description;
-      this.Children = new ObservableCollection<TreeViewItemViewModel>();
+      this.Children = new ObservableCollection<TreeViewItemViewModelBad>();
       this.Children.Add(new FeedPodcastsExpandableViewModel(feed.Podcasts, 1));
       this.Children.Add(new FeedSettingsExpandableViewModel(feed));
     }
@@ -23,21 +23,21 @@ namespace PodFul.WPF.ViewModel
     public String ImageFilePath { get; private set; }
     public String Title { get; private set; }
 
-    public ObservableCollection<TreeViewItemViewModel> Children { get; private set; }
+    public ObservableCollection<TreeViewItemViewModelBad> Children { get; private set; }
   }
 
-  public class FeedSettingsExpandableViewModel : TreeViewItemViewModel
+  public class FeedSettingsExpandableViewModel : TreeViewItemViewModelBad
   {
     public FeedSettingsExpandableViewModel(Feed feed)
     {
-      this.Children = new ObservableCollection<TreeViewItemViewModel>();
+      this.Children = new ObservableCollection<TreeViewItemViewModelBad>();
       this.Children.Add(new FeedSettingsViewModel(feed));
     }
 
-    public ObservableCollection<TreeViewItemViewModel> Children { get; private set; }
+    public ObservableCollection<TreeViewItemViewModelBad> Children { get; private set; }
   }
 
-  public class FeedPodcastsExpandableViewModel : TreeViewItemViewModel
+  public class FeedPodcastsExpandableViewModel : TreeViewItemViewModelBad
   {
     public FeedPodcastsExpandableViewModel(IList<Podcast> podcasts, Int32 count)
     {
@@ -119,17 +119,17 @@ namespace PodFul.WPF.ViewModel
   {
     public PodcastPageViewModel(IList<Podcast> podcasts, Int32 first, Int32 last)
     {
-      this.Podcasts = new ObservableCollection<PodcastViewModel>();
+      this.Podcasts = new ObservableCollection<PodcastViewModelBad>();
       while (first <= last)
       {
-        this.Podcasts.Add(new PodcastViewModel(podcasts[first++]));
+        this.Podcasts.Add(new PodcastViewModelBad(podcasts[first++]));
       }
     }
 
-    public ObservableCollection<PodcastViewModel> Podcasts { get; private set; }
+    public ObservableCollection<PodcastViewModelBad> Podcasts { get; private set; }
   }
 
-  public class FeedSettingsViewModel : TreeViewItemViewModel
+  public class FeedSettingsViewModel : TreeViewItemViewModelBad
   {
     public FeedSettingsViewModel(Feed feed)
     {
