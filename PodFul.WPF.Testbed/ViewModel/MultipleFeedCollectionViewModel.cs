@@ -28,9 +28,9 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       var podcasts2 = new[]
       {
-        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
-        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1l, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-A", "Description for Podcast2-A", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-B", "Description for Podcast2-B", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
+        Setup.createTestPodcast("Podcast2-C", "Description for Podcast2-C", "", DateTime.MinValue, 1L, DateTime.MinValue, "", "", ""),
       };
 
       var feed2 = Setup.createTestFullFeedFromParameters("Feed 2", "Description for Feed2", "", "", feedImageFilePath, "", "",
