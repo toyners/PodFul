@@ -9,7 +9,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     public Boolean HasJobs { get; private set; }
 
-    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage)
+    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage = 2)
     {
       base.SetPages(items, itemCountPerPage);
 

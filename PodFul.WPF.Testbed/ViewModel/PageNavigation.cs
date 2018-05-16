@@ -70,7 +70,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.pageNumber = 0;
     }
 
-    public virtual void SetPages(IList<U> items, Int32 itemCountPerPage)
+    public virtual void SetPages(IList<U> items, Int32 itemCountPerPage = 2)
     {
       for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)
       {

@@ -256,7 +256,7 @@
                     </StackPanel>
 
                     <ListBox Name="JobList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Jobs}" 
-                               HorizontalContentAlignment="Stretch" Margin="0,2,0,0" Padding="0">
+                               HorizontalContentAlignment="Stretch" Margin="0,2,0,0" Padding="0" Height="80">
                       <ListBox.ItemTemplate>
                         <DataTemplate>
                           <Border BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="30">
