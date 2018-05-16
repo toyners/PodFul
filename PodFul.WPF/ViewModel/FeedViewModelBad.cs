@@ -50,26 +50,26 @@ namespace PodFul.WPF.ViewModel
 
   public class PodcastPageNavigationViewModel : INotifyPropertyChanged
   {
-    private List<PodcastPageViewModel> pages;
+    private List<PodcastPageViewModelBad> pages;
     private Int32 pageNumber = 1;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
     public PodcastPageNavigationViewModel(IList<Podcast> podcasts, Int32 count)
     {
-      this.pages = new List<PodcastPageViewModel>();
+      this.pages = new List<PodcastPageViewModelBad>();
       for (var index = 0; index < podcasts.Count; index += count)
       {
-        this.pages.Add(new PodcastPageViewModel(podcasts, index, (index + count - 1)));
+        this.pages.Add(new PodcastPageViewModelBad(podcasts, index, (index + count - 1)));
       }
 
-      this.CurrentPage = new ObservableCollection<PodcastPageViewModel>();
+      this.CurrentPage = new ObservableCollection<PodcastPageViewModelBad>();
       this.CurrentPage.Add(this.pages[0]);
     }
 
     public Boolean CanMoveBack { get { return this.PageNumber > 1; } }
     public Boolean CanMoveForward { get { return this.PageNumber < this.TotalPages; } }
-    public ObservableCollection<PodcastPageViewModel> CurrentPage { get; private set; }
+    public ObservableCollection<PodcastPageViewModelBad> CurrentPage { get; private set; }
     public Int32 PageNumber
     {
       get { return this.pageNumber; }
@@ -115,9 +115,9 @@ namespace PodFul.WPF.ViewModel
     }
   }
 
-  public class PodcastPageViewModel
+  public class PodcastPageViewModelBad
   {
-    public PodcastPageViewModel(IList<Podcast> podcasts, Int32 first, Int32 last)
+    public PodcastPageViewModelBad(IList<Podcast> podcasts, Int32 first, Int32 last)
     {
       this.Podcasts = new ObservableCollection<PodcastViewModelBad>();
       while (first <= last)

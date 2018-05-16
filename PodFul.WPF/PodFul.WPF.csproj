@@ -110,12 +110,12 @@
     <Compile Include="UI Support\JobCountDisplayManager.cs" />
     <Compile Include="UI Support\IJobCountDisplayComponent.cs" />
     <Compile Include="ViewModel\IPodcastViewModel.cs" />
-    <Compile Include="ViewModel\FeedViewModel.cs" />
+    <Compile Include="ViewModel\FeedViewModelBad.cs" />
     <Compile Include="ViewModel\IFeedViewModel.cs" />
     <Compile Include="ViewModel\FeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
-    <Compile Include="ViewModel\PodcastViewModel.cs" />
-    <Compile Include="ViewModel\TreeViewItemViewModel.cs" />
+    <Compile Include="ViewModel\PodcastViewModelBad.cs" />
+    <Compile Include="ViewModel\TreeViewItemViewModelBad.cs" />
     <Compile Include="Windows\DeliveryPointWindow.xaml.cs">
       <DependentUpon>DeliveryPointWindow.xaml</DependentUpon>
     </Compile>
