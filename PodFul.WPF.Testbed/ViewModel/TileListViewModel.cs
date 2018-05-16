@@ -36,42 +36,4 @@ namespace PodFul.WPF.Testbed.ViewModel
       throw new NotImplementedException();
     }
   }
-
-  public class PodcastPageViewModel2
-  {
-    public PodcastPageViewModel2(IList<Podcast> podcasts, Int32 firstPodcastIndex, Int32 lastPodcastIndex)
-    {
-      this.Podcasts = new List<PodcastViewModel2>(lastPodcastIndex - firstPodcastIndex + 1);
-      while (firstPodcastIndex <= lastPodcastIndex)
-      {
-        this.Podcasts.Add(new PodcastViewModel2(podcasts[firstPodcastIndex++]));
-      }
-    }
-
-    public List<PodcastViewModel2> Podcasts { get; private set; }
-  }
-
-  public class PodcastViewModel2
-  {
-    public PodcastViewModel2(Podcast podcast)
-    {
-      this.Title = podcast.Title;
-    }
-
-    public String Title { get; private set; }
-  }
-
-  public class JobPageViewModel : NotifyPropertyChangedBase
-  {
-    public JobPageViewModel(IList<JobViewModel> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
-    {
-      this.Jobs = new List<JobViewModel>();
-      while (firstJobIndex <= lastJobIndex)
-      {
-        this.Jobs.Add(jobs[firstJobIndex++]);
-      }
-    }
-
-    public List<JobViewModel> Jobs { get; private set; }
-  }
 }

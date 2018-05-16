@@ -5,11 +5,11 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Collections.Generic;
   using Library;
 
-  public class PodcastPageNavigation : PageNavigation<PodcastPageViewModel2, Podcast>
+  public class PodcastPageNavigation : PageNavigation<PodcastPageViewModel, Podcast>
   {
-    protected override PodcastPageViewModel2 CreatePage(IList<Podcast> items, Int32 firstIndex, Int32 lastIndex)
+    protected override PodcastPageViewModel CreatePage(IList<Podcast> items, Int32 firstIndex, Int32 lastIndex)
     {
-      return new PodcastPageViewModel2(items, firstIndex, lastIndex);
+      return new PodcastPageViewModel(items, firstIndex, lastIndex);
     }
   }
 }
