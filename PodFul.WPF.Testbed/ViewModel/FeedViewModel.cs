@@ -99,34 +99,44 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.UpdateScanProgressMessage("Searching for new podcasts ... ");
       Thread.Sleep(1000);
 
-      var jobs = new List<JobViewModel>();
-      foreach (var podcast in this.feed.Podcasts)
+      List<JobViewModel> jobs = null;
+      var jobCount = "No";
+      if (this.feed.Podcasts.Length > 0)
       {
-        jobs.Add(new JobViewModel(podcast, feed));
+        jobs = new List<JobViewModel>();
+        foreach (var podcast in this.feed.Podcasts)
+        {
+          jobs.Add(new JobViewModel(podcast, feed));
+        }
+
+        jobCount = jobs.Count.ToString();
       }
 
-      this.UpdateScanProgressMessage("Updating feed (" + jobs.Count + " podcasts found).");
+      this.UpdateScanProgressMessage("Updating feed (" + jobCount + " podcasts found).");
       Thread.Sleep(1000);
 
-      this.UpdateScanProgressMessage("Downloading " + jobs.Count + " podcasts");
-      this.JobNavigation.SetPages(jobs, 2);
-
-      var downloadManager = downloadManagerFactory.Create();
-      var jobFinishedCount = 0;
-      downloadManager.JobFinishedEvent = j =>
+      if (jobs != null)
       {
-        System.Windows.Application.Current.Dispatcher.Invoke(() =>
-        {
-          jobFinishedCount++;
-          if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
-          {
-            this.JobNavigation.PageNumber += 1;
-          }
-        });
-      };
+        this.UpdateScanProgressMessage("Downloading " + jobs.Count + " podcasts");
+        this.JobNavigation.SetPages(jobs, 2);
 
-      downloadManager.AddJobs(jobs);
-      downloadManager.StartWaitingJobs();
+        this.downloadManager = downloadManagerFactory.Create();
+        var jobFinishedCount = 0;
+        this.downloadManager.JobFinishedEvent = j =>
+        {
+          System.Windows.Application.Current.Dispatcher.Invoke(() =>
+          {
+            jobFinishedCount++;
+            if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
+            {
+              this.JobNavigation.PageNumber += 1;
+            }
+          });
+        };
+
+        downloadManager.AddJobs(jobs);
+        downloadManager.StartWaitingJobs();
+      }
 
       this.UpdateScanProgressMessage("Done");
 
