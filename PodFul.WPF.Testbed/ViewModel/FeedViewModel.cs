@@ -4,6 +4,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System;
   using System.Collections.Generic;
   using System.ComponentModel;
+  using System.IO;
   using System.Threading;
   using Jabberwocky.Toolkit.WPF;
   using Library;
@@ -86,6 +87,8 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.FeedScanState = ScanStates.Idle;
     }
 
+    private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
     public void Scan(IDownloadManagerFactory downloadManagerFactory)
     {
       System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -93,8 +96,12 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.FeedScanState = ScanStates.Running;
       });
 
-      this.UpdateScanProgressMessage("Scanning feed");
-      Thread.Sleep(1000);
+      this.UpdateScanProgressMessage("Updating feed");
+      this.cancellationTokenSource = new CancellationTokenSource();
+      var cancelToken = this.cancellationTokenSource.Token;
+      var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
+      var newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
+
 
       this.UpdateScanProgressMessage("Searching for new podcasts ... ");
       Thread.Sleep(1000);
@@ -112,7 +119,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         jobCount = jobs.Count.ToString();
       }
 
-      this.UpdateScanProgressMessage("Updating feed (" + jobCount + " podcasts found).");
+      this.UpdateScanProgressMessage("Saving feed (" + jobCount + " podcasts found).");
       Thread.Sleep(1000);
 
       if (jobs != null)
