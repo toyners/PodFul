@@ -9,12 +9,13 @@ namespace PodFul.WPF.Testbed.ViewModel
   using Jabberwocky.Toolkit.WPF;
   using Library;
   using Processing;
+  using WPF.Processing;
 
   public class FeedViewModel : NotifyPropertyChangedBase
   {
     private Feed feed;
     private ScanStates scanState;
-    private IDownloadManager downloadManager;
+    private Processing.IDownloadManager downloadManager;
 
     public enum ScanStates
     {
@@ -102,9 +103,29 @@ namespace PodFul.WPF.Testbed.ViewModel
       var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
       var newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
 
+      // Creating the new feed may have taken a while - check for cancellation before processing podcasts.
+      cancelToken.ThrowIfCancellationRequested();
 
       this.UpdateScanProgressMessage("Searching for new podcasts ... ");
-      Thread.Sleep(1000);
+      var podcastIndexes = this.BuildNewPodcastIndexList(feed, newFeed);
+      var feedHasNewPodcasts = (podcastIndexes.Count > 0);
+
+      var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
+      if (feedHasNewPodcasts && downloadConfirmation != DownloadConfirmationStatus.SkipDownloading)
+      {
+        /*this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey), newFeed, podcastIndexes);
+
+        podcastDownloadConfirmer.ConfirmDownloadThreshold = feed.ConfirmDownloadThreshold;
+        downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
+        if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
+        {
+          var feedMessage = podcastIndexes.Count + " podcasts found";
+          var logMessage = feedMessage + " (Scan cancelled).";
+          this.logController.Message(LoggerKeys.InfoKey, logMessage).Message(LoggerKeys.UiKey, feedMessage + "\r\n");
+          scanReport.Message(feedMessage + " for \"" + feed.Title + "\".");
+          this.cancellationTokenSource.Cancel();
+        }*/
+      }
 
       List<JobViewModel> jobs = null;
       var jobCount = "No";
@@ -151,6 +172,30 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.FeedScanState = ScanStates.Completed;
       });
+    }
+
+    private List<Int32> BuildNewPodcastIndexList(Feed oldFeed, Feed newFeed)
+    {
+      var podcastIndexes = new List<Int32>();
+      if (oldFeed.Podcasts.Length == 0)
+      {
+        for (Int32 i = 0; i < newFeed.Podcasts.Length; i++)
+        {
+          podcastIndexes.Add(i);
+        }
+      }
+      else
+      {
+        Int32 podcastIndex = 0;
+        var firstPodcast = oldFeed.Podcasts[0];
+        while (podcastIndex < newFeed.Podcasts.Length && !newFeed.Podcasts[podcastIndex].Equals(firstPodcast))
+        {
+          podcastIndexes.Add(podcastIndex);
+          podcastIndex++;
+        }
+      }
+
+      return podcastIndexes;
     }
 
     private void UpdateScanProgressMessage(String progressMessage)
