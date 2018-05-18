@@ -100,7 +100,7 @@ namespace PodFul.WPF.Miscellaneous
     /// Update the feed in storage.
     /// </summary>
     /// <param name="feed">Feed to be updated in storage</param>
-    public void UpdateFeedContent(Feed feed)
+    public virtual void UpdateFeedContent(Feed feed)
     {
       this.feedStorage.Update(feed);
     }

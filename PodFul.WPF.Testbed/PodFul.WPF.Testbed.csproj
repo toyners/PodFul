@@ -99,6 +99,7 @@
     <Compile Include="Processing\DownloadClasses.cs" />
     <Compile Include="Processing\MockLogger.cs" />
     <Compile Include="Processing\NewDownloadManager.cs" />
+    <Compile Include="Processing\NewFeedCollection.cs" />
     <Compile Include="Processing\Scanner.cs" />
     <Compile Include="TileListWindow.xaml.cs">
       <DependentUpon>TileListWindow.xaml</DependentUpon>

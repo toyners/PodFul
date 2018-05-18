@@ -145,8 +145,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.UpdateScanProgressMessage("Saving feed (" + podcastIndexes.Count + " podcasts found).");
       // Now update the feed to storage for real.
       newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
-      //this.feedCollection[feedIndex] = newFeed; // Wrap this into UpdateFeedContent with a invocation on the main thread
-      // since contains Observable collection (and hence all the observable collection operations must be on main thread)
       this.feedCollection.UpdateFeedContent(newFeed);
 
       if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
