@@ -8,6 +8,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Threading;
   using Jabberwocky.Toolkit.WPF;
   using Library;
+  using Miscellaneous;
   using Processing;
   using WPF.Processing;
 
@@ -16,6 +17,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Feed feed;
     private ScanStates scanState;
     private Processing.IDownloadManager downloadManager;
+    private IImageResolver imageResolver;
+    private IFeedCollection feedCollection;
 
     public enum ScanStates
     {
@@ -97,7 +100,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.FeedScanState = ScanStates.Running;
       });
 
-      this.UpdateScanProgressMessage("Updating feed");
+      this.UpdateScanProgressMessage("Processing ...");
       this.cancellationTokenSource = new CancellationTokenSource();
       var cancelToken = this.cancellationTokenSource.Token;
       var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
@@ -106,65 +109,78 @@ namespace PodFul.WPF.Testbed.ViewModel
       // Creating the new feed may have taken a while - check for cancellation before processing podcasts.
       cancelToken.ThrowIfCancellationRequested();
 
-      this.UpdateScanProgressMessage("Searching for new podcasts ... ");
+      this.UpdateScanProgressMessage("Searching for new podcasts ...");
       var podcastIndexes = this.BuildNewPodcastIndexList(feed, newFeed);
-      var feedHasNewPodcasts = (podcastIndexes.Count > 0);
+
+      if (podcastIndexes.Count == 0)
+      {
+        this.UpdateScanProgressMessage("Saving feed (No podcasts found).");
+        // Update the feed and leave
+      }
 
       var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
-      if (feedHasNewPodcasts && downloadConfirmation != DownloadConfirmationStatus.SkipDownloading)
+      if (downloadConfirmation != DownloadConfirmationStatus.SkipDownloading)
       {
-        /*this.LogNewPodcastsFromFeed(this.logController.GetLogger<FileLogger>(LoggerKeys.InfoKey), newFeed, podcastIndexes);
-
-        podcastDownloadConfirmer.ConfirmDownloadThreshold = feed.ConfirmDownloadThreshold;
-        downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
-        if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
+        if (podcastIndexes.Count >= newFeed.ConfirmDownloadThreshold)
         {
-          var feedMessage = podcastIndexes.Count + " podcasts found";
-          var logMessage = feedMessage + " (Scan cancelled).";
-          this.logController.Message(LoggerKeys.InfoKey, logMessage).Message(LoggerKeys.UiKey, feedMessage + "\r\n");
-          scanReport.Message(feedMessage + " for \"" + feed.Title + "\".");
-          this.cancellationTokenSource.Cancel();
-        }*/
-      }
+          IPodcastDownloadConfirmer podcastDownloadConfirmer = new PodcastDownloadConfirmer();
+          downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
 
-      List<JobViewModel> jobs = null;
-      var jobCount = "No";
-      if (this.feed.Podcasts.Length > 0)
-      {
-        jobs = new List<JobViewModel>();
-        foreach (var podcast in this.feed.Podcasts)
-        {
-          jobs.Add(new JobViewModel(podcast, feed));
-        }
-
-        jobCount = jobs.Count.ToString();
-      }
-
-      this.UpdateScanProgressMessage("Saving feed (" + jobCount + " podcasts found).");
-      Thread.Sleep(1000);
-
-      if (jobs != null)
-      {
-        this.UpdateScanProgressMessage("Downloading " + jobs.Count + " podcasts");
-        this.JobNavigation.SetPages(jobs);
-
-        this.downloadManager = downloadManagerFactory.Create();
-        var jobFinishedCount = 0;
-        this.downloadManager.JobFinishedEvent = j =>
-        {
-          System.Windows.Application.Current.Dispatcher.Invoke(() =>
+          if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
           {
-            jobFinishedCount++;
-            if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
-            {
-              this.JobNavigation.PageNumber += 1;
-            }
-          });
-        };
-
-        downloadManager.AddJobs(jobs);
-        downloadManager.StartWaitingJobs();
+            this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found (Scan cancelled).");
+            this.cancellationTokenSource.Cancel();
+          }
+        }
       }
+
+      if (this.imageResolver != null)
+      {
+        foreach (var podcastIndex in podcastIndexes)
+        {
+          this.imageResolver.ResolvePodcastImage(newFeed.Podcasts[podcastIndex]);
+        }
+      }
+
+      this.UpdateScanProgressMessage("Saving feed (" + podcastIndexes.Count + " podcasts found).");
+      // Now update the feed to storage for real.
+      newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
+      //this.feedCollection[feedIndex] = newFeed; // Wrap this into UpdateFeedContent with a invocation on the main thread
+      // since contains Observable collection (and hence all the observable collection operations must be on main thread)
+      this.feedCollection.UpdateFeedContent(newFeed);
+
+      if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
+      {
+        return;
+      }
+
+      this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
+
+      podcastIndexes.Reverse();
+      List<JobViewModel> jobs = new List<JobViewModel>(podcastIndexes.Count);
+      foreach (var podcastIndex in podcastIndexes)
+      {
+        jobs.Add(new JobViewModel(newFeed.Podcasts[podcastIndex], newFeed));
+      }
+
+      this.JobNavigation.SetPages(jobs);
+
+      this.downloadManager = downloadManagerFactory.Create();
+      var jobFinishedCount = 0;
+      this.downloadManager.JobFinishedEvent = j =>
+      {
+        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+        {
+          jobFinishedCount++;
+          if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
+          {
+            this.JobNavigation.PageNumber += 1;
+          }
+        });
+      };
+
+      downloadManager.AddJobs(jobs);
+      downloadManager.StartWaitingJobs();
 
       this.UpdateScanProgressMessage("Done");
 

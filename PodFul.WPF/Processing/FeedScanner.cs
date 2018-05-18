@@ -12,7 +12,6 @@ namespace PodFul.WPF.Processing
   using Library;
   using Logging;
   using Miscellaneous;
-  using Windows;
 
   /// <summary>
   /// Scans a list of feeds and collects a list of podcasts to be downloaded. Feeds with new podcasts are updated.
