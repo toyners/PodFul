@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+>
+  <channel>
+	  <title>Feed 1 Title</title>
+	  <link>Feed 1 Website</link>
+	  <description>Feed 1 Description</description>
+    <image>
+      <url>Feed 1 Image</url>
+    </image>
+    <item>
+		  <title>Podcast #2 Title</title>
+		  <pubDate>2 Jan 2014 01:02:03</pubDate>
+		  <description><![CDATA[Podcast #2 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+	  </item>
+    <item>
+		  <title>Podcast #1 Title</title>
+		  <pubDate>3 Jan 2014 01:02:03</pubDate>
+		  <description><![CDATA[Podcast #1 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3" length="10055415" type="audio/mpeg" />
+	  </item>
+	</channel>
+</rss>

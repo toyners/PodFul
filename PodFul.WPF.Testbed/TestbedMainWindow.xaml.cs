@@ -508,6 +508,8 @@ namespace PodFul.WPF.Testbed
     private void TileListView_Click(Object sender, RoutedEventArgs e)
     {
       var feeds = this.CreateTestFeeds();
+
+
       var feedCollectionViewModel = new TileListViewModel(feeds);
       var mainWindow = new TileListWindow(feedCollectionViewModel);
       mainWindow.Owner = this;
@@ -523,15 +525,15 @@ namespace PodFul.WPF.Testbed
 
       var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3";
 
+      var feedURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed 3.rss";
+
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcasts1 = new[]
       {
-        this.CreateTestPodcast("Podcast 1-A", originalFileURL, Path.Combine(testDirectoryPath + "Podcast1-A.mp3")),
-        this.CreateTestPodcast("Podcast 1-B", originalFileURL, Path.Combine(testDirectoryPath + "Podcast1-B.mp3")),
-        this.CreateTestPodcast("Podcast 1-C", originalFileURL, Path.Combine(testDirectoryPath + "Podcast1-C.mp3")),
+        this.CreateTestPodcast("Podcast #1 Title", "", ""),
       };
 
-      var feed1 = Setup.createTestFullFeedFromParameters("Feed 1", "Description for Feed1", "", "", feedImageFilePath, "", "",
+      var feed1 = Setup.createTestFullFeedFromParameters("Feed 1 Title", "Feed 1 Description", "Feed 1 Website", "", feedURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
         podcasts1);
@@ -555,5 +557,7 @@ namespace PodFul.WPF.Testbed
 
       return new[] { feed1, feed2, feed3 };
     }
+
+
   }
 }
