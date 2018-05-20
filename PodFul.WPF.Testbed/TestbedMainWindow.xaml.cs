@@ -530,7 +530,7 @@ namespace PodFul.WPF.Testbed
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcasts1 = new[]
       {
-        this.CreateTestPodcast("Podcast #1 Title", "", ""),
+        this.CreateTestPodcast("Podcast #1 Title", originalFileURL, ""),
       };
 
       var feed1 = Setup.createTestFullFeedFromParameters("Feed 1 Title", "Feed 1 Description", "Feed 1 Website", "", feedURL, feedImageFilePath, "",
