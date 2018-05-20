@@ -508,9 +508,10 @@ namespace PodFul.WPF.Testbed
     private void TileListView_Click(Object sender, RoutedEventArgs e)
     {
       var feeds = this.CreateTestFeeds();
+      var mockFeedCollection = Substitute.For<IFeedCollection>();
 
 
-      var feedCollectionViewModel = new TileListViewModel(feeds);
+      var feedCollectionViewModel = new TileListViewModel(feeds, mockFeedCollection);
       var mainWindow = new TileListWindow(feedCollectionViewModel);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();

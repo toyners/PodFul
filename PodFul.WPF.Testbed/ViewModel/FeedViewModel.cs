@@ -30,12 +30,13 @@ namespace PodFul.WPF.Testbed.ViewModel
       Failed
     }
 
-    public FeedViewModel(Feed feed)
+    public FeedViewModel(Feed feed, IFeedCollection feedCollection)
     {
       this.feed = feed;
       this.PodcastNavigation = new PodcastPageNavigation();
       this.PodcastNavigation.SetPages(this.feed.Podcasts);
       this.JobNavigation = new JobPageNavigation();
+      this.feedCollection = feedCollection;
     }
 
     public String Title { get { return this.feed.Title; } }
