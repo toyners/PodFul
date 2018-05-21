@@ -527,6 +527,7 @@ namespace PodFul.WPF.Testbed
       var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3";
 
       var feed1URL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed 3.rss";
+      var feed2URL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed 4 (No change).rss";
 
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcasts1 = new[]
@@ -539,10 +540,15 @@ namespace PodFul.WPF.Testbed
         true, true, true,
         podcasts1);
 
-      var feed2 = Setup.createTestFullFeedFromParameters("Feed 2 Title", "Feed 2 Description", "Feed 2 Website", testDirectoryPath, "", feedImageFilePath, "",
+      var podcasts2 = new[]
+      {
+        this.CreateTestPodcast("Podcast #1 Title", originalFileURL, ""),
+      };
+
+      var feed2 = Setup.createTestFullFeedFromParameters("Feed 4 Title", "Feed 4 Description", "Feed 4 Website", testDirectoryPath, feed2URL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
-        new Podcast[0]);
+        podcasts2);
 
       var podcasts3 = new[]
       {
