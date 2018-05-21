@@ -6,6 +6,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.ComponentModel;
   using System.IO;
   using System.Threading;
+  using System.Windows;
   using Jabberwocky.Toolkit.WPF;
   using Library;
   using Miscellaneous;
@@ -14,6 +15,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class FeedViewModel : NotifyPropertyChangedBase
   {
+    private CancellationTokenSource cancellationTokenSource = null;
     private Feed feed;
     private ScanStates scanState;
     private Processing.IDownloadManager downloadManager;
@@ -92,101 +94,120 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.FeedScanState = ScanStates.Idle;
     }
 
-    private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
     public void Scan(IDownloadManagerFactory downloadManagerFactory)
     {
-      System.Windows.Application.Current.Dispatcher.Invoke(() =>
-      {
-        this.FeedScanState = ScanStates.Running;
-      });
-
-      this.UpdateScanProgressMessage("Processing ...");
-      this.cancellationTokenSource = new CancellationTokenSource();
-      var cancelToken = this.cancellationTokenSource.Token;
-      var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
-      var newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
-
-      // Creating the new feed may have taken a while - check for cancellation before processing podcasts.
-      cancelToken.ThrowIfCancellationRequested();
-
-      this.UpdateScanProgressMessage("Searching for new podcasts ...");
-      var podcastIndexes = this.BuildNewPodcastIndexList(feed, newFeed);
-
-      if (podcastIndexes.Count == 0)
-      {
-        this.UpdateScanProgressMessage("Saving feed (No podcasts found).");
-        // Update the feed and leave
-      }
-
-      var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
-      if (downloadConfirmation != DownloadConfirmationStatus.SkipDownloading)
-      {
-        if (podcastIndexes.Count >= newFeed.ConfirmDownloadThreshold)
-        {
-          IPodcastDownloadConfirmer podcastDownloadConfirmer = new PodcastDownloadConfirmer();
-          downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
-
-          if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
-          {
-            this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found (Scan cancelled).");
-            this.cancellationTokenSource.Cancel();
-          }
-        }
-      }
-
-      if (this.imageResolver != null)
-      {
-        foreach (var podcastIndex in podcastIndexes)
-        {
-          this.imageResolver.ResolvePodcastImage(newFeed.Podcasts[podcastIndex]);
-        }
-      }
-
-      this.UpdateScanProgressMessage("Saving feed (" + podcastIndexes.Count + " podcasts found).");
-      // Now update the feed to storage for real.
-      newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
-      this.feedCollection.UpdateFeedContent(newFeed);
-
-      if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
-      {
-        return;
-      }
-
-      this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
-
-      podcastIndexes.Reverse();
-      List<JobViewModel> jobs = new List<JobViewModel>(podcastIndexes.Count);
-      foreach (var podcastIndex in podcastIndexes)
-      {
-        jobs.Add(new JobViewModel(newFeed.Podcasts[podcastIndex], newFeed));
-      }
-
-      this.JobNavigation.SetPages(jobs);
-
-      this.downloadManager = downloadManagerFactory.Create();
-      var jobFinishedCount = 0;
-      this.downloadManager.JobFinishedEvent = j =>
+      try
       {
         System.Windows.Application.Current.Dispatcher.Invoke(() =>
         {
-          jobFinishedCount++;
-          if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
-          {
-            this.JobNavigation.PageNumber += 1;
-          }
+          this.FeedScanState = ScanStates.Running;
         });
-      };
 
-      downloadManager.AddJobs(jobs);
-      downloadManager.StartWaitingJobs();
+        this.UpdateScanProgressMessage("Processing ...");
+        this.cancellationTokenSource = new CancellationTokenSource();
+        var cancelToken = this.cancellationTokenSource.Token;
+        var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
+        var newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
 
-      this.UpdateScanProgressMessage("Done");
+        // Creating the new feed may have taken a while - check for cancellation before processing podcasts.
+        cancelToken.ThrowIfCancellationRequested();
 
-      System.Windows.Application.Current.Dispatcher.Invoke(() =>
+        this.UpdateScanProgressMessage("Searching for new podcasts ...");
+        var podcastIndexes = this.BuildNewPodcastIndexList(feed, newFeed);
+
+        if (podcastIndexes.Count == 0)
+        {
+          this.UpdateScanProgressMessage("Saving feed (No podcasts found).");
+          // Update the feed and leave
+        }
+
+        var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
+        if (downloadConfirmation != DownloadConfirmationStatus.SkipDownloading)
+        {
+          if (podcastIndexes.Count >= newFeed.ConfirmDownloadThreshold)
+          {
+            IPodcastDownloadConfirmer podcastDownloadConfirmer = new PodcastDownloadConfirmer();
+            downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
+
+            if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
+            {
+              this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found (Scan cancelled).");
+              this.cancellationTokenSource.Cancel();
+            }
+          }
+        }
+
+        if (this.imageResolver != null)
+        {
+          foreach (var podcastIndex in podcastIndexes)
+          {
+            this.imageResolver.ResolvePodcastImage(newFeed.Podcasts[podcastIndex]);
+          }
+        }
+
+        this.UpdateScanProgressMessage("Saving feed (" + podcastIndexes.Count + " podcasts found).");
+        // Now update the feed to storage for real.
+        newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
+        this.feedCollection.UpdateFeedContent(newFeed);
+
+        if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
+        {
+          return;
+        }
+
+        this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
+
+        podcastIndexes.Reverse();
+        List<JobViewModel> jobs = new List<JobViewModel>(podcastIndexes.Count);
+        foreach (var podcastIndex in podcastIndexes)
+        {
+          jobs.Add(new JobViewModel(newFeed.Podcasts[podcastIndex], newFeed));
+        }
+
+        this.JobNavigation.SetPages(jobs);
+
+        this.downloadManager = downloadManagerFactory.Create();
+        var jobFinishedCount = 0;
+        this.downloadManager.JobFinishedEvent = j =>
+        {
+          System.Windows.Application.Current.Dispatcher.Invoke(() =>
+          {
+            jobFinishedCount++;
+            if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
+            {
+              this.JobNavigation.PageNumber += 1;
+            }
+          });
+        };
+
+        downloadManager.AddJobs(jobs);
+        downloadManager.StartWaitingJobs();
+
+        this.UpdateScanProgressMessage("Done");
+
+        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+        {
+          this.FeedScanState = ScanStates.Completed;
+        });
+      }
+      catch (OperationCanceledException oce)
       {
-        this.FeedScanState = ScanStates.Completed;
-      });
+        this.HandleScanCancelled();
+      }
+      catch (Exception e)
+      {
+        this.HandleScanError(e);
+      }
+    }
+
+    private void HandleScanCancelled()
+    {
+      throw new NotImplementedException();
+    }
+
+    private void HandleScanError(Exception e)
+    {
+      MessageBox.Show(e.Message, "Error in Scanning");
     }
 
     private List<Int32> BuildNewPodcastIndexList(Feed oldFeed, Feed newFeed)
