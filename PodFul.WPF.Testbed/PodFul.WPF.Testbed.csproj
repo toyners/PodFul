@@ -153,26 +153,26 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Feed 4 %28No change%29.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Feed B %28No change%29.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Feed 5 %28First time%29.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Feed C %28First time%29.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Feed 3 %28New podcast%29.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Feed A %28New podcast%29.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Feed with Missing URL.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Feed with Missing URL.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Feed with Bad URLs.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Feed with Bad URLs.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Feed 2.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Feed 2.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Feed 1.rss">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Feed 1.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -205,15 +205,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Question-Mark.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Resources\Question-Mark.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Podcast1.mp3">
+    <Content Include="Resources\Podcast1.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Podcast2.mp3">
+    <Content Include="Resources\Podcast2.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

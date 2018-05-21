@@ -526,43 +526,37 @@ namespace PodFul.WPF.Testbed
 
       var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3";
 
-      var feed1URL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed 3.rss";
-      var feed2URL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed 4 (No change).rss";
+      var feedAURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed A (New podcast).rss";
+      var feedBURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed B (No change).rss";
+      var feedCURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed C (First time).rss";
 
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
-      var podcasts1 = new[]
+      var podcastsA = new[]
       {
-        this.CreateTestPodcast("Podcast #1 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast A-1 Title", originalFileURL, ""),
       };
 
-      var feed1 = Setup.createTestFullFeedFromParameters("Feed 1 Title", "Feed 1 Description", "Feed 1 Website", testDirectoryPath, feed1URL, feedImageFilePath, "",
+      var feedA = Setup.createTestFullFeedFromParameters("Feed A Title", "Feed A Description", "Feed A Website", testDirectoryPath, feedAURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
-        podcasts1);
+        podcastsA);
 
-      var podcasts2 = new[]
+      var podcastsB = new[]
       {
-        this.CreateTestPodcast("Podcast #1 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, ""),
       };
 
-      var feed2 = Setup.createTestFullFeedFromParameters("Feed 4 Title", "Feed 4 Description", "Feed 4 Website", testDirectoryPath, feed2URL, feedImageFilePath, "",
+      var feedB = Setup.createTestFullFeedFromParameters("Feed B Title", "Feed B Description", "Feed B Website", testDirectoryPath, feedBURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
-        podcasts2);
+        podcastsB);
 
-      var podcasts3 = new[]
-      {
-        this.CreateTestPodcast("Podcast 3-A", originalFileURL, Path.Combine(testDirectoryPath + "Podcast3-A.mp3")),
-        this.CreateTestPodcast("Podcast 3-B", originalFileURL, Path.Combine(testDirectoryPath + "Podcast3-B.mp3")),
-        this.CreateTestPodcast("Podcast 3-C", originalFileURL, Path.Combine(testDirectoryPath + "Podcast3-C.mp3")),
-      };
-
-      var feed3 = Setup.createTestFullFeedFromParameters("Feed 3", "Feed 3 Description", "Feed 3 Website", testDirectoryPath, "", feedImageFilePath, "",
+      var feedC = Setup.createTestFullFeedFromParameters("Feed C Title", "Feed C Description", "Feed C Website", testDirectoryPath, feedCURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
-        podcasts3);
+        new Podcast[0]);
 
-      return new[] { feed1, feed2, feed3 };
+      return new[] { feedA, feedB, feedC };
     }
 
 

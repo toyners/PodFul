@@ -10,16 +10,16 @@
   xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 >
   <channel>
-	  <title>Feed 4 Title</title>
-	  <link>Feed 4 Website</link>
-	  <description>Feed 4 Description</description>
+	  <title>Feed B Title</title>
+	  <link>Feed B Website</link>
+	  <description>Feed B Description</description>
     <image>
-      <url>Feed 4 Image</url>
+      <url>Feed B Image</url>
     </image>
     <item>
-		  <title>Podcast #1 Title</title>
+		  <title>Podcast B-1 Title</title>
 		  <pubDate>3 Jan 2014 01:02:03</pubDate>
-		  <description><![CDATA[Podcast #1 Description]]></description>
+		  <description><![CDATA[Podcast B-1 Description]]></description>
       <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3" length="10055415" type="audio/mpeg" />
 	  </item>
 	</channel>
