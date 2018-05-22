@@ -15,12 +15,14 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class FeedViewModel : NotifyPropertyChangedBase
   {
+    #region Fields
     private CancellationTokenSource cancellationTokenSource = null;
     private Feed feed;
     private ScanStates scanState;
     private Processing.IDownloadManager downloadManager;
     private IImageResolver imageResolver;
     private IFeedCollection feedCollection;
+    #endregion
 
     public enum ScanStates
     {
@@ -32,6 +34,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       Failed
     }
 
+    #region Construction
     public FeedViewModel(Feed feed, IFeedCollection feedCollection)
     {
       this.feed = feed;
@@ -40,7 +43,9 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.JobNavigation = new JobPageNavigation();
       this.feedCollection = feedCollection;
     }
+    #endregion
 
+    #region Properties
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
     public PodcastPageNavigation PodcastNavigation { get; set; }
@@ -62,7 +67,9 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
     public Boolean ScanFinished { get { return this.FeedScanState == ScanStates.Cancelled || this.FeedScanState == ScanStates.Completed || this.FeedScanState == ScanStates.Failed; } }
+    #endregion
 
+    #region Methods
     public void CancelScan()
     {
       if (this.scanState == ScanStates.Completed)
@@ -255,5 +262,6 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanProgressMessage"));
       });
     }
+    #endregion
   }
 }
