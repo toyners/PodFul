@@ -58,8 +58,10 @@ namespace PodFul.WPF.Testbed.ViewModel
         }
 
         this.SetField(ref this.scanState, value, "FeedScanState");
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanFinished"));
       }
     }
+    public Boolean ScanFinished { get { return this.FeedScanState == ScanStates.Cancelled || this.FeedScanState == ScanStates.Completed || this.FeedScanState == ScanStates.Failed; } }
 
     public void CancelScan()
     {
