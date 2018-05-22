@@ -46,6 +46,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }
     public String FeedScanProgressMessage { get; private set; }
+    public String FeedScanFailedMessage { get; private set; }
     public ScanStates FeedScanState
     {
       get { return this.scanState; }
@@ -207,7 +208,12 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     private void HandleScanError(Exception e)
     {
-      MessageBox.Show(e.Message, "Error in Scanning");
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.FeedScanFailedMessage = "Failed";
+        this.FeedScanState = ScanStates.Failed;
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanFailedMessage"));
+      });
     }
 
     private List<Int32> BuildNewPodcastIndexList(Feed oldFeed, Feed newFeed)

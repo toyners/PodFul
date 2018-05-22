@@ -121,7 +121,33 @@
                       <ColumnDefinition Width="200"/>
                       <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" />
+
+                    <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" >
+                      <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                          <Setter Property="Visibility" Value="Hidden"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                              <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </TextBlock.Style>
+                    </TextBlock>
+
+                    <TextBlock Grid.Column="0" Text="{Binding FeedScanFailedMessage}" FontWeight="Bold" Foreground="Red" >
+                      <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                          <Setter Property="Visibility" Value="Hidden"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding FeedScanState}" Value="Failed">
+                              <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </TextBlock.Style>
+                    </TextBlock>
+
                     <Button Grid.Column="1" Click="FeedCancelButtonClick" Content="Cancel">
                       <Button.Style>
                         <Style TargetType="Button">
