@@ -135,7 +135,8 @@
                       </TextBlock.Style>
                     </TextBlock>
 
-                    <TextBlock Grid.Column="0" Text="{Binding FeedScanFailedMessage}" FontWeight="Bold" Foreground="Red" >
+                    <TextBlock Grid.Column="0" Text="Failed" FontWeight="Bold" Foreground="Red"
+                               ToolTip="{Binding FeedScanFailedMessage}">
                       <TextBlock.Style>
                         <Style TargetType="TextBlock">
                           <Setter Property="Visibility" Value="Hidden"/>

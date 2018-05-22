@@ -212,7 +212,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.FeedScanFailedMessage = "Failed";
+        this.FeedScanFailedMessage = e.Message;
         this.FeedScanState = ScanStates.Failed;
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanFailedMessage"));
       });
