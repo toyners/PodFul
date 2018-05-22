@@ -119,7 +119,9 @@ namespace PodFul.WPF.Testbed.ViewModel
         if (podcastIndexes.Count == 0)
         {
           this.UpdateScanProgressMessage("Saving feed (No podcasts found).");
-          // Update the feed and leave
+          newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
+          this.feedCollection.UpdateFeedContent(newFeed);
+          return;
         }
 
         var downloadConfirmation = (!newFeed.CompleteDownloadsOnScan ? DownloadConfirmationStatus.SkipDownloading : DownloadConfirmationStatus.ContinueDownloading);
@@ -171,7 +173,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         var jobFinishedCount = 0;
         this.downloadManager.JobFinishedEvent = j =>
         {
-          System.Windows.Application.Current.Dispatcher.Invoke(() =>
+          Application.Current.Dispatcher.Invoke(() =>
           {
             jobFinishedCount++;
             if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
