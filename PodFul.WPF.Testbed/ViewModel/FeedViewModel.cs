@@ -205,7 +205,10 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     private void HandleScanCancelled()
     {
-      throw new NotImplementedException();
+      Application.Current.Dispatcher.Invoke(() =>
+      {
+        this.FeedScanState = ScanStates.Cancelled;
+      });
     }
 
     private void HandleScanError(Exception e)
