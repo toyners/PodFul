@@ -99,7 +99,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       try
       {
-        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+        Application.Current.Dispatcher.Invoke(() =>
         {
           this.FeedScanState = ScanStates.Running;
         });
@@ -186,7 +186,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.UpdateScanProgressMessage("Done");
 
-        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+        Application.Current.Dispatcher.Invoke(() =>
         {
           this.FeedScanState = ScanStates.Completed;
         });
