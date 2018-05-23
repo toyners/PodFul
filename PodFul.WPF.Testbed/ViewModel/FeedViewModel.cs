@@ -16,12 +16,14 @@ namespace PodFul.WPF.Testbed.ViewModel
   public class FeedViewModel : NotifyPropertyChangedBase
   {
     #region Fields
+    private static PropertyChangedEventArgs FeedScanProgressMessageArgs = new PropertyChangedEventArgs("FeedScanProgressMessage");
     private CancellationTokenSource cancellationTokenSource = null;
-    private Feed feed;
-    private ScanStates scanState;
     private Processing.IDownloadManager downloadManager;
-    private IImageResolver imageResolver;
+    private Feed feed;
     private IFeedCollection feedCollection;
+    private IImageResolver imageResolver;
+    private ScanStates scanState;
+
     #endregion
 
     public enum ScanStates
@@ -256,10 +258,10 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     private void UpdateScanProgressMessage(String progressMessage)
     {
-      System.Windows.Application.Current.Dispatcher.Invoke(() =>
+      Application.Current.Dispatcher.Invoke(() =>
       {
         this.FeedScanProgressMessage = progressMessage;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanProgressMessage"));
+        this.TryInvokePropertyChanged(FeedViewModel.FeedScanProgressMessageArgs);
       });
     }
     #endregion
