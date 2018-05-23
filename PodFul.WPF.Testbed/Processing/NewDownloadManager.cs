@@ -3,11 +3,13 @@ namespace PodFul.WPF.Testbed.Processing
 {
   using System;
   using System.Collections.Generic;
+  using System.Threading;
   using ViewModel;
 
   public class NewDownloadManager : IDownloadManager
   {
     private Queue<JobViewModel> jobs;
+    private CancellationTokenSource cancellationTokenSource;
 
     public Action<JobViewModel> JobFinishedEvent { get; set; }
     public Action<JobViewModel> JobQueuedEvent { get; set; }
@@ -30,11 +32,16 @@ namespace PodFul.WPF.Testbed.Processing
 
     public void CancelJobs()
     {
-      throw new NotImplementedException();
+      if (this.cancellationTokenSource != null && !this.cancellationTokenSource.IsCancellationRequested)
+      {
+        this.cancellationTokenSource.Cancel();
+      }
     }
 
     public void StartWaitingJobs()
     {
+      this.cancellationTokenSource = new CancellationTokenSource();
+
       while (this.jobs.Count > 0)
       {
         var job = this.jobs.Dequeue();
