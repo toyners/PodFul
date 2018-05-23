@@ -14,6 +14,7 @@ namespace PodFul.WPF.Testbed
   public partial class TileListWindow : Window
   {
     private TileListViewModel feedCollectionViewModel;
+    private Scanner scanner;
 
     public TileListWindow(TileListViewModel feedCollectionViewModel)
     {
@@ -60,13 +61,14 @@ namespace PodFul.WPF.Testbed
 
         var mockLogger = new MockLogger();
         var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
-        var scanner = new Scanner();
-        scanner.ScanCompletedEvent = this.ScanCompletedEventHandler;
-        scanner.ScanFeeds(this.feedCollectionViewModel.Feeds, downloadManagerFactory);
+        this.scanner = new Scanner();
+        this.scanner.ScanCompletedEvent = this.ScanCompletedEventHandler;
+        this.scanner.ScanFeeds(this.feedCollectionViewModel.Feeds, downloadManagerFactory);
       }
       else if (this.scanState == ScanStates.Running)
       {
         // Start cancelling all feeds
+        this.scanner.CancelScanning();
 
       }
       else if (this.scanState == ScanStates.Completed)
