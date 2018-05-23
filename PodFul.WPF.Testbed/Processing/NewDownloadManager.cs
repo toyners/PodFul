@@ -38,8 +38,11 @@ namespace PodFul.WPF.Testbed.Processing
       while (this.jobs.Count > 0)
       {
         var job = this.jobs.Dequeue();
-        job.Download();
-        this.JobFinishedEvent?.Invoke(job);
+        if (job.Status == DownloadJobStatus.Waiting)
+        {
+          job.Download();
+          this.JobFinishedEvent?.Invoke(job);
+        }
       }
     }
   }
