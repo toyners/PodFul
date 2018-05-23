@@ -23,7 +23,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     private IFeedCollection feedCollection;
     private IImageResolver imageResolver;
     private ScanStates scanState;
-
     #endregion
 
     public enum ScanStates
@@ -72,6 +71,9 @@ namespace PodFul.WPF.Testbed.ViewModel
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Cancel scan including all current and future downloads.
+    /// </summary>
     public void CancelScan()
     {
       if (this.scanState == ScanStates.Completed)

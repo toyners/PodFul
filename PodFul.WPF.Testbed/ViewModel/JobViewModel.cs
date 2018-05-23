@@ -180,6 +180,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       set { this.SetField(ref this.useMarqueProgressStyle, value); }
     }
 
+    public void CancelDownload()
+    {
+      throw new NotImplementedException();
+    }
+
     public void Download()
     {
       try

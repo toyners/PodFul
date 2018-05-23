@@ -67,8 +67,8 @@ namespace PodFul.WPF.Testbed
       }
       else if (this.scanState == ScanStates.Running)
       {
-        // Start cancelling all feeds
-        this.scanner.CancelScanning();
+        // Cancel all feeds
+        this.scanner.CancelScan();
       }
       else if (this.scanState == ScanStates.Completed)
       {

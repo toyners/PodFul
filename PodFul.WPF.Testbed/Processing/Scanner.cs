@@ -14,7 +14,7 @@ namespace PodFul.WPF.Testbed.Processing
 
     public Action ScanCompletedEvent { get; set; }
 
-    public void CancelScanning()
+    public void CancelScan()
     {
       if (this.cancellationTokenSource != null && !this.cancellationTokenSource.IsCancellationRequested)
       {
