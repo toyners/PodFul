@@ -39,9 +39,17 @@ namespace PodFul.WPF.Testbed.Processing
         
         while (!completedScan)
         {
-          cancelToken.ThrowIfCancellationRequested();
-          if (scanTaskCount < maxTaskCount && feedViewModelQueue.Count > 0 && feedViewModelQueue.TryDequeue(out feedViewModel))
+          if (scanTaskCount < maxTaskCount && 
+            feedViewModelQueue.Count > 0 && 
+            feedViewModelQueue.TryDequeue(out feedViewModel) &&
+            feedViewModel.FeedScanState == FeedViewModel.ScanStates.Waiting)
           {
+            if (cancelToken.IsCancellationRequested)
+            {
+              feedViewModel.CancelScan();
+              continue;
+            }
+
             lock (objectLock)
             {
               scanTaskCount++;
