@@ -61,6 +61,7 @@ namespace PodFul.WPF.Testbed.Processing
       catch (OperationCanceledException oce)
       {
         this.currentJob?.CancelDownload();
+        this.JobFinishedEvent?.Invoke(this.currentJob);
       }
       finally
       {

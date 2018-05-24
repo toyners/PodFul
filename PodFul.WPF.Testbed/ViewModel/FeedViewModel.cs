@@ -11,7 +11,6 @@ namespace PodFul.WPF.Testbed.ViewModel
   using Library;
   using Miscellaneous;
   using Processing;
-  using ViewModel;
   using WPF.Processing;
 
   public class FeedViewModel : NotifyPropertyChangedBase
@@ -166,16 +165,24 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.downloadManager = downloadManagerFactory.Create();
         var jobFinishedCount = 0;
+        var lastIndex = podcastIndexes.Count - 1;
         this.downloadManager.JobFinishedEvent = j =>
         {
-          Application.Current.Dispatcher.Invoke(() =>
+          if (this.imageResolver != null)
           {
-            jobFinishedCount++;
-            if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
+            var podcast = newFeed.Podcasts[podcastIndexes[lastIndex - jobFinishedCount]];
+            this.imageResolver.ResolvePodcastImage(podcast);
+          }
+
+          this.feedCollection.UpdateFeedContent(this.feed);
+          jobFinishedCount++;
+          if (jobFinishedCount % 2 == 0 && this.JobNavigation.CanMoveForward)
+          {
+            Application.Current.Dispatcher.Invoke(() =>
             {
               this.JobNavigation.PageNumber += 1;
-            }
-          });
+            });
+          }
         };
 
         downloadManager.AddJobs(jobs);

@@ -229,13 +229,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
       }
 
-      /*if (this.imageResolver != null)
-      {
-        this.imageResolver.ResolvePodcastImage(this.podcast);
-      }
-
       this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
-      this.feedCollection.UpdateFeedContent(this.feed);*/
 
       if (!this.fileSizeNotKnown)
       {
