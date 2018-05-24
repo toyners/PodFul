@@ -189,7 +189,10 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Methods
     public void CancelDownload()
     {
-      throw new NotImplementedException();
+      if (this.cancellationTokenSource != null && !this.cancellationTokenSource.IsCancellationRequested)
+      {
+        this.cancellationTokenSource.Cancel();
+      }
     }
 
     public void Download()
