@@ -11,6 +11,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using Library;
   using Miscellaneous;
   using Processing;
+  using ViewModel;
   using WPF.Processing;
 
   public class FeedViewModel : NotifyPropertyChangedBase
@@ -22,18 +23,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Feed feed;
     private IFeedCollection feedCollection;
     private IImageResolver imageResolver;
-    private ScanStates scanState;
+    private ProcessingStatus scanState;
     #endregion
-
-    public enum ScanStates
-    {
-      Idle,
-      Waiting,
-      Running,
-      Completed,
-      Cancelled,
-      Failed
-    }
 
     #region Construction
     public FeedViewModel(Feed feed, IFeedCollection feedCollection)
@@ -53,7 +44,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public JobPageNavigation JobNavigation { get; set; }
     public String FeedScanProgressMessage { get; private set; }
     public String FeedScanFailedMessage { get; private set; }
-    public ScanStates FeedScanState
+    public ProcessingStatus FeedScanState
     {
       get { return this.scanState; }
       private set
@@ -67,7 +58,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanFinished"));
       }
     }
-    public Boolean ScanFinished { get { return this.FeedScanState == ScanStates.Cancelled || this.FeedScanState == ScanStates.Completed || this.FeedScanState == ScanStates.Failed; } }
+    public Boolean ScanFinished { get { return this.FeedScanState == ProcessingStatus.Cancelled || this.FeedScanState == ProcessingStatus.Completed || this.FeedScanState == ProcessingStatus.Failed; } }
     #endregion
 
     #region Methods
@@ -87,7 +78,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void InitialiseForScan()
     {
-      this.FeedScanState = ScanStates.Waiting;
+      this.FeedScanState = ProcessingStatus.Waiting;
       this.cancellationTokenSource = new CancellationTokenSource();
     }
 
@@ -95,7 +86,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.JobNavigation.Reset();
       this.UpdateScanProgressMessage(String.Empty);
-      this.FeedScanState = ScanStates.Idle;
+      this.FeedScanState = ProcessingStatus.Idle;
     }
 
     public void Scan(IDownloadManagerFactory downloadManagerFactory)
@@ -104,7 +95,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         Application.Current.Dispatcher.Invoke(() =>
         {
-          this.FeedScanState = ScanStates.Running;
+          this.FeedScanState = ProcessingStatus.Running;
         });
 
         this.UpdateScanProgressMessage("Processing ...");
@@ -194,7 +185,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         Application.Current.Dispatcher.Invoke(() =>
         {
-          this.FeedScanState = ScanStates.Completed;
+          this.FeedScanState = ProcessingStatus.Completed;
         });
       }
       catch (OperationCanceledException oce)
@@ -216,7 +207,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.UpdateScanProgressMessage("Cancelled");
-        this.FeedScanState = ScanStates.Cancelled;
+        this.FeedScanState = ProcessingStatus.Cancelled;
       });
     }
 
@@ -225,7 +216,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.FeedScanFailedMessage = e.Message;
-        this.FeedScanState = ScanStates.Failed;
+        this.FeedScanState = ProcessingStatus.Failed;
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanFailedMessage"));
       });
     }

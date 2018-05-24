@@ -16,7 +16,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Int64 downloadedSize;
     private String exceptionMessage;
     private Boolean fileSizeNotKnown;
-    private DownloadJobStatus lastStatus = DownloadJobStatus.NotSet;
+    private ProcessingStatus lastStatus = ProcessingStatus.Idle;
     private Podcast podcast;
     private Int64 podcastSize;
     private Int64 percentageStepSize;
@@ -24,7 +24,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private String progressMinorSize;
     private String progressUnit;
     private Int32 progressValue;
-    private DownloadJobStatus status = DownloadJobStatus.Waiting;
+    private ProcessingStatus status = ProcessingStatus.Waiting;
     private String url;
     private Boolean useMarqueProgressStyle;
 
@@ -51,13 +51,13 @@ namespace PodFul.WPF.Testbed.ViewModel
       if (String.IsNullOrEmpty(this.podcast.FileDetails.FileName))
       {
         this.exceptionMessage = "No file name given.";
-        this.status = DownloadJobStatus.Failed;
+        this.status = ProcessingStatus.Failed;
         return;
       }
 
       this.exceptionMessage = String.Empty;
       this.FilePath = Path.Combine(feed.Directory, this.podcast.FileDetails.FileName);
-      this.status = DownloadJobStatus.Waiting;
+      this.status = ProcessingStatus.Waiting;
     }
 
     public CancellationToken CancellationToken { get; private set; }
@@ -74,7 +74,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       set { this.SetField(ref this.exceptionMessage, value); }
     }
     public String FilePath { get; private set; }
-    public DownloadJobStatus LastStatus { get; private set; }
+    public ProcessingStatus LastStatus { get; private set; }
     public Int32 ProgressValue
     {
       get { return this.progressValue; }
@@ -99,7 +99,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       private set { this.SetField(ref this.progressUnit, value); }
     }
 
-    public DownloadJobStatus Status
+    public ProcessingStatus Status
     {
       get { return this.status; }
       set
@@ -114,20 +114,20 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         switch (this.status)
         {
-          case DownloadJobStatus.Failed:
+          case ProcessingStatus.Failed:
           {
             this.CancellationVisibility = Visibility.Hidden;
             break;
           }
 
-          case DownloadJobStatus.Cancelled:
+          case ProcessingStatus.Cancelled:
           {
             this.CancellationVisibility = Visibility.Hidden;
             this.ExceptionMessage = String.Empty;
             break;
           }
 
-          case DownloadJobStatus.Waiting:
+          case ProcessingStatus.Waiting:
           {
             this.ExceptionMessage = String.Empty;
             break;
@@ -142,10 +142,10 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         switch (this.status)
         {
-          case DownloadJobStatus.Completed: return "Green";
-          case DownloadJobStatus.Cancelled: return "Orange";
-          case DownloadJobStatus.Failed: return "Red";
-          case DownloadJobStatus.Running: return "Black";
+          case ProcessingStatus.Completed: return "Green";
+          case ProcessingStatus.Cancelled: return "Orange";
+          case ProcessingStatus.Failed: return "Red";
+          case ProcessingStatus.Running: return "Black";
           default: return "Blue";
         }
       }
@@ -157,10 +157,10 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         switch (this.status)
         {
-          case DownloadJobStatus.Completed: return "Completed";
-          case DownloadJobStatus.Cancelled: return "Canceled";
-          case DownloadJobStatus.Failed: return "Failed";
-          case DownloadJobStatus.Running: return "Running";
+          case ProcessingStatus.Completed: return "Completed";
+          case ProcessingStatus.Cancelled: return "Canceled";
+          case ProcessingStatus.Failed: return "Failed";
+          case ProcessingStatus.Running: return "Running";
           default: return "Waiting...";
         }
       }
@@ -170,7 +170,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       get
       {
-        return (this.status != DownloadJobStatus.Waiting ? FontWeights.Bold : FontWeights.Normal);
+        return (this.status != ProcessingStatus.Waiting ? FontWeights.Bold : FontWeights.Normal);
       }
     }
 
@@ -193,7 +193,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         var cancelToken = this.cancellationTokenSource.Token;
 
-        this.Status = DownloadJobStatus.Running;
+        this.Status = ProcessingStatus.Running;
 
         var fileDownloader = new FileDownloader();
         fileDownloader.Download(this.url, this.FilePath, cancelToken, this.ProgressEventHandler);
@@ -202,12 +202,12 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
       catch (OperationCanceledException oce)
       {
-        this.Status = DownloadJobStatus.Cancelled;
+        this.Status = ProcessingStatus.Cancelled;
       }
       catch (Exception e)
       {
         this.ExceptionMessage = e.Message;
-        this.Status = DownloadJobStatus.Failed;
+        this.Status = ProcessingStatus.Failed;
       }
     }
 
@@ -236,7 +236,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       this.ProgressValue = 0;
       this.CancellationVisibility = Visibility.Hidden;
-      this.Status = DownloadJobStatus.Completed;
+      this.Status = ProcessingStatus.Completed;
     }
 
     public void InitialiseDownload()

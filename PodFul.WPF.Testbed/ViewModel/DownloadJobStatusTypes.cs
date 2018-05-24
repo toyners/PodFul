@@ -1,9 +1,9 @@
 ﻿
 namespace PodFul.WPF.Testbed.ViewModel
 {
-  public enum DownloadJobStatus
+  public enum ProcessingStatus
   {
-    NotSet,
+    Idle,
     Cancelled,
     Completed,
     Failed,

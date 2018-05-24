@@ -42,7 +42,7 @@ namespace PodFul.WPF.Testbed.Processing
           if (scanTaskCount < maxTaskCount && 
             feedViewModelQueue.Count > 0 && 
             feedViewModelQueue.TryDequeue(out feedViewModel) &&
-            feedViewModel.FeedScanState == FeedViewModel.ScanStates.Waiting)
+            feedViewModel.FeedScanState == ProcessingStatus.Waiting)
           {
             if (cancelToken.IsCancellationRequested)
             {

@@ -51,7 +51,7 @@ namespace PodFul.WPF.Testbed.Processing
           cancelToken.ThrowIfCancellationRequested();
 
           this.currentJob = this.jobs.Dequeue();
-          if (this.currentJob.Status == DownloadJobStatus.Waiting)
+          if (this.currentJob.Status == ProcessingStatus.Waiting)
           {
             this.currentJob.Download();
             this.JobFinishedEvent?.Invoke(this.currentJob);
