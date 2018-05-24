@@ -76,29 +76,19 @@ namespace PodFul.WPF.Testbed.ViewModel
     /// </summary>
     public void CancelScan()
     {
-      if (this.scanState == ScanStates.Completed)
+      if (this.cancellationTokenSource == null || this.cancellationTokenSource.IsCancellationRequested)
       {
         return;
       }
 
-      try
-      {
-        if (this.downloadManager != null)
-        {
-          this.downloadManager.CancelJobs();
-          return;
-        }
-      }
-      finally
-      {
-        this.scanState = ScanStates.Cancelled;
-        this.UpdateScanProgressMessage("Cancelled");
-      }
+      this.cancellationTokenSource.Cancel(true);
+      this.downloadManager?.CancelJobs();
     }
 
     public void InitialiseForScan()
     {
       this.FeedScanState = ScanStates.Waiting;
+      this.cancellationTokenSource = new CancellationTokenSource();
     }
 
     public void Reset()
@@ -118,7 +108,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         });
 
         this.UpdateScanProgressMessage("Processing ...");
-        this.cancellationTokenSource = new CancellationTokenSource();
+        
         var cancelToken = this.cancellationTokenSource.Token;
         var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
         var newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
@@ -149,6 +139,7 @@ namespace PodFul.WPF.Testbed.ViewModel
             {
               this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found (Scan cancelled).");
               this.cancellationTokenSource.Cancel();
+              return;
             }
           }
         }
@@ -214,12 +205,17 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.HandleScanError(e);
       }
+      finally
+      {
+        this.cancellationTokenSource = null;
+      }
     }
 
     private void HandleScanCancelled()
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
+        this.UpdateScanProgressMessage("Cancelled");
         this.FeedScanState = ScanStates.Cancelled;
       });
     }

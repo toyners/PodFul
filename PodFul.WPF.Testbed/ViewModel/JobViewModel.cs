@@ -191,12 +191,18 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.InitialiseDownload();
 
+        var cancelToken = this.cancellationTokenSource.Token;
+
         this.Status = DownloadJobStatus.Running;
 
         var fileDownloader = new FileDownloader();
-        fileDownloader.Download(this.url, this.FilePath, this.CancellationToken, this.ProgressEventHandler);
+        fileDownloader.Download(this.url, this.FilePath, cancelToken, this.ProgressEventHandler);
 
         this.DownloadCompleted();
+      }
+      catch (OperationCanceledException oce)
+      {
+        this.Status = DownloadJobStatus.Cancelled;
       }
       catch (Exception e)
       {
@@ -236,7 +242,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     public void InitialiseDownload()
     {
       this.cancellationTokenSource = new CancellationTokenSource();
-      this.CancellationToken = this.cancellationTokenSource.Token;
 
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
