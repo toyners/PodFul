@@ -11,6 +11,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class JobViewModel : NotifyPropertyChangedBase
   {
+    #region Fields
     private CancellationTokenSource cancellationTokenSource;
     private Visibility cancellationVisibility = Visibility.Visible;
     private Int64 downloadedSize;
@@ -27,7 +28,9 @@ namespace PodFul.WPF.Testbed.ViewModel
     private ProcessingStatus status = ProcessingStatus.Waiting;
     private String url;
     private Boolean useMarqueProgressStyle;
+    #endregion
 
+    #region Construction
     public JobViewModel(Podcast podcast, Feed feed)
     {
       this.podcast = podcast;
@@ -59,7 +62,9 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.FilePath = Path.Combine(feed.Directory, this.podcast.FileDetails.FileName);
       this.status = ProcessingStatus.Waiting;
     }
+    #endregion
 
+    #region Properties
     public CancellationToken CancellationToken { get; private set; }
     public Visibility CancellationVisibility
     {
@@ -179,7 +184,9 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.useMarqueProgressStyle; }
       set { this.SetField(ref this.useMarqueProgressStyle, value); }
     }
+    #endregion
 
+    #region Methods
     public void CancelDownload()
     {
       throw new NotImplementedException();
@@ -310,5 +317,6 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.ProgressValue = (Int32)value;
       });
     }
+    #endregion 
   }
 }
