@@ -529,6 +529,7 @@ namespace PodFul.WPF.Testbed
       var feedAURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed A (New podcast).rss";
       var feedBURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed B (No change).rss";
       var feedCURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed C (First time).rss";
+      var feedDURL = "Invalid URL.rss";
 
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcastsA = new[]
@@ -556,9 +557,12 @@ namespace PodFul.WPF.Testbed
         true, true, true,
         new Podcast[0]);
 
-      return new[] { feedA, feedB, feedC };
+      var feedD = Setup.createTestFullFeedFromParameters("Feed D Title (Invalid URL)", "Feed D Description", "Feed D Website", testDirectoryPath, feedDURL, feedImageFilePath, "",
+        DateTime.MinValue, DateTime.MinValue,
+        true, true, true,
+        new Podcast[0]);
+
+      return new[] { feedA, feedB, feedC, feedD };
     }
-
-
   }
 }
