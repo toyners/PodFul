@@ -10,11 +10,11 @@
   xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
 >
   <channel>
-	  <title>Feed C Title</title>
-	  <link>Feed C Website</link>
-	  <description>Feed C Description</description>
+	  <title>Feed D (First time)</title>
+	  <link>Feed D Website</link>
+	  <description>Feed D Description</description>
     <image>
-      <url>Feed C Image</url>
+      <url>Feed D Image</url>
     </image>
     <item>
 		  <title>Podcast C-1 Title</title>

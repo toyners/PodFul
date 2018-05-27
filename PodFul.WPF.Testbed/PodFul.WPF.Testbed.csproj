@@ -153,13 +153,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Resources\Feed B %28No change%29.rss">
+    <None Include="Resources\Feed B %284 new podcasts%29.rss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Feed C %28First time%29.rss">
+    <None Include="Resources\Feed C %28No change%29.rss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Feed A %28New podcast%29.rss">
+    <None Include="Resources\Feed D %28First time%29.rss">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Feed A %281 new podcast%29.rss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Feed with Missing URL.rss">

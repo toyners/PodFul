@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+>
+  <channel>
+	  <title>Feed B (4 new podcasts)</title>
+	  <link>Feed B Website</link>
+	  <description>Feed B Description</description>
+    <image>
+      <url>Feed B Image</url>
+    </image>
+    <item>
+      <title>Podcast B-5 Title</title>
+      <pubDate>2 Jan 2014 01:02:03</pubDate>
+      <description><![CDATA[Podcast B-5 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+    </item>
+    <item>
+      <title>Podcast B-4 Title</title>
+      <pubDate>2 Jan 2014 01:02:03</pubDate>
+      <description><![CDATA[Podcast B-4 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+    </item>
+    <item>
+      <title>Podcast B-3 Title</title>
+      <pubDate>2 Jan 2014 01:02:03</pubDate>
+      <description><![CDATA[Podcast B-3 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+    </item>
+    <item>
+		  <title>Podcast B-2 Title</title>
+		  <pubDate>2 Jan 2014 01:02:03</pubDate>
+		  <description><![CDATA[Podcast B-2 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+	  </item>
+    <item>
+		  <title>Podcast B-1 Title</title>
+		  <pubDate>3 Jan 2014 01:02:03</pubDate>
+		  <description><![CDATA[Podcast B-1 Description]]></description>
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast1.mp3" length="10055415" type="audio/mpeg" />
+	  </item>
+	</channel>
+</rss>
