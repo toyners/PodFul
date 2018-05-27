@@ -526,10 +526,11 @@ namespace PodFul.WPF.Testbed
 
       var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3";
 
-      var feedAURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed A (New podcast).rss";
-      var feedBURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed B (No change).rss";
-      var feedCURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Feed C (First time).rss";
+      var feedAURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Feed A (New podcast).rss";
+      var feedBURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Feed B (No change).rss";
+      var feedCURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Feed C (First time).rss";
       var feedDURL = "Invalid URL.rss";
+      var feedEURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Missing File.rss";
 
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcastsA = new[]
@@ -537,7 +538,7 @@ namespace PodFul.WPF.Testbed
         this.CreateTestPodcast("Podcast A-1 Title", originalFileURL, ""),
       };
 
-      var feedA = Setup.createTestFullFeedFromParameters("Feed A Title", "Feed A Description", "Feed A Website", testDirectoryPath, feedAURL, feedImageFilePath, "",
+      var feedA = Setup.createTestFullFeedFromParameters("Feed A (New podcast)", "Feed A Description", "Feed A Website", testDirectoryPath, feedAURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
         podcastsA);
@@ -547,22 +548,27 @@ namespace PodFul.WPF.Testbed
         this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, ""),
       };
 
-      var feedB = Setup.createTestFullFeedFromParameters("Feed B Title", "Feed B Description", "Feed B Website", testDirectoryPath, feedBURL, feedImageFilePath, "",
+      var feedB = Setup.createTestFullFeedFromParameters("Feed B (No change)", "Feed B Description", "Feed B Website", testDirectoryPath, feedBURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
         podcastsB);
 
-      var feedC = Setup.createTestFullFeedFromParameters("Feed C Title", "Feed C Description", "Feed C Website", testDirectoryPath, feedCURL, feedImageFilePath, "",
+      var feedC = Setup.createTestFullFeedFromParameters("Feed C (First podcast)", "Feed C Description", "Feed C Website", testDirectoryPath, feedCURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
         new Podcast[0]);
 
-      var feedD = Setup.createTestFullFeedFromParameters("Feed D Title (Invalid URL)", "Feed D Description", "Feed D Website", testDirectoryPath, feedDURL, feedImageFilePath, "",
+      var feedD = Setup.createTestFullFeedFromParameters("Feed D (Invalid URL)", "Feed D Description", "Feed D Website", testDirectoryPath, feedDURL, feedImageFilePath, "",
         DateTime.MinValue, DateTime.MinValue,
         true, true, true,
         new Podcast[0]);
 
-      return new[] { feedA, feedB, feedC, feedD };
+      var feedE = Setup.createTestFullFeedFromParameters("Feed E (Missing File)", "Feed E Description", "Feed E Website", testDirectoryPath, feedEURL, feedImageFilePath, "",
+        DateTime.MinValue, DateTime.MinValue,
+        true, true, true,
+        new Podcast[0]);
+
+      return new[] { feedA, feedB, feedC, feedD, feedE };
     }
   }
 }
