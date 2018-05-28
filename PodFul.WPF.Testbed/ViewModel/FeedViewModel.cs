@@ -95,10 +95,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       try
       {
-        Application.Current.Dispatcher.Invoke(() =>
-        {
-          this.FeedScanState = ProcessingStatus.Running;
-        });
+        this.FeedScanState = ProcessingStatus.Running;
 
         this.UpdateScanProgressMessage("Processing ...");
         
@@ -133,10 +130,7 @@ namespace PodFul.WPF.Testbed.ViewModel
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
             {
               this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " found [CANCELLED]");
-              //Application.Current.Dispatcher.Invoke(() =>
-              //{
-                this.FeedScanState = ProcessingStatus.Cancelled;
-              //});
+              this.FeedScanState = ProcessingStatus.Cancelled;
               return;
             }
           }

@@ -69,6 +69,7 @@
         <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick"
                    PreviewMouseWheel="FeedList_MouseWheel" ItemsSource="{Binding Feeds}">
+
           <ListBox.ItemTemplate>
             <DataTemplate>
               <Grid Name="FeedContent" Margin="0,2">
