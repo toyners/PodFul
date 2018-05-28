@@ -122,12 +122,16 @@
                       <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" >
+                    <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" HorizontalAlignment="Right"
+                               Margin="0,0,2,0">
                       <TextBlock.Style>
                         <Style TargetType="TextBlock">
                           <Setter Property="Visibility" Value="Hidden"/>
                           <Style.Triggers>
                             <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                              <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
                               <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                           </Style.Triggers>
@@ -136,7 +140,8 @@
                     </TextBlock>
 
                     <TextBlock Grid.Column="0" Text="Failed" FontWeight="Bold" Foreground="Red"
-                               ToolTip="{Binding FeedScanFailedMessage}">
+                               ToolTip="{Binding FeedScanFailedMessage}" HorizontalAlignment="Right"
+                               Margin="0,0,2,0">
                       <TextBlock.Style>
                         <Style TargetType="TextBlock">
                           <Setter Property="Visibility" Value="Hidden"/>

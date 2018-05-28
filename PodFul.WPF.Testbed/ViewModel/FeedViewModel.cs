@@ -7,6 +7,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.IO;
   using System.Threading;
   using System.Windows;
+  using Jabberwocky.Toolkit.String;
   using Jabberwocky.Toolkit.WPF;
   using Library;
   using Miscellaneous;
@@ -66,7 +67,9 @@ namespace PodFul.WPF.Testbed.ViewModel
     /// </summary>
     public void CancelScan()
     {
-      if (this.cancellationTokenSource == null || this.cancellationTokenSource.IsCancellationRequested)
+      if (this.cancellationTokenSource == null || 
+        this.cancellationTokenSource.IsCancellationRequested ||
+        this.FeedScanState == ProcessingStatus.Cancelled)
       {
         return;
       }
@@ -111,9 +114,11 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         if (podcastIndexes.Count == 0)
         {
-          this.UpdateScanProgressMessage("No podcasts found.");
+          this.UpdateScanProgressMessage("No new podcasts found.");
           newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
           this.feedCollection.UpdateFeedContent(newFeed);
+
+          this.FeedScanState = ProcessingStatus.Completed;
           return;
         }
 
@@ -127,8 +132,8 @@ namespace PodFul.WPF.Testbed.ViewModel
 
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
             {
-              this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found [CANCELLED].");
-              this.cancellationTokenSource.Cancel();
+              this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " found [CANCELLED]");
+              this.FeedScanState = ProcessingStatus.Cancelled;
               return;
             }
           }
@@ -142,14 +147,15 @@ namespace PodFul.WPF.Testbed.ViewModel
           }
         }
 
+        // Update the feed in storage.
         this.UpdateScanProgressMessage("Saving feed ... ");
-        // Now update the feed to storage for real.
         newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
         this.feedCollection.UpdateFeedContent(newFeed);
 
         if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
         {
-          this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found [SKIPPED].");
+          this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found [SKIPPED]");
+          this.FeedScanState = ProcessingStatus.Completed;
           return;
         }
 
@@ -189,12 +195,9 @@ namespace PodFul.WPF.Testbed.ViewModel
         downloadManager.AddJobs(jobs);
         downloadManager.StartWaitingJobs();
 
-        this.UpdateScanProgressMessage("Done");
+        this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " downloaded");
 
-        Application.Current.Dispatcher.Invoke(() =>
-        {
-          this.FeedScanState = ProcessingStatus.Completed;
-        });
+        this.FeedScanState = ProcessingStatus.Completed;
       }
       catch (OperationCanceledException oce)
       {
