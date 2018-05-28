@@ -52,13 +52,13 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-          <Button Width="70" Click="AddFeedButtonClick">Add</Button>
-          <Button Name="RemoveButton" Width="70" Click="RemoveFeedClick" IsEnabled="False">Remove</Button>
+          <Button Width="70" Style="{StaticResource StandardButton}"  Click="AddFeedButtonClick">Add</Button>
+          <Button Name="RemoveButton" Width="70" Style="{StaticResource StandardButton}" Click="RemoveFeedClick" IsEnabled="False">Remove</Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
-          <Button Width="70" Click="SettingsButtonClick">Settings</Button>
-          <Button Name="CommandButton" Width="70" Click="CommandButtonClick">Scan All</Button>
+          <Button Width="70" Style="{StaticResource StandardButton}"  Click="SettingsButtonClick">Settings</Button>
+          <Button Name="CommandButton" Width="70" Click="CommandButtonClick" Style="{StaticResource StandardButton}">Scan All</Button>
         </StackPanel>
       </Grid>
     </Border>
@@ -147,6 +147,20 @@
                           <Setter Property="Visibility" Value="Hidden"/>
                           <Style.Triggers>
                             <DataTrigger Binding="{Binding FeedScanState}" Value="Failed">
+                              <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                          </Style.Triggers>
+                        </Style>
+                      </TextBlock.Style>
+                    </TextBlock>
+
+                    <TextBlock Grid.Column="0" Foreground="OrangeRed" HorizontalAlignment="Right"
+                               Text="{Binding FeedScanProgressMessage}" Margin="0,0,2,0">
+                      <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                          <Setter Property="Visibility" Value="Hidden"/>
+                          <Style.Triggers>
+                            <DataTrigger Binding="{Binding FeedScanState}" Value="Cancelled">
                               <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                           </Style.Triggers>

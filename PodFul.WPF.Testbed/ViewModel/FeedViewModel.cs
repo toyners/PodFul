@@ -114,7 +114,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         if (podcastIndexes.Count == 0)
         {
-          this.UpdateScanProgressMessage("No new podcasts found.");
+          this.UpdateScanProgressMessage("No new podcasts found");
           newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
           this.feedCollection.UpdateFeedContent(newFeed);
 
@@ -133,7 +133,10 @@ namespace PodFul.WPF.Testbed.ViewModel
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
             {
               this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " found [CANCELLED]");
-              this.FeedScanState = ProcessingStatus.Cancelled;
+              //Application.Current.Dispatcher.Invoke(() =>
+              //{
+                this.FeedScanState = ProcessingStatus.Cancelled;
+              //});
               return;
             }
           }
