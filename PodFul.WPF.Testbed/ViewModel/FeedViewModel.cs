@@ -38,6 +38,15 @@ namespace PodFul.WPF.Testbed.ViewModel
     #endregion
 
     #region Properties
+    public Boolean DoScan
+    {
+      get { return this.feed.DoScan; }
+      set
+      {
+        this.feed = Feed.SetScanningFlags(value, this.feed.CompleteDownloadsOnScan, this.feed.DeliverDownloadsOnScan, this.feed);
+        this.feedCollection.UpdateFeedContent(this.feed);
+      }
+    }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
     public PodcastPageNavigation PodcastNavigation { get; set; }

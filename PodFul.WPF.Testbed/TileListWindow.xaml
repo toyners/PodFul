@@ -252,7 +252,10 @@
                     </TabItem>
 
                     <TabItem Header="Settings">
-
+                      <StackPanel>
+                        <CheckBox IsChecked="{Binding DoScan}">Include in Scan All</CheckBox>
+                        <CheckBox IsChecked="{Binding DoScan}">Scan</CheckBox>
+                      </StackPanel>
                     </TabItem>
                   </TabControl>
                 </Grid>
