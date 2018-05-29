@@ -46,7 +46,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.feed.CompleteDownloadsOnScan; }
       set
       {
-        this.feed = Feed.SetScanningFlags(this.feed.DoScan, value, this.feed.DeliverDownloadsOnScan, this.feed);
+        this.feed = Feed.SetCompleteDownloadsOnScanFlag(value, this.feed);
         this.feedCollection.UpdateFeedContent(this.feed);
         this.feedCollection[this.feedIndex] = this.feed;
       }
@@ -56,7 +56,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.feed.DeliverDownloadsOnScan; }
       set
       {
-        this.feed = Feed.SetScanningFlags(value, this.feed.CompleteDownloadsOnScan, this.feed.DeliverDownloadsOnScan, this.feed);
+        this.feed = Feed.SetDeliverDownloadsOnScanFlag(value, this.feed);
         this.feedCollection.UpdateFeedContent(this.feed);
         this.feedCollection[this.feedIndex] = this.feed;
       }
@@ -66,7 +66,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.feed.DoScan; }
       set
       {
-        this.feed = Feed.SetScanningFlags(value, this.feed.CompleteDownloadsOnScan, this.feed.DeliverDownloadsOnScan, this.feed);
+        this.feed = Feed.SetDoScanFlag(value, this.feed);
         this.feedCollection.UpdateFeedContent(this.feed);
         this.feedCollection[this.feedIndex] = this.feed;
       }
