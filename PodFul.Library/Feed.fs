@@ -107,6 +107,57 @@ type Feed =
                 deliverDownloadsOnScan
                 original.ConfirmDownloadThreshold
 
+        static member SetDoScanFlag doScan original = 
+            Feed.SetProperties
+                original.Title
+                original.Description
+                original.Website
+                original.Directory
+                original.URL
+                original.ImageURL
+                original.ImageFileName
+                original.Podcasts
+                original.CreationDateTime
+                original.UpdatedDateTime
+                doScan
+                original.CompleteDownloadsOnScan
+                original.DeliverDownloadsOnScan
+                original.ConfirmDownloadThreshold
+
+        static member SetCompleteDownloadsOnScanFlag completeDownloadsOnScan original = 
+            Feed.SetProperties
+                original.Title
+                original.Description
+                original.Website
+                original.Directory
+                original.URL
+                original.ImageURL
+                original.ImageFileName
+                original.Podcasts
+                original.CreationDateTime
+                original.UpdatedDateTime
+                original.DoScan
+                completeDownloadsOnScan
+                original.DeliverDownloadsOnScan
+                original.ConfirmDownloadThreshold
+
+        static member SetDeliverDownloadsOnScanFlag deliverDownloadsOnScan original = 
+            Feed.SetProperties
+                original.Title
+                original.Description
+                original.Website
+                original.Directory
+                original.URL
+                original.ImageURL
+                original.ImageFileName
+                original.Podcasts
+                original.CreationDateTime
+                original.UpdatedDateTime
+                original.DoScan
+                original.CompleteDownloadsOnScan
+                deliverDownloadsOnScan
+                original.ConfirmDownloadThreshold
+
         static member SetConfirmDownloadThreshold confirmDownloadThreshold original = 
             Feed.SetProperties
                 original.Title
