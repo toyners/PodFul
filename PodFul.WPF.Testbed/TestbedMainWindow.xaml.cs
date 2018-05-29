@@ -509,9 +509,9 @@ namespace PodFul.WPF.Testbed
     {
       var feeds = this.CreateTestFeeds();
       var mockFeedCollection = Substitute.For<IFeedCollection>();
+      mockFeedCollection.Count.Returns(feeds.Count);
 
-
-      var feedCollectionViewModel = new TileListViewModel(feeds, mockFeedCollection);
+      var feedCollectionViewModel = new TileListViewModel(mockFeedCollection);
       var mainWindow = new TileListWindow(feedCollectionViewModel);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();

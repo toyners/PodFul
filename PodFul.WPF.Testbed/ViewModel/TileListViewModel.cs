@@ -2,21 +2,19 @@
 namespace PodFul.WPF.Testbed.ViewModel
 {
   using System;
-  using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.Threading;
-  using Library;
   using Miscellaneous;
   using Windows;
 
   public class TileListViewModel
   {
-    public TileListViewModel(IList<Feed> feeds, IFeedCollection feedCollection)
+    public TileListViewModel(IFeedCollection feedCollection)
     {
       this.Feeds = new ObservableCollection<FeedViewModel>();
-      foreach(var feed in feeds)
+      for (var i = 0; i < feedCollection.Count; i++)
       {
-        this.Feeds.Add(new FeedViewModel(feed, feedCollection));
+        this.Feeds.Add(new FeedViewModel(i, feedCollection));
       }
     }
 

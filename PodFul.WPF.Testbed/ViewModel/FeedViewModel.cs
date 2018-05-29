@@ -22,14 +22,16 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Processing.IDownloadManager downloadManager;
     private Feed feed;
     private IFeedCollection feedCollection;
+    private Int32 feedIndex;
     private IImageResolver imageResolver;
     private ProcessingStatus scanState;
     #endregion
 
     #region Construction
-    public FeedViewModel(Feed feed, IFeedCollection feedCollection)
+    public FeedViewModel(Int32 index, IFeedCollection feedCollection)
     {
-      this.feed = feed;
+      this.feedIndex = index;
+      this.feed = feedCollection[this.feedIndex];
       this.PodcastNavigation = new PodcastPageNavigation();
       this.PodcastNavigation.SetPages(this.feed.Podcasts);
       this.JobNavigation = new JobPageNavigation();
@@ -45,6 +47,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.feed = Feed.SetScanningFlags(value, this.feed.CompleteDownloadsOnScan, this.feed.DeliverDownloadsOnScan, this.feed);
         this.feedCollection.UpdateFeedContent(this.feed);
+        this.feedCollection[this.feedIndex] = this.feed;
       }
     }
     public String Title { get { return this.feed.Title; } }
