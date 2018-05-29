@@ -30,16 +30,37 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Construction
     public FeedViewModel(Int32 index, IFeedCollection feedCollection)
     {
+      this.feedCollection = feedCollection;
       this.feedIndex = index;
-      this.feed = feedCollection[this.feedIndex];
+      this.feed = this.feedCollection[this.feedIndex];
+
       this.PodcastNavigation = new PodcastPageNavigation();
       this.PodcastNavigation.SetPages(this.feed.Podcasts);
       this.JobNavigation = new JobPageNavigation();
-      this.feedCollection = feedCollection;
     }
     #endregion
 
     #region Properties
+    public Boolean CompleteDownloadsOnScan
+    {
+      get { return this.feed.CompleteDownloadsOnScan; }
+      set
+      {
+        this.feed = Feed.SetScanningFlags(this.feed.DoScan, value, this.feed.DeliverDownloadsOnScan, this.feed);
+        this.feedCollection.UpdateFeedContent(this.feed);
+        this.feedCollection[this.feedIndex] = this.feed;
+      }
+    }
+    public Boolean DeliverDownloadsOnScan
+    {
+      get { return this.feed.DeliverDownloadsOnScan; }
+      set
+      {
+        this.feed = Feed.SetScanningFlags(value, this.feed.CompleteDownloadsOnScan, this.feed.DeliverDownloadsOnScan, this.feed);
+        this.feedCollection.UpdateFeedContent(this.feed);
+        this.feedCollection[this.feedIndex] = this.feed;
+      }
+    }
     public Boolean DoScan
     {
       get { return this.feed.DoScan; }
