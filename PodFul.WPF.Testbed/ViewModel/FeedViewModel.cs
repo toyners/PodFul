@@ -73,6 +73,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
+    public String FeedURL { get { return this.feed.URL; } }
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }
     public String FeedScanProgressMessage { get; private set; }
@@ -92,6 +93,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
     public Boolean ScanFinished { get { return this.FeedScanState == ProcessingStatus.Cancelled || this.FeedScanState == ProcessingStatus.Completed || this.FeedScanState == ProcessingStatus.Failed; } }
+    public String WebsiteURL { get { return this.feed.Website; } }
     #endregion
 
     #region Methods
