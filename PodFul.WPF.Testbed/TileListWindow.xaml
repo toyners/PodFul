@@ -254,7 +254,8 @@
                     <TabItem Header="Settings">
                       <StackPanel>
                         <CheckBox IsChecked="{Binding DoScan}">Include in Scan All</CheckBox>
-                        <CheckBox IsChecked="{Binding DoScan}">Scan</CheckBox>
+                        <CheckBox IsChecked="{Binding CompleteDownloadsOnScan}">Perform Download during Scan All</CheckBox>
+                        <CheckBox IsChecked="{Binding DeliverDownloadsOnScan}">Deliver Downloads during Scan All</CheckBox>
                       </StackPanel>
                     </TabItem>
                   </TabControl>
