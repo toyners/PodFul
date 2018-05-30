@@ -73,6 +73,16 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
+    public String FeedDirectoryPath
+    {
+      get { return this.feed.Directory; }
+      set
+      {
+        this.feed = Feed.SetDirectory(value, this.feed);
+        this.feedCollection.UpdateFeedContent(this.feed);
+        this.feedCollection[this.feedIndex] = this.feed;
+      }
+    }
     public String FeedURL { get { return this.feed.URL; } }
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }

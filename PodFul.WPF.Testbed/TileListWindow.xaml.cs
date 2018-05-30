@@ -158,11 +158,12 @@ namespace PodFul.WPF.Testbed
       }
 
       var selectedPath = PathOperations.CompleteDirectoryPath(folderBrowserDialog.SelectedPath);
-      if (selectedPath != this.FeedDirectoryPath.Text)
+      if (feedViewModel.FeedDirectoryPath == selectedPath)
       {
-        this.DirectoryPath.Text = selectedPath;
-        this.isDirty = true;
+        return;
       }
+
+      feedViewModel.FeedDirectoryPath = selectedPath;
     }
   }
 }
