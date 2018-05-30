@@ -5,6 +5,7 @@ namespace PodFul.WPF.Testbed
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using Jabberwocky.Toolkit.Path;
   using Processing;
   using ViewModel;
 
@@ -150,6 +151,18 @@ namespace PodFul.WPF.Testbed
     private void ChangeFeedDirectoryClick(Object sender, RoutedEventArgs e)
     {
       var feedViewModel = (sender as Button).DataContext as FeedViewModel;
+      var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+      if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+      {
+        return;
+      }
+
+      var selectedPath = PathOperations.CompleteDirectoryPath(folderBrowserDialog.SelectedPath);
+      if (selectedPath != this.FeedDirectoryPath.Text)
+      {
+        this.DirectoryPath.Text = selectedPath;
+        this.isDirty = true;
+      }
     }
   }
 }
