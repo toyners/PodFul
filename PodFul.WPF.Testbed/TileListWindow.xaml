@@ -253,6 +253,15 @@
                         <CheckBox IsChecked="{Binding DoScan}">Include in Scan All</CheckBox>
                         <CheckBox IsChecked="{Binding CompleteDownloadsOnScan}">Perform Download during Scan All</CheckBox>
                         <CheckBox IsChecked="{Binding DeliverDownloadsOnScan}">Deliver Downloads during Scan All</CheckBox>
+                        <StackPanel Orientation="Horizontal">
+                          <Label>Download Confirmation Threshold</Label>
+                          <TextBox Name="ConfirmDownloadThreshold" VerticalAlignment="Center" TextChanged="DownloadConfirmationThresholdTextChanged"
+                                   Text="{Binding Path=ConfirmDownloadThreshold, Mode=OneWay}" Width="50" />
+                          <Label VerticalAlignment="Center" Height="26" Margin="0,1">Directory:</Label>
+                          <TextBox Name="FeedDirectoryPath" VerticalAlignment="Center" Height="20"
+                                   Text="{Binding Path=Directory, Mode=OneWay}" TextChanged="FeedDirectoryPathTextChanged" />
+                          <Button Margin="5,0" Width="22" Height="20" HorizontalAlignment="Left" Click="ChangeFeedDirectoryClick">...</Button>
+                        </StackPanel>
                       </StackPanel>
                     </TabItem>
 

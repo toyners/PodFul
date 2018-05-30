@@ -74,7 +74,7 @@ namespace PodFul.WPF.Testbed
       {
         // Reset after scanning all feeds
         this.CommandButton.Content = "Scan All";
-        this.scanState = ScanStates.Idle; 
+        this.scanState = ScanStates.Idle;
 
         foreach (var feed in this.feedCollectionViewModel.Feeds)
         {
@@ -135,6 +135,21 @@ namespace PodFul.WPF.Testbed
     {
       var feedViewModel = (sender as Button).DataContext as FeedViewModel;
       feedViewModel.CancelScan();
+    }
+
+    private void DownloadConfirmationThresholdTextChanged(Object sender, TextChangedEventArgs e)
+    {
+      var feedViewModel = (sender as TextBox).DataContext as FeedViewModel;
+    }
+
+    private void FeedDirectoryPathTextChanged(Object sender, TextChangedEventArgs e)
+    {
+      var feedViewModel = (sender as TextBox).DataContext as FeedViewModel;
+    }
+
+    private void ChangeFeedDirectoryClick(Object sender, RoutedEventArgs e)
+    {
+      var feedViewModel = (sender as Button).DataContext as FeedViewModel;
     }
   }
 }
