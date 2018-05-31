@@ -5,7 +5,6 @@ open System.IO
 open System.Net
 open System.Threading
 open System.Xml.Linq
-open FSharp.Data
 
 module public FeedFunctions =
 
