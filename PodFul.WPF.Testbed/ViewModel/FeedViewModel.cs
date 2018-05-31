@@ -51,6 +51,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.feedCollection[this.feedIndex] = this.feed;
       }
     }
+    public String CreatedDate { get { return this.feed.CreationDateTime.ToString(); } }
     public Boolean DeliverDownloadsOnScan
     {
       get { return this.feed.DeliverDownloadsOnScan; }
@@ -102,7 +103,9 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanFinished"));
       }
     }
+    public Int32 PodcastCount { get { return this.feed.Podcasts.Length; } }
     public Boolean ScanFinished { get { return this.FeedScanState == ProcessingStatus.Cancelled || this.FeedScanState == ProcessingStatus.Completed || this.FeedScanState == ProcessingStatus.Failed; } }
+    public String UpdatedDate { get { return this.feed.UpdatedDateTime.ToString(); } }
     public String WebsiteURL { get { return this.feed.Website; } }
     #endregion
 

@@ -298,6 +298,8 @@
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition Width="90" />
                           <ColumnDefinition />
+                          <ColumnDefinition Width="60"/>
+                          <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
@@ -306,14 +308,20 @@
                           <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Column="0" Grid.Row="0" Margin="2,0" VerticalAlignment="Center">Description</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Margin="2,0" VerticalAlignment="Center" Text="Description:" />
                         <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Text="{Binding Description, Mode=OneWay}" />
+                        <TextBlock Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Text="Count:" />
+                        <TextBlock Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Text="{Binding PodcastCount, Mode=OneWay}" />
 
-                        <TextBlock Grid.Column="0" Grid.Row="1" Margin="2,0" VerticalAlignment="Center">Feed URL</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Margin="2,0" VerticalAlignment="Center" Text="Feed URL:" />
                         <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{Binding FeedURL, Mode=OneWay}" />
+                        <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Text="Created:" />
+                        <TextBlock Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Text="{Binding CreatedDate, Mode=OneWay}" />
 
-                        <TextBlock Grid.Column="0" Grid.Row="2" Margin="2,0" VerticalAlignment="Center">Feed Website</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="2" Margin="2,0" VerticalAlignment="Center" Text="Feed Website:" />
                         <TextBlock Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Text="{Binding WebsiteURL, Mode=OneWay}" />
+                        <TextBlock Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Text="Updated:" />
+                        <TextBlock Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Text="{Binding UpdatedDate, Mode=OneWay}" />
                       </Grid>
                     </TabItem>
                   </TabControl>
