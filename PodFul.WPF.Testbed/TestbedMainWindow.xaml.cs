@@ -541,7 +541,7 @@ namespace PodFul.WPF.Testbed
       };
 
       var feedA = Setup.createTestFullFeedFromParameters("Feed A (1 new podcast)", "Feed A Description", "Feed A Website", testDirectoryPath, feedAURL, feedImageFilePath, "",
-        DateTime.MinValue, DateTime.MinValue,
+        DateTime.Now, DateTime.Now.AddDays(-1),
         true, true, true,
         podcastsA);
 
