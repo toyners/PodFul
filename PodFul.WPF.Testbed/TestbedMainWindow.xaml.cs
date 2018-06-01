@@ -548,6 +548,10 @@ namespace PodFul.WPF.Testbed
       var podcastsB = new[]
       {
         this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast B-2 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast B-3 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast B-4 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast B-5 Title", originalFileURL, ""),
       };
 
       var feedB = Setup.createTestFullFeedFromParameters("Feed B (4 new podcasts)", "Feed B Description", "Feed B Website", testDirectoryPath, feedBURL, feedImageFilePath, "",
