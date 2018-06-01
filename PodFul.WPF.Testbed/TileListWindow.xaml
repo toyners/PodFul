@@ -221,13 +221,17 @@
                       <!-- Dock panel contains Podcast list and podcast page navigation controls -->
                       <DockPanel Name="PodcastListPanel" Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
                         <StackPanel Name="PodcastPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
-                          <Button IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick">First</Button>
-                          <Button IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick">Previous</Button>
-                          <TextBox Text="{Binding PageNumber, Mode=TwoWay}"/>
-                          <TextBlock> of</TextBlock>
-                          <TextBlock Text="{Binding TotalPages}" />
-                          <Button IsEnabled="{Binding CanMoveForward}" Click="NextPageClick">Next</Button>
-                          <Button IsEnabled="{Binding CanMoveForward}" Click="LastPageClick">Last</Button>
+                          <Button Margin="0,2,1,0" IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="First" />
+                          <Button Margin="1,2,1,0" IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Previous" />
+                          <TextBox Margin="1,2,1,1" Text="{Binding PageNumber, Mode=TwoWay}" Width="20"/>
+                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="of" Width="20" />
+                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding TotalPages}" Width="20" />
+                          <Button Margin="1,2,1,1" IsEnabled="{Binding CanMoveForward}" Click="NextPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Next" />
+                          <Button Margin="1,2,0,1" IsEnabled="{Binding CanMoveForward}" Click="LastPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Last" />
                         </StackPanel>
 
                         <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
