@@ -225,9 +225,12 @@
                                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="First" />
                           <Button Margin="1,2,1,0" IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick" Width="60" 
                                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Previous" />
-                          <TextBox Margin="1,2,1,1" Text="{Binding PageNumber, Mode=TwoWay}" Width="20"/>
-                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="of" Width="20" />
-                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding TotalPages}" Width="20" />
+                          <TextBox Margin="1,2,1,1" Text="{Binding PageNumber, Mode=TwoWay}" HorizontalContentAlignment="Center" 
+                                   VerticalContentAlignment="Center" Width="20"/>
+                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="of" Margin="5,2,1,1"
+                                     Width="15"/>
+                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding TotalPages}" 
+                                     Margin="0,2,-2,1" Width="20" />
                           <Button Margin="1,2,1,1" IsEnabled="{Binding CanMoveForward}" Click="NextPageClick" Width="60" 
                                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Next" />
                           <Button Margin="1,2,0,1" IsEnabled="{Binding CanMoveForward}" Click="LastPageClick" Width="60" 
