@@ -8,5 +8,6 @@
     <Setter Property="Height" Value="25" />
   </Style>
 
+  <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
   <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
 </ResourceDictionary>
