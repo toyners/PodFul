@@ -165,5 +165,15 @@ namespace PodFul.WPF.Testbed
 
       feedViewModel.FeedDirectoryPath = selectedPath;
     }
+
+    private void DownloadPodcastClick(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
+
+    private void PodcastInfoClick(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

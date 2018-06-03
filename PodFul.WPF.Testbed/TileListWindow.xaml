@@ -214,7 +214,7 @@
                   </Grid.ColumnDefinitions>
 
                   <!-- Tab control with three panels: Feed description, Podcast list and feed settings  -->
-                  <TabControl Grid.Column="1" Height="100">
+                  <TabControl Grid.Column="1" Height="115">
 
                     <TabItem Header="Podcasts" >
 
@@ -241,13 +241,19 @@
                           <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel}">
                               <Grid Margin="0,2">
-                                <Grid.RowDefinitions>
-                                  <RowDefinition />
-                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                  <ColumnDefinition />
+                                  <ColumnDefinition Width="70"/>
+                                  <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
 
-                                <StackPanel>
+                                <StackPanel Grid.Column="0">
                                   <TextBlock Text="{Binding Title}" />
                                 </StackPanel>
+
+                                <Button Grid.Column="1" Margin="0,0,1,0" Click="PodcastInfoClick">Info</Button>
+                                
+                                <Button Grid.Column="2" Margin="1,0,0,0" Click="DownloadPodcastClick">Download</Button>
                               </Grid>
                             </DataTemplate>
                           </ListBox.ItemTemplate>
