@@ -4,8 +4,8 @@ namespace PodFul.WPF.Testbed
   using System;
   using System.Collections.ObjectModel;
   using System.Threading;
-  using Windows;
   using WPF.ViewModel;
+  using WPF.Windows;
 
   public class AddFeedCollectionViewModel : IFeedCollectionViewModel
   {

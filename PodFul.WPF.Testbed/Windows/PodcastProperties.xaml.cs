@@ -23,5 +23,10 @@ namespace PodFul.WPF.Testbed.Windows
     {
       InitializeComponent();
     }
+
+    private void CloseButton_Click(Object sender, RoutedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

@@ -6,8 +6,8 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.IO;
   using System.Threading;
   using TestSupport;
-  using Windows;
   using WPF.ViewModel;
+  using WPF.Windows;
 
   public class MultipleFeedCollectionViewModel : IFeedCollectionViewModel
   {
