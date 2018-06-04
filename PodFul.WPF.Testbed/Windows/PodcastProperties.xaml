@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PodFul.WPF.Testbed.Windows"
         mc:Ignorable="d"
-        Title="Properties" Height="250" Width="800"
+        Title="Properties" Height="220" Width="800"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">
   <DockPanel Margin="5">
