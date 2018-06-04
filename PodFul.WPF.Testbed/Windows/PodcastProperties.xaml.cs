@@ -1,32 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
+﻿
 namespace PodFul.WPF.Testbed.Windows
 {
+  using PodFul.WPF.Testbed.ViewModel;
+  using System;
+  using System.Windows;
+
   /// <summary>
   /// Interaction logic for PodcastInfo.xaml
   /// </summary>
-  public partial class PodcastInfo : Window
+  public partial class PodcastProperties : Window
   {
-    public PodcastInfo()
+    public PodcastProperties(PodcastViewModel podcastViewModel)
     {
       InitializeComponent();
+
+      this.DataContext = podcastViewModel; 
     }
 
     private void CloseButton_Click(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      this.Close();
     }
   }
 }

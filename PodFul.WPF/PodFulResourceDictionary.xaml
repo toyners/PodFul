@@ -9,5 +9,6 @@
   </Style>
 
   <local:DownloadDateTimeConverter x:Key="DownloadDateTimeConverter" />
+  <local:FileSizeConverter x:Key="FileSizeConverter" />
   <local:GeneralDateTimeConverter x:Key="GeneralDateTimeConverter" />
 </ResourceDictionary>

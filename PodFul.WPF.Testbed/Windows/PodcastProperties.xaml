@@ -1,4 +1,4 @@
-﻿<Window x:Class="PodFul.WPF.Testbed.Windows.PodcastInfo"
+﻿<Window x:Class="PodFul.WPF.Testbed.Windows.PodcastProperties"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -56,19 +56,19 @@
               <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
               <Label VerticalAlignment="Center">Published:</Label>
               <TextBlock VerticalAlignment="Center" Text="{Binding Path=PublishedDate, Converter={StaticResource GeneralDateTimeConverter}}" />
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
               <Label VerticalAlignment="Center">Downloaded:</Label>
-              <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileDetails.DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}" />
+              <TextBlock VerticalAlignment="Center" Text="{Binding Path=DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}" />
             </StackPanel>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
               <Label VerticalAlignment="Center">Size:</Label>
-              <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileSize}" />
+              <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileSize, Converter={StaticResource FileSizeConverter}}" />
             </StackPanel>
           </Grid>
         </Grid>

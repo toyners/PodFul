@@ -8,6 +8,7 @@ namespace PodFul.WPF.Testbed
   using Jabberwocky.Toolkit.Path;
   using Processing;
   using ViewModel;
+  using Windows;
 
   /// <summary>
   /// Interaction logic for TileListWindow.xaml
@@ -173,7 +174,10 @@ namespace PodFul.WPF.Testbed
 
     private void PodcastInfoClick(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      var podcastViewModel = (PodcastViewModel)((sender as Button).DataContext);
+      var podcastProperties = new PodcastProperties(podcastViewModel);
+      podcastProperties.Owner = this;
+      podcastProperties.ShowDialog();
     }
   }
 }
