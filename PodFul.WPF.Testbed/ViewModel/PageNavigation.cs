@@ -30,6 +30,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         {
           return;
         }
+
         if (value < 1 || value > this.pages.Count)
         {
           return;

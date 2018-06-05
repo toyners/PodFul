@@ -215,6 +215,9 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.JobNavigation.SetPages(jobs);
 
+        // Update the reference for feed in the view model.
+        this.feed = newFeed;
+
         this.downloadManager = downloadManagerFactory.Create();
         var jobFinishedCount = 0;
         var lastIndex = podcastIndexes.Count - 1;
@@ -240,6 +243,9 @@ namespace PodFul.WPF.Testbed.ViewModel
         downloadManager.AddJobs(jobs);
         downloadManager.StartWaitingJobs();
 
+        this.PodcastNavigation.Reset();
+        this.PodcastNavigation.SetPages(this.feed.Podcasts);
+        
         this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " downloaded");
 
         this.FeedScanState = ProcessingStatus.Completed;
