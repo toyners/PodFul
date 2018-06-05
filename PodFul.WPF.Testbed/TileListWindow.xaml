@@ -115,6 +115,7 @@
                     </ToggleButton.Style>
                   </ToggleButton>
 
+                  <!-- TODO: Toggle Button for title and linked to other toggle button-->
                   <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
 
                   <Grid Grid.Column="2">
