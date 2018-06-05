@@ -39,6 +39,13 @@
         </Trigger>
       </ControlTemplate.Triggers>
     </ControlTemplate>
+    <ControlTemplate x:Key="toggleButtonBaseTemplate" TargetType="ToggleButton">
+      <Grid
+        Height="20"
+        Background="Transparent">
+        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+      </Grid>
+    </ControlTemplate>
   </Window.Resources>
 
   <DockPanel Margin="5">
@@ -99,6 +106,9 @@
                         <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
                         <Setter Property="IsEnabled" Value="true"/>
                         <Style.Triggers>
+                          <DataTrigger Binding="{Binding ElementName=FeedToggleButton, Path=IsChecked}" Value="True">
+                            <Setter Property="IsChecked" Value="True"/>
+                          </DataTrigger>
                           <DataTrigger Binding="{Binding FeedScanState}" Value="Waiting">
                             <Setter Property="IsChecked" Value="False" />
                             <Setter Property="IsEnabled" Value="False" />
@@ -116,8 +126,31 @@
                   </ToggleButton>
 
                   <!-- TODO: Toggle Button for title and linked to other toggle button-->
-                  <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
+                  <!--<TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />-->
+                  <ToggleButton Name="FeedToggleButton" Grid.Column="1">
+                    <ToggleButton.Style>
+                      <Style TargetType="ToggleButton">
+                        <Setter Property="Template" Value="{StaticResource toggleButtonBaseTemplate}" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Waiting">
+                            <Setter Property="IsChecked" Value="False" />
+                            <Setter Property="IsEnabled" Value="False" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                            <Setter Property="IsChecked" Value="False" />
+                            <Setter Property="IsEnabled" Value="False" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding ScanFinished}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </ToggleButton.Style>
+                    
+                    <!--<TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />-->
+                  </ToggleButton>
 
+                  <!-- Scan progress message -->
                   <Grid Grid.Column="2">
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="200"/>
@@ -141,6 +174,7 @@
                       </TextBlock.Style>
                     </TextBlock>
 
+                    <!-- Failed message -->
                     <TextBlock Grid.Column="0" Text="Failed" FontWeight="Bold" Foreground="Red"
                                ToolTip="{Binding FeedScanFailedMessage}" HorizontalAlignment="Right"
                                Margin="0,0,2,0">
@@ -156,6 +190,7 @@
                       </TextBlock.Style>
                     </TextBlock>
 
+                    <!-- Cancelled message -->
                     <TextBlock Grid.Column="0" Foreground="OrangeRed" HorizontalAlignment="Right"
                                Text="{Binding FeedScanProgressMessage}" Margin="0,0,2,0">
                       <TextBlock.Style>
@@ -170,6 +205,7 @@
                       </TextBlock.Style>
                     </TextBlock>
 
+                    <!-- Cancel button -->
                     <Button Grid.Column="1" Click="FeedCancelButtonClick" Content="Cancel">
                       <Button.Style>
                         <Style TargetType="Button">
@@ -253,7 +289,7 @@
                                 </StackPanel>
 
                                 <Button Grid.Column="1" Margin="0,0,1,0" Click="PodcastInfoClick">Info</Button>
-                                
+
                                 <Button Grid.Column="2" Margin="1,0,0,0" Click="DownloadPodcastClick">Download</Button>
                               </Grid>
                             </DataTemplate>
@@ -284,7 +320,7 @@
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="100"/>
                           </Grid.ColumnDefinitions>
-                          
+
                           <Label Grid.Column="0">Download Confirmation Threshold:</Label>
                           <TextBox Name="ConfirmDownloadThreshold" Grid.Column="1" VerticalAlignment="Center" TextChanged="DownloadConfirmationThresholdTextChanged"
                                    Text="{Binding Path=ConfirmDownloadThreshold, Mode=OneWay}" Height="20" />
@@ -303,7 +339,7 @@
                           <CheckBox Grid.Column="3" IsChecked="{Binding DeliverDownloadsOnScan}" 
                                     Margin="5,0" HorizontalAlignment="Right">Deliver Downloads</CheckBox>
                         </Grid>
-                        
+
                       </StackPanel>
                     </TabItem>
 
