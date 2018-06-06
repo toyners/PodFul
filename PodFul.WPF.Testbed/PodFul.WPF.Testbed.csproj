@@ -133,7 +133,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\AddFeedCollectionViewModel.cs" />
-    <Compile Include="TestFeedProcessor.cs" />
     <Compile Include="TestbedMainWindow.xaml.cs">
       <DependentUpon>TestbedMainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
