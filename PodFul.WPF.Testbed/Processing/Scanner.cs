@@ -1,6 +1,7 @@
 ﻿
 namespace PodFul.WPF.Testbed.Processing
 {
+  using Jabberwocky.Toolkit.Object;
   using System;
   using System.Collections.Concurrent;
   using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace PodFul.WPF.Testbed.Processing
 
     public void ScanFeeds(IList<FeedViewModel> feedViewModels, IDownloadManagerFactory downloadManagerFactory)
     {
+      downloadManagerFactory.VerifyThatObjectIsNotNull();
+
       var maxTaskCount = 1;
       this.cancellationTokenSource = new CancellationTokenSource();
       var cancelToken = this.cancellationTokenSource.Token;
