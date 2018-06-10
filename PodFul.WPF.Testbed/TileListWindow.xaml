@@ -125,8 +125,6 @@
                     </ToggleButton.Style>
                   </ToggleButton>
 
-                  <!-- TODO: Toggle Button for title and linked to other toggle button-->
-                  <!--<TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />-->
                   <ToggleButton Name="FeedToggleButton" Grid.Column="1">
                     <ToggleButton.Style>
                       <Style TargetType="ToggleButton">
@@ -157,7 +155,7 @@
                       <ColumnDefinition Width="70"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" HorizontalAlignment="Right"
+                    <!--<TextBlock Grid.Column="0" Text="{Binding FeedScanProgressMessage}" HorizontalAlignment="Right"
                                Margin="0,0,2,0">
                       <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -172,7 +170,11 @@
                           </Style.Triggers>
                         </Style>
                       </TextBlock.Style>
-                    </TextBlock>
+                    </TextBlock>-->
+
+                    <Button Grid.Column="1" Click="FeedCancelButtonClick" >
+                      
+                    </Button>
 
                     <!-- Failed message -->
                     <TextBlock Grid.Column="0" Text="Failed" FontWeight="Bold" Foreground="Red"
