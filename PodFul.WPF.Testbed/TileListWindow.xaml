@@ -177,6 +177,9 @@
                     </Button>
 
                     <!-- Failed message -->
+                    <Button Grid.Column="1" />
+
+                    <!-- Failed message -->
                     <TextBlock Grid.Column="0" Text="Failed" FontWeight="Bold" Foreground="Red"
                                ToolTip="{Binding FeedScanFailedMessage}" HorizontalAlignment="Right"
                                Margin="0,0,2,0">
