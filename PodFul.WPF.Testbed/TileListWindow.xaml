@@ -162,7 +162,7 @@
                     </Button.Style>
                   </Button>
 
-                  <!-- Cancelled message -->
+                  <!-- Cancelled image -->
                   <Image Grid.Column="2">
                     <Image.Style>
                       <Style TargetType="Image">
@@ -175,6 +175,8 @@
                       </Style>
                     </Image.Style>
                   </Image>
+                  
+                  
 
                   <!-- Cancel button -->
                   <Button Grid.Column="2" Click="FeedCancelButtonClick" Content="C">
