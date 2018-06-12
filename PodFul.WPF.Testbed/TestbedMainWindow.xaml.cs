@@ -527,12 +527,12 @@ namespace PodFul.WPF.Testbed
 
       var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3";
 
-      var feedAURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Feed A (1 new podcast).rss";
-      var feedBURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Feed B (4 new podcasts).rss";
-      var feedCURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Feed C (No change).rss";
-      var feedDURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Feed D (First time).rss";
+      var feedAURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Feed A (1 new podcast).rss";
+      var feedBURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Feed B (4 new podcasts).rss";
+      var feedCURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Feed C (No change).rss";
+      var feedDURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Feed D (First time).rss";
       var feedEURL = "Invalid URL.rss";
-      var feedFURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Missing File.rss";
+      var feedFURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Missing File.rss";
 
       var feedImageFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Question-Mark.jpg");
       var podcastsA = new[]

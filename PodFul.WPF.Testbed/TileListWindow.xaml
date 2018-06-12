@@ -175,11 +175,23 @@
                       </Style>
                     </Image.Style>
                   </Image>
-                  
-                  
+
+                  <!-- Successful image -->
+                  <Image Grid.Column="2" >
+                    <Image.Style>
+                      <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Image.Style>
+                  </Image>     
 
                   <!-- Cancel button -->
-                  <Button Grid.Column="2" Click="FeedCancelButtonClick" Content="C">
+                  <Button Grid.Column="2" Click="FeedCancelButtonClick">
                     <Button.Style>
                       <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -190,6 +202,10 @@
                         </Style.Triggers>
                       </Style>
                     </Button.Style>
+
+                    <Button.Width>15</Button.Width>
+                    <Button.Height>15</Button.Height>
+                    <Image Source="..\cancel.png" Width="15" Height="15"/>
                   </Button>
                 </Grid>
 

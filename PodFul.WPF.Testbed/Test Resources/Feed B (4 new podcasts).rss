@@ -20,55 +20,55 @@
       <title>Podcast B-9 Title</title>
       <pubDate>2 Jan 2014 01:02:03</pubDate>
       <description><![CDATA[Podcast B-9 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
     </item>
     <item>
       <title>Podcast B-8 Title</title>
       <pubDate>2 Jan 2014 01:02:03</pubDate>
       <description><![CDATA[Podcast B-8 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
     </item>
     <item>
       <title>Podcast B-7 Title</title>
       <pubDate>2 Jan 2014 01:02:03</pubDate>
       <description><![CDATA[Podcast B-7 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
     </item>
     <item>
       <title>Podcast B-6 Title</title>
       <pubDate>2 Jan 2014 01:02:03</pubDate>
       <description><![CDATA[Podcast B-6 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
     </item>
     <item>
       <title>Podcast B-5 Title</title>
       <pubDate>2 Jan 2014 01:02:03</pubDate>
       <description><![CDATA[Podcast B-5 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
     </item>
     <item>
       <title>Podcast B-4 Title</title>
       <pubDate>2 Jan 2014 01:02:03</pubDate>
       <description><![CDATA[Podcast B-4 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
     </item>
     <item>
       <title>Podcast B-3 Title</title>
       <pubDate>2 Jan 2014 01:02:03</pubDate>
       <description><![CDATA[Podcast B-3 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
     </item>
     <item>
 		  <title>Podcast B-2 Title</title>
 		  <pubDate>2 Jan 2014 01:02:03</pubDate>
 		  <description><![CDATA[Podcast B-2 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3" length="10055415" type="audio/mpeg" />
 	  </item>
     <item>
 		  <title>Podcast B-1 Title</title>
 		  <pubDate>3 Jan 2014 01:02:03</pubDate>
 		  <description><![CDATA[Podcast B-1 Description]]></description>
-      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\Podcast1.mp3" length="10055415" type="audio/mpeg" />
+      <enclosure url="C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast1.mp3" length="10055415" type="audio/mpeg" />
 	  </item>
 	</channel>
 </rss>
