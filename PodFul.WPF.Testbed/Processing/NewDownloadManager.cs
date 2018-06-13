@@ -47,10 +47,8 @@ namespace PodFul.WPF.Testbed.Processing
         this.cancellationTokenSource = new CancellationTokenSource();
         var cancelToken = this.cancellationTokenSource.Token;
 
-        while (this.jobs.Count > 0)
+        while (this.jobs.Count > 0 && !cancelToken.IsCancellationRequested)
         {
-          cancelToken.ThrowIfCancellationRequested();
-
           this.currentJob = this.jobs.Dequeue();
           if (this.currentJob.Status == ProcessingStatus.Waiting)
           {
@@ -59,7 +57,7 @@ namespace PodFul.WPF.Testbed.Processing
           }
         }
       }
-      catch (OperationCanceledException oce)
+      catch (OperationCanceledException)
       {
         this.currentJob?.CancelDownload();
         this.JobFinishedEvent?.Invoke(this.currentJob);

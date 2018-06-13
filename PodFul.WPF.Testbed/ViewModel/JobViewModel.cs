@@ -210,9 +210,10 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.DownloadCompleted();
       }
-      catch (OperationCanceledException oce)
+      catch (OperationCanceledException)
       {
         this.Status = ProcessingStatus.Cancelled;
+        throw;
       }
       catch (Exception e)
       {
