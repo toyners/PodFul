@@ -14,7 +14,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.Feeds = new ObservableCollection<FeedViewModel>();
       for (var i = 0; i < feedCollection.Count; i++)
       {
-        this.Feeds.Add(new FeedViewModel(i, feedCollection));
+        this.Feeds.Add(new FeedViewModel(i, feedCollection, null));
       }
     }
 

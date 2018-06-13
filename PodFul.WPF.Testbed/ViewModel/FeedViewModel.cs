@@ -21,18 +21,19 @@ namespace PodFul.WPF.Testbed.ViewModel
     private CancellationTokenSource cancellationTokenSource = null;
     private Processing.IDownloadManager downloadManager;
     private Feed feed;
-    private IFeedCollection feedCollection;
-    private Int32 feedIndex;
-    private IImageResolver imageResolver;
+    private readonly IFeedCollection feedCollection;
+    private readonly Int32 feedIndex;
+    private readonly IImageResolver imageResolver;
     private ProcessingStatus scanState;
     #endregion
 
     #region Construction
-    public FeedViewModel(Int32 index, IFeedCollection feedCollection)
+    public FeedViewModel(Int32 index, IFeedCollection feedCollection, IImageResolver imageResolver)
     {
       this.feedCollection = feedCollection;
       this.feedIndex = index;
       this.feed = this.feedCollection[this.feedIndex];
+      this.imageResolver = imageResolver;
 
       this.PodcastNavigation = new PodcastPageNavigation();
       this.PodcastNavigation.SetPages(this.feed.Podcasts);
