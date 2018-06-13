@@ -36,6 +36,7 @@ namespace PodFul.WPF.Testbed.Processing
       if (this.cancellationTokenSource != null && !this.cancellationTokenSource.IsCancellationRequested)
       {
         this.cancellationTokenSource.Cancel();
+        this.currentJob?.CancelDownload();
       }
     }
 
