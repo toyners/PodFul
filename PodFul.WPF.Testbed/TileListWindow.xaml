@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PodFul.WPF.Testbed"
         xmlns:viewmodel="clr-namespace:PodFul.WPF.Testbed.ViewModel"
         mc:Ignorable="d"
         Title="Tile List" Height="600" Width="1000" 
@@ -97,7 +96,7 @@
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition />
-                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="25"/>
                   </Grid.ColumnDefinitions>
 
                   <ToggleButton Name="MainToggleButton" Grid.Column="0" Height="20" Width="20" VerticalAlignment="Top">
@@ -191,7 +190,7 @@
                   </Image>     
 
                   <!-- Cancel button -->
-                  <Button Grid.Column="2" Click="FeedCancelButtonClick">
+                  <Button Grid.Column="2" Click="FeedCancelButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center">
                     <Button.Style>
                       <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -203,9 +202,9 @@
                       </Style>
                     </Button.Style>
 
-                    <Button.Width>15</Button.Width>
-                    <Button.Height>15</Button.Height>
-                    <Image Source="..\cancel.png" Width="15" Height="15"/>
+                    <!--<Button.Width>15</Button.Width>
+                    <Button.Height>15</Button.Height>-->
+                    <Image Source="Resources\cancel.png" Width="25" Height="25" Margin="0"/>
                   </Button>
                 </Grid>
 
