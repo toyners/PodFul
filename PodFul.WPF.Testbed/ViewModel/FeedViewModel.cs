@@ -149,13 +149,13 @@ namespace PodFul.WPF.Testbed.ViewModel
         
         var cancelToken = this.cancellationTokenSource.Token;
         var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
-        var newFeed = FeedFunctions.UpdateFeed(feed, feedFilePath, cancelToken);
+        var newFeed = FeedFunctions.UpdateFeed(this.feed, feedFilePath, cancelToken);
 
         // Creating the new feed may have taken a while - check for cancellation before processing podcasts.
         cancelToken.ThrowIfCancellationRequested();
 
         this.UpdateScanProgressMessage("Searching for new podcasts ...");
-        var podcastIndexes = this.BuildNewPodcastIndexList(feed, newFeed);
+        var podcastIndexes = this.BuildNewPodcastIndexList(this.feed, newFeed);
 
         if (podcastIndexes.Count == 0)
         {
@@ -173,7 +173,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           if (podcastIndexes.Count >= newFeed.ConfirmDownloadThreshold)
           {
             IPodcastDownloadConfirmer podcastDownloadConfirmer = new PodcastDownloadConfirmer();
-            downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(feed, newFeed, podcastIndexes);
+            downloadConfirmation = podcastDownloadConfirmer.ConfirmPodcastsForDownload(this.feed, newFeed, podcastIndexes);
 
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
             {
@@ -240,8 +240,8 @@ namespace PodFul.WPF.Testbed.ViewModel
           }
         };
 
-        downloadManager.AddJobs(jobs);
-        downloadManager.StartWaitingJobs();
+        this.downloadManager.AddJobs(jobs);
+        this.downloadManager.StartWaitingJobs();
 
         this.PodcastNavigation.Reset();
         this.PodcastNavigation.SetPages(this.feed.Podcasts);
@@ -250,7 +250,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.FeedScanState = ProcessingStatus.Completed;
       }
-      catch (OperationCanceledException oce)
+      catch (OperationCanceledException)
       {
         this.HandleScanCancelled();
       }
