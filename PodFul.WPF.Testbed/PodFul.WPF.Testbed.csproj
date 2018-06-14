@@ -215,7 +215,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Test Resources\Question-Mark.jpg">
+    <None Include="Resources\question-mark.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

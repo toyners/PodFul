@@ -85,6 +85,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.feedCollection[this.feedIndex] = this.feed;
       }
     }
+    public String FeedImage { get { return this.feed.ImageFileName; } }
     public String FeedURL { get { return this.feed.URL; } }
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public JobPageNavigation JobNavigation { get; set; }

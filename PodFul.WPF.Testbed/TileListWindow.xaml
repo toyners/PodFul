@@ -95,6 +95,7 @@
                 <Grid Name="FeedTitleBar" Grid.Row="0">
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="25" />
                     <ColumnDefinition />
                     <ColumnDefinition Width="25"/>
                   </Grid.ColumnDefinitions>
@@ -124,7 +125,9 @@
                     </ToggleButton.Style>
                   </ToggleButton>
 
-                  <ToggleButton Name="FeedToggleButton" Grid.Column="1">
+                  <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,2,0" />
+
+                  <ToggleButton Name="FeedToggleButton" Grid.Column="2">
                     <ToggleButton.Style>
                       <Style TargetType="ToggleButton">
                         <Setter Property="Template" Value="{StaticResource toggleButtonBaseTemplate}" />
@@ -147,50 +150,8 @@
                     <!--<TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />-->
                   </ToggleButton>
 
-                  <!-- Failed message -->
-                  <Button Grid.Column="2" Content="F" >
-                    <Button.Style>
-                      <Style TargetType="Button">
-                        <Setter Property="Visibility" Value="Hidden"/>
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding FeedScanState}" Value="Failed">
-                            <Setter Property="Visibility" Value="Visible" />
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </Button.Style>
-                  </Button>
-
-                  <!-- Cancelled image -->
-                  <Image Grid.Column="2">
-                    <Image.Style>
-                      <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Hidden"/>
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding FeedScanState}" Value="Cancelled">
-                            <Setter Property="Visibility" Value="Visible" />
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </Image.Style>
-                  </Image>
-
-                  <!-- Successful image -->
-                  <Image Grid.Column="2" >
-                    <Image.Style>
-                      <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Hidden"/>
-                        <Style.Triggers>
-                          <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
-                            <Setter Property="Visibility" Value="Visible" />
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </Image.Style>
-                  </Image>     
-
                   <!-- Cancel button -->
-                  <Button Grid.Column="2" Click="FeedCancelButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center">
+                  <Button Grid.Column="3" Click="FeedCancelButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center">
                     <Button.Style>
                       <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -206,6 +167,48 @@
                     <Button.Height>15</Button.Height>-->
                     <Image Source="Resources\cancel.png" Width="25" Height="25" Margin="0"/>
                   </Button>
+
+                  <!-- Failed message -->
+                  <Button Grid.Column="3" Content="F" >
+                    <Button.Style>
+                      <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Failed">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Button.Style>
+                  </Button>
+
+                  <!-- Cancelled image -->
+                  <Image Grid.Column="3">
+                    <Image.Style>
+                      <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Cancelled">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Image.Style>
+                  </Image>
+
+                  <!-- Successful image -->
+                  <Image Grid.Column="3" >
+                    <Image.Style>
+                      <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Image.Style>
+                  </Image>
                 </Grid>
 
                 <!-- Feed content panel -->
