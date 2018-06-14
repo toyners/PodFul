@@ -4,6 +4,7 @@ namespace PodFul.WPF.Testbed.Processing
   using System;
   using System.Collections.Generic;
   using System.Threading;
+  using PodFul.Library;
   using ViewModel;
 
   public class NewDownloadManager : IDownloadManager
@@ -29,6 +30,11 @@ namespace PodFul.WPF.Testbed.Processing
         this.jobs.Enqueue(jobViewModel);
         this.JobQueuedEvent.Invoke(jobViewModel);
       }
+    }
+
+    public void AddJobs(IList<Podcast> podcasts, Feed feed)
+    {
+
     }
 
     public void CancelJobs()
