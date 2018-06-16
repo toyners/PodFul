@@ -74,6 +74,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
+    public JobViewModel DownloadView { get; private set; }
     public String FeedDirectoryPath
     {
       get { return this.feed.Directory; }
