@@ -8,6 +8,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Windows;
   using Jabberwocky.Toolkit.WPF;
   using Library;
+  using PodFul.WPF.Processing;
   using PodFul.WPF.Testbed.Processing;
 
   public class DownloadManagerViewModel : NotifyPropertyChangedBase
@@ -32,7 +33,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     #endregion
 
     #region Construction
-    public DownloadManagerViewModel(IDownloadManager downloadManager)
+    public DownloadManagerViewModel(INewDownloadManager downloadManager, IImageResolver imageResolver)
     {
       this.podcast = podcast;
       this.podcastSize = this.podcast.FileDetails.FileSize;

@@ -3,11 +3,12 @@ namespace PodFul.WPF.Testbed.Processing
 {
   using System;
   using System.Collections.Generic;
+  using System.IO;
   using System.Threading;
   using PodFul.Library;
   using ViewModel;
 
-  public class NewDownloadManager : IDownloadManager
+  public class NewDownloadManager : INewDownloadManager
   {
     private CancellationTokenSource cancellationTokenSource;
     private DownloadManagerViewModel currentJob;
@@ -15,6 +16,8 @@ namespace PodFul.WPF.Testbed.Processing
 
     public Action<DownloadManagerViewModel> JobFinishedEvent { get; set; }
     public Action<DownloadManagerViewModel> JobQueuedEvent { get; set; }
+    public Action<Int32> ProgressEventHandler { get; set; }
+    public Action<Podcast, String> DownloadCompletedEvent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public void AddJobs(IList<DownloadManagerViewModel> jobViewModels)
     {
@@ -32,6 +35,9 @@ namespace PodFul.WPF.Testbed.Processing
       }
     }
 
+    private Queue<Int32> podcastIndexes;
+    private Feed feed;
+
     public void AddJobs(IList<Int32> podcastIndexes, Feed feed)
     {
 
@@ -43,6 +49,32 @@ namespace PodFul.WPF.Testbed.Processing
       {
         this.cancellationTokenSource.Cancel();
         this.currentJob?.CancelDownload();
+      }
+    }
+
+    public void DownloadPodcasts()
+    {
+      this.cancellationTokenSource = new CancellationTokenSource();
+      var cancelToken = this.cancellationTokenSource.Token;
+
+      while (this.podcastIndexes.Count == 0)
+      {
+        var podcastIndex = this.podcastIndexes.Dequeue();
+        var podcast = this.feed.Podcasts[podcastIndex];
+        var fileDownloader = new FileDownloader();
+        var filePath = Path.Combine(this.feed.Directory, podcast.FileDetails.FileName);
+        fileDownloader.Download(podcast.URL, filePath, cancelToken, this.ProgressEventHandler);
+
+        // Maybe I should do this?
+        // this.DownloadCompletedEvent?.Invoke(podcast, filePath);
+
+        var fileInfo = new FileInfo(filePath);
+        if (!fileInfo.Exists)
+        {
+          throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", filePath));
+        }
+
+        podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
       }
     }
 

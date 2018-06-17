@@ -8,10 +8,12 @@ namespace PodFul.WPF.Testbed.Processing
   using PodFul.Library;
   using ViewModel;
 
-  public interface IDownloadManager
+  public interface INewDownloadManager
   {
     Action<DownloadManagerViewModel> JobQueuedEvent { get; set; }
     Action<DownloadManagerViewModel> JobFinishedEvent { get; set; }
+    Action<Int32> ProgressEventHandler { get; set; }
+    Action<Podcast, String> DownloadCompletedEvent { get; set; }
 
     void AddJobs(IList<DownloadManagerViewModel> jobViewModels);
     void AddJobs(IList<Int32> podcastIndexes, Feed feed);
@@ -23,7 +25,7 @@ namespace PodFul.WPF.Testbed.Processing
 
   public interface IDownloadManagerFactory
   {
-    IDownloadManager Create();
+    INewDownloadManager Create();
   }
 
   public class DownloadManagerFactory : IDownloadManagerFactory
@@ -36,7 +38,7 @@ namespace PodFul.WPF.Testbed.Processing
       this.logger = logger;
     }
 
-    public IDownloadManager Create()
+    public INewDownloadManager Create()
     {
       return new NewDownloadManager();
     }

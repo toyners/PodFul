@@ -19,7 +19,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Fields
     private static PropertyChangedEventArgs FeedScanProgressMessageArgs = new PropertyChangedEventArgs("FeedScanProgressMessage");
     private CancellationTokenSource cancellationTokenSource = null;
-    private Processing.IDownloadManager downloadManager;
+    private Processing.INewDownloadManager downloadManager;
     private Feed feed;
     private readonly IFeedCollection feedCollection;
     private readonly Int32 feedIndex;
@@ -212,7 +212,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         podcastIndexes.Reverse();
 
         this.downloadManager = downloadManagerFactory.Create();
-        DownloadManagerViewModel job = new DownloadManagerViewModel(this.downloadManager);
+        DownloadManagerViewModel downloadManagerViewModel = new DownloadManagerViewModel(this.downloadManager, this.imageResolver);
 
         this.downloadManager.AddJobs(podcastIndexes, this.feed);
       
