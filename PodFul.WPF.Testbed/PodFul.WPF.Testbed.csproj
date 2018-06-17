@@ -117,7 +117,7 @@
     <Compile Include="ViewModel\JobPageNavigation.cs" />
     <Compile Include="ViewModel\PodcastPageNavigation.cs" />
     <Compile Include="ViewModel\IPageNavigation.cs" />
-    <Compile Include="ViewModel\JobViewModel.cs" />
+    <Compile Include="ViewModel\DownloadManagerViewModel.cs" />
     <Compile Include="ViewModel\PageNavigation.cs" />
     <Compile Include="ViewModel\TileListViewModel.cs" />
     <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />

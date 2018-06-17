@@ -5,11 +5,11 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Collections.Generic;
   using System.ComponentModel;
 
-  public class JobPageNavigation : PageNavigation<JobPageViewModel, JobViewModel>
+  public class JobPageNavigation : PageNavigation<JobPageViewModel, DownloadManagerViewModel>
   {
     public Boolean HasJobs { get; private set; }
 
-    public override void SetPages(IList<JobViewModel> items, Int32 itemCountPerPage = 2)
+    public override void SetPages(IList<DownloadManagerViewModel> items, Int32 itemCountPerPage = 2)
     {
       base.SetPages(items, itemCountPerPage);
 
@@ -27,7 +27,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.TryInvokePropertyChanged(new PropertyChangedEventArgs("HasJobs"));
     }
 
-    protected override JobPageViewModel CreatePage(IList<JobViewModel> items, Int32 firstIndex, Int32 lastIndex)
+    protected override JobPageViewModel CreatePage(IList<DownloadManagerViewModel> items, Int32 firstIndex, Int32 lastIndex)
     {
       return new JobPageViewModel(items, firstIndex, lastIndex);
     }

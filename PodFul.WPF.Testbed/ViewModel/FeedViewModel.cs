@@ -74,7 +74,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
-    public JobViewModel DownloadView { get; private set; }
+    public DownloadManagerViewModel DownloadView { get; private set; }
     public String FeedDirectoryPath
     {
       get { return this.feed.Directory; }
@@ -211,10 +211,10 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         podcastIndexes.Reverse();
 
-        JobViewModel job = new JobViewModel(null, null);
-
         this.downloadManager = downloadManagerFactory.Create();
-        this.downloadManager.AddJobs(null, null);
+        DownloadManagerViewModel job = new DownloadManagerViewModel(this.downloadManager);
+
+        this.downloadManager.AddJobs(podcastIndexes, this.feed);
       
         var jobFinishedCount = 0;
         var lastIndex = podcastIndexes.Count - 1;

@@ -10,21 +10,21 @@ namespace PodFul.WPF.Testbed.Processing
   public class NewDownloadManager : IDownloadManager
   {
     private CancellationTokenSource cancellationTokenSource;
-    private JobViewModel currentJob;
-    private Queue<JobViewModel> jobs;
+    private DownloadManagerViewModel currentJob;
+    private Queue<DownloadManagerViewModel> jobs;
 
-    public Action<JobViewModel> JobFinishedEvent { get; set; }
-    public Action<JobViewModel> JobQueuedEvent { get; set; }
+    public Action<DownloadManagerViewModel> JobFinishedEvent { get; set; }
+    public Action<DownloadManagerViewModel> JobQueuedEvent { get; set; }
 
-    public void AddJobs(IList<JobViewModel> jobViewModels)
+    public void AddJobs(IList<DownloadManagerViewModel> jobViewModels)
     {
       if (this.JobQueuedEvent == null)
       {
-        this.jobs = new Queue<JobViewModel>(jobViewModels);
+        this.jobs = new Queue<DownloadManagerViewModel>(jobViewModels);
         return;
       }
 
-      this.jobs = new Queue<JobViewModel>(jobViewModels.Count);
+      this.jobs = new Queue<DownloadManagerViewModel>(jobViewModels.Count);
       foreach (var jobViewModel in jobViewModels)
       {
         this.jobs.Enqueue(jobViewModel);
@@ -32,7 +32,7 @@ namespace PodFul.WPF.Testbed.Processing
       }
     }
 
-    public void AddJobs(IList<Podcast> podcasts, Feed feed)
+    public void AddJobs(IList<Int32> podcastIndexes, Feed feed)
     {
 
     }

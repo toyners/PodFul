@@ -7,15 +7,15 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class JobPageViewModel : NotifyPropertyChangedBase
   {
-    public JobPageViewModel(IList<JobViewModel> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
+    public JobPageViewModel(IList<DownloadManagerViewModel> jobs, Int32 firstJobIndex, Int32 lastJobIndex)
     {
-      this.Jobs = new List<JobViewModel>();
+      this.Jobs = new List<DownloadManagerViewModel>();
       while (firstJobIndex <= lastJobIndex)
       {
         this.Jobs.Add(jobs[firstJobIndex++]);
       }
     }
 
-    public List<JobViewModel> Jobs { get; private set; }
+    public List<DownloadManagerViewModel> Jobs { get; private set; }
   }
 }

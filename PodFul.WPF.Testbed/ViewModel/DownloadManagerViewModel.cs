@@ -8,8 +8,9 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Windows;
   using Jabberwocky.Toolkit.WPF;
   using Library;
+  using PodFul.WPF.Testbed.Processing;
 
-  public class JobViewModel : NotifyPropertyChangedBase
+  public class DownloadManagerViewModel : NotifyPropertyChangedBase
   {
     #region Fields
     private CancellationTokenSource cancellationTokenSource;
@@ -31,7 +32,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     #endregion
 
     #region Construction
-    public JobViewModel(Podcast podcast, Feed feed)
+    public DownloadManagerViewModel(IDownloadManager downloadManager)
     {
       this.podcast = podcast;
       this.podcastSize = this.podcast.FileDetails.FileSize;
@@ -49,7 +50,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         podcastSizeDescription = Miscellaneous.GetReadableFileSize(podcastSize) + "Mb (" + podcastSize.ToString("#,##0") + " bytes)";
       }
 
-      this.Description = "Feed: " + feed.Title + "\r\nSize: " + podcastSizeDescription;
+      // this.Description = "Feed: " + feed.Title + "\r\nSize: " + podcastSizeDescription;
 
       if (String.IsNullOrEmpty(this.podcast.FileDetails.FileName))
       {
@@ -59,7 +60,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
 
       this.exceptionMessage = String.Empty;
-      this.FilePath = Path.Combine(feed.Directory, this.podcast.FileDetails.FileName);
+      //this.FilePath = Path.Combine(feed.Directory, this.podcast.FileDetails.FileName);
       this.status = ProcessingStatus.Waiting;
     }
     #endregion
