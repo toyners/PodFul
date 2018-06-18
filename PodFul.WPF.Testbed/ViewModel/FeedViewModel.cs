@@ -72,9 +72,9 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.feedCollection[this.feedIndex] = this.feed;
       }
     }
+    public DownloadManagerViewModel DownloadView { get; private set; }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
-    public DownloadManagerViewModel DownloadView { get; private set; }
     public String FeedDirectoryPath
     {
       get { return this.feed.Directory; }
@@ -224,7 +224,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           this.feedCollection.UpdateFeedContent(this.feed);
         };
 
-        DownloadManagerViewModel downloadManagerViewModel = new DownloadManagerViewModel(this.downloadManager, this.imageResolver);
+        this.DownloadView = new DownloadManagerViewModel(this.downloadManager, this.imageResolver);
       
         /*var jobFinishedCount = 0;
         var lastIndex = podcastIndexes.Count - 1;
@@ -240,7 +240,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           jobFinishedCount++;
         };*/
 
-        this.downloadManager.StartWaitingJobs();
+        this.downloadManager.DownloadPodcasts();
 
         this.PodcastNavigation.Reset();
         this.PodcastNavigation.SetPages(this.feed.Podcasts);

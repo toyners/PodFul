@@ -22,6 +22,7 @@ namespace PodFul.WPF.Testbed.Processing
 
     void CancelJobs();
 
+    void DownloadPodcasts();
     void StartWaitingJobs();
   }
 

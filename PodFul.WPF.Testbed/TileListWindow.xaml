@@ -392,7 +392,7 @@
 
                   <!-- Dock panel contains jobs list, job page navigation and job cancel controls -->
                   <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="30">
-                    <Grid>
+                    <Grid DataContext="{Binding DownloadView}">
                       <Grid.ToolTip>
                         <Binding Path="Description" />
                       </Grid.ToolTip>
