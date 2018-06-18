@@ -257,10 +257,12 @@ namespace PodFul.WPF.Testbed.ViewModel
     public void InitialiseDownload(Podcast podcast)
     {
       this.downloadedSize = 0;
+      this.podcastSize = podcast.FileDetails.FileSize;
+      this.percentageStepSize = this.podcastSize / 100;
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
 
-      if (podcast.FileDetails.FileSize > 0)
+      if (podcastSize > 0)
       {
         this.ProgressUnit = "%";
         this.fileSizeKnown = true;
