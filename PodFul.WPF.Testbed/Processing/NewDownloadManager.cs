@@ -60,7 +60,7 @@ namespace PodFul.WPF.Testbed.Processing
       var cancelToken = this.cancellationTokenSource.Token;
       var fileDownloader = new FileDownloader();
 
-      while (this.podcastIndexes.Count == 0)
+      while (this.podcastIndexes.Count > 0)
       {
         var podcastIndex = this.podcastIndexes.Dequeue();
         var podcast = this.feed.Podcasts[podcastIndex];
