@@ -16,8 +16,9 @@ namespace PodFul.WPF.Testbed.Processing
 
     public Action<DownloadManagerViewModel> JobFinishedEvent { get; set; }
     public Action<DownloadManagerViewModel> JobQueuedEvent { get; set; }
-    public Action<Int32> ProgressEventHandler { get; set; }
-    public Action<Podcast, String> DownloadCompletedEvent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public Action<Int32> DownloadProgressEventHandler { get; set; }
+    public event Action<Podcast> DownloadCompletedEvent;
+    public Action<Podcast> DownloadStartingEvent { get; set; }
 
     public void AddJobs(IList<DownloadManagerViewModel> jobViewModels)
     {
@@ -40,7 +41,8 @@ namespace PodFul.WPF.Testbed.Processing
 
     public void AddJobs(IList<Int32> podcastIndexes, Feed feed)
     {
-
+      this.podcastIndexes = new Queue<Int32>(podcastIndexes);
+      this.feed = feed;
     }
 
     public void CancelJobs()
@@ -56,17 +58,17 @@ namespace PodFul.WPF.Testbed.Processing
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       var cancelToken = this.cancellationTokenSource.Token;
+      var fileDownloader = new FileDownloader();
 
       while (this.podcastIndexes.Count == 0)
       {
         var podcastIndex = this.podcastIndexes.Dequeue();
         var podcast = this.feed.Podcasts[podcastIndex];
-        var fileDownloader = new FileDownloader();
-        var filePath = Path.Combine(this.feed.Directory, podcast.FileDetails.FileName);
-        fileDownloader.Download(podcast.URL, filePath, cancelToken, this.ProgressEventHandler);
 
-        // Maybe I should do this?
-        // this.DownloadCompletedEvent?.Invoke(podcast, filePath);
+        this.DownloadStartingEvent?.Invoke(podcast);
+
+        var filePath = Path.Combine(this.feed.Directory, podcast.FileDetails.FileName);
+        fileDownloader.Download(podcast.URL, filePath, cancelToken, this.DownloadProgressEventHandler);
 
         var fileInfo = new FileInfo(filePath);
         if (!fileInfo.Exists)
@@ -75,6 +77,8 @@ namespace PodFul.WPF.Testbed.Processing
         }
 
         podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
+
+        this.DownloadCompletedEvent?.Invoke(podcast);
       }
     }
 

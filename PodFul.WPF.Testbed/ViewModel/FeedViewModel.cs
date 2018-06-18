@@ -212,11 +212,21 @@ namespace PodFul.WPF.Testbed.ViewModel
         podcastIndexes.Reverse();
 
         this.downloadManager = downloadManagerFactory.Create();
-        DownloadManagerViewModel downloadManagerViewModel = new DownloadManagerViewModel(this.downloadManager, this.imageResolver);
-
         this.downloadManager.AddJobs(podcastIndexes, this.feed);
+
+        this.downloadManager.DownloadCompletedEvent += podcast =>
+        {
+          if (this.imageResolver != null)
+          {
+            this.imageResolver.ResolvePodcastImage(podcast);
+          }
+
+          this.feedCollection.UpdateFeedContent(this.feed);
+        };
+
+        DownloadManagerViewModel downloadManagerViewModel = new DownloadManagerViewModel(this.downloadManager, this.imageResolver);
       
-        var jobFinishedCount = 0;
+        /*var jobFinishedCount = 0;
         var lastIndex = podcastIndexes.Count - 1;
         this.downloadManager.JobFinishedEvent = j =>
         {
@@ -228,7 +238,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
           this.feedCollection.UpdateFeedContent(this.feed);
           jobFinishedCount++;
-        };
+        };*/
 
         this.downloadManager.StartWaitingJobs();
 
@@ -251,6 +261,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.cancellationTokenSource = null;
       }
+    }
+
+    private void DownloadManager_DownloadCompletedEvent(Podcast obj)
+    {
+      throw new NotImplementedException();
     }
 
     private void HandleScanCancelled()

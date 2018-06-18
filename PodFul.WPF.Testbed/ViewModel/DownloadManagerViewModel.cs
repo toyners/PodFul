@@ -18,7 +18,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Visibility cancellationVisibility = Visibility.Visible;
     private Int64 downloadedSize;
     private String exceptionMessage;
-    private Boolean fileSizeNotKnown;
+    private Boolean fileSizeKnown;
     private ProcessingStatus lastStatus = ProcessingStatus.Idle;
     private Podcast podcast;
     private Int64 podcastSize;
@@ -30,11 +30,19 @@ namespace PodFul.WPF.Testbed.ViewModel
     private ProcessingStatus status = ProcessingStatus.Waiting;
     private String url;
     private Boolean useMarqueProgressStyle;
+    private INewDownloadManager downloadManager;
+    private IImageResolver imageResolver;
     #endregion
 
     #region Construction
     public DownloadManagerViewModel(INewDownloadManager downloadManager, IImageResolver imageResolver)
     {
+      this.downloadManager = downloadManager;
+      this.downloadManager.DownloadStartingEvent = this.InitialiseDownload;
+      this.downloadManager.DownloadProgressEventHandler = this.DownloadProgressEventHandler;
+      this.downloadManager.DownloadCompletedEvent += this.DownloadCompleted;
+      return;
+
       this.podcast = podcast;
       this.podcastSize = this.podcast.FileDetails.FileSize;
       this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
@@ -201,16 +209,16 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       try
       {
-        this.InitialiseDownload();
+        //this.InitialiseDownload();
 
         var cancelToken = this.cancellationTokenSource.Token;
 
         this.Status = ProcessingStatus.Running;
 
         var fileDownloader = new FileDownloader();
-        fileDownloader.Download(this.url, this.FilePath, cancelToken, this.ProgressEventHandler);
+        fileDownloader.Download(this.url, this.FilePath, cancelToken, this.DownloadProgressEventHandler);
 
-        this.DownloadCompleted();
+        //this.DownloadCompleted();
       }
       catch (OperationCanceledException)
       {
@@ -224,17 +232,17 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public void DownloadCompleted()
+    public void DownloadCompleted(Podcast podcast)
     {
-      var fileInfo = new FileInfo(this.FilePath);
+      /*var fileInfo = new FileInfo(this.FilePath);
       if (!fileInfo.Exists)
       {
         throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
       }
 
       this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
-
-      if (!this.fileSizeNotKnown)
+      */
+      if (this.fileSizeKnown)
       {
         // File size is known so set percentage to 100%
         this.ProgressMajorSize = "100";
@@ -242,27 +250,28 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
 
       this.ProgressValue = 0;
-      this.CancellationVisibility = Visibility.Hidden;
-      this.Status = ProcessingStatus.Completed;
+      //this.CancellationVisibility = Visibility.Hidden;
+      //this.Status = ProcessingStatus.Completed;
     }
 
-    public void InitialiseDownload()
+    public void InitialiseDownload(Podcast podcast)
     {
-      this.cancellationTokenSource = new CancellationTokenSource();
-
+      this.downloadedSize = 0;
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
 
-      if (this.podcastSize > 0)
+      if (podcast.FileDetails.FileSize > 0)
       {
         this.ProgressUnit = "%";
-        this.UseMarqueProgressStyle = this.fileSizeNotKnown = false;
+        this.fileSizeKnown = true;
       }
       else
       {
         this.ProgressUnit = " MB";
-        this.UseMarqueProgressStyle = this.fileSizeNotKnown = true;
+        this.fileSizeKnown = false;
       }
+
+      this.UseMarqueProgressStyle = !this.fileSizeKnown;
     }
 
     private static void GetMajorMinorComponentsOfValue(Double value, out String majorSize, out String minorSize)
@@ -273,7 +282,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       minorSize = size.Substring(decimalPointIndex);
     }
 
-    private void ProgressEventHandler(Int32 bytesWrittenToFile)
+    private void DownloadProgressEventHandler(Int32 bytesWrittenToFile)
     {
       this.downloadedSize += bytesWrittenToFile;
 
@@ -285,23 +294,20 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       String majorSize;
       String minorSize;
-      if (this.fileSizeNotKnown)
+      if (!this.fileSizeKnown)
       {
         var downloadedSizeInMb = this.downloadedSize / 1048576.0;
         GetMajorMinorComponentsOfValue(downloadedSizeInMb, out majorSize, out minorSize);
       }
+      else if (value < 100)
+      {
+        var percentageValue = (Double)this.downloadedSize / this.percentageStepSize;
+        GetMajorMinorComponentsOfValue(percentageValue, out majorSize, out minorSize);
+      }
       else
       {
-        if (value >= 100)
-        {
-          majorSize = "100";
-          minorSize = ".0";
-        }
-        else
-        {
-          var percentageValue = (Double)this.downloadedSize / this.percentageStepSize;
-          GetMajorMinorComponentsOfValue(percentageValue, out majorSize, out minorSize);
-        }
+        majorSize = "100";
+        minorSize = ".0";
       }
 
       Application.Current.Dispatcher.Invoke(() =>
@@ -309,7 +315,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.ProgressMajorSize = majorSize;
         this.ProgressMinorSize = minorSize;
 
-        if (this.fileSizeNotKnown)
+        if (!this.fileSizeKnown)
         {
           return;
         }

@@ -12,8 +12,10 @@ namespace PodFul.WPF.Testbed.Processing
   {
     Action<DownloadManagerViewModel> JobQueuedEvent { get; set; }
     Action<DownloadManagerViewModel> JobFinishedEvent { get; set; }
-    Action<Int32> ProgressEventHandler { get; set; }
-    Action<Podcast, String> DownloadCompletedEvent { get; set; }
+
+    Action<Podcast> DownloadStartingEvent { get; set; }
+    Action<Int32> DownloadProgressEventHandler { get; set; }
+    event Action<Podcast> DownloadCompletedEvent;
 
     void AddJobs(IList<DownloadManagerViewModel> jobViewModels);
     void AddJobs(IList<Int32> podcastIndexes, Feed feed);
