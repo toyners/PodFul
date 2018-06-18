@@ -184,13 +184,13 @@ namespace PodFul.WPF.Testbed.ViewModel
           }
         }
 
-        if (this.imageResolver != null)
+        /*if (this.imageResolver != null)
         {
           foreach (var podcastIndex in podcastIndexes)
           {
             this.imageResolver.ResolvePodcastImage(newFeed.Podcasts[podcastIndex]);
           }
-        }
+        }*/
 
         // Update the feed in storage.
         this.UpdateScanProgressMessage("Saving feed ... ");
