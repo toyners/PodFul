@@ -31,43 +31,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     private INewDownloadManager downloadManager;
     #endregion
 
-    #region Construction
-    public DownloadManagerViewModel()
-    {
-      
-      return;
-
-      this.podcast = podcast;
-      this.podcastSize = this.podcast.FileDetails.FileSize;
-      this.progressMajorSize = this.progressMinorSize = this.progressUnit = String.Empty;
-      this.percentageStepSize = this.podcastSize / 100;
-      this.url = this.podcast.URL;
-
-      var podcastSizeDescription = String.Empty;
-      if (podcastSize <= 0)
-      {
-        podcastSizeDescription = "(unknown)";
-      }
-      else
-      {
-        podcastSizeDescription = Miscellaneous.GetReadableFileSize(podcastSize) + "Mb (" + podcastSize.ToString("#,##0") + " bytes)";
-      }
-
-      // this.Description = "Feed: " + feed.Title + "\r\nSize: " + podcastSizeDescription;
-
-      if (String.IsNullOrEmpty(this.podcast.FileDetails.FileName))
-      {
-        this.exceptionMessage = "No file name given.";
-        this.status = ProcessingStatus.Failed;
-        return;
-      }
-
-      this.exceptionMessage = String.Empty;
-      //this.FilePath = Path.Combine(feed.Directory, this.podcast.FileDetails.FileName);
-      this.status = ProcessingStatus.Waiting;
-    }
-    #endregion
-
     #region Properties
     public CancellationToken CancellationToken { get; private set; }
     public Visibility CancellationVisibility
@@ -75,7 +38,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.cancellationVisibility; }
       set { this.SetField(ref this.cancellationVisibility, value); }
     }
-    public String Title { get { return this.podcast.Title; } }
+    public String Title { get; private set; }
     public String Description { get; private set; }
     public String ExceptionMessage
     {
@@ -264,6 +227,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.percentageStepSize = this.podcastSize / 100;
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
+      this.Title = podcast.Title;
 
       if (podcastSize > 0)
       {
