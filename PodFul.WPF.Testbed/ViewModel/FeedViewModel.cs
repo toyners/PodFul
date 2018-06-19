@@ -37,6 +37,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       this.PodcastNavigation = new PodcastPageNavigation();
       this.PodcastNavigation.SetPages(this.feed.Podcasts);
+      this.DownloadView = new DownloadManagerViewModel();
     }
     #endregion
 
@@ -184,13 +185,13 @@ namespace PodFul.WPF.Testbed.ViewModel
           }
         }
 
-        /*if (this.imageResolver != null)
+        if (this.imageResolver != null)
         {
           foreach (var podcastIndex in podcastIndexes)
           {
             this.imageResolver.ResolvePodcastImage(newFeed.Podcasts[podcastIndex]);
           }
-        }*/
+        }
 
         // Update the feed in storage.
         this.UpdateScanProgressMessage("Saving feed ... ");
@@ -213,34 +214,12 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.downloadManager = downloadManagerFactory.Create();
         this.downloadManager.AddJobs(podcastIndexes, this.feed);
-
         this.downloadManager.DownloadCompletedEvent += podcast =>
         {
-          if (this.imageResolver != null)
-          {
-            this.imageResolver.ResolvePodcastImage(podcast);
-          }
-
           this.feedCollection.UpdateFeedContent(this.feed);
         };
 
-        this.DownloadView = new DownloadManagerViewModel(this.downloadManager, this.imageResolver);
-      
-        /*var jobFinishedCount = 0;
-        var lastIndex = podcastIndexes.Count - 1;
-        this.downloadManager.JobFinishedEvent = j =>
-        {
-          if (this.imageResolver != null)
-          {
-            var podcast = newFeed.Podcasts[podcastIndexes[lastIndex - jobFinishedCount]];
-            this.imageResolver.ResolvePodcastImage(podcast);
-          }
-
-          this.feedCollection.UpdateFeedContent(this.feed);
-          jobFinishedCount++;
-        };*/
-
-        this.downloadManager.DownloadPodcasts();
+        this.DownloadView.StartDownloading(this.downloadManager);
 
         this.PodcastNavigation.Reset();
         this.PodcastNavigation.SetPages(this.feed.Podcasts);

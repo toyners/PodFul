@@ -3,12 +3,10 @@ namespace PodFul.WPF.Testbed.ViewModel
 {
   using System;
   using System.ComponentModel;
-  using System.IO;
   using System.Threading;
   using System.Windows;
   using Jabberwocky.Toolkit.WPF;
   using Library;
-  using PodFul.WPF.Processing;
   using PodFul.WPF.Testbed.Processing;
 
   public class DownloadManagerViewModel : NotifyPropertyChangedBase
@@ -31,16 +29,12 @@ namespace PodFul.WPF.Testbed.ViewModel
     private String url;
     private Boolean useMarqueProgressStyle;
     private INewDownloadManager downloadManager;
-    private IImageResolver imageResolver;
     #endregion
 
     #region Construction
-    public DownloadManagerViewModel(INewDownloadManager downloadManager, IImageResolver imageResolver)
+    public DownloadManagerViewModel()
     {
-      this.downloadManager = downloadManager;
-      this.downloadManager.DownloadStartingEvent = this.InitialiseDownload;
-      this.downloadManager.DownloadProgressEventHandler = this.DownloadProgressEventHandler;
-      this.downloadManager.DownloadCompletedEvent += this.DownloadCompleted;
+      
       return;
 
       this.podcast = podcast;
@@ -205,6 +199,15 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
+    public void StartDownloading(INewDownloadManager downloadManager)
+    {
+      this.downloadManager = downloadManager;
+      this.downloadManager.DownloadStartingEvent = this.InitialiseDownload;
+      this.downloadManager.DownloadProgressEventHandler = this.DownloadProgressEventHandler;
+      this.downloadManager.DownloadCompletedEvent += this.DownloadCompleted;
+      this.downloadManager.DownloadPodcasts();
+    }
+
     public void Download()
     {
       try
@@ -288,26 +291,35 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.downloadedSize += bytesWrittenToFile;
 
-      Int64 value = 100;
-      if (this.downloadedSize < this.podcastSize)
-      {
-        value = this.downloadedSize / this.percentageStepSize;
-      }
-
       String majorSize;
       String minorSize;
       if (!this.fileSizeKnown)
       {
         var downloadedSizeInMb = this.downloadedSize / 1048576.0;
         GetMajorMinorComponentsOfValue(downloadedSizeInMb, out majorSize, out minorSize);
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          this.ProgressMajorSize = majorSize;
+          this.ProgressMinorSize = minorSize;
+        });
+
+        return;
       }
-      else if (value < 100)
+
+      Int64 value = 100;
+      if (this.downloadedSize < this.podcastSize)
+      {
+        value = this.downloadedSize / this.percentageStepSize;
+      }
+      
+      if (value < 100)
       {
         var percentageValue = (Double)this.downloadedSize / this.percentageStepSize;
         GetMajorMinorComponentsOfValue(percentageValue, out majorSize, out minorSize);
       }
       else
-      {
+      { 
         majorSize = "100";
         minorSize = ".0";
       }
@@ -316,12 +328,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.ProgressMajorSize = majorSize;
         this.ProgressMinorSize = minorSize;
-
-        if (!this.fileSizeKnown)
-        {
-          return;
-        }
-
         this.ProgressValue = (Int32)value;
       });
     }

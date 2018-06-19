@@ -392,13 +392,13 @@
 
                   <!-- Dock panel contains jobs list, job page navigation and job cancel controls -->
                   <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="30">
-                    <Grid DataContext="{Binding DownloadView}">
+                    <Grid>
                       <Grid.ToolTip>
                         <Binding Path="Description" />
                       </Grid.ToolTip>
                       <ProgressBar Margin="0" Height="30" 
-                                     Value="{Binding ProgressValue, Mode=OneWay}" 
-                                     IsIndeterminate="{Binding UseMarqueProgressStyle}" />
+                                     Value="{Binding DownloadView.ProgressValue, Mode=OneWay}" 
+                                     IsIndeterminate="{Binding DownloadView.UseMarqueProgressStyle}" />
                       <Grid>
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition Width="8.5*"/>
@@ -431,9 +431,9 @@
                         </Grid>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                          <TextBlock Text="{Binding ProgressMajorSize}" FontSize="20" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding ProgressMinorSize}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
+                          <TextBlock Text="{Binding DownloadView.ProgressMajorSize}" FontSize="20" FontWeight="Bold"/>
+                          <TextBlock Text="{Binding DownloadView.ProgressMinorSize}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
+                          <TextBlock Text="{Binding DownloadView.ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
                         </StackPanel>
                       </Grid>
                     </Grid>
