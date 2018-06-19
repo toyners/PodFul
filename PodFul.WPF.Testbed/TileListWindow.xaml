@@ -370,7 +370,7 @@
                   </TabControl>
                 </Grid>
 
-                <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2">
+                <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2" DataContext="{Binding DownloadView}">
                   <Grid.Style>
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
@@ -397,8 +397,8 @@
                         <Binding Path="Description" />
                       </Grid.ToolTip>
                       <ProgressBar Margin="0" Height="30" 
-                                     Value="{Binding DownloadView.ProgressValue, Mode=OneWay}" 
-                                     IsIndeterminate="{Binding DownloadView.UseMarqueProgressStyle}" />
+                                     Value="{Binding ProgressValue, Mode=OneWay}" 
+                                     IsIndeterminate="{Binding UseMarqueProgressStyle}" />
                       <Grid>
                         <Grid.ColumnDefinitions>
                           <ColumnDefinition Width="8.5*"/>
