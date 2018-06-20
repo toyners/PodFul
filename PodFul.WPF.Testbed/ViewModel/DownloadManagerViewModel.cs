@@ -30,7 +30,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Boolean useMarqueProgressStyle;
     private INewDownloadManager downloadManager;
     private String podcastTitle;
-    private ProcessingStatus state = ProcessingStatus.Idle;
     #endregion
 
     #region Properties
@@ -75,12 +74,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       get { return this.progressUnit; }
       private set { this.SetField(ref this.progressUnit, value); }
-    }
-
-    public ProcessingStatus State
-    {
-      get { return this.state; }
-      set { this.SetField(ref this.state, value); }
     }
 
     public ProcessingStatus Status
@@ -176,13 +169,11 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void StartDownloading(INewDownloadManager downloadManager)
     {
-      this.State = ProcessingStatus.Running;
       this.downloadManager = downloadManager;
       this.downloadManager.DownloadStartingEvent = this.InitialiseDownload;
       this.downloadManager.DownloadProgressEventHandler = this.DownloadProgressEventHandler;
       this.downloadManager.DownloadCompletedEvent += this.DownloadCompleted;
       this.downloadManager.DownloadPodcasts();
-      this.State = ProcessingStatus.Completed;
     }
 
     public void Download()

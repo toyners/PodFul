@@ -370,15 +370,15 @@
                   </TabControl>
                 </Grid>
 
-                <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2" DataContext="{Binding DownloadView}">
+                <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2">
                   <Grid.Style>
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding State}" Value="Running">
+                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding State}" Value="Completed">
+                        <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                       </Style.Triggers>
@@ -392,7 +392,7 @@
 
                   <!-- Dock panel contains download progress controls -->
                   <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="30">
-                    <Grid>
+                    <Grid DataContext="{Binding DownloadView}">
                       <Grid.ToolTip>
                         <Binding Path="Description" />
                       </Grid.ToolTip>
