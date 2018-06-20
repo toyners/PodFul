@@ -52,6 +52,16 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.feedCollection[this.feedIndex] = this.feed;
       }
     }
+    public UInt32 ConfirmDownloadThreshold
+    {
+      get { return this.feed.ConfirmDownloadThreshold; }
+      set
+      {
+        this.feed = Feed.SetConfirmDownloadThreshold(value, this.feed);
+        this.feedCollection.UpdateFeedContent(this.feed);
+        this.feedCollection[this.feedIndex] = this.feed;
+      }
+    }
     public DateTime CreatedDate { get { return this.feed.CreationDateTime; } }
     public Boolean DeliverDownloadsOnScan
     {
