@@ -50,8 +50,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.exceptionMessage; }
       set { this.SetField(ref this.exceptionMessage, value); }
     }
-    public String FilePath { get; private set; }
-    public ProcessingStatus LastStatus { get; private set; }
     public Int32 ProgressValue
     {
       get { return this.progressValue; }
@@ -74,81 +72,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       get { return this.progressUnit; }
       private set { this.SetField(ref this.progressUnit, value); }
-    }
-
-    public ProcessingStatus Status
-    {
-      get { return this.status; }
-      set
-      {
-        this.LastStatus = this.status;
-        this.status = value;
-
-        this.TryInvokePropertyChanged(
-          new PropertyChangedEventArgs("StatusMessage"),
-          new PropertyChangedEventArgs("StatusColor"),
-          new PropertyChangedEventArgs("StatusWeight"));
-
-        switch (this.status)
-        {
-          case ProcessingStatus.Failed:
-          {
-            this.CancellationVisibility = Visibility.Hidden;
-            break;
-          }
-
-          case ProcessingStatus.Cancelled:
-          {
-            this.CancellationVisibility = Visibility.Hidden;
-            this.ExceptionMessage = String.Empty;
-            break;
-          }
-
-          case ProcessingStatus.Waiting:
-          {
-            this.ExceptionMessage = String.Empty;
-            break;
-          }
-        }
-      }
-    }
-
-    public String StatusColor
-    {
-      get
-      {
-        switch (this.status)
-        {
-          case ProcessingStatus.Completed: return "Green";
-          case ProcessingStatus.Cancelled: return "Orange";
-          case ProcessingStatus.Failed: return "Red";
-          case ProcessingStatus.Running: return "Black";
-          default: return "Blue";
-        }
-      }
-    }
-
-    public String StatusMessage
-    {
-      get
-      {
-        switch (this.status)
-        {
-          case ProcessingStatus.Completed: return "Completed";
-          case ProcessingStatus.Cancelled: return "Canceled";
-          case ProcessingStatus.Failed: return "Failed";
-          case ProcessingStatus.Running: return "Running";
-          default: return "Waiting...";
-        }
-      }
-    }
-
-    public FontWeight StatusWeight
-    {
-      get
-      {
-        return (this.status != ProcessingStatus.Waiting ? FontWeights.Bold : FontWeights.Normal);
-      }
     }
 
     public Boolean UseMarqueProgressStyle
@@ -174,33 +97,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.downloadManager.DownloadProgressEventHandler = this.DownloadProgressEventHandler;
       this.downloadManager.DownloadCompletedEvent += this.DownloadCompleted;
       this.downloadManager.DownloadPodcasts();
-    }
-
-    public void Download()
-    {
-      try
-      {
-        //this.InitialiseDownload();
-
-        var cancelToken = this.cancellationTokenSource.Token;
-
-        this.Status = ProcessingStatus.Running;
-
-        var fileDownloader = new FileDownloader();
-        fileDownloader.Download(this.url, this.FilePath, cancelToken, this.DownloadProgressEventHandler);
-
-        //this.DownloadCompleted();
-      }
-      catch (OperationCanceledException)
-      {
-        this.Status = ProcessingStatus.Cancelled;
-        throw;
-      }
-      catch (Exception e)
-      {
-        this.ExceptionMessage = e.Message;
-        this.Status = ProcessingStatus.Failed;
-      }
     }
 
     public void DownloadCompleted(Podcast podcast)

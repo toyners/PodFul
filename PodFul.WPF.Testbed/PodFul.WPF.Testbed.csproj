@@ -109,7 +109,7 @@
     <Compile Include="TileListWindow.xaml.cs">
       <DependentUpon>TileListWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\DownloadJobStatusTypes.cs" />
+    <Compile Include="ViewModel\ProcessingStatus.cs" />
     <Compile Include="ViewModel\JobPageViewModel.cs" />
     <Compile Include="ViewModel\PodcastViewModel.cs" />
     <Compile Include="ViewModel\PodcastPageViewModel.cs" />

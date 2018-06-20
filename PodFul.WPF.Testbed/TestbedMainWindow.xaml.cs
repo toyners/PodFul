@@ -585,7 +585,7 @@ namespace PodFul.WPF.Testbed
         true, true, true,
         new Podcast[0]);
 
-      return new[] { feedA /*, feedB, feedC, feedD, feedE, feedF*/ };
+      return new[] { feedA, feedB /*, feedC, feedD, feedE, feedF*/ };
     }
   }
 }
