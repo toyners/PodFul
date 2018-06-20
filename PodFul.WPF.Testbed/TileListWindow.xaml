@@ -370,15 +370,15 @@
                   </TabControl>
                 </Grid>
 
-                <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2" DataContext="{Binding DownloadView}">
+                <Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2" DataContext="DownloadView">
                   <Grid.Style>
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                        <DataTrigger Binding="{Binding State}" Value="Running">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                        <DataTrigger Binding="{Binding State}" Value="Completed">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                       </Style.Triggers>
@@ -390,7 +390,7 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <!-- Dock panel contains jobs list, job page navigation and job cancel controls -->
+                  <!-- Dock panel contains download progress controls -->
                   <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="30">
                     <Grid>
                       <Grid.ToolTip>
@@ -412,7 +412,7 @@
                             <RowDefinition />
                           </Grid.RowDefinitions>
 
-                          <TextBlock Grid.Row="0" Text="{Binding Title}" Margin="3,0" FontSize="12" 
+                          <TextBlock Grid.Row="0" Text="{Binding PodcastTitle}" Margin="3,0" FontSize="12" 
                                                FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                           <!-- Download status and exception message -->
@@ -431,9 +431,9 @@
                         </Grid>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                          <TextBlock Text="{Binding DownloadView.ProgressMajorSize}" FontSize="20" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding DownloadView.ProgressMinorSize}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding DownloadView.ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
+                          <TextBlock Text="{Binding ProgressMajorSize}" FontSize="20" FontWeight="Bold"/>
+                          <TextBlock Text="{Binding ProgressMinorSize}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
+                          <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
                         </StackPanel>
                       </Grid>
                     </Grid>

@@ -138,6 +138,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.UpdateScanProgressMessage(String.Empty);
       this.FeedScanState = ProcessingStatus.Idle;
+      this.DownloadView.State = ProcessingStatus.Idle;
     }
 
     public void Scan(IDownloadManagerFactory downloadManagerFactory)

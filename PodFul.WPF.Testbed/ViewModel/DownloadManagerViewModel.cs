@@ -29,6 +29,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     private String url;
     private Boolean useMarqueProgressStyle;
     private INewDownloadManager downloadManager;
+    private String podcastTitle;
+    private ProcessingStatus state = ProcessingStatus.Idle;
     #endregion
 
     #region Properties
@@ -38,7 +40,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.cancellationVisibility; }
       set { this.SetField(ref this.cancellationVisibility, value); }
     }
-    public String Title { get; private set; }
+    public String PodcastTitle
+    {
+      get { return this.podcastTitle; }
+      private set { this.SetField(ref this.podcastTitle, value); }
+    }
     public String Description { get; private set; }
     public String ExceptionMessage
     {
@@ -69,6 +75,12 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       get { return this.progressUnit; }
       private set { this.SetField(ref this.progressUnit, value); }
+    }
+
+    public ProcessingStatus State
+    {
+      get { return this.state; }
+      set { this.SetField(ref this.state, value); }
     }
 
     public ProcessingStatus Status
@@ -164,11 +176,13 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void StartDownloading(INewDownloadManager downloadManager)
     {
+      this.State = ProcessingStatus.Running;
       this.downloadManager = downloadManager;
       this.downloadManager.DownloadStartingEvent = this.InitialiseDownload;
       this.downloadManager.DownloadProgressEventHandler = this.DownloadProgressEventHandler;
       this.downloadManager.DownloadCompletedEvent += this.DownloadCompleted;
       this.downloadManager.DownloadPodcasts();
+      this.State = ProcessingStatus.Completed;
     }
 
     public void Download()
@@ -200,14 +214,6 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void DownloadCompleted(Podcast podcast)
     {
-      /*var fileInfo = new FileInfo(this.FilePath);
-      if (!fileInfo.Exists)
-      {
-        throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", this.FilePath));
-      }
-
-      this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
-      */
       if (this.fileSizeKnown)
       {
         // File size is known so set percentage to 100%
@@ -216,8 +222,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
 
       this.ProgressValue = 0;
-      //this.CancellationVisibility = Visibility.Hidden;
-      //this.Status = ProcessingStatus.Completed;
     }
 
     public void InitialiseDownload(Podcast podcast)
@@ -227,9 +231,9 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.percentageStepSize = this.podcastSize / 100;
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
-      this.Title = podcast.Title;
+      this.PodcastTitle = podcast.Title;
 
-      if (podcastSize > 0)
+      if (this.podcastSize > 0)
       {
         this.ProgressUnit = "%";
         this.fileSizeKnown = true;
