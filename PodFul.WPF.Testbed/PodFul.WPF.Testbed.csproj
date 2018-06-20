@@ -102,7 +102,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Processing\DownloadClasses.cs" />
-    <Compile Include="Processing\DownloadJob.cs" />
     <Compile Include="Processing\MockLogger.cs" />
     <Compile Include="Processing\NewDownloadManager.cs" />
     <Compile Include="Processing\NewFeedCollection.cs" />
