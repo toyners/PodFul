@@ -2,7 +2,6 @@
 namespace PodFul.WPF.Testbed.ViewModel
 {
   using System;
-  using System.ComponentModel;
   using System.Threading;
   using System.Windows;
   using Jabberwocky.Toolkit.WPF;
@@ -14,19 +13,17 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Fields
     private CancellationTokenSource cancellationTokenSource;
     private Visibility cancellationVisibility = Visibility.Visible;
+    private String downloadCount;
+    private Int32 downloadNumber;
     private Int64 downloadedSize;
     private String exceptionMessage;
     private Boolean fileSizeKnown;
-    private ProcessingStatus lastStatus = ProcessingStatus.Idle;
-    private Podcast podcast;
     private Int64 podcastSize;
     private Int64 percentageStepSize;
     private String progressMajorSize;
     private String progressMinorSize;
     private String progressUnit;
     private Int32 progressValue;
-    private ProcessingStatus status = ProcessingStatus.Waiting;
-    private String url;
     private Boolean useMarqueProgressStyle;
     private INewDownloadManager downloadManager;
     private String podcastTitle;
@@ -45,6 +42,11 @@ namespace PodFul.WPF.Testbed.ViewModel
       private set { this.SetField(ref this.podcastTitle, value); }
     }
     public String Description { get; private set; }
+    public String DownloadCount
+    {
+      get { return this.downloadCount; }
+      private set { this.SetField(ref this.downloadCount, value); }
+    }
     public String ExceptionMessage
     {
       get { return this.exceptionMessage; }
@@ -114,6 +116,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     public void InitialiseDownload(Podcast podcast)
     {
       this.downloadedSize = 0;
+      this.downloadNumber++;
+      this.DownloadCount = $"[{this.downloadNumber}/{this.downloadManager.Count}]";
       this.podcastSize = podcast.FileDetails.FileSize;
       this.percentageStepSize = this.podcastSize / 100;
       this.ProgressMajorSize = "0";

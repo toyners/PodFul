@@ -9,6 +9,7 @@ namespace PodFul.WPF.Testbed.Processing
 
   public interface INewDownloadManager
   {
+    Int32 Count { get; }
     Action<Podcast> DownloadStartingEvent { get; set; }
     Action<Int32> DownloadProgressEventHandler { get; set; }
     event Action<Podcast> DownloadCompletedEvent;

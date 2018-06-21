@@ -13,6 +13,8 @@ namespace PodFul.WPF.Testbed.Processing
     private Queue<Int32> podcastIndexes;
     private Feed feed;
 
+    public Int32 Count { get; private set; }
+
     public Action<Int32> DownloadProgressEventHandler { get; set; }
     public event Action<Podcast> DownloadCompletedEvent;
     public Action<Podcast> DownloadStartingEvent { get; set; }
@@ -21,6 +23,7 @@ namespace PodFul.WPF.Testbed.Processing
     {
       this.podcastIndexes = new Queue<Int32>(podcastIndexes);
       this.feed = feed;
+      this.Count = podcastIndexes.Count;
     }
 
     public void CancelJobs()
