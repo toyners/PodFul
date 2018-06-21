@@ -179,5 +179,16 @@ namespace PodFul.WPF.Testbed
       podcastProperties.Owner = this;
       podcastProperties.ShowDialog();
     }
+
+    private void FeedScanButtonClick(object sender, RoutedEventArgs e)
+    {
+      var feedViewModel = (sender as Button).DataContext as FeedViewModel;
+
+      var mockLogger = new MockLogger();
+      var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
+      this.scanner = new Scanner();
+      this.scanner.ScanCompletedEvent = this.ScanCompletedEventHandler;
+      this.scanner.ScanFeeds(new[] { feedViewModel }, downloadManagerFactory);
+    }
   }
 }
