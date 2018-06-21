@@ -184,6 +184,7 @@ namespace PodFul.WPF.Testbed
     {
       var feedViewModel = (sender as Button).DataContext as FeedViewModel;
 
+      feedViewModel.InitialiseForScan();
       var mockLogger = new MockLogger();
       var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
       this.scanner = new Scanner();
