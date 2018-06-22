@@ -64,7 +64,7 @@ namespace PodFul.WPF.Testbed
         var mockLogger = new MockLogger();
         var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
         this.scanner = new Scanner();
-        this.scanner.ScanCompletedEvent = this.ScanCompletedEventHandler;
+        this.scanner.ScanCompletedEvent = this.FullScanCompletedEventHandler;
         this.scanner.ScanFeeds(this.feedCollectionViewModel.Feeds, downloadManagerFactory);
       }
       else if (this.scanState == ScanStates.Running)
@@ -85,7 +85,7 @@ namespace PodFul.WPF.Testbed
       }
     }
 
-    private void ScanCompletedEventHandler()
+    private void FullScanCompletedEventHandler()
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
@@ -180,6 +180,7 @@ namespace PodFul.WPF.Testbed
       podcastProperties.ShowDialog();
     }
 
+    private Int32 individualScanCount = 0;
     private void FeedScanButtonClick(object sender, RoutedEventArgs e)
     {
       var feedViewModel = (sender as Button).DataContext as FeedViewModel;
@@ -187,9 +188,23 @@ namespace PodFul.WPF.Testbed
       feedViewModel.InitialiseForScan();
       var mockLogger = new MockLogger();
       var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
-      this.scanner = new Scanner();
-      this.scanner.ScanCompletedEvent = this.ScanCompletedEventHandler;
-      this.scanner.ScanFeeds(new[] { feedViewModel }, downloadManagerFactory);
+      var scanner = new Scanner();
+      scanner.ScanCompletedEvent = () =>
+      {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+          feedViewModel.Reset();
+          this.individualScanCount--;
+          if (this.individualScanCount == 0)
+          {
+            this.CommandButton.IsEnabled = true;
+          }
+        });
+      };
+
+      this.individualScanCount++;
+      this.CommandButton.IsEnabled = false;
+      scanner.ScanFeeds(new[] { feedViewModel }, downloadManagerFactory);
     }
   }
 }
