@@ -17,6 +17,7 @@ namespace PodFul.WPF.Testbed
   {
     private TileListViewModel feedCollectionViewModel;
     private Scanner scanner;
+    private Int32 individualScanCount;
 
     public TileListWindow(TileListViewModel feedCollectionViewModel)
     {
@@ -180,7 +181,6 @@ namespace PodFul.WPF.Testbed
       podcastProperties.ShowDialog();
     }
 
-    private Int32 individualScanCount = 0;
     private void FeedScanButtonClick(object sender, RoutedEventArgs e)
     {
       var feedViewModel = (sender as Button).DataContext as FeedViewModel;
