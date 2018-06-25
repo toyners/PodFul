@@ -45,6 +45,39 @@
         <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
       </Grid>
     </ControlTemplate>
+
+    <ControlTemplate x:Key="toggleButtonExtendedTemplate" TargetType="ToggleButton">
+      <Grid Height="20" Background="Transparent">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="15" />
+          <ColumnDefinition Width="25" />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Path Grid.Column="0" x:Name="ExpandPath" HorizontalAlignment="Left" 
+              VerticalAlignment="Center"  Margin="1,1,1,1" Fill="{StaticResource GlyphBrush}"
+              Data="M 4 0 L 8 4 L 4 8 Z"/>
+
+        <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,2,0" />
+
+        <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" />
+
+      </Grid>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsChecked"
+                 Value="True">
+          <Setter Property="Data"
+                  TargetName="ExpandPath"
+                  Value="M 0 4 L 8 4 L 4 8 Z"/>
+        </Trigger>
+        <Trigger Property="IsEnabled"
+                 Value="False">
+          <Setter Property="Fill"
+                  TargetName="ExpandPath"
+                  Value="{StaticResource DisabledBrush}" />
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
   </Window.Resources>
 
   <DockPanel Margin="5">
