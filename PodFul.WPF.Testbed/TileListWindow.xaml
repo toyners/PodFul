@@ -243,7 +243,7 @@
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition />
                     <ColumnDefinition />
-                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="30"/>
                   </Grid.ColumnDefinitions>
 
                   <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title, Mode=OneWay}" />
@@ -279,7 +279,7 @@
                       </Border>
 
                       <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black">
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
                           <TextBlock Text="{Binding ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
                           <TextBlock Text="{Binding ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
                           <TextBlock Text="{Binding ProgressUnit}" FontSize="10" FontWeight="Bold"/>
@@ -289,7 +289,7 @@
                   </Grid>
 
                     <!-- Cancel button -->
-                  <Button Grid.Column="4" Click="FeedCancelButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center">
+                  <Button Grid.Column="4" Click="FeedCancelButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center" Margin="5,0,0,0">
                     <Image Source="Resources\cancel.png" Width="25" Height="25" Margin="0"/>
                   </Button>
                 </Grid>
