@@ -96,10 +96,7 @@
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Visible"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Waiting">
-                          <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                        <DataTrigger Binding="{Binding ScanRunning}" Value="true">
                           <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                       </Style.Triggers>
@@ -117,11 +114,7 @@
                         <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
                         <Setter Property="IsEnabled" Value="true"/>
                         <Style.Triggers>
-                          <DataTrigger Binding="{Binding FeedScanState}" Value="Waiting">
-                            <Setter Property="IsChecked" Value="False" />
-                            <Setter Property="IsEnabled" Value="False" />
-                          </DataTrigger>
-                          <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                          <DataTrigger Binding="{Binding ScanRunnning}" Value="True">
                             <Setter Property="IsChecked" Value="False" />
                             <Setter Property="IsEnabled" Value="False" />
                           </DataTrigger>
@@ -198,10 +191,7 @@
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
                       <Style.Triggers>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Waiting">
-                          <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                        <DataTrigger Binding="{Binding ScanRunning}" Value="True">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                       </Style.Triggers>
@@ -237,9 +227,9 @@
 
                     <Grid Grid.Row="1" Height="16">
                       <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="50"/>
                         <ColumnDefinition />
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="50"/>
                       </Grid.ColumnDefinitions>
 
                       <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
@@ -280,10 +270,10 @@
                         <DataTrigger Binding="{Binding ElementName=MainToggleButton, Path=IsChecked}" Value="True">
                           <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
+                        <DataTrigger Binding="{Binding ScanRunning}" Value="True">
                           <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                        <DataTrigger Binding="{Binding ScanFinished}" Value="True">
                           <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                       </Style.Triggers>

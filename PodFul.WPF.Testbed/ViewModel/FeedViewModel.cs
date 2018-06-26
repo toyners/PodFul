@@ -117,6 +117,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
     public Int32 PodcastCount { get { return this.feed.Podcasts.Length; } }
     public Boolean ScanFinished { get { return this.FeedScanState == ProcessingStatus.Cancelled || this.FeedScanState == ProcessingStatus.Completed || this.FeedScanState == ProcessingStatus.Failed; } }
+    public Boolean ScanRunning { get { return this.FeedScanState == ProcessingStatus.Waiting || this.FeedScanState == ProcessingStatus.Scanning || this.FeedScanState == ProcessingStatus.Downloading; } }
     public DateTime UpdatedDate { get { return this.feed.UpdatedDateTime; } }
     public String WebsiteURL { get { return this.feed.Website; } }
     #endregion
@@ -154,7 +155,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       try
       {
-        this.FeedScanState = ProcessingStatus.Running;
+        this.FeedScanState = ProcessingStatus.Scanning;
 
         this.UpdateScanProgressMessage("Processing ...");
         
@@ -229,6 +230,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           this.feedCollection.UpdateFeedContent(this.feed);
         };
 
+        this.FeedScanState = ProcessingStatus.Downloading;
         this.DownloadView.StartDownloading(this.downloadManager);
 
         this.PodcastNavigation.Reset();
