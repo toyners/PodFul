@@ -6,6 +6,7 @@ namespace PodFul.WPF.Testbed.Processing
   using Jabberwocky.Toolkit.Object;
   using Logging;
   using PodFul.Library;
+  using PodFul.WPF.Testbed.ViewModel;
 
   public interface INewDownloadManager
   {
@@ -15,6 +16,8 @@ namespace PodFul.WPF.Testbed.Processing
     event Action<Podcast> DownloadCompletedEvent;
 
     void AddJobs(IList<Int32> podcastIndexes, Feed feed);
+
+    void DownloadPodcast(PodcastViewModel podcastViewModel);
 
     void CancelJobs();
 

@@ -170,7 +170,12 @@ namespace PodFul.WPF.Testbed
 
     private void DownloadPodcastClick(Object sender, RoutedEventArgs e)
     {
-      throw new NotImplementedException();
+      var mockLogger = new MockLogger();
+      var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
+
+      var downloadManager = downloadManagerFactory.Create();
+
+      downloadManager.DownloadPodcast((PodcastViewModel)((Button)sender).DataContext);
     }
 
     private void PodcastInfoClick(Object sender, RoutedEventArgs e)

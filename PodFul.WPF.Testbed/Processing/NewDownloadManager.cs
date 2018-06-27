@@ -6,6 +6,7 @@ namespace PodFul.WPF.Testbed.Processing
   using System.IO;
   using System.Threading;
   using PodFul.Library;
+  using PodFul.WPF.Testbed.ViewModel;
 
   public class NewDownloadManager : INewDownloadManager
   {
@@ -60,6 +61,11 @@ namespace PodFul.WPF.Testbed.Processing
 
         this.DownloadCompletedEvent?.Invoke(podcast);
       }
+    }
+
+    public void DownloadPodcast(PodcastViewModel podcastViewModel)
+    {
+      throw new NotImplementedException();
     }
   }
 }
