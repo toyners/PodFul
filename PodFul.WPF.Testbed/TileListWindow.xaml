@@ -114,7 +114,7 @@
                         <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
                         <Setter Property="IsEnabled" Value="true"/>
                         <Style.Triggers>
-                          <DataTrigger Binding="{Binding ScanRunnning}" Value="True">
+                          <DataTrigger Binding="{Binding ScanRunning}" Value="True">
                             <Setter Property="IsChecked" Value="False" />
                             <Setter Property="IsEnabled" Value="False" />
                           </DataTrigger>
@@ -211,19 +211,14 @@
                   <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" />
 
                   <Grid Grid.Column="3" DataContext="{Binding DownloadView}">
-
-                      <!--<Grid.ToolTip>
-                        <Binding Path="Description" />
-                      </Grid.ToolTip>-->
-
                     <Grid.RowDefinitions>
                       <RowDefinition Height="4"/>
                       <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <ProgressBar Grid.Row="0" Margin="0" Height="4" 
-                                     Value="{Binding ProgressValue, Mode=OneWay}" 
-                                     IsIndeterminate="{Binding UseMarqueProgressStyle}" />
+                                 Value="{Binding ProgressValue, Mode=OneWay}" 
+                                 IsIndeterminate="{Binding UseMarqueProgressStyle}" />
 
                     <Grid Grid.Row="1" Height="16">
                       <Grid.ColumnDefinitions>

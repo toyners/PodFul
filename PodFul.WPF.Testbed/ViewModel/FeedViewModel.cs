@@ -113,6 +113,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.SetField(ref this.scanState, value, "FeedScanState");
         this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanFinished"));
+        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("ScanRunning"));
       }
     }
     public Int32 PodcastCount { get { return this.feed.Podcasts.Length; } }
