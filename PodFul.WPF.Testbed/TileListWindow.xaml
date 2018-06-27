@@ -12,10 +12,10 @@
     <SolidColorBrush x:Key="GlyphBrush" Color="Black" />
     <SolidColorBrush x:Key="DisabledBrush" Color="LightGray" />
     <ControlTemplate x:Key="toggleButtonTemplate" TargetType="ToggleButton">
-      <Grid Height="20" Background="Transparent">
+      <Grid Height="25" Background="Transparent">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="15" />
-          <ColumnDefinition Width="25" />
+          <ColumnDefinition Width="23" />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
@@ -23,9 +23,9 @@
               VerticalAlignment="Center"  Margin="1,1,1,1" Fill="{StaticResource GlyphBrush}"
               Data="M 4 0 L 8 4 L 4 8 Z"/>
 
-        <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,2,0" Width="25" Height="25" />
+        <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,3,0" Width="25" Height="25"/>
 
-        <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" />
+        <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" VerticalAlignment="Center"/>
 
       </Grid>
       <ControlTemplate.Triggers>
@@ -200,15 +200,15 @@
 
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15" />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="28" />
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition Width="30"/>
                   </Grid.ColumnDefinitions>
 
-                  <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,2,0" Width="25" Height="25" />
+                  <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,3,0" Width="25" Height="25" />
 
-                  <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" />
+                  <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" VerticalAlignment="Center"/>
 
                   <Grid Grid.Column="3">
                     <Grid.Style>
