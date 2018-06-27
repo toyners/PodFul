@@ -210,17 +210,28 @@
 
                   <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" />
 
-                  <Grid Grid.Column="3" DataContext="{Binding DownloadView}">
+                  <Grid Grid.Column="3">
+                    <Grid.Style>
+                      <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Downloading">
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Grid.Style>
+                    
                     <Grid.RowDefinitions>
                       <RowDefinition Height="4"/>
                       <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <ProgressBar Grid.Row="0" Margin="0" Height="4" 
+                    <ProgressBar Grid.Row="0" Margin="0" Height="4" DataContext="{Binding DownloadView}" 
                                  Value="{Binding ProgressValue, Mode=OneWay}" 
                                  IsIndeterminate="{Binding UseMarqueProgressStyle}" />
 
-                    <Grid Grid.Row="1" Height="16">
+                    <Grid Grid.Row="1" Height="16" DataContext="{Binding DownloadView}">
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"/>
                         <ColumnDefinition />
