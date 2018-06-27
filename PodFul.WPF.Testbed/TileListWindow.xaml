@@ -47,7 +47,7 @@
 
   <DockPanel Margin="5">
 
-    <!-- Feed and Scan action bar -->
+    <!-- Feed and scan action bar -->
     <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
       <Grid>
         <Grid.ColumnDefinitions>
@@ -420,104 +420,6 @@
                     </TabItem>
                   </TabControl>
                 </Grid>
-
-                <!--<Grid Name="FeedScanPanel" Grid.Row="1" Margin="0,2">
-                  <Grid.Style>
-                    <Style TargetType="Grid">
-                      <Setter Property="Visibility" Value="Collapsed"/>
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Running">
-                          <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
-                          <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                      </Style.Triggers>
-                    </Style>
-                  </Grid.Style>
-
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25" />
-                    <ColumnDefinition />
-                  </Grid.ColumnDefinitions>
-
-                  Dock panel contains download progress controls
-                  <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="30">
-                    <Grid DataContext="{Binding DownloadView}">
-
-                      <Grid.ToolTip>
-                        <Binding Path="Description" />
-                      </Grid.ToolTip>
-                      
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                      </Grid.ColumnDefinitions>
-
-                      <TextBlock Grid.Column="0" Text="{Binding DownloadCount}" FontSize="20" FontWeight="Bold"/>
-
-                      <Grid Grid.Column="1">
-
-                        <Grid.RowDefinitions>
-                          <RowDefinition />
-                          <RowDefinition />
-                        </Grid.RowDefinitions>
-
-                        <ProgressBar Grid.Row="0" Margin="0" Height="20" 
-                                     Value="{Binding ProgressValue, Mode=OneWay}" 
-                                     IsIndeterminate="{Binding UseMarqueProgressStyle}" />
-
-                        <TextBlock Grid.Row="1" Height="10" Text="{Binding PodcastTitle}" />
-                        
-                      </Grid>
-
-                      <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <TextBlock Text="{Binding ProgressMajorSize}" FontSize="20" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding ProgressMinorSize}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
-                      </StackPanel>
-
-                      <ProgressBar Margin="0" Height="30" 
-                                     Value="{Binding ProgressValue, Mode=OneWay}" 
-                                     IsIndeterminate="{Binding UseMarqueProgressStyle}" />
-                      <Grid>
-                        <Grid.ColumnDefinitions>
-                          <ColumnDefinition Width="8.5*"/>
-                          <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        Download data overlay containing title, status and progress value 
-                        <Grid Grid.Column="0">
-                          <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                          </Grid.RowDefinitions>
-
-                          <TextBlock Grid.Row="0" Text="{Binding PodcastTitle}" Margin="3,0" FontSize="12" 
-                                               FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
-
-                          Download status and exception message
-                          <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                              <ColumnDefinition Width="*"/>
-                              <ColumnDefinition Width="7*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="1"  Text="{Binding ExceptionMessage}" FontSize="10" 
-                                                 TextTrimming="CharacterEllipsis" TextWrapping="Wrap" VerticalAlignment="Center" 
-                                                 HorizontalAlignment="Left" />
-                          </Grid>
-                        </Grid>
-
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                          <TextBlock Text="{Binding ProgressMajorSize}" FontSize="20" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding ProgressMinorSize}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding ProgressUnit}" FontSize="14" Margin="0,6.5,0,0" FontWeight="Bold"/>
-                        </StackPanel>
-                      </Grid>
-                    </Grid>
-                  </Border>
-                </Grid>-->
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
