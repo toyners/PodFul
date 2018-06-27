@@ -15,7 +15,7 @@
       <Grid Height="25" Background="Transparent">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="15" />
-          <ColumnDefinition Width="23" />
+          <ColumnDefinition Width="28" />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
