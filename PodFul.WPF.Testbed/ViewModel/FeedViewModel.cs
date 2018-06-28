@@ -35,7 +35,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.feed = this.feedCollection[this.feedIndex];
       this.imageResolver = imageResolver;
 
-      this.PodcastNavigation = new PodcastPageNavigation();
+      this.PodcastNavigation = new PodcastPageNavigation(this);
       this.PodcastNavigation.SetPages(this.feed.Podcasts);
       this.DownloadView = new DownloadManagerViewModel();
     }

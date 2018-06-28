@@ -6,9 +6,11 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class PodcastViewModel
   {
+    private FeedViewModel feedViewModel;
     private Podcast podcast;
-    public PodcastViewModel(Podcast podcast)
+    public PodcastViewModel(FeedViewModel feedViewModel, Podcast podcast)
     {
+      this.feedViewModel = feedViewModel;
       this.podcast = podcast;
     }
 
