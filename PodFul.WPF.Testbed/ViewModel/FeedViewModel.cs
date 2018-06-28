@@ -19,7 +19,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Fields
     private static PropertyChangedEventArgs FeedScanProgressMessageArgs = new PropertyChangedEventArgs("FeedScanProgressMessage");
     private CancellationTokenSource cancellationTokenSource = null;
-    private Processing.INewDownloadManager downloadManager;
+    private INewDownloadManager downloadManager;
     private Feed feed;
     private readonly IFeedCollection feedCollection;
     private readonly Int32 feedIndex;

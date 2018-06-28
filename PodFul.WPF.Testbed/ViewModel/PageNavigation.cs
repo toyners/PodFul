@@ -10,10 +10,9 @@ namespace PodFul.WPF.Testbed.ViewModel
   public abstract class PageNavigation<T, U> : NotifyPropertyChangedBase, IPageNavigation where T : class where U : class
   {
     private Int32 pageNumber;
-    private T currentPage;
     private ObservableCollection<T> pages = new ObservableCollection<T>();
-    
-    public T CurrentPage { get { return this.currentPage; } }
+
+    public T CurrentPage { get; private set; }
 
     public Int32 TotalPages { get { return this.pages.Count; } }
 
@@ -37,7 +36,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         }
 
         this.pageNumber = value;
-        this.currentPage = this.pages[this.pageNumber - 1];
+        this.CurrentPage = this.pages[this.pageNumber - 1];
         this.TryInvokePropertyChanged(new[]
         {
            new PropertyChangedEventArgs("CurrentPage"),
@@ -71,7 +70,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public virtual void Reset()
     {
       this.pages.Clear();
-      this.currentPage = null;
+      this.CurrentPage = null;
       this.pageNumber = 0;
     }
 
@@ -91,7 +90,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       if (this.pages.Count > 0)
       {
-        this.currentPage = this.pages[0];
+        this.CurrentPage = this.pages[0];
         this.PageNumber = 1;
       }
 
