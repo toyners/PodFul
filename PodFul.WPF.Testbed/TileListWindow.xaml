@@ -127,7 +127,7 @@
                   </ToggleButton>
                   
                   <!-- Scan button -->
-                  <Button Grid.Column="1" Click="FeedScanButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center">
+                  <Button Grid.Column="1" Click="FeedScanButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center" Background="Transparent">
                     <Button.Style>
                       <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -139,11 +139,11 @@
                       </Style>
                     </Button.Style>
 
-                    <Image Source="Resources\cancel.png" Width="25" Height="25" Margin="0"/>
+                    <Image Source="Resources\download.png" Width="25" Height="25" Margin="0" />
                   </Button>
                   
                   <!-- Failed message -->
-                  <Button Grid.Column="1" Content="F" >
+                  <Button Grid.Column="1" BorderThickness="0" Background="Transparent">
                     <Button.Style>
                       <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -154,10 +154,12 @@
                         </Style.Triggers>
                       </Style>
                     </Button.Style>
+
+                    <Image Source="Resources\caution-red.png" Width="25" Height="25"/>
                   </Button>
 
                   <!-- Cancelled image -->
-                  <Image Grid.Column="1">
+                  <Image Grid.Column="1" Source="Resources\caution-yellow.png" Width="25" Height="25">
                     <Image.Style>
                       <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Hidden"/>
