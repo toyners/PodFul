@@ -90,7 +90,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Feed title bar -->
-                <Grid Name="FeedTitleBar" Grid.Row="0">
+                <Grid Name="FeedTitleBar" Grid.Row="0" Height="27">
 
                   <Grid.Style>
                     <Style TargetType="Grid">
@@ -139,7 +139,7 @@
                       </Style>
                     </Button.Style>
 
-                    <Image Source="Resources\download.png" Width="25" Height="25" Margin="0" />
+                    <Image Source="Resources\download-wip.png" Width="25" Height="25" Margin="0" />
                   </Button>
                   
                   <!-- Failed message -->
@@ -188,7 +188,7 @@
                 </Grid>
 
                 <!-- Feed scanning bar -->
-                <Grid Name="FeedScanBar" Grid.Row="0" Height="25">
+                <Grid Name="FeedScanBar" Grid.Row="0" Height="27">
                   <Grid.Style>
                     <Style TargetType="Grid">
                       <Setter Property="Visibility" Value="Collapsed"/>
