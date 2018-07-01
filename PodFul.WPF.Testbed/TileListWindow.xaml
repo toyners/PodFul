@@ -139,7 +139,7 @@
                       </Style>
                     </Button.Style>
 
-                    <Image Source="Resources\download-wip.png" Width="25" Height="25" Margin="0" />
+                    <Image Source="Resources\download.png" Width="25" Height="25" Margin="0" />
                   </Button>
                   
                   <!-- Failed message -->
@@ -155,11 +155,11 @@
                       </Style>
                     </Button.Style>
 
-                    <Image Source="Resources\caution-red.png" Width="25" Height="25"/>
+                    <Image Source="Resources\failed.png" Width="25" Height="25"/>
                   </Button>
 
                   <!-- Cancelled image -->
-                  <Image Grid.Column="1" Source="Resources\caution-yellow.png" Width="25" Height="25">
+                  <Image Grid.Column="1" Source="Resources\cancelled.png" Width="25" Height="25">
                     <Image.Style>
                       <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Hidden"/>

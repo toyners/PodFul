@@ -225,10 +225,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\cancel.png" />
-    <Resource Include="Resources\caution-red.png" />
-    <Resource Include="Resources\caution-yellow.png" />
     <Resource Include="Resources\download.png" />
-    <Resource Include="Resources\download-wip.png" />
+    <Resource Include="Resources\cancelled.png" />
+    <Resource Include="Resources\failed.png" />
+    <Resource Include="Resources\succeeded.png" />
     <Content Include="Test Resources\Podcast1.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
