@@ -226,7 +226,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.downloadManager = downloadManagerFactory.Create();
         this.downloadManager.AddJobs(podcastIndexes, this.feed);
-        this.downloadManager.DownloadCompletedEvent += podcast =>
+        this.downloadManager.DownloadCompletedEvent += () =>
         {
           this.feedCollection.UpdateFeedContent(this.feed);
         };

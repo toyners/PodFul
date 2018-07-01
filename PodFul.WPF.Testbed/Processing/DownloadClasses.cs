@@ -11,17 +11,17 @@ namespace PodFul.WPF.Testbed.Processing
   public interface INewDownloadManager
   {
     Int32 Count { get; }
-    Action<Podcast> DownloadStartingEvent { get; set; }
+    Action<PodcastViewModel> DownloadStartingEvent { get; set; }
     Action<Int32> DownloadProgressEventHandler { get; set; }
-    event Action<Podcast> DownloadCompletedEvent;
+    event Action DownloadCompletedEvent;
 
     void AddJobs(IList<Int32> podcastIndexes, Feed feed);
-
-    void DownloadPodcast(PodcastViewModel podcastViewModel);
+    void AddJobs(IList<PodcastViewModel> podcastViewModels);
 
     void CancelJobs();
 
-    void DownloadPodcasts();
+    void CompleteJobs();
+    void DownloadPodcast(PodcastViewModel podcastViewModel);
   }
 
   public interface IDownloadManagerFactory

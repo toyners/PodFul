@@ -5,7 +5,6 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Threading;
   using System.Windows;
   using Jabberwocky.Toolkit.WPF;
-  using Library;
   using PodFul.WPF.Testbed.Processing;
 
   public class DownloadManagerViewModel : NotifyPropertyChangedBase
@@ -98,10 +97,10 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.downloadManager.DownloadStartingEvent = this.InitialiseDownload;
       this.downloadManager.DownloadProgressEventHandler = this.DownloadProgressEventHandler;
       this.downloadManager.DownloadCompletedEvent += this.DownloadCompleted;
-      this.downloadManager.DownloadPodcasts();
+      this.downloadManager.CompleteJobs();
     }
 
-    public void DownloadCompleted(Podcast podcast)
+    public void DownloadCompleted()
     {
       if (this.fileSizeKnown)
       {
@@ -113,16 +112,16 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.ProgressValue = 0;
     }
 
-    public void InitialiseDownload(Podcast podcast)
+    public void InitialiseDownload(PodcastViewModel podcastViewModel)
     {
       this.downloadedSize = 0;
       this.downloadNumber++;
       this.DownloadCount = $"[{this.downloadNumber}/{this.downloadManager.Count}]";
-      this.podcastSize = podcast.FileDetails.FileSize;
+      this.podcastSize = podcastViewModel.FileSize;
       this.percentageStepSize = this.podcastSize / 100;
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
-      this.PodcastTitle = podcast.Title;
+      this.PodcastTitle = podcastViewModel.Title;
 
       if (this.podcastSize > 0)
       {

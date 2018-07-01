@@ -3,7 +3,6 @@ namespace PodFul.WPF.Testbed.Processing
 {
   using System;
   using System.Collections.Generic;
-  using System.IO;
   using System.Threading;
   using PodFul.Library;
   using PodFul.WPF.Testbed.ViewModel;
@@ -17,14 +16,21 @@ namespace PodFul.WPF.Testbed.Processing
     public Int32 Count { get; private set; }
 
     public Action<Int32> DownloadProgressEventHandler { get; set; }
-    public event Action<Podcast> DownloadCompletedEvent;
-    public Action<Podcast> DownloadStartingEvent { get; set; }
+    public event Action DownloadCompletedEvent;
+    public Action<PodcastViewModel> DownloadStartingEvent { get; set; }
 
     public void AddJobs(IList<Int32> podcastIndexes, Feed feed)
     {
       this.podcastIndexes = new Queue<Int32>(podcastIndexes);
       this.feed = feed;
       this.Count = podcastIndexes.Count;
+    }
+
+    IList<PodcastViewModel> podcastViewModels;
+    public void AddJobs(IList<PodcastViewModel> podcastViewModels)
+    {
+      this.podcastViewModels = new List<PodcastViewModel>(podcastViewModels);
+      this.Count = this.podcastViewModels.Count;
     }
 
     public void CancelJobs()
@@ -35,37 +41,29 @@ namespace PodFul.WPF.Testbed.Processing
       }
     }
 
-    public void DownloadPodcasts()
+    public void CompleteJobs()
     {
       this.cancellationTokenSource = new CancellationTokenSource();
       var cancelToken = this.cancellationTokenSource.Token;
       var fileDownloader = new FileDownloader();
 
-      while (this.podcastIndexes.Count > 0)
+      foreach (var podcastViewModel in this.podcastViewModels)
       {
-        var podcastIndex = this.podcastIndexes.Dequeue();
-        var podcast = this.feed.Podcasts[podcastIndex];
-
-        this.DownloadStartingEvent?.Invoke(podcast);
-
-        var filePath = Path.Combine(this.feed.Directory, podcast.FileDetails.FileName);
-        fileDownloader.Download(podcast.URL, filePath, cancelToken, this.DownloadProgressEventHandler);
-
-        var fileInfo = new FileInfo(filePath);
-        if (!fileInfo.Exists)
-        {
-          throw new FileNotFoundException(String.Format("Podcast file '{0}' is missing.", filePath));
-        }
-
-        podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
-
-        this.DownloadCompletedEvent?.Invoke(podcast);
+        this.DownloadStartingEvent?.Invoke(podcastViewModel);
+        podcastViewModel.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+        this.DownloadCompletedEvent?.Invoke();
       }
     }
 
     public void DownloadPodcast(PodcastViewModel podcastViewModel)
     {
-      throw new NotImplementedException();
+      this.cancellationTokenSource = new CancellationTokenSource();
+      var cancelToken = this.cancellationTokenSource.Token;
+      var fileDownloader = new FileDownloader();
+
+      this.DownloadStartingEvent?.Invoke(podcastViewModel);
+      podcastViewModel.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+      this.DownloadCompletedEvent?.Invoke();
     }
   }
 }
