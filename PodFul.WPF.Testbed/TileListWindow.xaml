@@ -319,7 +319,7 @@
 
                         <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
                           <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type viewmodel:PodcastViewModel}">
+                            <DataTemplate>
                               <Grid Margin="0,2">
                                 <Grid.ColumnDefinitions>
                                   <ColumnDefinition />
