@@ -222,10 +222,16 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
 
-        podcastIndexes.Reverse();
+        // Create the podcastViewModel list; reverse it has it is created.
+        var podcastViewModels = new PodcastViewModel[podcastIndexes.Count];
+        var pindex = 0;
+        for (var index = podcastIndexes.Count - 1; index >= 0; index--)
+        {
+          podcastViewModels[pindex++] = new PodcastViewModel(this, this.feed.Podcasts[podcastIndexes[index]]);
+        }
 
         this.downloadManager = downloadManagerFactory.Create();
-        this.downloadManager.AddJobs(podcastIndexes, this.feed);
+        this.downloadManager.AddJobs(podcastViewModels);
         this.downloadManager.DownloadCompletedEvent += () =>
         {
           this.feedCollection.UpdateFeedContent(this.feed);

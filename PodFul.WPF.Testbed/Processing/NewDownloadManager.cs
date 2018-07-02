@@ -10,8 +10,7 @@ namespace PodFul.WPF.Testbed.Processing
   public class NewDownloadManager : INewDownloadManager
   {
     private CancellationTokenSource cancellationTokenSource;
-    private Queue<Int32> podcastIndexes;
-    private Feed feed;
+    private IList<PodcastViewModel> podcastViewModels;
 
     public Int32 Count { get; private set; }
 
@@ -19,14 +18,6 @@ namespace PodFul.WPF.Testbed.Processing
     public event Action DownloadCompletedEvent;
     public Action<PodcastViewModel> DownloadStartingEvent { get; set; }
 
-    public void AddJobs(IList<Int32> podcastIndexes, Feed feed)
-    {
-      this.podcastIndexes = new Queue<Int32>(podcastIndexes);
-      this.feed = feed;
-      this.Count = podcastIndexes.Count;
-    }
-
-    IList<PodcastViewModel> podcastViewModels;
     public void AddJobs(IList<PodcastViewModel> podcastViewModels)
     {
       this.podcastViewModels = new List<PodcastViewModel>(podcastViewModels);
