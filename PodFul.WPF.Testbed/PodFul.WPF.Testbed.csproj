@@ -229,6 +229,9 @@
     <Resource Include="Resources\cancelled.png" />
     <Resource Include="Resources\failed.png" />
     <Resource Include="Resources\succeeded.png" />
+    <None Include="Resources\question-mark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Test Resources\Podcast1.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

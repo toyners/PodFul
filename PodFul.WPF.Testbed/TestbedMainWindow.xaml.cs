@@ -534,7 +534,7 @@ namespace PodFul.WPF.Testbed
       var feedEURL = "Invalid URL.rss";
       var feedFURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Missing File.rss";
 
-      var feedImageFilePath = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\question-mark.jpg";
+      var feedImageFilePath = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\question-mark.png";
 
       var podcastsA = new[]
       {
