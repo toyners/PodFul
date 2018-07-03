@@ -36,7 +36,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.imageResolver = imageResolver;
 
       this.PodcastNavigation = new PodcastPageNavigation(this);
-      this.PodcastNavigation.SetPages(this.feed.Podcasts);
+      this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
       this.DownloadView = new DownloadManagerViewModel();
     }
     #endregion
@@ -241,7 +241,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.DownloadView.StartDownloading(this.downloadManager);
 
         this.PodcastNavigation.Reset();
-        this.PodcastNavigation.SetPages(this.feed.Podcasts);
+        this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
         
         this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " downloaded");
 

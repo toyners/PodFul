@@ -293,8 +293,8 @@
                     <ColumnDefinition />
                   </Grid.ColumnDefinitions>
 
-                  <!-- Tab control with three panels: Feed description, Podcast list and feed settings  -->
-                  <TabControl Grid.Column="1" Height="115">
+                  <!-- Tab control with three panels: Podcast list, feed settings and feed details -->
+                  <TabControl Grid.Column="1" Height="158">
 
                     <TabItem Header="Podcasts" >
 
@@ -317,7 +317,8 @@
                                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Oldest" />
                         </StackPanel>
 
-                        <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
+                        <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" 
+                                 ItemsSource="{Binding Podcasts}" HorizontalContentAlignment="Stretch">
                           <ListBox.ItemTemplate>
                             <DataTemplate>
                               <Grid Margin="0,2">
@@ -327,17 +328,15 @@
                                   <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Column="0">
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                   <TextBlock Text="{Binding Title}" />
                                 </StackPanel>
 
-                                <!--<Button Grid.Column="1" Margin="0,0,1,0" Click="PodcastInfoClick">Info</Button>-->
                                 <Button Grid.Column="1" Click="PodcastInfoClick" Padding="0" BorderThickness="0" 
                                         VerticalAlignment="Center" Margin="0" Background="Transparent">
                                   <Image Source="Resources\succeeded.png" Width="25" Height="25" Margin="0"/>
                                 </Button>
 
-                                <!--<Button Grid.Column="2" Margin="1,0,0,0" Click="DownloadPodcastClick">Download</Button>-->
                                 <Button Grid.Column="2" Click="DownloadPodcastClick" Padding="0" BorderThickness="0" 
                                         VerticalAlignment="Center" Margin="0" Background="Transparent">
                                   <Image Source="Resources\download.png" Width="25" Height="25" Margin="0"/>
