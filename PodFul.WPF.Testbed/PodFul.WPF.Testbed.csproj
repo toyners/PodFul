@@ -232,6 +232,7 @@
     <None Include="Resources\question-mark.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Resource Include="Resources\information.png" />
     <Content Include="Test Resources\Podcast1.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
