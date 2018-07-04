@@ -9,13 +9,13 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     public PodcastPageViewModel(FeedViewModel feedViewModel, IList<Podcast> podcasts, Int32 firstPodcastIndex, Int32 lastPodcastIndex)
     {
-      this.Podcasts = new List<PodcastViewModel>(lastPodcastIndex - firstPodcastIndex + 1);
+      this.PodcastViewModels = new List<PodcastViewModel>(lastPodcastIndex - firstPodcastIndex + 1);
       while (firstPodcastIndex <= lastPodcastIndex)
       {
-        this.Podcasts.Add(new PodcastViewModel(feedViewModel, podcasts[firstPodcastIndex++]));
+        this.PodcastViewModels.Add(new PodcastViewModel(feedViewModel, podcasts[firstPodcastIndex++]));
       }
     }
 
-    public List<PodcastViewModel> Podcasts { get; private set; }
+    public List<PodcastViewModel> PodcastViewModels { get; private set; }
   }
 }
