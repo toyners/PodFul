@@ -7,14 +7,20 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class PodcastViewModel
   {
+    #region Fields
     private FeedViewModel feedViewModel;
     private Podcast podcast;
+    #endregion
+
+    #region Construction
     public PodcastViewModel(FeedViewModel feedViewModel, Podcast podcast)
     {
       this.feedViewModel = feedViewModel;
       this.podcast = podcast;
     }
+    #endregion
 
+    #region Properties
     public String Description { get { return this.podcast.Description; } }
     public DateTime DownloadDate { get { return this.podcast.FileDetails.DownloadDate; } }
     public String FilePath { get { return this.podcast.FileDetails.FileName; } }
@@ -23,7 +29,9 @@ namespace PodFul.WPF.Testbed.ViewModel
     public DateTime PublishedDate { get { return this.podcast.PubDate; } }
     public String Title { get { return this.podcast.Title; } }
     public String URL { get { return this.podcast.URL; } }
+    #endregion
 
+    #region Methods
     public void Download(FileDownloader fileDownloader, System.Threading.CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler)
     {
       var filePath = Path.Combine(this.feedViewModel.FeedDirectoryPath, this.podcast.FileDetails.FileName);
@@ -37,5 +45,6 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
     }
+    #endregion
   }
 }
