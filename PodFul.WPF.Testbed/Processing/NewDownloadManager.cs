@@ -53,7 +53,7 @@ namespace PodFul.WPF.Testbed.Processing
       var fileDownloader = new FileDownloader();
 
       this.DownloadStartingEvent?.Invoke(podcastViewModel);
-      podcastViewModel.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+      podcastViewModel.Download(fileDownloader, cancelToken);
       this.DownloadCompletedEvent?.Invoke();
     }
   }

@@ -69,12 +69,17 @@ namespace PodFul.WPF.Testbed.ViewModel
     #endregion
 
     #region Methods
-    public void Download(FileDownloader fileDownloader, CancellationToken cancelToken)
+    public void Download(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler = null)
     {
       this.Initialise();
 
+      if (downloadProgressEventHandler == null)
+      {
+        downloadProgressEventHandler = this.DownloadProgressEventHandler;
+      }
+
       var filePath = Path.Combine(this.feedViewModel.FeedDirectoryPath, this.podcast.FileDetails.FileName);
-      fileDownloader.Download(this.podcast.URL, filePath, cancelToken, this.DownloadProgressEventHandler);
+      fileDownloader.Download(this.podcast.URL, filePath, cancelToken, downloadProgressEventHandler);
 
       var fileInfo = new FileInfo(filePath);
       if (!fileInfo.Exists)

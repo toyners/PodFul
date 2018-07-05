@@ -525,7 +525,7 @@ namespace PodFul.WPF.Testbed
       var testDirectoryPath = Path.Combine(outputDirectory, testDirectoryName);
       DirectoryOperations.EnsureDirectoryIsEmpty(testDirectoryPath);
 
-      var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Podcast1.mp3";
+      var originalFileURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Podcast2.mp3";
 
       var feedAURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Feed A (1 new podcast).rss";
       var feedBURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Feed B (4 new podcasts).rss";
