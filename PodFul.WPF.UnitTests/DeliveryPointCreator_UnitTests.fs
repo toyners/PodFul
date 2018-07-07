@@ -1,8 +1,6 @@
 ﻿namespace PodFul.WPF.UnitTests
 
-open System
 open System.Collections.Generic
-open FsUnit
 open NUnit.Framework
 open PodFul.WPF.Logging
 
@@ -15,8 +13,8 @@ type DeliveryPointCreator_UnitTests() =
     member public this.``Delivery Point data list is null so no delivery points are created.``() =
         let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(null, new FileDeliveryLogger(), new FileDeliveryLogger())
         
-        instances |> should not' (equal null)
-        instances.Length |> should equal 0
+        Assert.AreNotEqual(null, instances)
+        Assert.AreEqual(0, instances.Length)
 
     [<Test>]
     member public this.``Delivery Point data list is empty so no delivery points are created.``() =
@@ -24,8 +22,8 @@ type DeliveryPointCreator_UnitTests() =
         let deliveryPointData = new List<PodFul.WPF.Miscellaneous.Settings.SettingsData.DeliveryPointData>()
         let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new FileDeliveryLogger(), new FileDeliveryLogger())
         
-        instances |> should not' (equal null)
-        instances.Length |> should equal 0
+        Assert.AreNotEqual(null, instances)
+        Assert.AreEqual(0, instances.Length)
 
     [<Test>]
     member public this.``Delivery Point data list contains disabled point only so no delivery points are created.``() =
@@ -36,8 +34,8 @@ type DeliveryPointCreator_UnitTests() =
 
         let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new FileDeliveryLogger(), new FileDeliveryLogger())
         
-        instances |> should not' (equal null)
-        instances.Length |> should equal 0
+        Assert.AreNotEqual(null, instances)
+        Assert.AreEqual(0, instances.Length)
 
     [<Test>]
     member public this.``Delivery Point data list contains one point so one delivery point is created.``() =
@@ -52,5 +50,5 @@ type DeliveryPointCreator_UnitTests() =
 
         let instances = PodFul.WPF.Miscellaneous.DeliveryPointCreator.CreateDeliveryPoints(deliveryPointData, new FileDeliveryLogger(), new FileDeliveryLogger())
         
-        instances |> should not' (equal null)
-        instances.Length |> should equal 1
+        Assert.AreNotEqual(null, instances)
+        Assert.AreEqual(1, instances.Length)

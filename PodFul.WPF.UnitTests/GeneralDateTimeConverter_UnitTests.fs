@@ -1,7 +1,6 @@
 ﻿namespace PodFul.WPF.UnitTests
 
 open System
-open FsUnit
 open NUnit.Framework
 open PodFul.WPF
 
@@ -13,31 +12,31 @@ type GeneralDateTimeConverter_UnitTests() =
      [<Test>]
      member public this.``Value is null so empty string is returned.``() =
         let converter = new GeneralDateTimeConverter()
-        converter.Convert(null, null, null, null) |> should equal String.Empty;
+        Assert.AreEqual(String.Empty, converter.Convert(null, null, null, null))
 
      [<Test>]
      member public this.``Value is not of datetime type so empty string is returned.``() =
         let converter = new GeneralDateTimeConverter()
-        converter.Convert(new Object(), null, null, null) |> should equal String.Empty;
+        Assert.AreEqual(String.Empty, converter.Convert(new Object(), null, null, null))
 
      [<Test>]
      member public this.``Value is DateTime MinValue so Never is returned.``() =
         let converter = new GeneralDateTimeConverter()
-        converter.Convert(DateTime.MinValue, null, null, null) |> should equal "Never";
+        Assert.AreEqual("Never", converter.Convert(DateTime.MinValue, null, null, null))
 
      [<Test>]
      member public this.``Value is an hour ago so string starts with Today.``() =
         let converter = new GeneralDateTimeConverter()
         let value = DateTime.Now - TimeSpan.FromHours(1.0)
         let resultTime = value.ToString("HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal ("Today at " + resultTime)
+        Assert.AreEqual(("Today at " + resultTime), converter.Convert(value, null, null, null))
 
      [<Test>]
      member public this.``Value is a day ago so string starts with Yesterday.``() =
         let converter = new GeneralDateTimeConverter()
         let value = DateTime.Now - TimeSpan.FromDays(1.0)
         let resultTime = value.ToString("HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal ("Yesterday at " + resultTime)
+        Assert.AreEqual(("Yesterday at " + resultTime), converter.Convert(value, null, null, null))
 
      [<Test>]
      member public this.``Value is last night so string starts with Yesterday ``() =
@@ -45,7 +44,7 @@ type GeneralDateTimeConverter_UnitTests() =
         let yesterday = DateTime.Now - TimeSpan.FromDays(1.0)
         let value = new DateTime(yesterday.Year, yesterday.Month, yesterday.Day, 23, 59, 59)
         let resultTime = value.ToString("HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal ("Yesterday at " + resultTime)
+        Assert.AreEqual(("Yesterday at " + resultTime), converter.Convert(value, null, null, null))
 
      [<Test>]
      [<TestCase(2)>]
@@ -59,7 +58,7 @@ type GeneralDateTimeConverter_UnitTests() =
         let value = DateTime.Now - TimeSpan.FromDays(dayCount)
         let dayName = value.ToString("dddd")
         let resultTime = value.ToString("HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal (dayName + " at " + resultTime)
+        Assert.AreEqual((dayName + " at " + resultTime), converter.Convert(value, null, null, null))
 
      [<Test>]
      [<TestCase(8)>]
@@ -68,4 +67,4 @@ type GeneralDateTimeConverter_UnitTests() =
         let converter = new GeneralDateTimeConverter()
         let value = DateTime.Now - TimeSpan.FromDays(dayCount)
         let resultDateTime = value.ToString("dd-MMM-yyyy HH:mm:ss");
-        converter.Convert(value, null, null, null) |> should equal (resultDateTime)
+        Assert.AreEqual(resultDateTime, converter.Convert(value, null, null, null))

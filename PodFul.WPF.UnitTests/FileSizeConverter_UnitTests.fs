@@ -1,7 +1,6 @@
 ﻿namespace PodFul.WPF.UnitTests
 
 open System
-open FsUnit
 open NUnit.Framework
 open PodFul.WPF
 
@@ -13,12 +12,12 @@ type FileSizeConverter_UnitTests() =
   [<Test>]
   member public this.``Value is null so empty string is returned.``() =
     let converter = new FileSizeConverter()
-    converter.Convert(null, null, null, null) |> should equal String.Empty;
+    Assert.AreEqual(String.Empty, converter.Convert(null, null, null, null))
 
   [<Test>]
   member public this.``Value is not of Int64 type so empty string is returned.``() =
     let converter = new FileSizeConverter()
-    converter.Convert(new Object(), null, null, null) |> should equal String.Empty;
+    Assert.AreEqual(String.Empty, converter.Convert(new Object(), null, null, null))
 
   [<Test>]
   [<TestCase(0, "0.0 MB")>]
@@ -31,4 +30,4 @@ type FileSizeConverter_UnitTests() =
   [<Category("FileSizeConverter_UnitTests")>]
   member public this.``Value is of Int64 type so correct string is returned.``(value : Int64, expectedReturn : string) =
     let converter = new FileSizeConverter()
-    converter.Convert(value, null, null, null) |> should equal expectedReturn;
+    Assert.AreEqual(expectedReturn, converter.Convert(value, null, null, null))
