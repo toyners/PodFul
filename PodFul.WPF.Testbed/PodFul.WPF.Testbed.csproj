@@ -43,9 +43,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\.NETFramework\v4.0\4.4.3.0\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Jabberwocky.Toolkit, Version=1.0.7.8, Culture=neutral, PublicKeyToken=8994d5f40ad2f5fb, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.8\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Jabberwocky.Toolkit, Version=1.0.7.9, Culture=neutral, PublicKeyToken=8994d5f40ad2f5fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.9\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>

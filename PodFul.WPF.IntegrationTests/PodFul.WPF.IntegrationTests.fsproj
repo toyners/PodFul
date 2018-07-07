@@ -64,8 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Jabberwocky.Toolkit">
-      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.8\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.9\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
