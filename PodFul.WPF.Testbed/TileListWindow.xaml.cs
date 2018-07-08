@@ -170,12 +170,16 @@ namespace PodFul.WPF.Testbed
 
     private void DownloadPodcastClick(Object sender, RoutedEventArgs e)
     {
-      var mockLogger = new MockLogger();
-      var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
-
       var podcastViewModel = (PodcastViewModel)((Button)sender).DataContext;
-      var downloadManager = downloadManagerFactory.Create();
-      downloadManager.DownloadPodcast(podcastViewModel);
+
+      System.Threading.Tasks.Task.Factory.StartNew(() =>
+      {
+        var cancellationTokenSource = new System.Threading.CancellationTokenSource();
+        var cancelToken = cancellationTokenSource.Token;
+        var fileDownloader = new Library.FileDownloader();
+
+        podcastViewModel.Download(fileDownloader, cancelToken);
+      });
     }
 
     private void PodcastInfoClick(Object sender, RoutedEventArgs e)

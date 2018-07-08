@@ -333,16 +333,16 @@
                                 </StackPanel>
 
                                 <Grid Grid.Column="1" Margin="0,0,10,0">
-                                  <!-- <Grid.Style>
+                                  <Grid.Style>
                                     <Style TargetType="Grid">
                                       <Setter Property="Visibility" Value="Hidden"/>
                                       <Style.Triggers>
-                                        <DataTrigger Binding="{Binding FeedScanState}" Value="Downloading">
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
                                           <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                       </Style.Triggers>
                                     </Style>
-                                  </Grid.Style>-->
+                                  </Grid.Style>
 
                                   <Grid.RowDefinitions>
                                     <RowDefinition Height="4"/>

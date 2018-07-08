@@ -538,7 +538,7 @@ namespace PodFul.WPF.Testbed
 
       var podcastsA = new[]
       {
-        this.CreateTestPodcast("Podcast A-1 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast A-1 Title", originalFileURL, "Podcast A-1.mp3"),
       };
 
       var feedA = Setup.createTestFullFeedFromParameters("Feed A (1 new podcast)", "Feed A Description", "Feed A Website", testDirectoryPath, feedAURL, "", feedImageFilePath,
@@ -548,11 +548,11 @@ namespace PodFul.WPF.Testbed
 
       var podcastsB = new[]
       {
-        this.CreateTestPodcast("Podcast B-5 Title", originalFileURL, ""),
-        this.CreateTestPodcast("Podcast B-4 Title", originalFileURL, ""),
-        this.CreateTestPodcast("Podcast B-3 Title", originalFileURL, ""),
-        this.CreateTestPodcast("Podcast B-2 Title", originalFileURL, ""),
-        this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast B-5 Title", originalFileURL, "Podcast B-5.mp3"),
+        this.CreateTestPodcast("Podcast B-4 Title", originalFileURL, "Podcast B-4.mp3"),
+        this.CreateTestPodcast("Podcast B-3 Title", originalFileURL, "Podcast B-3.mp3"),
+        this.CreateTestPodcast("Podcast B-2 Title", originalFileURL, "Podcast B-2.mp3"),
+        this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, "Podcast B-1.mp3"),
       };
 
       var feedB = Setup.createTestFullFeedFromParameters("Feed B (4 new podcasts)", "Feed B Description", "Feed B Website", testDirectoryPath, feedBURL, "", feedImageFilePath,
@@ -562,7 +562,7 @@ namespace PodFul.WPF.Testbed
 
       var podcastsC = new[]
       {
-        this.CreateTestPodcast("Podcast C-1 Title", originalFileURL, ""),
+        this.CreateTestPodcast("Podcast C-1 Title", originalFileURL, "Podcast C-1.mp3"),
       };
 
       var feedC = Setup.createTestFullFeedFromParameters("Feed C (No change)", "Feed C Description", "Feed C Website", testDirectoryPath, feedCURL, "", feedImageFilePath,

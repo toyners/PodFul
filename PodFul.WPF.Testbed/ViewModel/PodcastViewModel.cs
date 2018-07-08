@@ -12,11 +12,11 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     #region Fields
     private Int64 downloadedSize;
-    private FeedViewModel feedViewModel;
+    private ProcessingStatus downloadState;
+    private readonly FeedViewModel feedViewModel;
     private Boolean fileSizeKnown;
     private Int64 percentageStepSize;
-    private Podcast podcast;
-    private Int64 podcastSize;
+    private readonly Podcast podcast;
     private String progressMajorSize;
     private String progressMinorSize;
     private String progressUnit;
@@ -29,12 +29,18 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       this.feedViewModel = feedViewModel;
       this.podcast = podcast;
+      this.DownloadState = ProcessingStatus.Idle;
     }
     #endregion
 
     #region Properties
     public String Description { get { return this.podcast.Description; } }
     public DateTime DownloadDate { get { return this.podcast.FileDetails.DownloadDate; } }
+    public ProcessingStatus DownloadState
+    {
+      get { return this.downloadState; }
+      private set { this.SetField(ref this.downloadState, value); }
+    }
     public String FilePath { get { return this.podcast.FileDetails.FileName; } }
     public Int64 FileSize { get { return this.podcast.FileDetails.FileSize; } }
     public String ImageFileName { get { return this.podcast.FileDetails.ImageFileName; } }
@@ -88,6 +94,8 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
 
       this.podcast.SetFileDetails(fileInfo.Length, DateTime.Now);
+
+      this.DownloadState = ProcessingStatus.Idle;
     }
 
     private void DownloadProgressEventHandler(Int32 bytesWrittenToFile)
@@ -111,7 +119,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
 
       Int64 value = 100;
-      if (this.downloadedSize < this.podcastSize)
+      if (this.downloadedSize < this.podcast.FileDetails.FileSize)
       {
         value = this.downloadedSize / this.percentageStepSize;
       }
@@ -145,20 +153,21 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     private void Initialise()
     {
-      this.podcastSize = this.podcast.FileDetails.FileSize;
-      this.percentageStepSize = this.podcastSize / 100;
+      this.DownloadState = ProcessingStatus.Downloading;
+      this.downloadedSize = 0;
+      this.percentageStepSize = this.podcast.FileDetails.FileSize / 100;
       this.ProgressMajorSize = "0";
       this.ProgressMinorSize = ".0";
 
-      if (this.podcastSize > 0)
+      if (this.podcast.FileDetails.FileSize > 0)
       {
-        this.ProgressUnit = "%";
         this.fileSizeKnown = true;
+        this.ProgressUnit = "%";
       }
       else
       {
-        this.ProgressUnit = " MB";
         this.fileSizeKnown = false;
+        this.ProgressUnit = " MB";
       }
 
       this.UseMarqueProgressStyle = !this.fileSizeKnown;
