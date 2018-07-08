@@ -376,6 +376,22 @@
                                         VerticalAlignment="Center" Margin="0" Background="Transparent">
                                   <Image Source="Resources\download.png" Width="25" Height="25" Margin="0"/>
                                 </Button>
+
+                                <Button Grid.Column="3" Click="CancelDownloadClick" Padding="0" BorderThickness="0" 
+                                        VerticalAlignment="Center" Margin="0" Background="Transparent">
+                                  <Button.Style>
+                                    <Style TargetType="Button">
+                                      <Setter Property="Visibility" Value="Hidden"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                                          <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Button.Style>
+                                  <Image Source="Resources\cancel.png" Width="25" Height="25" Margin="0"/>
+                                </Button>
+
                               </Grid>
                             </DataTemplate>
                           </ListBox.ItemTemplate>

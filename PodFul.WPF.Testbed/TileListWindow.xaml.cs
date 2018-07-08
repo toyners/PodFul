@@ -168,6 +168,12 @@ namespace PodFul.WPF.Testbed
       feedViewModel.FeedDirectoryPath = selectedPath;
     }
 
+    private void CancelDownloadClick(object sender, RoutedEventArgs e)
+    {
+      var podcastViewModel = (PodcastViewModel)((Button)sender).DataContext;
+      podcastViewModel.CancelDownload();
+    }
+
     private void DownloadPodcastClick(Object sender, RoutedEventArgs e)
     {
       var podcastViewModel = (PodcastViewModel)((Button)sender).DataContext;

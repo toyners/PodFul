@@ -75,6 +75,11 @@ namespace PodFul.WPF.Testbed.ViewModel
     #endregion
 
     #region Methods
+    public void CancelDownload()
+    {
+      throw new NotImplementedException();
+    }
+
     public void Download(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler = null)
     {
       this.Initialise();
