@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Testbed
 {
   using System;
+  using System.Threading.Tasks;
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
@@ -178,13 +179,9 @@ namespace PodFul.WPF.Testbed
     {
       var podcastViewModel = (PodcastViewModel)((Button)sender).DataContext;
 
-      System.Threading.Tasks.Task.Factory.StartNew(() =>
+      Task.Factory.StartNew(() =>
       {
-        var cancellationTokenSource = new System.Threading.CancellationTokenSource();
-        var cancelToken = cancellationTokenSource.Token;
-        var fileDownloader = new Library.FileDownloader();
-
-        podcastViewModel.Download(fileDownloader, cancelToken);
+        podcastViewModel.IndividualDownload();
       });
     }
 

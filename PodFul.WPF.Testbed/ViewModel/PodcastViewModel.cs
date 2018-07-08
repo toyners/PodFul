@@ -11,6 +11,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   public class PodcastViewModel : NotifyPropertyChangedBase
   {
     #region Fields
+    private CancellationTokenSource cancellationTokenSource;
     private Int64 downloadedSize;
     private ProcessingStatus downloadState;
     private readonly FeedViewModel feedViewModel;
@@ -77,17 +78,29 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Methods
     public void CancelDownload()
     {
-      throw new NotImplementedException();
+      if (this.cancellationTokenSource != null)
+      {
+        this.cancellationTokenSource.Cancel();
+      }
     }
 
-    public void Download(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler = null)
+    public void IndividualDownload()
+    {
+      this.cancellationTokenSource = new CancellationTokenSource();
+      var cancelToken = this.cancellationTokenSource.Token;
+      var fileDownloader = new FileDownloader();
+      this.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+      this.cancellationTokenSource = null;
+    }
+
+    public void ScanDownload(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler)
+    {
+      this.Download(fileDownloader, cancelToken, downloadProgressEventHandler);
+    }
+
+    private void Download(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler)
     {
       this.Initialise();
-
-      if (downloadProgressEventHandler == null)
-      {
-        downloadProgressEventHandler = this.DownloadProgressEventHandler;
-      }
 
       var filePath = Path.Combine(this.feedViewModel.FeedDirectoryPath, this.podcast.FileDetails.FileName);
       fileDownloader.Download(this.podcast.URL, filePath, cancelToken, downloadProgressEventHandler);

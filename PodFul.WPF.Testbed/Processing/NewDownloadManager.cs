@@ -41,20 +41,9 @@ namespace PodFul.WPF.Testbed.Processing
       foreach (var podcastViewModel in this.podcastViewModels)
       {
         this.DownloadStartingEvent?.Invoke(podcastViewModel);
-        podcastViewModel.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+        podcastViewModel.ScanDownload(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
         this.DownloadCompletedEvent?.Invoke();
       }
-    }
-
-    public void DownloadPodcast(PodcastViewModel podcastViewModel)
-    {
-      this.cancellationTokenSource = new CancellationTokenSource();
-      var cancelToken = this.cancellationTokenSource.Token;
-      var fileDownloader = new FileDownloader();
-
-      this.DownloadStartingEvent?.Invoke(podcastViewModel);
-      podcastViewModel.Download(fileDownloader, cancelToken);
-      this.DownloadCompletedEvent?.Invoke();
     }
   }
 }

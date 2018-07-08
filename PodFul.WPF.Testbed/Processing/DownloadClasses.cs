@@ -19,7 +19,6 @@ namespace PodFul.WPF.Testbed.Processing
     void CancelJobs();
 
     void CompleteJobs();
-    void DownloadPodcast(PodcastViewModel podcastViewModel);
   }
 
   public interface IDownloadManagerFactory
