@@ -239,21 +239,15 @@
                         <ColumnDefinition Width="50"/>
                       </Grid.ColumnDefinitions>
 
-                      <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
-                        <TextBlock VerticalAlignment="Center" Text="{Binding DownloadCount}" FontSize="12" FontWeight="Bold" />
-                      </Border>
+                      <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding DownloadCount}" FontSize="12" FontWeight="Bold" />
 
-                      <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
-                        <TextBlock Grid.Row="1" Padding="0" FontSize="12" Text="{Binding PodcastTitle}" />
-                      </Border>
+                      <TextBlock Grid.Column="1" Padding="0" FontSize="12" Text="{Binding PodcastTitle}" />
 
-                      <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
-                          <TextBlock Text="{Binding ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
-                          <TextBlock Text="{Binding ProgressUnit}" FontSize="10" FontWeight="Bold"/>
-                        </StackPanel>
-                      </Border>
+                      <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ProgressUnit}" FontSize="10" FontWeight="Bold"/>
+                      </StackPanel>
                     </Grid>
                   </Grid>
 
@@ -359,7 +353,7 @@
                                       <ColumnDefinition Width="50"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                                       <TextBlock Text="{Binding ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
                                       <TextBlock Text="{Binding ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
                                       <TextBlock Text="{Binding ProgressUnit}" FontSize="10" FontWeight="Bold"/>
