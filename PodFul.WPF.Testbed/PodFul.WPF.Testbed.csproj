@@ -113,11 +113,9 @@
     <Compile Include="ViewModel\PodcastViewModel.cs" />
     <Compile Include="ViewModel\PodcastPageViewModel.cs" />
     <Compile Include="ViewModel\FeedViewModel.cs" />
-    <Compile Include="ViewModel\JobPageNavigation.cs" />
     <Compile Include="ViewModel\PodcastPageNavigation.cs" />
     <Compile Include="ViewModel\IPageNavigation.cs" />
     <Compile Include="ViewModel\DownloadManagerViewModel.cs" />
-    <Compile Include="ViewModel\PageNavigation.cs" />
     <Compile Include="ViewModel\TileListViewModel.cs" />
     <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />
     <Compile Include="Windows\PodcastProperties.xaml.cs">
