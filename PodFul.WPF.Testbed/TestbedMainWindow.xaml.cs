@@ -512,8 +512,10 @@ namespace PodFul.WPF.Testbed
       mockFeedCollection.Count.Returns(feeds.Count);
       mockFeedCollection[Arg.Any<Int32>()].Returns(c => { var index = c.Arg<Int32>(); return feeds[index]; });
 
+      var mockFileDownloadProxyFactory = Substitute.For<IFileDownloadProxyFactory>();
+
       var feedCollectionViewModel = new TileListViewModel(mockFeedCollection);
-      var mainWindow = new TileListWindow(feedCollectionViewModel);
+      var mainWindow = new TileListWindow(feedCollectionViewModel, mockFileDownloadProxyFactory);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }

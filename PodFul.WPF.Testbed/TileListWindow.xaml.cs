@@ -19,8 +19,9 @@ namespace PodFul.WPF.Testbed
     private TileListViewModel feedCollectionViewModel;
     private Scanner scanner;
     private Int32 individualScanCount;
+    private IFileDownloadProxyFactory fileDownProxyFactory;
 
-    public TileListWindow(TileListViewModel feedCollectionViewModel)
+    public TileListWindow(TileListViewModel feedCollectionViewModel, IFileDownloadProxyFactory fileDownProxyFactory)
     {
       InitializeComponent();
 
