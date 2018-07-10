@@ -13,6 +13,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Fields
     private CancellationTokenSource cancellationTokenSource;
     private Int64 downloadedSize;
+    private String failedMessage;
     private ProcessingStatus downloadState;
     private readonly FeedViewModel feedViewModel;
     private Boolean fileSizeKnown;
@@ -41,6 +42,11 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       get { return this.downloadState; }
       private set { this.SetField(ref this.downloadState, value); }
+    }
+    public String FailedMessage
+    {
+      get { return this.failedMessage; }
+      private set { this.SetField(ref this.failedMessage, value); }
     }
     public String FilePath { get { return this.podcast.FileDetails.FileName; } }
     public Int64 FileSize { get { return this.podcast.FileDetails.FileSize; } }
@@ -86,11 +92,24 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void IndividualDownload()
     {
-      this.cancellationTokenSource = new CancellationTokenSource();
-      var cancelToken = this.cancellationTokenSource.Token;
-      var fileDownloader = new FileDownloader();
-      this.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
-      this.cancellationTokenSource = null;
+      try
+      {
+        this.cancellationTokenSource = new CancellationTokenSource();
+        var cancelToken = this.cancellationTokenSource.Token;
+        var fileDownloader = new FileDownloader();
+        this.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+        this.cancellationTokenSource = null;
+      }
+      catch (OperationCanceledException)
+      {
+        // Download cancelled - nothing more to do
+        this.DownloadState = ProcessingStatus.Idle;
+      }
+      catch (Exception e)
+      {
+        this.FailedMessage = e.Message;
+        this.DownloadState = ProcessingStatus.Failed;
+      }
     }
 
     public void ScanDownload(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler)
