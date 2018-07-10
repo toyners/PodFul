@@ -23,19 +23,21 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Feed feed;
     private readonly IFeedCollection feedCollection;
     private readonly Int32 feedIndex;
+    private readonly IFileDownloadProxyFactory fileDownloadProxyFactory;
     private readonly IImageResolver imageResolver;
     private ProcessingStatus scanState;
     #endregion
 
     #region Construction
-    public FeedViewModel(Int32 index, IFeedCollection feedCollection, IImageResolver imageResolver)
+    public FeedViewModel(Int32 index, IFeedCollection feedCollection, IImageResolver imageResolver, IFileDownloadProxyFactory fileDownloadProxyFactory)
     {
       this.feedCollection = feedCollection;
       this.feedIndex = index;
       this.feed = this.feedCollection[this.feedIndex];
+      this.fileDownloadProxyFactory = fileDownloadProxyFactory;
       this.imageResolver = imageResolver;
 
-      this.PodcastNavigation = new PodcastPageNavigation(this);
+      this.PodcastNavigation = new PodcastPageNavigation(this, this.fileDownloadProxyFactory);
       this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
       this.DownloadView = new DownloadManagerViewModel();
     }
@@ -227,7 +229,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         var pindex = 0;
         for (var index = podcastIndexes.Count - 1; index >= 0; index--)
         {
-          podcastViewModels[pindex++] = new PodcastViewModel(this, this.feed.Podcasts[podcastIndexes[index]]);
+          podcastViewModels[pindex++] = new PodcastViewModel(this, this.feed.Podcasts[podcastIndexes[index]], this.fileDownloadProxyFactory);
         }
 
         this.downloadManager = downloadManagerFactory.Create();

@@ -9,12 +9,15 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class TileListViewModel
   {
-    public TileListViewModel(IFeedCollection feedCollection)
+    private IFileDownloadProxyFactory fileDownloadProxyFactory;
+
+    public TileListViewModel(IFeedCollection feedCollection, IFileDownloadProxyFactory fileDownloadProxyFactory)
     {
+      this.fileDownloadProxyFactory = fileDownloadProxyFactory;
       this.Feeds = new ObservableCollection<FeedViewModel>();
       for (var i = 0; i < feedCollection.Count; i++)
       {
-        this.Feeds.Add(new FeedViewModel(i, feedCollection, null));
+        this.Feeds.Add(new FeedViewModel(i, feedCollection, null, this.fileDownloadProxyFactory));
       }
     }
 

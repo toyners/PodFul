@@ -14,10 +14,15 @@ namespace PodFul.WPF.Testbed.ViewModel
     private FeedViewModel feedViewModel;
     private Int32 pageNumber;
     private ObservableCollection<PodcastPageViewModel> pages = new ObservableCollection<PodcastPageViewModel>();
+    private IFileDownloadProxyFactory fileDownloadProxyFactory;
     #endregion
 
     #region Construction
-    public PodcastPageNavigation(FeedViewModel feedViewModel) => this.feedViewModel = feedViewModel;
+    public PodcastPageNavigation(FeedViewModel feedViewModel, IFileDownloadProxyFactory fileDownloadProxyFactory)
+    {
+      this.feedViewModel = feedViewModel;
+      this.fileDownloadProxyFactory = fileDownloadProxyFactory;
+    }
     #endregion
 
     #region Properties
@@ -95,7 +100,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           lastItemIndex = items.Count - 1;
         }
 
-        PodcastPageViewModel page = new PodcastPageViewModel(this.feedViewModel, items, firstItemIndex, lastItemIndex);
+        PodcastPageViewModel page = new PodcastPageViewModel(this.feedViewModel, items, firstItemIndex, lastItemIndex, this.fileDownloadProxyFactory);
         this.pages.Add(page);
       }
 

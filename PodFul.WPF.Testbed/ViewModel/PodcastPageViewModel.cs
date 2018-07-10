@@ -7,12 +7,12 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class PodcastPageViewModel
   {
-    public PodcastPageViewModel(FeedViewModel feedViewModel, IList<Podcast> podcasts, Int32 firstPodcastIndex, Int32 lastPodcastIndex)
+    public PodcastPageViewModel(FeedViewModel feedViewModel, IList<Podcast> podcasts, Int32 firstPodcastIndex, Int32 lastPodcastIndex, IFileDownloadProxyFactory fileDownProxyFactory)
     {
       this.PodcastViewModels = new List<PodcastViewModel>(lastPodcastIndex - firstPodcastIndex + 1);
       while (firstPodcastIndex <= lastPodcastIndex)
       {
-        this.PodcastViewModels.Add(new PodcastViewModel(feedViewModel, podcasts[firstPodcastIndex++]));
+        this.PodcastViewModels.Add(new PodcastViewModel(feedViewModel, podcasts[firstPodcastIndex++], fileDownProxyFactory));
       }
     }
 

@@ -514,8 +514,8 @@ namespace PodFul.WPF.Testbed
 
       var mockFileDownloadProxyFactory = Substitute.For<IFileDownloadProxyFactory>();
 
-      var feedCollectionViewModel = new TileListViewModel(mockFeedCollection);
-      var mainWindow = new TileListWindow(feedCollectionViewModel, mockFileDownloadProxyFactory);
+      var feedCollectionViewModel = new TileListViewModel(mockFeedCollection, mockFileDownloadProxyFactory);
+      var mainWindow = new TileListWindow(feedCollectionViewModel);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
     }

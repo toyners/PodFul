@@ -27,7 +27,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     #endregion
 
     #region Construction
-    public PodcastViewModel(FeedViewModel feedViewModel, Podcast podcast)
+    public PodcastViewModel(FeedViewModel feedViewModel, Podcast podcast, IFileDownloadProxyFactory fileDownProxyFactory)
     {
       this.feedViewModel = feedViewModel;
       this.podcast = podcast;
