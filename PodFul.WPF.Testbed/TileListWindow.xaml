@@ -316,17 +316,19 @@
                             <DataTemplate>
                               <Grid Margin="0,2">
                                 <Grid.ColumnDefinitions>
+                                  <ColumnDefinition Width="28"/>
                                   <ColumnDefinition />
                                   <ColumnDefinition Width="180"/>
                                   <ColumnDefinition Width="30"/>
                                   <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                  <TextBlock Text="{Binding Title}" />
-                                </StackPanel>
+                                <Image Grid.Column="0" Source="{Binding PodcastImage}" Margin="0,0,3,0" Width="25" Height="25"/>
 
-                                <Grid Grid.Column="1" Margin="0,0,10,0">
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center" />
+
+                                <!-- Individual podcast download progress -->
+                                <Grid Grid.Column="2" Margin="0,0,10,0">
                                   <Grid.Style>
                                     <Style TargetType="Grid">
                                       <Setter Property="Visibility" Value="Hidden"/>
@@ -361,17 +363,17 @@
                                   </Grid>
                                 </Grid>
 
-                                <Button Grid.Column="2" Click="PodcastInfoClick" Padding="0" BorderThickness="0" 
+                                <Button Grid.Column="3" Click="PodcastInfoClick" Padding="0" BorderThickness="0" 
                                         VerticalAlignment="Center" Margin="0" Background="Transparent">
                                   <Image Source="Resources\information.png" Width="25" Height="25" Margin="0"/>
                                 </Button>
 
-                                <Button Grid.Column="3" Click="DownloadPodcastClick" Padding="0" BorderThickness="0" 
+                                <Button Grid.Column="4" Click="DownloadPodcastClick" Padding="0" BorderThickness="0" 
                                         VerticalAlignment="Center" Margin="0" Background="Transparent">
                                   <Image Source="Resources\download.png" Width="25" Height="25" Margin="0"/>
                                 </Button>
 
-                                <Button Grid.Column="3" Click="CancelDownloadClick" Padding="0" BorderThickness="0" 
+                                <Button Grid.Column="4" Click="CancelDownloadClick" Padding="0" BorderThickness="0" 
                                         VerticalAlignment="Center" Margin="0" Background="Transparent">
                                   <Button.Style>
                                     <Style TargetType="Button">

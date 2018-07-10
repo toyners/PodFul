@@ -58,7 +58,7 @@ namespace PodFul.WPF.Testbed
       return new Podcast(title, String.Empty, String.Empty, String.Empty, DateTime.Now, podcastFile);
     }
 
-    private Podcast CreateTestPodcast(String title, String url, String fileName)
+    private Podcast CreateTestPodcast(String title, String url, String fileName, String podcastImageFileName = "")
     {
       Int64 fileSize = -1;
       var fileInfo = new FileInfo(url);
@@ -67,7 +67,7 @@ namespace PodFul.WPF.Testbed
         fileSize = fileInfo.Length;
       }
 
-      var podcastFile = new PodcastFile(fileName, fileSize, DateTime.Now, String.Empty);
+      var podcastFile = new PodcastFile(fileName, fileSize, DateTime.Now, podcastImageFileName);
       return new Podcast(title, "Description for " + title, url, String.Empty, DateTime.Now, podcastFile);
     }
 
@@ -535,6 +535,7 @@ namespace PodFul.WPF.Testbed
       var feedFURL = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Test Resources\Missing File.rss";
 
       var feedImageFilePath = @"C:\Projects\PodFul\PodFul.WPF.Testbed\bin\Debug\Resources\question-mark.png";
+      var podcastImageFilePath = feedImageFilePath;
 
       var podcastsA = new[]
       {
@@ -548,11 +549,11 @@ namespace PodFul.WPF.Testbed
 
       var podcastsB = new[]
       {
-        this.CreateTestPodcast("Podcast B-5 Title", originalFileURL, "Podcast B-5.mp3"),
-        this.CreateTestPodcast("Podcast B-4 Title", originalFileURL, "Podcast B-4.mp3"),
-        this.CreateTestPodcast("Podcast B-3 Title", originalFileURL, "Podcast B-3.mp3"),
-        this.CreateTestPodcast("Podcast B-2 Title", originalFileURL, "Podcast B-2.mp3"),
-        this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, "Podcast B-1.mp3"),
+        this.CreateTestPodcast("Podcast B-5 Title", originalFileURL, "Podcast B-5.mp3", podcastImageFilePath),
+        this.CreateTestPodcast("Podcast B-4 Title", originalFileURL, "Podcast B-4.mp3", podcastImageFilePath),
+        this.CreateTestPodcast("Podcast B-3 Title", originalFileURL, "Podcast B-3.mp3", podcastImageFilePath),
+        this.CreateTestPodcast("Podcast B-2 Title", originalFileURL, "Podcast B-2.mp3", podcastImageFilePath),
+        this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, "Podcast B-1.mp3", podcastImageFilePath),
       };
 
       var feedB = Setup.createTestFullFeedFromParameters("Feed B (4 new podcasts)", "Feed B Description", "Feed B Website", testDirectoryPath, feedBURL, "", feedImageFilePath,

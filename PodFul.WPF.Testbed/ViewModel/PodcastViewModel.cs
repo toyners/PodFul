@@ -44,7 +44,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     }
     public String FilePath { get { return this.podcast.FileDetails.FileName; } }
     public Int64 FileSize { get { return this.podcast.FileDetails.FileSize; } }
-    public String ImageFileName { get { return this.podcast.FileDetails.ImageFileName; } }
+    public String PodcastImage { get { return this.podcast.FileDetails.ImageFileName; } }
     public Int32 ProgressValue
     {
       get { return this.progressValue; }
