@@ -110,7 +110,6 @@
       <DependentUpon>TileListWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ProcessingStatus.cs" />
-    <Compile Include="ViewModel\JobPageViewModel.cs" />
     <Compile Include="ViewModel\PodcastViewModel.cs" />
     <Compile Include="ViewModel\PodcastPageViewModel.cs" />
     <Compile Include="ViewModel\FeedViewModel.cs" />
