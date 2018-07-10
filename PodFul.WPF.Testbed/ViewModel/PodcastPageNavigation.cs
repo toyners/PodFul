@@ -10,12 +10,17 @@ namespace PodFul.WPF.Testbed.ViewModel
 
   public class PodcastPageNavigation : NotifyPropertyChangedBase, IPageNavigation
   {
+    #region Fields
     private FeedViewModel feedViewModel;
-    public PodcastPageNavigation(FeedViewModel feedViewModel) => this.feedViewModel = feedViewModel;
-
     private Int32 pageNumber;
     private ObservableCollection<PodcastPageViewModel> pages = new ObservableCollection<PodcastPageViewModel>();
+    #endregion
 
+    #region Construction
+    public PodcastPageNavigation(FeedViewModel feedViewModel) => this.feedViewModel = feedViewModel;
+    #endregion
+
+    #region Properties
     public PodcastPageViewModel CurrentPage { get; private set; }
 
     public Int32 TotalPages { get { return this.pages.Count; } }
@@ -50,7 +55,9 @@ namespace PodFul.WPF.Testbed.ViewModel
         });
       }
     }
+    #endregion
 
+    #region Methods
     public void MoveToNextPage()
     {
       this.PageNumber++;
@@ -71,14 +78,14 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.PageNumber = this.pages.Count;
     }
 
-    public virtual void Reset()
+    public void Reset()
     {
       this.pages.Clear();
       this.CurrentPage = null;
       this.pageNumber = 0;
     }
 
-    public virtual void SetPages(IList<Podcast> items, Int32 itemCountPerPage = 2)
+    public void SetPages(IList<Podcast> items, Int32 itemCountPerPage = 2)
     {
       for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)
       {
@@ -88,7 +95,7 @@ namespace PodFul.WPF.Testbed.ViewModel
           lastItemIndex = items.Count - 1;
         }
 
-        PodcastPageViewModel page = this.CreatePage(items, firstItemIndex, lastItemIndex);
+        PodcastPageViewModel page = new PodcastPageViewModel(this.feedViewModel, items, firstItemIndex, lastItemIndex);
         this.pages.Add(page);
       }
 
@@ -100,10 +107,6 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       this.TryInvokePropertyChanged(new PropertyChangedEventArgs("TotalPages"));
     }
-
-    private PodcastPageViewModel CreatePage(IList<Podcast> items, Int32 firstIndex, Int32 lastIndex)
-    {
-      return new PodcastPageViewModel(this.feedViewModel, items, firstIndex, lastIndex);
-    }
+    #endregion
   }
 }
