@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PodFul.WPF.Testbed.Windows"
         mc:Ignorable="d"
         Title="Properties" Height="220" Width="800"
         ResizeMode="NoResize"
@@ -24,7 +23,7 @@
           <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="{Binding ImageFileName}" Grid.Column="0" Margin="2" />
+        <Image Source="{Binding PodcastImage}" Grid.Column="0" Margin="2" />
 
         <Grid Grid.Column="1">
           <Grid.RowDefinitions>
