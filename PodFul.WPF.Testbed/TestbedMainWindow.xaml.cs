@@ -4,6 +4,7 @@ namespace PodFul.WPF.Testbed
   using System;
   using System.Collections.Generic;
   using System.IO;
+  using System.Threading;
   using System.Windows;
   using Jabberwocky.Toolkit.IO;
   using Logging;
@@ -61,10 +62,13 @@ namespace PodFul.WPF.Testbed
     private Podcast CreateTestPodcast(String title, String url, String fileName, String podcastImageFileName = "")
     {
       Int64 fileSize = -1;
-      var fileInfo = new FileInfo(url);
-      if (fileInfo.Exists)
+      if (!String.IsNullOrEmpty(url))
       {
-        fileSize = fileInfo.Length;
+        var fileInfo = new FileInfo(url);
+        if (fileInfo.Exists)
+        {
+          fileSize = fileInfo.Length;
+        }
       }
 
       var podcastFile = new PodcastFile(fileName, fileSize, DateTime.Now, podcastImageFileName);
@@ -512,12 +516,30 @@ namespace PodFul.WPF.Testbed
       mockFeedCollection.Count.Returns(feeds.Count);
       mockFeedCollection[Arg.Any<Int32>()].Returns(c => { var index = c.Arg<Int32>(); return feeds[index]; });
 
+      var mockFileDownloadProxy = new MockFileDownloadProxy();
       var mockFileDownloadProxyFactory = Substitute.For<IFileDownloadProxyFactory>();
+      mockFileDownloadProxyFactory.Create().Returns(mockFileDownloadProxy);
+      //var mockFileDownloadProxyFactory = new FileDownloadProxyFactory();
 
       var feedCollectionViewModel = new TileListViewModel(mockFeedCollection, mockFileDownloadProxyFactory);
       var mainWindow = new TileListWindow(feedCollectionViewModel);
       mainWindow.Owner = this;
       mainWindow.ShowDialog();
+    }
+
+    public class MockFileDownloadProxy : IFileDownloadProxy
+    {
+      public void Download(string url, string destination, CancellationToken cancelToken, Action<int> downloadProgressEventHandler)
+      {
+        if (url == "")
+        {
+          Thread.Sleep(5000);
+          throw new Exception("URL is empty");
+        }
+
+        var fileDownloader = new FileDownloader();
+        fileDownloader.Download(url, destination, cancelToken, downloadProgressEventHandler);
+      }
     }
 
     private IList<Feed> CreateTestFeeds()
@@ -552,7 +574,7 @@ namespace PodFul.WPF.Testbed
       var podcastsB = new[]
       {
         this.CreateTestPodcast("Podcast B-5 Title", originalFileURL, "Podcast B-5.mp3", podcastImageFilePath),
-        this.CreateTestPodcast("Podcast B-4 Title", originalFileURL, "Podcast B-4.mp3", podcastImageFilePath),
+        this.CreateTestPodcast("Podcast B-4 Title", "", "Podcast B-4.mp3", podcastImageFilePath),
         this.CreateTestPodcast("Podcast B-3 Title", originalFileURL, "Podcast B-3.mp3", podcastImageFilePath),
         this.CreateTestPodcast("Podcast B-2 Title", originalFileURL, "Podcast B-2.mp3", podcastImageFilePath),
         this.CreateTestPodcast("Podcast B-1 Title", originalFileURL, "Podcast B-1.mp3", podcastImageFilePath),

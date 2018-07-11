@@ -7,6 +7,7 @@ namespace PodFul.WPF.Testbed
   using System.Text;
   using System.Threading;
   using System.Threading.Tasks;
+  using PodFul.Library;
 
   public interface IFileDownloadProxyFactory
   {
@@ -22,7 +23,7 @@ namespace PodFul.WPF.Testbed
   {
     public IFileDownloadProxy Create()
     {
-      throw new NotImplementedException();
+      return new FileDownloadProxy();
     }
   }
 
@@ -30,7 +31,8 @@ namespace PodFul.WPF.Testbed
   {
     public void Download(string url, string destination, CancellationToken cancelToken, Action<int> downloadProgressEventHandler)
     {
-      throw new NotImplementedException();
+      var fileDownloader = new FileDownloader();
+      fileDownloader.Download(url, destination, cancelToken, downloadProgressEventHandler);
     }
   }
 }

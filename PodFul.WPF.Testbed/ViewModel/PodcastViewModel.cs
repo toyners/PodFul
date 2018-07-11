@@ -14,6 +14,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private CancellationTokenSource cancellationTokenSource;
     private Int64 downloadedSize;
     private String failedMessage;
+    private IFileDownloadProxyFactory fileDownProxyFactory;
     private ProcessingStatus downloadState;
     private readonly FeedViewModel feedViewModel;
     private Boolean fileSizeKnown;
@@ -30,6 +31,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     public PodcastViewModel(FeedViewModel feedViewModel, Podcast podcast, IFileDownloadProxyFactory fileDownProxyFactory)
     {
       this.feedViewModel = feedViewModel;
+      this.fileDownProxyFactory = fileDownProxyFactory;
       this.podcast = podcast;
       this.DownloadState = ProcessingStatus.Idle;
     }
@@ -122,7 +124,8 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.Initialise();
 
       var filePath = Path.Combine(this.feedViewModel.FeedDirectoryPath, this.podcast.FileDetails.FileName);
-      fileDownloader.Download(this.podcast.URL, filePath, cancelToken, downloadProgressEventHandler);
+      this.fileDownProxyFactory.Create()
+        .Download(this.podcast.URL, filePath, cancelToken, downloadProgressEventHandler);
 
       var fileInfo = new FileInfo(filePath);
       if (!fileInfo.Exists)
