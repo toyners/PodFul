@@ -370,6 +370,19 @@
 
                                 <Button Grid.Column="4" Click="DownloadPodcastClick" Padding="0" BorderThickness="0" 
                                         VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent">
+                                  <Button.Style>
+                                    <Style TargetType="Button">
+                                      <Setter Property="Visibility" Value="Visible"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                                          <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Failed">
+                                          <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Button.Style>
                                   <Image Source="Resources\download.png" Width="25" Height="25" Margin="0"/>
                                 </Button>
 
