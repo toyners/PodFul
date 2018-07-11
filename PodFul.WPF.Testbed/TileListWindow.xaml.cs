@@ -19,6 +19,7 @@ namespace PodFul.WPF.Testbed
     private TileListViewModel feedCollectionViewModel;
     private Scanner scanner;
     private Int32 individualScanCount;
+    private Int32 individualDownloadCount;
 
     public TileListWindow(TileListViewModel feedCollectionViewModel)
     {
@@ -178,10 +179,24 @@ namespace PodFul.WPF.Testbed
     private void DownloadPodcastClick(Object sender, RoutedEventArgs e)
     {
       var podcastViewModel = (PodcastViewModel)((Button)sender).DataContext;
+      this.CommandButton.IsEnabled = false;
 
-      Task.Factory.StartNew(() =>
+      var downloadTask = Task.Factory.StartNew(() =>
       {
+        this.individualDownloadCount++;
         podcastViewModel.IndividualDownload();
+      });
+
+      downloadTask.ContinueWith((task) =>
+      {
+        this.individualDownloadCount--;
+        if (this.individualDownloadCount == 0)
+        {
+          Application.Current.Dispatcher.Invoke(() =>
+          {
+            this.CommandButton.IsEnabled = true;
+          });
+        }
       });
     }
 
