@@ -402,8 +402,8 @@
                                 </Button>
 
                                 <Button Grid.Column="4" Click="DownloadPodcastClick" Padding="0" BorderThickness="0" 
-                                        VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent"
-                                        ToolTip="{Binding FailedMessage}">
+                                        VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent">
+                                  
                                   <Button.Style>
                                     <Style TargetType="Button">
                                       <Setter Property="Visibility" Value="Hidden"/>
@@ -414,6 +414,15 @@
                                       </Style.Triggers>
                                     </Style>
                                   </Button.Style>
+
+                                  <Button.ToolTip>
+                                    <ToolTip>
+                                      <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{Binding FailedMessage}" />
+                                        <TextBlock Text="Click to restart download" />
+                                      </StackPanel>
+                                    </ToolTip>
+                                  </Button.ToolTip>
 
                                   <Image Source="Resources\failed.png" Width="25" Height="25" Margin="0"/>
                                 </Button>
