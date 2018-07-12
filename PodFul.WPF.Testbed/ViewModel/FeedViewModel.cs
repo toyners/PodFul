@@ -224,7 +224,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
 
-        // Create the podcastViewModel list; reverse it has it is created.
+        // Create the podcastViewModel list; reverse it as it is created.
         var podcastViewModels = new PodcastViewModel[podcastIndexes.Count];
         var pindex = 0;
         for (var index = podcastIndexes.Count - 1; index >= 0; index--)
