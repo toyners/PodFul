@@ -533,7 +533,13 @@ namespace PodFul.WPF.Testbed
       {
         if (url == "")
         {
-          Thread.Sleep(3000);
+          var count = 60;
+          while (count-- > 0)
+          {
+            Thread.Sleep(50);
+            cancelToken.ThrowIfCancellationRequested();
+          }
+
           throw new Exception("URL is empty");
         }
 
