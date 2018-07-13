@@ -65,6 +65,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
     public DateTime CreatedDate { get { return this.feed.CreationDateTime; } }
+    public PodcastViewModel CurrentDownload { get; private set; }
     public Boolean DeliverDownloadsOnScan
     {
       get { return this.feed.DeliverDownloadsOnScan; }

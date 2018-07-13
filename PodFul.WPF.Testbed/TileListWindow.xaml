@@ -228,11 +228,11 @@
                       <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <ProgressBar Grid.Row="0" Margin="0" Height="4" DataContext="{Binding DownloadView}" 
+                    <ProgressBar Grid.Row="0" Margin="0" Height="4" 
                                  Value="{Binding ProgressValue, Mode=OneWay}" 
-                                 IsIndeterminate="{Binding UseMarqueProgressStyle}" />
+                                 IsIndeterminate="{Binding CurrentDownload.UseMarqueProgressStyle}" />
 
-                    <Grid Grid.Row="1" Height="16" DataContext="{Binding DownloadView}">
+                    <Grid Grid.Row="1" Height="16">
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50"/>
                         <ColumnDefinition />
