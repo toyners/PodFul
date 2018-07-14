@@ -1,7 +1,6 @@
 ﻿
 namespace PodFul.WPF.Testbed.Processing
 {
-  using Jabberwocky.Toolkit.Object;
   using System;
   using System.Collections.Concurrent;
   using System.Collections.Generic;
