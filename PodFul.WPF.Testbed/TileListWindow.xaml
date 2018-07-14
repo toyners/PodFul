@@ -172,7 +172,7 @@
                   </Image>
 
                   <!-- Successful image -->
-                  <Image Grid.Column="1" >
+                  <Image Grid.Column="1" Source="Resources\succeeded.png" >
                     <Image.Style>
                       <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -211,6 +211,7 @@
 
                   <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" VerticalAlignment="Center"/>
 
+                  <!-- Download progress for scanning -->
                   <Grid Grid.Column="3">
                     <Grid.Style>
                       <Style TargetType="Grid">
@@ -241,7 +242,7 @@
 
                       <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding DownloadCount}" FontSize="12" FontWeight="Bold" />
 
-                      <TextBlock Grid.Column="1" Padding="0" FontSize="12" Text="{Binding CurrentDownload.PodcastTitle}" />
+                      <TextBlock Grid.Column="1" Padding="0" FontSize="12" Text="{Binding CurrentDownload.Title}" />
 
                       <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                         <TextBlock Text="{Binding CurrentDownload.ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
