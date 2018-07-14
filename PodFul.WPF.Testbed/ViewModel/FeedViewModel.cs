@@ -19,6 +19,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     #region Fields
     private static PropertyChangedEventArgs FeedScanProgressMessageArgs = new PropertyChangedEventArgs("FeedScanProgressMessage");
     private CancellationTokenSource cancellationTokenSource = null;
+    private PodcastViewModel currentDownload;
+    private String downloadCount;
     private INewDownloadManager downloadManager;
     private Feed feed;
     private readonly IFeedCollection feedCollection;
@@ -39,7 +41,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       this.PodcastNavigation = new PodcastPageNavigation(this, this.fileDownloadProxyFactory);
       this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
-      this.DownloadView = new DownloadManagerViewModel();
+      //this.DownloadView = new DownloadManagerViewModel();
     }
     #endregion
 
@@ -65,7 +67,14 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
     public DateTime CreatedDate { get { return this.feed.CreationDateTime; } }
-    public PodcastViewModel CurrentDownload { get; private set; }
+    public PodcastViewModel CurrentDownload
+    {
+      get { return this.currentDownload; }
+      private set
+      {
+        this.SetField(ref this.currentDownload, value);
+      }
+    }
     public Boolean DeliverDownloadsOnScan
     {
       get { return this.feed.DeliverDownloadsOnScan; }
@@ -86,7 +95,12 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.feedCollection[this.feedIndex] = this.feed;
       }
     }
-    public DownloadManagerViewModel DownloadView { get; private set; }
+    public String DownloadCount
+    {
+      get { return this.downloadCount; }
+      private set { this.SetField(ref this.downloadCount, value); }
+    }
+    //public DownloadManagerViewModel DownloadView { get; private set; }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
     public String FeedDirectoryPath
@@ -222,30 +236,20 @@ namespace PodFul.WPF.Testbed.ViewModel
 
         // Update the reference for feed in the view model.
         this.feed = newFeed;
-
-        this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
-
-        // Create the podcastViewModel list; reverse it as it is created.
-        var podcastViewModels = new PodcastViewModel[podcastIndexes.Count];
-        var pindex = 0;
-        for (var index = podcastIndexes.Count - 1; index >= 0; index--)
-        {
-          podcastViewModels[pindex++] = new PodcastViewModel(this, this.feed.Podcasts[podcastIndexes[index]], this.fileDownloadProxyFactory);
-        }
-
-        this.downloadManager = downloadManagerFactory.Create();
-        this.downloadManager.AddJobs(podcastViewModels);
-        this.downloadManager.DownloadCompletedEvent += () =>
-        {
-          this.feedCollection.UpdateFeedContent(this.feed);
-        };
-
-        this.FeedScanState = ProcessingStatus.Downloading;
-        this.DownloadView.StartDownloading(this.downloadManager);
-
         this.PodcastNavigation.Reset();
         this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
-        
+
+        this.FeedScanState = ProcessingStatus.Downloading;
+        this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
+
+        var fileDownloader = new FileDownloader();
+        for (var index = podcastIndexes.Count - 1; index >= 0; index--)
+        {
+          this.DownloadCount = $"[{index + 1}/{podcastIndexes.Count}]";
+          this.CurrentDownload = this.PodcastNavigation[podcastIndexes[index]];
+          this.CurrentDownload.ScanDownload(fileDownloader, cancelToken, null);
+        }
+
         this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " downloaded");
 
         this.FeedScanState = ProcessingStatus.Completed;

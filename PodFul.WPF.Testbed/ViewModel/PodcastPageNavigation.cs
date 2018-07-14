@@ -12,6 +12,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   {
     #region Fields
     private FeedViewModel feedViewModel;
+    private Int32 itemCountPerPage;
     private Int32 pageNumber;
     private ObservableCollection<PodcastPageViewModel> pages = new ObservableCollection<PodcastPageViewModel>();
     private IFileDownloadProxyFactory fileDownloadProxyFactory;
@@ -33,6 +34,16 @@ namespace PodFul.WPF.Testbed.ViewModel
     public Boolean CanMoveBack { get { return this.pageNumber > 1; } }
 
     public Boolean CanMoveForward { get { return this.pageNumber < this.TotalPages; } }
+
+    public PodcastViewModel this[Int32 index]
+    {
+      get
+      {
+        var pageIndex = index / this.itemCountPerPage;
+        var podcastIndex = index % this.itemCountPerPage;
+        return this.pages[pageIndex].PodcastViewModels[podcastIndex];
+      }
+    }
 
     public Int32 PageNumber
     {
@@ -92,6 +103,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void SetPages(IList<Podcast> items, Int32 itemCountPerPage = 2)
     {
+      this.itemCountPerPage = itemCountPerPage;
       for (var firstItemIndex = 0; firstItemIndex < items.Count; firstItemIndex += itemCountPerPage)
       {
         var lastItemIndex = firstItemIndex + itemCountPerPage - 1;

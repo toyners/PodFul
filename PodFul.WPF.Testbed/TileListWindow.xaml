@@ -229,7 +229,7 @@
                     </Grid.RowDefinitions>
 
                     <ProgressBar Grid.Row="0" Margin="0" Height="4" 
-                                 Value="{Binding ProgressValue, Mode=OneWay}" 
+                                 Value="{Binding CurrentDownload.ProgressValue, Mode=OneWay}" 
                                  IsIndeterminate="{Binding CurrentDownload.UseMarqueProgressStyle}" />
 
                     <Grid Grid.Row="1" Height="16">
@@ -241,12 +241,12 @@
 
                       <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding DownloadCount}" FontSize="12" FontWeight="Bold" />
 
-                      <TextBlock Grid.Column="1" Padding="0" FontSize="12" Text="{Binding PodcastTitle}" />
+                      <TextBlock Grid.Column="1" Padding="0" FontSize="12" Text="{Binding CurrentDownload.PodcastTitle}" />
 
                       <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <TextBlock Text="{Binding ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding ProgressUnit}" FontSize="10" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding CurrentDownload.ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding CurrentDownload.ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding CurrentDownload.ProgressUnit}" FontSize="10" FontWeight="Bold"/>
                       </StackPanel>
                     </Grid>
                   </Grid>
