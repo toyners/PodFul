@@ -23,10 +23,8 @@ namespace PodFul.WPF.Testbed.Processing
       }
     }
 
-    public void ScanFeeds(IList<FeedViewModel> feedViewModels, IDownloadManagerFactory downloadManagerFactory)
+    public void ScanFeeds(IList<FeedViewModel> feedViewModels)
     {
-      downloadManagerFactory.VerifyThatObjectIsNotNull();
-
       var maxTaskCount = 1;
       this.cancellationTokenSource = new CancellationTokenSource();
       var cancelToken = this.cancellationTokenSource.Token;
@@ -60,7 +58,7 @@ namespace PodFul.WPF.Testbed.Processing
 
             Task.Factory.StartNew(() =>
             {
-              feedViewModel.Scan(downloadManagerFactory);
+              feedViewModel.Scan();
               lock (objectLock)
               {
                 scanTaskCount--;

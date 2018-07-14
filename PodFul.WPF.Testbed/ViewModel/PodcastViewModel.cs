@@ -99,7 +99,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.cancellationTokenSource = new CancellationTokenSource();
         var cancelToken = this.cancellationTokenSource.Token;
         var fileDownloader = new FileDownloader();
-        this.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+        this.Download(fileDownloader, cancelToken);
         this.cancellationTokenSource = null;
       }
       catch (OperationCanceledException)
@@ -114,18 +114,18 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
 
-    public void ScanDownload(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler)
+    public void ScanDownload(FileDownloader fileDownloader, CancellationToken cancelToken)
     {
-      this.Download(fileDownloader, cancelToken, this.DownloadProgressEventHandler);
+      this.Download(fileDownloader, cancelToken);
     }
 
-    private void Download(FileDownloader fileDownloader, CancellationToken cancelToken, Action<Int32> downloadProgressEventHandler)
+    private void Download(FileDownloader fileDownloader, CancellationToken cancelToken)
     {
       this.Initialise();
 
       var filePath = Path.Combine(this.feedViewModel.FeedDirectoryPath, this.podcast.FileDetails.FileName);
       this.fileDownProxyFactory.Create()
-        .Download(this.podcast.URL, filePath, cancelToken, downloadProgressEventHandler);
+        .Download(this.podcast.URL, filePath, cancelToken, this.DownloadProgressEventHandler);
 
       var fileInfo = new FileInfo(filePath);
       if (!fileInfo.Exists)

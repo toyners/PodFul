@@ -101,9 +101,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Class1.cs" />
-    <Compile Include="Processing\DownloadClasses.cs" />
     <Compile Include="Processing\MockLogger.cs" />
-    <Compile Include="Processing\NewDownloadManager.cs" />
     <Compile Include="Processing\NewFeedCollection.cs" />
     <Compile Include="Processing\Scanner.cs" />
     <Compile Include="TileListWindow.xaml.cs">
@@ -115,7 +113,6 @@
     <Compile Include="ViewModel\FeedViewModel.cs" />
     <Compile Include="ViewModel\PodcastPageNavigation.cs" />
     <Compile Include="ViewModel\IPageNavigation.cs" />
-    <Compile Include="ViewModel\DownloadManagerViewModel.cs" />
     <Compile Include="ViewModel\TileListViewModel.cs" />
     <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />
     <Compile Include="Windows\PodcastProperties.xaml.cs">

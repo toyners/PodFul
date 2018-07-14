@@ -21,7 +21,6 @@ namespace PodFul.WPF.Testbed.ViewModel
     private CancellationTokenSource cancellationTokenSource = null;
     private PodcastViewModel currentDownload;
     private String downloadCount;
-    private INewDownloadManager downloadManager;
     private Feed feed;
     private readonly IFeedCollection feedCollection;
     private readonly Int32 feedIndex;
@@ -41,7 +40,6 @@ namespace PodFul.WPF.Testbed.ViewModel
 
       this.PodcastNavigation = new PodcastPageNavigation(this, this.fileDownloadProxyFactory);
       this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
-      //this.DownloadView = new DownloadManagerViewModel();
     }
     #endregion
 
@@ -100,7 +98,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       get { return this.downloadCount; }
       private set { this.SetField(ref this.downloadCount, value); }
     }
-    //public DownloadManagerViewModel DownloadView { get; private set; }
     public String Title { get { return this.feed.Title; } }
     public String Description { get { return this.feed.Description; } }
     public String FeedDirectoryPath
@@ -154,7 +151,6 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
 
       this.cancellationTokenSource.Cancel(true);
-      this.downloadManager?.CancelJobs();
     }
 
     public void InitialiseForScan()
@@ -169,7 +165,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       this.FeedScanState = ProcessingStatus.Idle;
     }
 
-    public void Scan(IDownloadManagerFactory downloadManagerFactory)
+    public void Scan()
     {
       try
       {
@@ -247,7 +243,7 @@ namespace PodFul.WPF.Testbed.ViewModel
         {
           this.DownloadCount = $"[{index + 1}/{podcastIndexes.Count}]";
           this.CurrentDownload = this.PodcastNavigation[podcastIndexes[index]];
-          this.CurrentDownload.ScanDownload(fileDownloader, cancelToken, null);
+          this.CurrentDownload.ScanDownload(fileDownloader, cancelToken);
         }
 
         this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " downloaded");

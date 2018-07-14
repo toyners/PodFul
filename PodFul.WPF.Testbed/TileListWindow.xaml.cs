@@ -64,11 +64,9 @@ namespace PodFul.WPF.Testbed
           feed.InitialiseForScan();
         }
 
-        var mockLogger = new MockLogger();
-        var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
         this.scanner = new Scanner();
         this.scanner.ScanCompletedEvent = this.FullScanCompletedEventHandler;
-        this.scanner.ScanFeeds(this.feedCollectionViewModel.Feeds, downloadManagerFactory);
+        this.scanner.ScanFeeds(this.feedCollectionViewModel.Feeds);
       }
       else if (this.scanState == ScanStates.Running)
       {
@@ -213,8 +211,6 @@ namespace PodFul.WPF.Testbed
       var feedViewModel = (sender as Button).DataContext as FeedViewModel;
 
       feedViewModel.InitialiseForScan();
-      var mockLogger = new MockLogger();
-      var downloadManagerFactory = new DownloadManagerFactory(mockLogger);
       var scanner = new Scanner();
       scanner.ScanCompletedEvent = () =>
       {
@@ -231,7 +227,7 @@ namespace PodFul.WPF.Testbed
 
       this.individualScanCount++;
       this.CommandButton.IsEnabled = false;
-      scanner.ScanFeeds(new[] { feedViewModel }, downloadManagerFactory);
+      scanner.ScanFeeds(new[] { feedViewModel });
     }
   }
 }
