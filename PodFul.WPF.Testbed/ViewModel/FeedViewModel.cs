@@ -11,7 +11,6 @@ namespace PodFul.WPF.Testbed.ViewModel
   using Jabberwocky.Toolkit.WPF;
   using Library;
   using Miscellaneous;
-  using Processing;
   using WPF.Processing;
 
   public class FeedViewModel : NotifyPropertyChangedBase
@@ -24,6 +23,7 @@ namespace PodFul.WPF.Testbed.ViewModel
     private Feed feed;
     private readonly IFeedCollection feedCollection;
     private readonly Int32 feedIndex;
+    private String feedStatusMessage;
     private readonly IFileDownloadProxyFactory fileDownloadProxyFactory;
     private readonly IImageResolver imageResolver;
     private ProcessingStatus scanState;
@@ -111,10 +111,14 @@ namespace PodFul.WPF.Testbed.ViewModel
       }
     }
     public String FeedImage { get { return this.feed.ImageFileName; } }
+    public String FeedStatusMessage
+    {
+      get { return this.feedStatusMessage; }
+      set { this.SetField(ref this.feedStatusMessage, value); }
+    }
     public String FeedURL { get { return this.feed.URL; } }
     public PodcastPageNavigation PodcastNavigation { get; set; }
     public String FeedScanProgressMessage { get; private set; }
-    public String FeedScanFailedMessage { get; private set; }
     public ProcessingStatus FeedScanState
     {
       get { return this.scanState; }
@@ -161,7 +165,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void Reset()
     {
-      this.UpdateScanProgressMessage(String.Empty);
+      this.FeedStatusMessage = String.Empty;
       this.FeedScanState = ProcessingStatus.Idle;
     }
 
@@ -171,7 +175,7 @@ namespace PodFul.WPF.Testbed.ViewModel
       {
         this.FeedScanState = ProcessingStatus.Scanning;
 
-        this.UpdateScanProgressMessage("Processing ...");
+        //this.UpdateScanProgressMessage("Processing ...");
         
         var cancelToken = this.cancellationTokenSource.Token;
         var feedFilePath = Path.Combine(this.feed.Directory, "download.rss");
@@ -180,12 +184,12 @@ namespace PodFul.WPF.Testbed.ViewModel
         // Creating the new feed may have taken a while - check for cancellation before processing podcasts.
         cancelToken.ThrowIfCancellationRequested();
 
-        this.UpdateScanProgressMessage("Searching for new podcasts ...");
+        //this.UpdateScanProgressMessage("Searching for new podcasts ...");
         var podcastIndexes = this.BuildNewPodcastIndexList(this.feed, newFeed);
 
         if (podcastIndexes.Count == 0)
         {
-          this.UpdateScanProgressMessage("No new podcasts found");
+          this.FeedStatusMessage = "No new podcasts found";
           newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
           this.feedCollection.UpdateFeedContent(newFeed);
 
@@ -203,7 +207,7 @@ namespace PodFul.WPF.Testbed.ViewModel
 
             if (downloadConfirmation == DownloadConfirmationStatus.CancelScanning)
             {
-              this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " found [CANCELLED]");
+              this.FeedStatusMessage = podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " found [CANCELLED]";
               this.FeedScanState = ProcessingStatus.Cancelled;
               return;
             }
@@ -219,13 +223,13 @@ namespace PodFul.WPF.Testbed.ViewModel
         }
 
         // Update the feed in storage.
-        this.UpdateScanProgressMessage("Saving feed ... ");
+        //this.UpdateScanProgressMessage("Saving feed ... ");
         newFeed = Feed.SetUpdatedDate(DateTime.Now, newFeed);
         this.feedCollection.UpdateFeedContent(newFeed);
 
         if (downloadConfirmation == DownloadConfirmationStatus.SkipDownloading)
         {
-          this.UpdateScanProgressMessage(podcastIndexes.Count + " podcasts found [SKIPPED]");
+          this.FeedStatusMessage = (podcastIndexes.Count + " podcasts found [SKIPPED]");
           this.FeedScanState = ProcessingStatus.Completed;
           return;
         }
@@ -236,17 +240,18 @@ namespace PodFul.WPF.Testbed.ViewModel
         this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
 
         this.FeedScanState = ProcessingStatus.Downloading;
-        this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
+        //this.UpdateScanProgressMessage("Downloading " + podcastIndexes.Count + " podcasts ...");
 
         var fileDownloader = new FileDownloader();
+        var number = 1;
         for (var index = podcastIndexes.Count - 1; index >= 0; index--)
         {
-          this.DownloadCount = $"[{index + 1}/{podcastIndexes.Count}]";
+          this.DownloadCount = $"[{number++}/{podcastIndexes.Count}]";
           this.CurrentDownload = this.PodcastNavigation[podcastIndexes[index]];
           this.CurrentDownload.ScanDownload(fileDownloader, cancelToken);
         }
 
-        this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " downloaded");
+        //this.UpdateScanProgressMessage(podcastIndexes.Count + " podcast".Pluralize((uint)podcastIndexes.Count) + " downloaded");
 
         this.FeedScanState = ProcessingStatus.Completed;
       }
@@ -273,8 +278,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.UpdateScanProgressMessage("Cancelled");
         this.FeedScanState = ProcessingStatus.Cancelled;
+        this.FeedStatusMessage = "Cancelled";
       });
     }
 
@@ -282,9 +287,8 @@ namespace PodFul.WPF.Testbed.ViewModel
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
-        this.FeedScanFailedMessage = e.Message;
         this.FeedScanState = ProcessingStatus.Failed;
-        this.TryInvokePropertyChanged(new PropertyChangedEventArgs("FeedScanFailedMessage"));
+        this.FeedStatusMessage = e.Message;
       });
     }
 
@@ -312,14 +316,14 @@ namespace PodFul.WPF.Testbed.ViewModel
       return podcastIndexes;
     }
 
-    private void UpdateScanProgressMessage(String progressMessage)
+    /*private void UpdateScanProgressMessage(String progressMessage)
     {
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.FeedScanProgressMessage = progressMessage;
         this.TryInvokePropertyChanged(FeedViewModel.FeedScanProgressMessageArgs);
       });
-    }
+    }*/
     #endregion
   }
 }

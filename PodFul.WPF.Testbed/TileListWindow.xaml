@@ -142,7 +142,7 @@
                   </Button>
                   
                   <!-- Failed message -->
-                  <Button Grid.Column="1" BorderThickness="0" Background="Transparent">
+                  <Button Grid.Column="1" BorderThickness="0" Background="Transparent" ToolTip="{Binding FeedStatusMessage}">
                     <Button.Style>
                       <Style TargetType="Button">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -155,10 +155,12 @@
                     </Button.Style>
 
                     <Image Source="Resources\failed.png" Width="25" Height="25"/>
+
                   </Button>
 
                   <!-- Cancelled image -->
-                  <Image Grid.Column="1" Source="Resources\cancelled.png" Width="25" Height="25">
+                  <Image Grid.Column="1" Source="Resources\cancelled.png" Width="25" Height="25"
+                         ToolTip="{Binding FeedStatusMessage}">
                     <Image.Style>
                       <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Hidden"/>
@@ -172,7 +174,7 @@
                   </Image>
 
                   <!-- Successful image -->
-                  <Image Grid.Column="1" Source="Resources\succeeded.png" >
+                  <Image Grid.Column="1" Source="Resources\succeeded.png" ToolTip="{Binding FeedStatusMessage}" >
                     <Image.Style>
                       <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Hidden"/>
