@@ -116,7 +116,16 @@ namespace PodFul.WPF.Testbed.ViewModel
 
     public void ScanDownload(FileDownloader fileDownloader, CancellationToken cancelToken)
     {
-      this.Download(fileDownloader, cancelToken);
+      try
+      {
+        this.Download(fileDownloader, cancelToken);
+      }
+      catch (OperationCanceledException)
+      {
+        // Download cancelled - nothing more to do
+        this.DownloadState = ProcessingStatus.Idle;
+        throw;
+      }
     }
 
     private void Download(FileDownloader fileDownloader, CancellationToken cancelToken)
