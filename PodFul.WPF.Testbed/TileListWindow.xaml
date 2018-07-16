@@ -141,10 +141,11 @@
                     <Image Source="Resources\download.png" Width="25" Height="25" Margin="0" />
                   </Button>
                   
-                  <!-- Failed message -->
-                  <Button Grid.Column="1" BorderThickness="0" Background="Transparent" ToolTip="{Binding FeedStatusMessage}">
-                    <Button.Style>
-                      <Style TargetType="Button">
+                  <!-- Failed image -->
+                  <Image Grid.Column="1" Source="Resources\failed.png" Width="25" Height="25"
+                         ToolTip="{Binding FeedStatusMessage}">
+                    <Image.Style>
+                      <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Hidden"/>
                         <Style.Triggers>
                           <DataTrigger Binding="{Binding FeedScanState}" Value="Failed">
@@ -152,11 +153,8 @@
                           </DataTrigger>
                         </Style.Triggers>
                       </Style>
-                    </Button.Style>
-
-                    <Image Source="Resources\failed.png" Width="25" Height="25"/>
-
-                  </Button>
+                    </Image.Style>
+                  </Image>
 
                   <!-- Cancelled image -->
                   <Image Grid.Column="1" Source="Resources\cancelled.png" Width="25" Height="25"
