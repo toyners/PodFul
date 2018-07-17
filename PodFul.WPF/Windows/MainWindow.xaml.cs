@@ -22,8 +22,7 @@ namespace PodFul.WPF.Windows
   public partial class MainWindow : Window
   {
     #region Fields
-
-    private const String defaultImageName = "Question-Mark.jpg";
+    private const String defaultImageName = "question-mark.png";
     private FeedCollection feedCollection;
     private Feed currentFeed;
     private ILogController logController;
@@ -67,10 +66,10 @@ namespace PodFul.WPF.Windows
         this.defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
         if (!File.Exists(this.defaultImagePath))
         {
-          Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF." + defaultImageName, this.defaultImagePath);
+          Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF.Resources." + defaultImageName, this.defaultImagePath);
         }
 
-        this.FeedList.ItemsSource = feedCollection.ObservableFeeds;
+        this.FeedList.ItemsSource = this.feedCollection.ObservableFeeds;
         if (this.feedCollection.Count > 0)
         {
           this.FeedList.SelectedIndex = 0;
