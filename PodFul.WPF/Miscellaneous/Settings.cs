@@ -91,10 +91,10 @@ namespace PodFul.WPF.Miscellaneous
       set { this.settingsData.DownloadImagesWhenAddingFeeds = value; }
     }
 
-    public Boolean UseTreeView
+    public Boolean UseTileView
     {
-      get { return this.settingsData.UseTreeView; }
-      set { this.settingsData.UseTreeView = value; }
+      get { return this.settingsData.UseTileView; }
+      set { this.settingsData.UseTileView = value; }
     }
     #endregion
 
@@ -155,7 +155,7 @@ namespace PodFul.WPF.Miscellaneous
 
       public Boolean DownloadImagesWhenAddingFeeds { get; set; }
 
-      public Boolean UseTreeView { get; set; }
+      public Boolean UseTileView { get; set; }
       #endregion
 
       #region Classes

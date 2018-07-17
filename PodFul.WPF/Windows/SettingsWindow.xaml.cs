@@ -115,10 +115,10 @@ namespace PodFul.WPF.Windows
       this.DeliverManualDownloads.IsChecked = this.settings.DeliverManualDownloadsToDeliveryPoints;
       this.HideCompletedJobs.IsChecked = this.settings.HideCompletedJobs;
       this.DownloadImagesWhenAddingFeeds.IsChecked = this.settings.DownloadImagesWhenAddingFeeds;
-      this.UseTreeView.IsChecked = this.settings.UseTreeView;
+      this.UseTileView.IsChecked = this.settings.UseTileView;
 
       this.deliveryPoints = new ObservableCollection<Settings.SettingsData.DeliveryPointData>(this.settings.DeliveryPointData);
-      this.DeliveryPointList.ItemsSource = deliveryPoints;
+      this.DeliveryPointList.ItemsSource = this.deliveryPoints;
     }
 
     private void UpdateSettings()
@@ -129,7 +129,7 @@ namespace PodFul.WPF.Windows
         this.settings.DeliverManualDownloadsToDeliveryPoints = (Boolean)this.DeliverManualDownloads.IsChecked;
         this.settings.HideCompletedJobs = (Boolean)this.HideCompletedJobs.IsChecked;
         this.settings.DownloadImagesWhenAddingFeeds = (Boolean)this.DownloadImagesWhenAddingFeeds.IsChecked;
-        this.settings.UseTreeView = (Boolean)this.UseTreeView.IsChecked;
+        this.settings.UseTileView = (Boolean)this.UseTileView.IsChecked;
         this.settings.Save();
       }
       catch (Exception exception)

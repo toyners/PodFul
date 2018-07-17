@@ -22,7 +22,7 @@ namespace PodFul.WPF
       var settingsPath = WPF.Properties.Settings.Default.SettingsPath;
       var settings = new Settings(settingsPath);
 
-      if (settings.UseTreeView)
+      if (settings.UseTileView)
       {
         var fileLogger = new FileLogger();
         var guiLogger = new UILogger();

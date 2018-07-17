@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PodFul.WPF"
         mc:Ignorable="d"
         Title="Settings" Height="340" Width="600"
         MinHeight="150" MinWidth="150"
@@ -33,7 +32,7 @@
 
         <CheckBox Name="HideCompletedJobs" Grid.Row="1" VerticalAlignment="Center" Margin="5,0">Hide Completed Jobs</CheckBox>
         <CheckBox Name="DownloadImagesWhenAddingFeeds" Grid.Row="2" VerticalAlignment="Center" Margin="5,0">Download images when adding feeds</CheckBox>
-        <CheckBox Name="UseTreeView" Grid.Row="3" VerticalAlignment="Center" Margin="5,0">Use Tree View (Requires Restart)</CheckBox>
+        <CheckBox Name="UseTileView" Grid.Row="3" VerticalAlignment="Center" Margin="5,0">Use Tile View (Requires Restart)</CheckBox>
       </Grid>
     </Border>
 

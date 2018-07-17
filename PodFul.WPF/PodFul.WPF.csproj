@@ -41,7 +41,7 @@
     <ApplicationIcon>Windows\baggage_cart_box_tE4_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="FSharp.Core, Version=4.4.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Jabberwocky.Toolkit, Version=1.0.7.9, Culture=neutral, PublicKeyToken=8994d5f40ad2f5fb, processorArchitecture=MSIL">
       <HintPath>..\packages\Jabberwocky.Toolkit.1.0.7.9\lib\net45\Jabberwocky.Toolkit.dll</HintPath>
     </Reference>
