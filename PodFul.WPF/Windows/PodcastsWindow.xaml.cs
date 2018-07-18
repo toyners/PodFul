@@ -86,7 +86,7 @@ namespace PodFul.WPF.Windows
     private void PropertiesMenuItemClick(Object sender, RoutedEventArgs e)
     {
       var podcast = PodcastList.SelectedItem as Podcast;
-      var podcastProperties = new PodcastProperties(podcast, this.feedDirectory);   
+      var podcastProperties = new PodFul.WPF.Miscellaneous.PodcastProperties(podcast, this.feedDirectory);   
       var propertiesWindow = new PodcastPropertiesWindow(podcastProperties);
       propertiesWindow.Owner = this;
 

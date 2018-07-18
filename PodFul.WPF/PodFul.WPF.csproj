@@ -83,6 +83,9 @@
     <Compile Include="Logging\LogController.cs" />
     <Compile Include="Logging\ILogController.cs" />
     <Compile Include="Logging\FileDeliveryLogger.cs" />
+    <Compile Include="Processing\TileView\IFileDownloadProxyFactory.cs" />
+    <Compile Include="Processing\TileView\IFileDownloadProxy.cs" />
+    <Compile Include="Processing\TileView\Scanner.cs" />
     <Compile Include="UI Support\DataGridExtensions.cs" />
     <Compile Include="Miscellaneous\DeliveryPointCreator.cs" />
     <Compile Include="Miscellaneous\IFeedCollection.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="Processing\PodcastDownloadConfirmer.cs" />
     <Compile Include="UI Support\JobCountDisplayManager.cs" />
     <Compile Include="UI Support\IJobCountDisplayComponent.cs" />
+    <Compile Include="ViewModel\TileView\FeedViewModel.cs" />
     <Compile Include="ViewModel\IPageNavigation.cs" />
     <Compile Include="ViewModel\IPodcastViewModel.cs" />
     <Compile Include="ViewModel\FeedViewModelBad.cs" />
@@ -115,7 +119,12 @@
     <Compile Include="ViewModel\FeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\PageNavigation.cs" />
+    <Compile Include="ViewModel\TileView\PodcastPageNavigation.cs" />
+    <Compile Include="ViewModel\TileView\PodcastPageViewModel.cs" />
+    <Compile Include="ViewModel\TileView\PodcastViewModel.cs" />
     <Compile Include="ViewModel\PodcastViewModelBad.cs" />
+    <Compile Include="ViewModel\TileView\ProcessingStatus.cs" />
+    <Compile Include="ViewModel\TileView\TileListViewModel.cs" />
     <Compile Include="ViewModel\TreeViewItemViewModelBad.cs" />
     <Compile Include="Windows\DeliveryPointWindow.xaml.cs">
       <DependentUpon>DeliveryPointWindow.xaml</DependentUpon>
@@ -159,6 +168,12 @@
     </Compile>
     <Compile Include="Windows\RetryWindow.xaml.cs">
       <DependentUpon>RetryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TileView\TileListWindow.xaml.cs">
+      <DependentUpon>TileListWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TileView\PodcastProperties.xaml.cs">
+      <DependentUpon>PodcastProperties.xaml</DependentUpon>
     </Compile>
     <Page Include="PodFulResourceDictionary.xaml">
       <SubType>Designer</SubType>
@@ -227,6 +242,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\TileView\TileListWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\TileView\PodcastProperties.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -242,6 +265,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\information.png" />
+    <Resource Include="Resources\cancel.png" />
+    <Resource Include="Resources\succeeded.png" />
+    <Resource Include="Resources\cancelled.png" />
+    <Resource Include="Resources\failed.png" />
+    <Resource Include="Resources\download.png" />
     <EmbeddedResource Include="Resources\question-mark.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

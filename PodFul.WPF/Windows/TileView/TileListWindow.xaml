@@ -1,0 +1,526 @@
+﻿<Window x:Class="PodFul.WPF.Windows.TileListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Tile List" Height="600" Width="1000" 
+        MinHeight="150" MinWidth="150"
+        WindowStartupLocation="CenterScreen">
+  <Window.Resources>
+    <SolidColorBrush x:Key="GlyphBrush" Color="Black" />
+    <SolidColorBrush x:Key="DisabledBrush" Color="LightGray" />
+    <ControlTemplate x:Key="toggleButtonTemplate" TargetType="ToggleButton">
+      <Grid Height="25" Background="Transparent">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="15" />
+          <ColumnDefinition Width="28" />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Path Grid.Column="0" x:Name="ExpandPath" HorizontalAlignment="Left" 
+              VerticalAlignment="Center"  Margin="1,1,1,1" Fill="{StaticResource GlyphBrush}"
+              Data="M 4 0 L 8 4 L 4 8 Z"/>
+
+        <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,3,0" Width="25" Height="25"/>
+
+        <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" VerticalAlignment="Center"/>
+
+      </Grid>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsChecked"
+                 Value="True">
+          <Setter Property="Data"
+                  TargetName="ExpandPath"
+                  Value="M 0 4 L 8 4 L 4 8 Z"/>
+        </Trigger>
+        <Trigger Property="IsEnabled"
+                 Value="False">
+          <Setter Property="Fill"
+                  TargetName="ExpandPath"
+                  Value="{StaticResource DisabledBrush}" />
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+  </Window.Resources>
+
+  <DockPanel Margin="5">
+
+    <!-- Feed and scan action bar -->
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
+          <Button Width="70" Style="{StaticResource StandardButton}"  Click="AddFeedButtonClick">Add</Button>
+          <Button Name="RemoveButton" Width="70" Style="{StaticResource StandardButton}" Click="RemoveFeedClick" IsEnabled="False">Remove</Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
+          <Button Width="70" Style="{StaticResource StandardButton}"  Click="SettingsButtonClick">Settings</Button>
+          <Button Name="CommandButton" Width="70" Click="CommandButtonClick" Style="{StaticResource StandardButton}">Scan All</Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Feed tile list -->
+    <Border Margin="0,0,0,5" BorderBrush="Black" BorderThickness="1">
+      <ScrollViewer Name="FeedList_Scroller" VerticalScrollBarVisibility="Visible" >
+        <ListBox Name="FeedList" HorizontalContentAlignment="Stretch" SelectionChanged="FeedList_SelectionChanged"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="FeedList_MouseDoubleClick"
+                   PreviewMouseWheel="FeedList_MouseWheel" ItemsSource="{Binding Feeds}">
+
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Grid Name="FeedContent" Margin="0,2">
+
+                <!-- 
+                Two rows: First row is feed title bar containing toggle button and feed title 
+                (and scan controls: text and cancel button)
+                Second row is the feed content panel and is collapsed by default. It contains the
+                podcast list, feed details and feed settings.
+                -->
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!-- Feed title bar -->
+                <Grid Name="FeedTitleBar" Grid.Row="0" Height="27">
+
+                  <Grid.Style>
+                    <Style TargetType="Grid">
+                      <Setter Property="Visibility" Value="Visible"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding ScanRunning}" Value="true">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
+
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="25"/>
+                  </Grid.ColumnDefinitions>
+
+                  <ToggleButton Name="MainToggleButton" Grid.Column="0" VerticalAlignment="Top">
+                    <ToggleButton.Style>
+                      <Style TargetType="ToggleButton">
+                        <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
+                        <Setter Property="IsEnabled" Value="true"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding ScanRunning}" Value="True">
+                            <Setter Property="IsChecked" Value="False" />
+                            <Setter Property="IsEnabled" Value="False" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding ScanFinished}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </ToggleButton.Style>
+                  </ToggleButton>
+                  
+                  <!-- Scan button -->
+                  <Button Grid.Column="1" Click="FeedScanButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center" Background="Transparent">
+                    <Button.Style>
+                      <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Idle">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Button.Style>
+
+                    <Image Source="..\..\Resources\download.png" Width="25" Height="25" Margin="0" />
+                  </Button>
+                  
+                  <!-- Failed image -->
+                  <Image Grid.Column="1" Source="..\..\Resources\failed.png" Width="25" Height="25"
+                         ToolTip="{Binding FeedStatusMessage}">
+                    <Image.Style>
+                      <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Failed">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Image.Style>
+                  </Image>
+
+                  <!-- Cancelled image -->
+                  <Image Grid.Column="1" Source="..\..\Resources\cancelled.png" Width="25" Height="25"
+                         ToolTip="{Binding FeedStatusMessage}">
+                    <Image.Style>
+                      <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Cancelled">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Image.Style>
+                  </Image>
+
+                  <!-- Successful image -->
+                  <Image Grid.Column="1" Source="..\..\Resources\succeeded.png" ToolTip="{Binding FeedStatusMessage}" >
+                    <Image.Style>
+                      <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Completed">
+                            <Setter Property="Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Image.Style>
+                  </Image>
+                </Grid>
+
+                <!-- Feed scanning bar -->
+                <Grid Name="FeedScanBar" Grid.Row="0" Height="27">
+                  <Grid.Style>
+                    <Style TargetType="Grid">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding ScanRunning}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
+
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="28" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="30"/>
+                  </Grid.ColumnDefinitions>
+
+                  <Image Grid.Column="1" Source="{Binding FeedImage}" Margin="0,0,3,0" Width="25" Height="25" />
+
+                  <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" Text="{Binding Title}" VerticalAlignment="Center"/>
+
+                  <!-- Download progress for scanning -->
+                  <Grid Grid.Column="3">
+                    <Grid.Style>
+                      <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding FeedScanState}" Value="Downloading">
+                            <Setter Property="Visibility" Value="Visible"/>
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Grid.Style>
+                    
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="4"/>
+                      <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <ProgressBar Grid.Row="0" Margin="0" Height="4" 
+                                 Value="{Binding CurrentDownload.ProgressValue, Mode=OneWay}" 
+                                 IsIndeterminate="{Binding CurrentDownload.UseMarqueProgressStyle}" />
+
+                    <Grid Grid.Row="1" Height="16">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="50"/>
+                      </Grid.ColumnDefinitions>
+
+                      <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding DownloadCount}" FontSize="12" FontWeight="Bold" />
+
+                      <TextBlock Grid.Column="1" Padding="0" FontSize="12" Text="{Binding CurrentDownload.Title}" />
+
+                      <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding CurrentDownload.ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding CurrentDownload.ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding CurrentDownload.ProgressUnit}" FontSize="10" FontWeight="Bold"/>
+                      </StackPanel>
+                    </Grid>
+                  </Grid>
+
+                    <!-- Cancel button -->
+                  <Button Grid.Column="4" Click="FeedCancelButtonClick" Padding="0" BorderThickness="0" VerticalAlignment="Center" Margin="5,0,0,0">
+                    <Image Source="..\..\Resources\cancel.png" Width="25" Height="25" Margin="0"/>
+                  </Button>
+                </Grid>
+
+                <!-- Feed content panel -->
+                <Grid Name="FeedContentPanel" Grid.Row="1" Margin="0,2">
+
+                  <!-- 
+                  Grid is styled to be collapsed initally (i.e. MainToggleButton.IsChecked = false). 
+                  When the MainToggleButton.IsChecked = true then the grid is made visible (i.e. expanded)
+                  -->
+                  <Grid.Style>
+                    <Style TargetType="Grid">
+                      <Setter Property="Visibility" Value="Collapsed"/>
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=MainToggleButton, Path=IsChecked}" Value="True">
+                          <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ScanRunning}" Value="True">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ScanFinished}" Value="True">
+                          <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
+
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+
+                  <!-- Tab control with three panels: Podcast list, feed settings and feed details -->
+                  <TabControl Grid.Column="1" Height="158">
+
+                    <TabItem Header="Podcasts" >
+
+                      <!-- Dock panel contains Podcast list and podcast page navigation controls -->
+                      <DockPanel Name="PodcastListPanel" Grid.Column="1" Margin="0,2" DataContext="{Binding PodcastNavigation}">
+                        <StackPanel Name="PodcastPageNavigationControls" Orientation="Horizontal" DockPanel.Dock="Bottom">
+                          <Button Margin="0,2,1,0" IsEnabled="{Binding CanMoveBack}" Click="FirstPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Latest" />
+                          <Button Margin="1,2,1,0" IsEnabled="{Binding CanMoveBack}" Click="PreviousPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Newer" />
+                          <TextBox Margin="1,2,1,1" Text="{Binding PageNumber, Mode=TwoWay}" HorizontalContentAlignment="Center" 
+                                   VerticalContentAlignment="Center" Width="20"/>
+                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="of" Margin="5,2,1,1"
+                                     Width="15"/>
+                          <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding TotalPages}" 
+                                     Margin="0,2,-2,1" Width="20" />
+                          <Button Margin="1,2,1,1" IsEnabled="{Binding CanMoveForward}" Click="NextPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Older" />
+                          <Button Margin="1,2,0,1" IsEnabled="{Binding CanMoveForward}" Click="LastPageClick" Width="60" 
+                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Oldest" />
+                        </StackPanel>
+
+                        <ListBox Name="PodcastList" DataContext="{Binding CurrentPage}" 
+                                 ItemsSource="{Binding PodcastViewModels}" HorizontalContentAlignment="Stretch">
+                          <ListBox.ItemTemplate>
+                            <DataTemplate>
+                              <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                  <ColumnDefinition Width="28"/>
+                                  <ColumnDefinition />
+                                  <ColumnDefinition Width="180"/>
+                                  <ColumnDefinition Width="28"/>
+                                  <ColumnDefinition Width="28"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="{Binding PodcastImage}" Margin="0,0,3,0" Width="25" Height="25"/>
+
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" VerticalAlignment="Center" />
+
+                                <!-- Individual podcast download progress -->
+                                <Grid Grid.Column="2" Margin="0,0,10,0">
+                                  <Grid.Style>
+                                    <Style TargetType="Grid">
+                                      <Setter Property="Visibility" Value="Hidden"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                                          <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Grid.Style>
+
+                                  <Grid.RowDefinitions>
+                                    <RowDefinition Height="4"/>
+                                    <RowDefinition />
+                                  </Grid.RowDefinitions>
+
+                                  <ProgressBar Grid.Row="0" Margin="0" Height="4" 
+                                               Value="{Binding ProgressValue, Mode=OneWay}" 
+                                               IsIndeterminate="{Binding UseMarqueProgressStyle}" />
+
+                                  <Grid Grid.Row="1" Height="16">
+                                    <Grid.ColumnDefinitions>
+                                      <ColumnDefinition />
+                                      <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                      <TextBlock Text="{Binding ProgressMajorSize}" FontSize="12" FontWeight="Bold"/>
+                                      <TextBlock Text="{Binding ProgressMinorSize}" FontSize="10" FontWeight="Bold"/>
+                                      <TextBlock Text="{Binding ProgressUnit}" FontSize="10" FontWeight="Bold"/>
+                                    </StackPanel>
+                                  </Grid>
+                                </Grid>
+
+                                <Button Grid.Column="3" Click="PodcastInfoClick" Padding="0" BorderThickness="0" 
+                                        VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent">
+                                  <Image Source="..\..\Resources\information.png" Width="25" Height="25" Margin="0"/>
+                                </Button>
+
+                                <Button Grid.Column="4" Click="DownloadPodcastClick" Padding="0" BorderThickness="0" 
+                                        VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent">
+                                  <Button.Style>
+                                    <Style TargetType="Button">
+                                      <Setter Property="Visibility" Value="Visible"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                                          <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Failed">
+                                          <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Button.Style>
+                                  <Image Source="..\..\Resources\download.png" Width="25" Height="25" Margin="0"/>
+                                </Button>
+
+                                <Button Grid.Column="4" Click="CancelDownloadClick" Padding="0" BorderThickness="0" 
+                                        VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent">
+                                  <Button.Style>
+                                    <Style TargetType="Button">
+                                      <Setter Property="Visibility" Value="Hidden"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Downloading">
+                                          <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Button.Style>
+                                  <Image Source="..\..\Resources\cancel.png" Width="25" Height="25" Margin="0"/>
+                                </Button>
+
+                                <Button Grid.Column="4" Click="DownloadPodcastClick" Padding="0" BorderThickness="0" 
+                                        VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent">
+                                  
+                                  <Button.Style>
+                                    <Style TargetType="Button">
+                                      <Setter Property="Visibility" Value="Hidden"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DownloadState}" Value="Failed">
+                                          <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                    </Style>
+                                  </Button.Style>
+
+                                  <Button.ToolTip>
+                                    <ToolTip>
+                                      <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{Binding FailedMessage}" />
+                                        <TextBlock Text="Click to restart download" />
+                                      </StackPanel>
+                                    </ToolTip>
+                                  </Button.ToolTip>
+
+                                  <Image Source="..\..\Resources\failed.png" Width="25" Height="25" Margin="0"/>
+                                </Button>
+                                
+                              </Grid>
+                            </DataTemplate>
+                          </ListBox.ItemTemplate>
+                        </ListBox>
+                      </DockPanel>
+                    </TabItem>
+
+                    <TabItem Header="Settings">
+                      <StackPanel>
+
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="40"/>
+                          </Grid.ColumnDefinitions>
+
+                          <Label Grid.Column="0" VerticalAlignment="Center" Height="26" Margin="0,1">Directory:</Label>
+                          <TextBox Name="FeedDirectoryPath" Grid.Column="1" VerticalAlignment="Center" Height="20"
+                                   Text="{Binding Path=FeedDirectoryPath, Mode=OneWay}" TextChanged="FeedDirectoryPathTextChanged" />
+                          <Button Grid.Column="2" Margin="5,0" Height="20" HorizontalAlignment="Left" 
+                                  Click="ChangeFeedDirectoryClick" Width="30">...</Button>
+                        </Grid>
+
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="100"/>
+                          </Grid.ColumnDefinitions>
+
+                          <Label Grid.Column="0">Download Confirmation Threshold:</Label>
+                          <TextBox Name="ConfirmDownloadThreshold" Grid.Column="1" VerticalAlignment="Center" TextChanged="DownloadConfirmationThresholdTextChanged"
+                                   Text="{Binding Path=ConfirmDownloadThreshold, Mode=OneWay}" Height="20" />
+                        </Grid>
+
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                          </Grid.ColumnDefinitions>
+
+                          <CheckBox Grid.Column="1" IsChecked="{Binding DoScan}">Include in Scan All</CheckBox>
+                          <CheckBox Grid.Column="2" IsChecked="{Binding CompleteDownloadsOnScan}">Perform Downloads</CheckBox>
+                          <CheckBox Grid.Column="3" IsChecked="{Binding DeliverDownloadsOnScan}" 
+                                    Margin="5,0" HorizontalAlignment="Right">Deliver Downloads</CheckBox>
+                        </Grid>
+
+                      </StackPanel>
+                    </TabItem>
+
+                    <TabItem Header="Details">
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="80" />
+                          <ColumnDefinition />
+                          <ColumnDefinition Width="50"/>
+                          <ColumnDefinition Width="130"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                          <RowDefinition />
+                          <RowDefinition />
+                          <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0" Grid.Row="0" Margin="2,0" VerticalAlignment="Center" Text="Description:" />
+                        <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Text="{Binding Description, Mode=OneWay}" />
+                        <TextBlock Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" Text="Count:" />
+                        <TextBlock Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,4,0"
+                                   HorizontalAlignment="Right" Text="{Binding PodcastCount, Mode=OneWay}" />
+
+                        <TextBlock Grid.Column="0" Grid.Row="1" Margin="2,0" VerticalAlignment="Center" Text="Feed URL:" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Text="{Binding FeedURL, Mode=OneWay}" />
+                        <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" Text="Created:" />
+                        <TextBlock Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,4,0"
+                                   HorizontalAlignment="Right" Text="{Binding CreatedDate, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
+
+                        <TextBlock Grid.Column="0" Grid.Row="2" Margin="2,0" VerticalAlignment="Center" Text="Feed Website:" />
+                        <TextBlock Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Text="{Binding WebsiteURL, Mode=OneWay}" />
+                        <TextBlock Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Text="Updated:" />
+                        <TextBlock Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Margin="0,0,4,0"
+                                   HorizontalAlignment="Right" Text="{Binding UpdatedDate, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
+                      </Grid>
+                    </TabItem>
+                  </TabControl>
+                </Grid>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </ScrollViewer>
+    </Border>
+  </DockPanel>
+</Window>

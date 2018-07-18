@@ -1,0 +1,77 @@
+﻿<Window x:Class="PodFul.WPF.Windows.PodcastProperties"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Properties" Height="220" Width="800"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
+  <DockPanel Margin="5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+      <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+        <Button Name="CloseButton" IsDefault="True" Width="70"  
+              VerticalContentAlignment="Center" Click="CloseButton_Click" Style="{StaticResource StandardButton}">Close</Button>
+      </StackPanel>
+    </Border>
+
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,0,2.5" >
+      <Grid>
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Source="{Binding PodcastImage}" Grid.Column="0" Margin="2" />
+
+        <Grid Grid.Column="1">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Label VerticalAlignment="Center">Description:</Label>
+            <TextBlock  Text="{Binding Description}" VerticalAlignment="Center" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,5,0" >
+            <Label VerticalAlignment="Center">URL:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Path=URL}" TextWrapping="Wrap" />
+          </StackPanel>
+
+          <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Label VerticalAlignment="Center">File:</Label>
+            <TextBlock VerticalAlignment="Center" Text="{Binding FilePath}" />
+          </StackPanel>
+
+          <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition />
+              <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+              <Label VerticalAlignment="Center">Published:</Label>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Path=PublishedDate, Converter={StaticResource GeneralDateTimeConverter}}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+              <Label VerticalAlignment="Center">Downloaded:</Label>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Path=DownloadDate, Converter={StaticResource DownloadDateTimeConverter}}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
+              <Label VerticalAlignment="Center">Size:</Label>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Path=FileSize, Converter={StaticResource FileSizeConverter}}" />
+            </StackPanel>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Border>
+  </DockPanel>
+</Window>

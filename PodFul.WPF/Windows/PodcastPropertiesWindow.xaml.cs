@@ -12,7 +12,7 @@ namespace PodFul.WPF.Windows
   public partial class PodcastPropertiesWindow : Window
   {
     #region Construction
-    public PodcastPropertiesWindow(PodcastProperties properties)
+    public PodcastPropertiesWindow(PodFul.WPF.Miscellaneous.PodcastProperties properties)
     {
       InitializeComponent();
       this.Title = properties.Title;
