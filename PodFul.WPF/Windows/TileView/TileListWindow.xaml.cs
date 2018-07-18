@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.WPF.Windows
+namespace PodFul.WPF.Windows.TileView
 {
   using System;
   using System.Threading.Tasks;
@@ -7,9 +7,9 @@ namespace PodFul.WPF.Windows
   using System.Windows.Controls;
   using System.Windows.Input;
   using Jabberwocky.Toolkit.Path;
-  using Processing;
+  using PodFul.WPF.Processing.TileView;
+  using PodFul.WPF.ViewModel.TileView;
   using ViewModel;
-  using Windows;
 
   /// <summary>
   /// Interaction logic for TileListWindow.xaml

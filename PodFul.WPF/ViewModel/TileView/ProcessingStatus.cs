@@ -1,5 +1,5 @@
 ﻿
-namespace PodFul.WPF.ViewModel
+namespace PodFul.WPF.ViewModel.TileView
 {
   public enum ProcessingStatus
   {

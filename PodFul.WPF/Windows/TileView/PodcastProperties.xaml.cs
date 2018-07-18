@@ -1,7 +1,7 @@
 ﻿
-namespace PodFul.WPF.Windows
+namespace PodFul.WPF.Windows.TileView
 {
-  using PodFul.WPF.ViewModel;
+  using PodFul.WPF.ViewModel.TileView;
   using System;
   using System.Windows;
 

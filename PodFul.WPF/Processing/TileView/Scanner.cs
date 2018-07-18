@@ -1,12 +1,12 @@
 ﻿
-namespace PodFul.WPF.Processing
+namespace PodFul.WPF.Processing.TileView
 {
   using System;
   using System.Collections.Concurrent;
   using System.Collections.Generic;
   using System.Threading;
   using System.Threading.Tasks;
-  using ViewModel;
+  using PodFul.WPF.ViewModel.TileView;
 
   public class Scanner
   {
