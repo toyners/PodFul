@@ -5,9 +5,10 @@ using System.Windows;
 using PodFul.Library;
 using PodFul.WPF.Logging;
 using PodFul.WPF.Miscellaneous;
-using PodFul.WPF.Processing;
-using PodFul.WPF.ViewModel;
+using PodFul.WPF.Processing.TileView;
+using PodFul.WPF.ViewModel.TileView;
 using PodFul.WPF.Windows;
+using PodFul.WPF.Windows.TileView;
 
 namespace PodFul.WPF
 {
@@ -21,7 +22,7 @@ namespace PodFul.WPF
       var feedDirectory = WPF.Properties.Settings.Default.FeedDirectory;
       var settingsPath = WPF.Properties.Settings.Default.SettingsPath;
       var settings = new Settings(settingsPath);
-
+      Window mainWindow;
       if (settings.UseTileView)
       {
         var fileLogger = new FileLogger();
@@ -36,16 +37,18 @@ namespace PodFul.WPF
           { LoggerKeys.CombinedKey, combinedLogger },
           { LoggerKeys.UiKey, guiLogger}});
         var feedStorage = new JSONFileStorage(feedDirectory);
-        var feedProcessor = new FeedProcessor(feedStorage, logController);
-        var feedCollectionViewModel = new FeedCollectionViewModelBad(feedProcessor, logController, null);
-        var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
-        mainWindow.ShowDialog();
+        var feedCollection = new FeedCollection(feedStorage);
+        var fileDownloadProxyFactory = new FileDownloadProxyFactory();
+        var feedCollectionViewModel = new TileListViewModel(feedCollection, fileDownloadProxyFactory);
+        mainWindow = new TileListWindow(feedCollectionViewModel);
       }
       else
       {
-        var mainWindow = new MainWindow(settings, feedDirectory);
+        mainWindow = new MainWindow(settings, feedDirectory);
         mainWindow.ShowDialog();
       }
+
+      mainWindow.ShowDialog();
     }
   }
 }

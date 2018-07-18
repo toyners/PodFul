@@ -72,6 +72,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Processing\TileView\FileDownloadProxy.cs" />
+    <Compile Include="Processing\TileView\FileDownloadProxyFactory.cs" />
     <Compile Include="Logging\IFileDeliveryLogger.cs" />
     <Compile Include="Logging\LoggerKeys.cs" />
     <Compile Include="Miscellaneous\JobCollectionFactory.cs" />
