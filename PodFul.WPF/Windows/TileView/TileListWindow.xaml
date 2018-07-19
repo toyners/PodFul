@@ -138,7 +138,7 @@
                       </Style>
                     </Button.Style>
 
-                    <Image Source="..\..\Resources\download.png" Width="25" Height="25" Margin="0" />
+                    <Image Source="..\..\Resources\scan.png" Width="25" Height="25" Margin="0" />
                   </Button>
                   
                   <!-- Failed image -->

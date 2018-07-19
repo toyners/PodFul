@@ -267,6 +267,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\scan.png" />
     <Resource Include="Resources\information.png" />
     <Resource Include="Resources\cancel.png" />
     <Resource Include="Resources\succeeded.png" />
