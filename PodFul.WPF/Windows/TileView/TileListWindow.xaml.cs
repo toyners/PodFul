@@ -7,6 +7,8 @@ namespace PodFul.WPF.Windows.TileView
   using System.Windows.Controls;
   using System.Windows.Input;
   using Jabberwocky.Toolkit.Path;
+  using PodFul.Library;
+  using PodFul.WPF.Processing;
   using PodFul.WPF.Processing.TileView;
   using PodFul.WPF.ViewModel.TileView;
   using ViewModel;
@@ -31,7 +33,23 @@ namespace PodFul.WPF.Windows.TileView
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)
     {
+      // Use dialog to get the feed directory and url.
+      AddFeedToken addFeedToken;
+      if (!this.TryGetFeedCreationData(out addFeedToken))
+      {
+        return;
+      }
 
+      // Open dialog to show progress of adding new feed to the feed processor.
+      var addFeedProgressWindow = new AddFeedProgressWindow(this.feedCollectionViewModel, addFeedToken);
+      addFeedProgressWindow.Owner = this;
+      addFeedProgressWindow.ShowDialog();
+      Feed feed = addFeedProgressWindow.Feed;
+      if (feed == null)
+      {
+        // Cancelled or Faulted - nothing more to be done.
+        return;
+      }
     }
 
     private void RemoveFeedClick(Object sender, RoutedEventArgs e)
@@ -42,6 +60,22 @@ namespace PodFul.WPF.Windows.TileView
     private void SettingsButtonClick(Object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private Boolean TryGetFeedCreationData(out AddFeedToken addFeedToken)
+    {
+      addFeedToken = default(AddFeedToken);
+
+      var addFeedWindow = new AddFeedWindow();
+      addFeedWindow.Owner = this;
+      var dialogResult = addFeedWindow.ShowDialog();
+      if (!dialogResult.HasValue || !dialogResult.Value)
+      {
+        return false;
+      }
+
+      addFeedToken = new AddFeedToken(addFeedWindow.FeedDirectory, addFeedWindow.FeedURL, "");
+      return true;
     }
 
     private enum ScanStates

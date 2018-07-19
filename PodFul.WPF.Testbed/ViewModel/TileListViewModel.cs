@@ -5,6 +5,7 @@ namespace PodFul.WPF.Testbed.ViewModel
   using System.Collections.ObjectModel;
   using System.Threading;
   using Miscellaneous;
+  using PodFul.WPF.Processing;
   using WPF.Windows;
 
   public class TileListViewModel

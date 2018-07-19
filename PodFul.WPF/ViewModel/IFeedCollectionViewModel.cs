@@ -4,7 +4,7 @@ namespace PodFul.WPF.ViewModel
   using System;
   using System.Collections.ObjectModel;
   using System.Threading;
-  using Windows;
+  using PodFul.WPF.Processing;
 
   public interface IFeedCollectionViewModel
   {

@@ -72,6 +72,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Processing\AddFeedToken.cs" />
     <Compile Include="Processing\TileView\FileDownloadProxy.cs" />
     <Compile Include="Processing\TileView\FileDownloadProxyFactory.cs" />
     <Compile Include="Logging\IFileDeliveryLogger.cs" />
