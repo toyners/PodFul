@@ -13,7 +13,6 @@ namespace PodFul.WPF.Windows.TileView
   using PodFul.WPF.Processing;
   using PodFul.WPF.Processing.TileView;
   using PodFul.WPF.ViewModel.TileView;
-  using ViewModel;
 
   /// <summary>
   /// Interaction logic for TileListWindow.xaml
@@ -26,7 +25,7 @@ namespace PodFul.WPF.Windows.TileView
     private Int32 individualDownloadCount;
     private Settings settings;
 
-    public TileListWindow(TileListViewModel feedCollectionViewModel, Settings settngs)
+    public TileListWindow(TileListViewModel feedCollectionViewModel, Settings settings)
     {
       feedCollectionViewModel.VerifyThatObjectIsNotNull("Parameter 'feedCollectionViewModel' is null.");
       settings.VerifyThatObjectIsNotNull("Parameter 'settngs' is null.");

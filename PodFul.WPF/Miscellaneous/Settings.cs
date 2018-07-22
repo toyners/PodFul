@@ -71,6 +71,12 @@ namespace PodFul.WPF.Miscellaneous
       set { this.settingsData.ConcurrentDownloadCount = value; }
     }
 
+    public UInt32 ConcurrentScanCount
+    {
+      get { return this.settingsData.ConcurrentScanCount; }
+      set { this.settingsData.ConcurrentScanCount = value; }
+    }
+
     public Boolean DeliverManualDownloadsToDeliveryPoints
     {
       get { return this.settingsData.DeliverManualDownloads; }
@@ -146,6 +152,8 @@ namespace PodFul.WPF.Miscellaneous
     {
       #region Properties
       public UInt32 ConcurrentDownloadCount { get; set; }
+
+      public UInt32 ConcurrentScanCount { get; set; }
 
       public Boolean DeliverManualDownloads { get; set; }
 

@@ -6,6 +6,7 @@ namespace PodFul.WPF.ViewModel
   using System.Collections.ObjectModel;
   using System.ComponentModel;
   using Jabberwocky.Toolkit.WPF;
+  using PodFul.WPF.ViewModel.TileView;
 
   public abstract class PageNavigation<T, U> : NotifyPropertyChangedBase, IPageNavigation where T : class where U : class
   {

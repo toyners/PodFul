@@ -1,0 +1,38 @@
+﻿<Window x:Class="PodFul.WPF.Windows.TileView.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Settings" Height="160" Width="600"
+        MinHeight="150" MinWidth="150"
+        Icon="..\baggage_cart_box_tE4_icon.ico" Closing="WindowClosing"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner" >
+  <DockPanel Margin="5">
+    <Border BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom" >
+      <Button HorizontalAlignment="Right" Width="70" IsDefault="True" Click="CloseButtonClick" Style="{StaticResource ResourceKey=StandardButton}">Close</Button>
+    </Border>
+
+    <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,2.5,5" DockPanel.Dock="Top">
+      <Grid Margin="-1,0,1,0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="17pt"/>
+          <RowDefinition Height="17pt"/>
+          <RowDefinition Height="17pt"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="5.5*"/>
+          <ColumnDefinition Width="7.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Margin="6,2" VerticalAlignment="Center">Concurrent Scan Count:</TextBlock>
+        <TextBox Grid.Column="1" Name="ConcurrentScanCount" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" HorizontalContentAlignment="Right" Height="17px">2</TextBox>
+
+        <CheckBox Name="DownloadImagesWhenAddingFeeds" Grid.Row="1" VerticalAlignment="Center" Margin="5,0">Download images when adding feeds</CheckBox>
+        <CheckBox Name="UseTileView" Grid.Row="2" VerticalAlignment="Center" Margin="5,0">Use Tile View (Requires Restart)</CheckBox>
+      </Grid>
+    </Border>
+
+  </DockPanel>
+</Window>

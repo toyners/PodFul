@@ -115,7 +115,7 @@
     <Compile Include="UI Support\JobCountDisplayManager.cs" />
     <Compile Include="UI Support\IJobCountDisplayComponent.cs" />
     <Compile Include="ViewModel\TileView\FeedViewModel.cs" />
-    <Compile Include="ViewModel\IPageNavigation.cs" />
+    <Compile Include="ViewModel\TileView\IPageNavigation.cs" />
     <Compile Include="ViewModel\IPodcastViewModel.cs" />
     <Compile Include="ViewModel\FeedViewModelBad.cs" />
     <Compile Include="ViewModel\IFeedViewModel.cs" />
@@ -171,6 +171,9 @@
     </Compile>
     <Compile Include="Windows\RetryWindow.xaml.cs">
       <DependentUpon>RetryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TileView\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TileView\TileListWindow.xaml.cs">
       <DependentUpon>TileListWindow.xaml</DependentUpon>
@@ -244,6 +247,10 @@
     <Page Include="Windows\RetryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TileView\SettingsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\TileView\TileListWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
