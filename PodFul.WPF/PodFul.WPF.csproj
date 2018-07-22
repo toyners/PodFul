@@ -121,7 +121,6 @@
     <Compile Include="ViewModel\IFeedViewModel.cs" />
     <Compile Include="ViewModel\FeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
-    <Compile Include="ViewModel\PageNavigation.cs" />
     <Compile Include="ViewModel\TileView\PodcastPageNavigation.cs" />
     <Compile Include="ViewModel\TileView\PodcastPageViewModel.cs" />
     <Compile Include="ViewModel\TileView\PodcastViewModel.cs" />
