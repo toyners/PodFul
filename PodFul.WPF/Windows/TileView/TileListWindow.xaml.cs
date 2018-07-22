@@ -6,6 +6,7 @@ namespace PodFul.WPF.Windows.TileView
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.Path;
   using PodFul.Library;
   using PodFul.WPF.Miscellaneous;
@@ -25,12 +26,15 @@ namespace PodFul.WPF.Windows.TileView
     private Int32 individualDownloadCount;
     private Settings settings;
 
-    public TileListWindow(TileListViewModel feedCollectionViewModel)
+    public TileListWindow(TileListViewModel feedCollectionViewModel, Settings settngs)
     {
+      feedCollectionViewModel.VerifyThatObjectIsNotNull("Parameter 'feedCollectionViewModel' is null.");
+      settings.VerifyThatObjectIsNotNull("Parameter 'settngs' is null.");
       InitializeComponent();
 
       this.feedCollectionViewModel = feedCollectionViewModel;
       this.FeedList.DataContext = this.feedCollectionViewModel;
+      this.settings = settings;
     }
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)

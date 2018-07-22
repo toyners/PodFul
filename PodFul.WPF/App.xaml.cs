@@ -36,7 +36,7 @@ namespace PodFul.WPF
         var feedCollection = new FeedCollection(feedStorage);
         var fileDownloadProxyFactory = new FileDownloadProxyFactory();
         var feedCollectionViewModel = new TileListViewModel(feedCollection, fileDownloadProxyFactory);
-        mainWindow = new TileListWindow(feedCollectionViewModel);
+        mainWindow = new TileListWindow(feedCollectionViewModel, settings);
       }
       else
       {
