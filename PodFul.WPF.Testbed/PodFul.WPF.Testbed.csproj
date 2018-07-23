@@ -114,7 +114,6 @@
     <Compile Include="ViewModel\PodcastPageNavigation.cs" />
     <Compile Include="ViewModel\IPageNavigation.cs" />
     <Compile Include="ViewModel\TileListViewModel.cs" />
-    <Compile Include="ViewModel\MultipleFeedCollectionViewModel.cs" />
     <Compile Include="Windows\PodcastProperties.xaml.cs">
       <DependentUpon>PodcastProperties.xaml</DependentUpon>
     </Compile>
@@ -130,7 +129,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModel\AddFeedCollectionViewModel.cs" />
     <Compile Include="TestbedMainWindow.xaml.cs">
       <DependentUpon>TestbedMainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

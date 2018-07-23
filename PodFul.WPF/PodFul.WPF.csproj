@@ -114,20 +114,14 @@
     <Compile Include="Processing\PodcastDownloadConfirmer.cs" />
     <Compile Include="UI Support\JobCountDisplayManager.cs" />
     <Compile Include="UI Support\IJobCountDisplayComponent.cs" />
+    <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\TileView\FeedViewModel.cs" />
     <Compile Include="ViewModel\TileView\IPageNavigation.cs" />
-    <Compile Include="ViewModel\IPodcastViewModel.cs" />
-    <Compile Include="ViewModel\FeedViewModelBad.cs" />
-    <Compile Include="ViewModel\IFeedViewModel.cs" />
-    <Compile Include="ViewModel\FeedCollectionViewModel.cs" />
-    <Compile Include="ViewModel\IFeedCollectionViewModel.cs" />
     <Compile Include="ViewModel\TileView\PodcastPageNavigation.cs" />
     <Compile Include="ViewModel\TileView\PodcastPageViewModel.cs" />
     <Compile Include="ViewModel\TileView\PodcastViewModel.cs" />
-    <Compile Include="ViewModel\PodcastViewModelBad.cs" />
     <Compile Include="ViewModel\TileView\ProcessingStatus.cs" />
     <Compile Include="ViewModel\TileView\TileListViewModel.cs" />
-    <Compile Include="ViewModel\TreeViewItemViewModelBad.cs" />
     <Compile Include="Windows\DeliveryPointWindow.xaml.cs">
       <DependentUpon>DeliveryPointWindow.xaml</DependentUpon>
     </Compile>
@@ -143,9 +137,6 @@
     </Compile>
     <Compile Include="Windows\FeedPropertiesWindow.xaml.cs">
       <DependentUpon>FeedPropertiesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\MainWindowNext.xaml.cs">
-      <DependentUpon>MainWindowNext.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\PodcastDownloadWindow.xaml.cs">
       <DependentUpon>PodcastDownloadWindow.xaml</DependentUpon>
@@ -215,10 +206,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\MainWindowNext.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Windows\PodcastDownloadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

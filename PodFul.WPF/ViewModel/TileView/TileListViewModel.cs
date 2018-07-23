@@ -9,7 +9,7 @@ namespace PodFul.WPF.ViewModel.TileView
   using PodFul.WPF.Processing;
   using PodFul.WPF.Processing.TileView;
 
-  public class TileListViewModel : IFeedCollectionViewModel, IFeedFactory
+  public class TileListViewModel : IFeedCollectionViewModel
   {
     private IFileDownloadProxyFactory fileDownloadProxyFactory;
 
@@ -28,10 +28,6 @@ namespace PodFul.WPF.ViewModel.TileView
     public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
     public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
     public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
-
-    public string FeedURL => throw new NotImplementedException();
-
-    ObservableCollection<TreeViewItemViewModelBad> IFeedCollectionViewModel.Feeds => throw new NotImplementedException();
 
     public void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken)
     {

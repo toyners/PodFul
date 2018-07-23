@@ -494,19 +494,19 @@ namespace PodFul.WPF.Testbed
     private void AddFeeds_Click(Object sender, RoutedEventArgs e)
     {
       var settings = new Settings();
-      var feedCollectionViewModel = new AddFeedCollectionViewModel();
-      var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
+      //var feedCollectionViewModel = new AddFeedCollectionViewModel();
+      /*var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
       mainWindow.Owner = this;
-      mainWindow.ShowDialog();
+      mainWindow.ShowDialog();*/
     }
 
     private void MultipleFeedsWithMultiplePodcasts_Click(Object sender, RoutedEventArgs e)
     {
       var settings = new Settings();
-      var feedCollectionViewModel = new MultipleFeedCollectionViewModel();
-      var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
+      //var feedCollectionViewModel = new MultipleFeedCollectionViewModel();
+      /*var mainWindow = new MainWindowNext(settings, feedCollectionViewModel);
       mainWindow.Owner = this;
-      mainWindow.ShowDialog();
+      mainWindow.ShowDialog();*/
     }
 
     private void TileListView_Click(Object sender, RoutedEventArgs e)
