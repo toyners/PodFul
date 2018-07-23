@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Windows.TileView
 {
   using System;
+  using System.IO;
   using System.Threading.Tasks;
   using System.Windows;
   using System.Windows.Controls;
@@ -24,6 +25,8 @@ namespace PodFul.WPF.Windows.TileView
     private Int32 individualScanCount;
     private Int32 individualDownloadCount;
     private Settings settings;
+    private String defaultImagePath;
+    private String imageDirectory;
 
     public TileListWindow(TileListViewModel feedCollectionViewModel, Settings settings)
     {
@@ -34,6 +37,11 @@ namespace PodFul.WPF.Windows.TileView
       this.feedCollectionViewModel = feedCollectionViewModel;
       this.FeedList.DataContext = this.feedCollectionViewModel;
       this.settings = settings;
+    }
+
+    private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
+    {
+      return Directory.GetFiles(feed.Directory, "*.mp3").Length;
     }
 
     private void AddFeedButtonClick(Object sender, RoutedEventArgs e)
@@ -47,12 +55,46 @@ namespace PodFul.WPF.Windows.TileView
 
       // Open dialog to show progress of adding new feed to the feed processor.
       var addFeedProgressWindow = new AddFeedProgressWindow(this.feedCollectionViewModel, addFeedToken);
+
       addFeedProgressWindow.Owner = this;
       addFeedProgressWindow.ShowDialog();
       Feed feed = addFeedProgressWindow.Feed;
       if (feed == null)
       {
         // Cancelled or Faulted - nothing more to be done.
+        return;
+      }
+
+      IImageResolver imageResolver = null;
+      if (this.settings.DownloadImagesWhenAddingFeeds)
+      {
+        imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
+      }
+
+      var fileCount = GetCountOfExistingMediaFilesForFeed(feed);
+      if (fileCount > 0 &&
+        MessageBox.Show(String.Format("{0} MP3 file(s) found in '{1}'.\r\n\r\n Attempt to sync the feed against these files?", fileCount, feed.Directory), "Existing files found", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+      {
+        var count = PodcastSynchroniser.Synchronise(feed);
+
+        var message = String.Format("{0} MP3 file(s) synchronised after adding '{1}'", count, feed.Title);
+        //this.logController.Message(LoggerKeys.InfoKey, message);
+        MessageBox.Show(String.Format("{0} MP3 file(s) synchronised.", count), "Synchronisation completed", MessageBoxButton.OK, MessageBoxImage.Information);
+      }
+
+      if (imageResolver != null)
+      {
+        feed = imageResolver.ResolveFeedImage(feed);
+      }
+
+      try
+      {
+        //this.feedCollection.AddFeed(feed);
+      }
+      catch (Exception exception)
+      {
+        MessageBox.Show("Exception occurred when adding feed:\r\n\r\n" + exception.Message, "Exception occurred.");
+        //this.logController.Message(LoggerKeys.ExceptionKey, "Trying to add new feed: " + exception.Message);
         return;
       }
     }
