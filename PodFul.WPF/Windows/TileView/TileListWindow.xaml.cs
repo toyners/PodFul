@@ -2,14 +2,19 @@
 namespace PodFul.WPF.Windows.TileView
 {
   using System;
+  using System.Collections.Generic;
   using System.IO;
+  using System.Reflection;
   using System.Threading.Tasks;
   using System.Windows;
   using System.Windows.Controls;
   using System.Windows.Input;
+  using Jabberwocky.Toolkit.Assembly;
+  using Jabberwocky.Toolkit.IO;
   using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.Path;
   using PodFul.Library;
+  using PodFul.WPF.Logging;
   using PodFul.WPF.Miscellaneous;
   using PodFul.WPF.Processing;
   using PodFul.WPF.Processing.TileView;
@@ -20,23 +25,61 @@ namespace PodFul.WPF.Windows.TileView
   /// </summary>
   public partial class TileListWindow : Window
   {
+    private const String defaultImageName = "question-mark.png";
     private TileListViewModel feedCollectionViewModel;
     private Scanner scanner;
     private Int32 individualScanCount;
     private Int32 individualDownloadCount;
+    private ILogController logController;
     private Settings settings;
     private String defaultImagePath;
     private String imageDirectory;
 
-    public TileListWindow(TileListViewModel feedCollectionViewModel, Settings settings)
+    public TileListWindow(Settings settings, String feedDirectory)
     {
-      feedCollectionViewModel.VerifyThatObjectIsNotNull("Parameter 'feedCollectionViewModel' is null.");
-      settings.VerifyThatObjectIsNotNull("Parameter 'settngs' is null.");
-      InitializeComponent();
+      FileLogger exceptionLogger = null;
+      try
+      {
+        exceptionLogger = new FileLogger();
+        var fileLogger = new FileLogger();
 
-      this.feedCollectionViewModel = feedCollectionViewModel;
-      this.FeedList.DataContext = this.feedCollectionViewModel;
-      this.settings = settings;
+        this.logController = new LogController(new Dictionary<String, ILogger>{
+          { LoggerKeys.InfoKey, fileLogger },
+          { LoggerKeys.ExceptionKey, exceptionLogger}});
+
+        InitializeComponent();
+
+        this.DisplayTitle();
+
+        this.settings = settings;
+
+        DirectoryOperations.EnsureDirectoryExists(feedDirectory);
+        var feedStorage = new JSONFileStorage(feedDirectory);
+        var feedCollection = new FeedCollection(feedStorage);
+        var fileDownloadProxyFactory = new FileDownloadProxyFactory();
+        this.feedCollectionViewModel = new TileListViewModel(feedCollection, fileDownloadProxyFactory);
+        this.FeedList.DataContext = this.feedCollectionViewModel;
+
+        this.imageDirectory = Path.Combine(feedDirectory, "Images");
+        DirectoryOperations.EnsureDirectoryExists(this.imageDirectory);
+
+        this.defaultImagePath = Path.Combine(feedDirectory, defaultImageName);
+        if (!File.Exists(this.defaultImagePath))
+        {
+          Assembly.GetExecutingAssembly().CopyEmbeddedResourceToFile("PodFul.WPF.Resources." + defaultImageName, this.defaultImagePath);
+        }
+
+        fileLogger.Message("Tile Window instantiated.");
+      }
+      catch (Exception exception)
+      {
+        var fullExceptionMessage = exception.Message + ": " + exception.StackTrace;
+        exceptionLogger?.Message(fullExceptionMessage);
+
+        var message = String.Format("Exception occurred during startup. Exception message is\r\n{0}\r\n\r\nPodFul will close.", exception.Message);
+        MessageBox.Show(message, "PodFul Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+        throw;
+      }
     }
 
     private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
@@ -97,6 +140,15 @@ namespace PodFul.WPF.Windows.TileView
         //this.logController.Message(LoggerKeys.ExceptionKey, "Trying to add new feed: " + exception.Message);
         return;
       }
+    }
+
+    private void DisplayTitle()
+    {
+      var guiVersion = Assembly.GetExecutingAssembly().GetName().Version;
+      this.Title = String.Format("PodFul - v{0}.{1}.{2}",
+        guiVersion.Major,
+        guiVersion.Minor,
+        guiVersion.Build);
     }
 
     private void RemoveFeedClick(Object sender, RoutedEventArgs e)

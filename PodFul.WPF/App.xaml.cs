@@ -26,17 +26,7 @@ namespace PodFul.WPF
       Window mainWindow;
       if (settings.UseTileView)
       {
-        var fileLogger = new FileLogger();
-        var exceptionLogger = new FileLogger();
-
-        var logController = new LogController(new Dictionary<String, ILogger>{
-          { LoggerKeys.InfoKey, fileLogger },
-          { LoggerKeys.ExceptionKey, exceptionLogger}});
-        var feedStorage = new JSONFileStorage(feedDirectory);
-        var feedCollection = new FeedCollection(feedStorage);
-        var fileDownloadProxyFactory = new FileDownloadProxyFactory();
-        var feedCollectionViewModel = new TileListViewModel(feedCollection, fileDownloadProxyFactory);
-        mainWindow = new TileListWindow(feedCollectionViewModel, settings);
+        mainWindow = new TileListWindow(settings, feedDirectory);
       }
       else
       {
