@@ -24,16 +24,27 @@ namespace PodFul.WPF.Windows.TileView
   /// </summary>
   public partial class TileListWindow : Window
   {
+    private enum ScanStates
+    {
+      Idle,
+      Running,
+      Completed,
+    }
+
+    #region Fields
     private const String defaultImageName = "question-mark.png";
     private TileListViewModel feedCollectionViewModel;
     private Scanner scanner;
     private Int32 individualScanCount;
     private Int32 individualDownloadCount;
     private ILogController logController;
+    private ScanStates allFeedScanStatus = ScanStates.Idle;
     private Settings settings;
     private String defaultImagePath;
     private String imageDirectory;
+    #endregion
 
+    #region Construction
     public TileListWindow(Settings settings, String feedDirectory)
     {
       FileLogger exceptionLogger = null;
@@ -82,7 +93,9 @@ namespace PodFul.WPF.Windows.TileView
         throw;
       }
     }
+    #endregion
 
+    #region Methods
     private static Int32 GetCountOfExistingMediaFilesForFeed(Feed feed)
     {
       return Directory.GetFiles(feed.Directory, "*.mp3").Length;
@@ -210,21 +223,12 @@ namespace PodFul.WPF.Windows.TileView
       return true;
     }
 
-    private enum ScanStates
-    {
-      Idle,
-      Running,
-      Completed,
-    }
-
-    private ScanStates scanState = ScanStates.Idle;
-
     private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
-      if (this.scanState == ScanStates.Idle)
+      if (this.allFeedScanStatus == ScanStates.Idle)
       {
         this.CommandButton.Content = "Cancel All";
-        this.scanState = ScanStates.Running;
+        this.allFeedScanStatus = ScanStates.Running;
         foreach (var feed in this.feedCollectionViewModel.Feeds)
         {
           feed.InitialiseForScan();
@@ -234,16 +238,16 @@ namespace PodFul.WPF.Windows.TileView
         this.scanner.ScanCompletedEvent = this.FullScanCompletedEventHandler;
         this.scanner.ScanFeeds(this.feedCollectionViewModel.Feeds);
       }
-      else if (this.scanState == ScanStates.Running)
+      else if (this.allFeedScanStatus == ScanStates.Running)
       {
         // Cancel all feeds
         this.scanner.CancelScan();
       }
-      else if (this.scanState == ScanStates.Completed)
+      else if (this.allFeedScanStatus == ScanStates.Completed)
       {
         // Reset after scanning all feeds
         this.CommandButton.Content = "Scan All";
-        this.scanState = ScanStates.Idle;
+        this.allFeedScanStatus = ScanStates.Idle;
 
         foreach (var feed in this.feedCollectionViewModel.Feeds)
         {
@@ -257,7 +261,7 @@ namespace PodFul.WPF.Windows.TileView
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.CommandButton.Content = "Reset";
-        this.scanState = ScanStates.Completed;
+        this.allFeedScanStatus = ScanStates.Completed;
       });
     }
 
@@ -384,5 +388,6 @@ namespace PodFul.WPF.Windows.TileView
       this.CommandButton.IsEnabled = false;
       scanner.ScanFeeds(new[] { feedViewModel });
     }
+    #endregion
   }
 }
