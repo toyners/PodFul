@@ -59,6 +59,8 @@ namespace PodFul.WPF.Windows.TileView
         this.feedCollectionViewModel = new TileListViewModel(feedCollection, fileDownloadProxyFactory);
         this.FeedList.DataContext = this.feedCollectionViewModel;
 
+        this.CommandButton.IsEnabled = (this.feedCollectionViewModel.Feeds.Count > 0);
+
         this.imageDirectory = Path.Combine(feedDirectory, "Images");
         DirectoryOperations.EnsureDirectoryExists(this.imageDirectory);
 
@@ -259,19 +261,8 @@ namespace PodFul.WPF.Windows.TileView
       });
     }
 
-    private void FeedList_SelectionChanged(Object sender, SelectionChangedEventArgs e)
-    {
-
-    }
-
-    private void FeedList_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
-    {
-
-    }
-
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
-
     }
 
     private void NextPageClick(Object sender, RoutedEventArgs e)
