@@ -267,6 +267,8 @@ namespace PodFul.WPF.Windows.TileView
 
     private void FeedList_MouseWheel(Object sender, MouseWheelEventArgs e)
     {
+      this.FeedList_Scroller.ScrollToVerticalOffset(this.FeedList_Scroller.VerticalOffset - e.Delta);
+      e.Handled = true;
     }
 
     private void NextPageClick(Object sender, RoutedEventArgs e)
