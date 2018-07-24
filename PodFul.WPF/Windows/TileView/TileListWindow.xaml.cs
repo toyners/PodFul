@@ -11,7 +11,6 @@ namespace PodFul.WPF.Windows.TileView
   using System.Windows.Input;
   using Jabberwocky.Toolkit.Assembly;
   using Jabberwocky.Toolkit.IO;
-  using Jabberwocky.Toolkit.Object;
   using Jabberwocky.Toolkit.Path;
   using PodFul.Library;
   using PodFul.WPF.Logging;
