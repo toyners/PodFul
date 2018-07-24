@@ -1,12 +1,6 @@
 ﻿
-using System;
-using System.Collections.Generic;
 using System.Windows;
-using PodFul.Library;
-using PodFul.WPF.Logging;
 using PodFul.WPF.Miscellaneous;
-using PodFul.WPF.Processing.TileView;
-using PodFul.WPF.ViewModel.TileView;
 using PodFul.WPF.Windows;
 using PodFul.WPF.Windows.TileView;
 
