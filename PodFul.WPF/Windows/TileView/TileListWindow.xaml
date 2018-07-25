@@ -469,12 +469,14 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                             <ColumnDefinition />
+                            <ColumnDefinition />
                           </Grid.ColumnDefinitions>
 
                           <CheckBox Grid.Column="1" IsChecked="{Binding DoScan}">Include in Scan All</CheckBox>
                           <CheckBox Grid.Column="2" IsChecked="{Binding CompleteDownloadsOnScan}">Perform Downloads</CheckBox>
                           <CheckBox Grid.Column="3" IsChecked="{Binding DeliverDownloadsOnScan}" 
                                     Margin="5,0" HorizontalAlignment="Right">Deliver Downloads</CheckBox>
+                          <Button Grid.Column="4">Delete Feed</Button>
                         </Grid>
 
                       </StackPanel>
