@@ -40,7 +40,7 @@ namespace PodFul.WPF.ViewModel.TileView
       this.imageResolver = imageResolver;
 
       this.PodcastNavigation = new PodcastPageNavigation(this, this.fileDownloadProxyFactory);
-      this.PodcastNavigation.SetPages(this.feed.Podcasts, 3);
+      this.PodcastNavigation.SetPages(this.feed.Podcasts, 4);
     }
     #endregion
 
