@@ -452,19 +452,25 @@
                           </Grid.RowDefinitions>
 
                           <TextBlock Grid.Column="0" Grid.Row="0" Margin="2,0" VerticalAlignment="Top" Text="Description:" />
-                          <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" Text="{Binding Description, Mode=OneWay}" />
+                          <Border Grid.Column="1" Grid.Row="0" BorderBrush="Black" BorderThickness="0.5">
+                            <TextBlock VerticalAlignment="Top" Text="{Binding Description, Mode=OneWay}" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                          </Border>
                           <TextBlock Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" Margin="0,0,4,0" Text="Count:" />
                           <TextBlock Grid.Column="3" Grid.Row="0" VerticalAlignment="Top"
                                      HorizontalAlignment="Right" Text="{Binding PodcastCount, Mode=OneWay}" />
 
                           <TextBlock Grid.Column="0" Grid.Row="1" Margin="2,0" VerticalAlignment="Top" Text="Feed URL:" />
-                          <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" Text="{Binding FeedURL, Mode=OneWay}" />
-                          <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" Text="Created:" />
+                          <Border Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="0.5">
+                            <TextBlock VerticalAlignment="Top" Text="{Binding FeedURL, Mode=OneWay}" />
+                          </Border>
+                          <TextBlock Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" Text="Added:" />
                           <TextBlock Grid.Column="3" Grid.Row="1" VerticalAlignment="Top" Margin="0,0,4,0"
                                      HorizontalAlignment="Right" Text="{Binding CreatedDate, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
 
                           <TextBlock Grid.Column="0" Grid.Row="2" Margin="2,0" VerticalAlignment="Top" Text="Feed Website:" />
-                          <TextBlock Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Text="{Binding WebsiteURL, Mode=OneWay}" />
+                          <Border Grid.Column="1" Grid.Row="2" BorderBrush="Black" BorderThickness="0.5">
+                            <TextBlock VerticalAlignment="Top" Text="{Binding WebsiteURL, Mode=OneWay}" />
+                          </Border>
                           <TextBlock Grid.Column="2" Grid.Row="2" VerticalAlignment="Top" Text="Updated:" />
                           <TextBlock Grid.Column="3" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,4,0"
                                      HorizontalAlignment="Right" Text="{Binding UpdatedDate, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
@@ -477,7 +483,7 @@
                             <ColumnDefinition Width="40"/>
                           </Grid.ColumnDefinitions>
 
-                          <Label Grid.Column="0" VerticalAlignment="Center" Height="26" Margin="2,0">Directory:</Label>
+                          <TextBlock Grid.Column="0" VerticalAlignment="Center" Height="26" Margin="2,0">Directory:</TextBlock>
                           <TextBox Name="FeedDirectoryPath" Grid.Column="1" VerticalAlignment="Center" Height="20"
                                    Text="{Binding Path=FeedDirectoryPath, Mode=OneWay}" TextChanged="FeedDirectoryPathTextChanged" />
                           <Button Grid.Column="2" Margin="5,0" Height="20" HorizontalAlignment="Left" 
@@ -490,7 +496,7 @@
                             <ColumnDefinition Width="100"/>
                           </Grid.ColumnDefinitions>
 
-                          <Label Grid.Column="0">Download Confirmation Threshold:</Label>
+                          <TextBlock Grid.Column="0" Margin="2,0">Download Confirmation Threshold:</TextBlock>
                           <TextBox Name="ConfirmDownloadThreshold" Grid.Column="1" VerticalAlignment="Center" TextChanged="DownloadConfirmationThresholdTextChanged"
                                    Text="{Binding Path=ConfirmDownloadThreshold, Mode=OneWay}" Height="20" />
                         </Grid>
