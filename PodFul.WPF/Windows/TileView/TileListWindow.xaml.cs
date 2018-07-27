@@ -167,37 +167,22 @@ namespace PodFul.WPF.Windows.TileView
 
     private void RemoveFeedClick(Object sender, RoutedEventArgs e)
     {
-      /*var dialogResult = MessageBox.Show(String.Format("Remove '{0}'?", this.currentFeed.Title), "Confirm Removal", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
+      var feedViewModel = (sender as Button).DataContext as FeedViewModel;
+      var dialogResult = MessageBox.Show($"Remove '{feedViewModel.Title}'?", "Confirm Removal", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes);
       if (dialogResult == MessageBoxResult.No)
       {
         return;
       }
 
-      var index = this.FeedList.SelectedIndex;
-      var title = this.currentFeed.Title;
-      this.feedCollection.RemoveFeed(this.currentFeed);
-      this.logController.Message(LoggerKeys.InfoKey, String.Format("'{0}' removed.", title));
+      this.feedCollectionViewModel.RemoveFeed(feedViewModel);
+      this.logController.Message(LoggerKeys.InfoKey, $"'{feedViewModel.Title}' removed.");
 
-      if (this.feedCollectionViewModel.Count == 0)
+      if (this.feedCollectionViewModel.Feeds.Count == 0)
       {
         this.FeedList.SelectedIndex = -1;
         this.CommandButton.IsEnabled = false;
         return;
       }
-
-      if (index == 0)
-      {
-        this.FeedList.SelectedIndex = 0;
-        return;
-      }
-
-      if (index == this.FeedList.Items.Count)
-      {
-        this.FeedList.SelectedIndex = this.FeedList.Items.Count - 1;
-        return;
-      }
-
-      this.FeedList.SelectedIndex = index;*/
     }
 
     private void SettingsButtonClick(Object sender, RoutedEventArgs e)

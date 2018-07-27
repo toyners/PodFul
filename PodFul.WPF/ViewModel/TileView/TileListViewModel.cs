@@ -39,7 +39,7 @@ namespace PodFul.WPF.ViewModel.TileView
       throw new NotImplementedException();
     }
 
-    public void RemoveFeed(Int32 index)
+    public void RemoveFeed(FeedViewModel feedViewModel)
     {
       throw new NotImplementedException();
     }

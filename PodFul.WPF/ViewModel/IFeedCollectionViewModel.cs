@@ -18,6 +18,6 @@ namespace PodFul.WPF.ViewModel
 
     void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken);
 
-    void RemoveFeed(Int32 index);
+    void RemoveFeed(FeedViewModel feedViewModel);
   }
 }
