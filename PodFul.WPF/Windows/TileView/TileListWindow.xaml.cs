@@ -24,13 +24,6 @@ namespace PodFul.WPF.Windows.TileView
   /// </summary>
   public partial class TileListWindow : Window
   {
-    private enum ScanStates
-    {
-      Idle,
-      Running,
-      Completed,
-    }
-
     #region Fields
     private const String defaultImageName = "question-mark.png";
     private TileListViewModel feedCollectionViewModel;
@@ -38,7 +31,7 @@ namespace PodFul.WPF.Windows.TileView
     private Int32 individualScanCount;
     private Int32 individualDownloadCount;
     private ILogController logController;
-    private ScanStates allFeedScanStatus = ScanStates.Idle;
+    private ProcessingStatus allFeedScanStatus = ProcessingStatus.Idle;
     private Settings settings;
     private String defaultImagePath;
     private String imageDirectory;
@@ -210,10 +203,10 @@ namespace PodFul.WPF.Windows.TileView
 
     private void CommandButtonClick(Object sender, RoutedEventArgs e)
     {
-      if (this.allFeedScanStatus == ScanStates.Idle)
+      if (this.allFeedScanStatus == ProcessingStatus.Idle)
       {
         this.CommandButton.Content = "Cancel All";
-        this.allFeedScanStatus = ScanStates.Running;
+        this.allFeedScanStatus = ProcessingStatus.Scanning;
         foreach (var feed in this.feedCollectionViewModel.Feeds)
         {
           feed.InitialiseForScan();
@@ -223,16 +216,16 @@ namespace PodFul.WPF.Windows.TileView
         this.scanner.ScanCompletedEvent = this.FullScanCompletedEventHandler;
         this.scanner.ScanFeeds(this.feedCollectionViewModel.Feeds);
       }
-      else if (this.allFeedScanStatus == ScanStates.Running)
+      else if (this.allFeedScanStatus == ProcessingStatus.Scanning)
       {
         // Cancel all feeds
         this.scanner.CancelScan();
       }
-      else if (this.allFeedScanStatus == ScanStates.Completed)
+      else if (this.allFeedScanStatus == ProcessingStatus.Completed)
       {
         // Reset after scanning all feeds
         this.CommandButton.Content = "Scan All";
-        this.allFeedScanStatus = ScanStates.Idle;
+        this.allFeedScanStatus = ProcessingStatus.Idle;
 
         foreach (var feed in this.feedCollectionViewModel.Feeds)
         {
@@ -246,7 +239,7 @@ namespace PodFul.WPF.Windows.TileView
       Application.Current.Dispatcher.Invoke(() =>
       {
         this.CommandButton.Content = "Reset";
-        this.allFeedScanStatus = ScanStates.Completed;
+        this.allFeedScanStatus = ProcessingStatus.Completed;
       });
     }
 
