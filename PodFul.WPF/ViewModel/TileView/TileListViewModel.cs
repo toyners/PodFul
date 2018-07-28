@@ -12,9 +12,11 @@ namespace PodFul.WPF.ViewModel.TileView
   public class TileListViewModel : IFeedCollectionViewModel
   {
     private IFileDownloadProxyFactory fileDownloadProxyFactory;
+    private IFeedCollection feedCollection;
 
     public TileListViewModel(IFeedCollection feedCollection, IFileDownloadProxyFactory fileDownloadProxyFactory)
     {
+      this.feedCollection = feedCollection;
       this.fileDownloadProxyFactory = fileDownloadProxyFactory;
       this.Feeds = new ObservableCollection<FeedViewModel>();
       for (var i = 0; i < feedCollection.Count; i++)
@@ -41,7 +43,9 @@ namespace PodFul.WPF.ViewModel.TileView
 
     public void RemoveFeed(FeedViewModel feedViewModel)
     {
-      throw new NotImplementedException();
+      var index = this.Feeds.IndexOf(feedViewModel);
+      this.feedCollection.RemoveFeed(index);
+      this.Feeds.RemoveAt(index);
     }
   }
 }

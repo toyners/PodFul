@@ -91,8 +91,13 @@ namespace PodFul.WPF.Miscellaneous
     /// <param name="feed">Feed to be removed.</param>
     public void RemoveFeed(Feed feed)
     {
-      this.feedStorage.Remove(feed);
       var index = this.ObservableFeeds.IndexOf(feed);
+      this.RemoveFeed(index);
+    }
+
+    public void RemoveFeed(Int32 index)
+    {
+      this.feedStorage.Remove(this.ObservableFeeds[index]);
       this.ObservableFeeds.RemoveAt(index);
     }
 
