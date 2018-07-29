@@ -3,8 +3,7 @@ namespace PodFul.WPF.ViewModel
 {
   using System;
   using System.Collections.ObjectModel;
-  using System.Threading;
-  using PodFul.WPF.Processing;
+  using PodFul.Library;
   using PodFul.WPF.ViewModel.TileView;
 
   public interface IFeedCollectionViewModel
@@ -16,7 +15,7 @@ namespace PodFul.WPF.ViewModel
     Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
     Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
 
-    void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken);
+    void AddFeed(Feed feed);
     void RemoveFeed(FeedViewModel feedViewModel);
   }
 }

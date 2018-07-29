@@ -130,11 +130,12 @@ namespace PodFul.WPF.Windows
       });
     }
 
-    private void AddFeedForTreeView()
+    private void AddFeedForTileListView()
     {
       this.ProgressBar.IsIndeterminate = true;
       var cancelToken = this.cancellationTokenSource.Token;
       this.StatusMessage.Text = "Reading feed ...";
+      Feed feed = null;
 
       // Allow synchronization on the feeds collection so that we can add a feed on the worker thread even
       // though the collection is owned by the UI thread.
@@ -142,7 +143,7 @@ namespace PodFul.WPF.Windows
 
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
-        this.feedCollectionViewModel.AddFeed(this.addFeedToken, cancelToken);
+        feed = FeedFunctions.CreateFeed(this.addFeedToken.Url, this.addFeedToken.DownloadPath, this.addFeedToken.Directory, this.addFeedToken.DefaultPodcastImageFilePath, cancelToken);
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>
@@ -160,6 +161,15 @@ namespace PodFul.WPF.Windows
           {
             MessageBox.Show("Exception occurred when creating feed:\r\n\r\n" + flattenedMessage, "Exception occurred.");
           });
+        }
+        else if (task.IsCanceled)
+        {
+
+        }
+        else
+        {
+          this.feedCollectionViewModel.AddFeed(feed);
+          BindingOperations.DisableCollectionSynchronization(this.feedCollectionViewModel.Feeds);
         }
 
         Application.Current.Dispatcher.Invoke(() =>
@@ -235,7 +245,7 @@ namespace PodFul.WPF.Windows
         this.windowLoaded = true;
         if (this.feedCollectionViewModel != null)
         {
-          this.AddFeedForTreeView();
+          this.AddFeedForTileListView();
         }
         else
         {

@@ -3,10 +3,8 @@ namespace PodFul.WPF.ViewModel.TileView
 {
   using System;
   using System.Collections.ObjectModel;
-  using System.Threading;
   using Miscellaneous;
   using PodFul.Library;
-  using PodFul.WPF.Processing;
   using PodFul.WPF.Processing.TileView;
 
   public class TileListViewModel : IFeedCollectionViewModel
@@ -31,9 +29,11 @@ namespace PodFul.WPF.ViewModel.TileView
     public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
     public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
 
-    public void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken)
+    public void AddFeed(Feed feed)
     {
-      throw new NotImplementedException();
+      this.feedCollection.AddFeed(feed);
+      var feedViewModel = new FeedViewModel(this.feedCollection.Count - 1, this.feedCollection, null, this.fileDownloadProxyFactory);
+      this.Feeds.Add(feedViewModel);
     }
 
     public void RemoveFeed(FeedViewModel feedViewModel)

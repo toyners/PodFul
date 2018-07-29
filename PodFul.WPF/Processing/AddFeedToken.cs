@@ -2,6 +2,7 @@
 namespace PodFul.WPF.Processing
 {
   using System;
+  using System.IO;
 
   public struct AddFeedToken
   {
@@ -15,5 +16,7 @@ namespace PodFul.WPF.Processing
       this.Url = url;
       this.DefaultPodcastImageFilePath = defaultPodcastImageFilePath;
     }
+
+    public String DownloadPath { get { return Path.Combine(this.Directory, "download.rss"); } }
   }
 }
