@@ -36,11 +36,6 @@ namespace PodFul.WPF.ViewModel.TileView
       throw new NotImplementedException();
     }
 
-    public Feed Create(CancellationToken cancelToken)
-    {
-      throw new NotImplementedException();
-    }
-
     public void RemoveFeed(FeedViewModel feedViewModel)
     {
       var index = this.Feeds.IndexOf(feedViewModel);
