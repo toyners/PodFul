@@ -70,7 +70,7 @@ namespace PodFul.WPF.Windows
     private void AddFeedForListView()
     {
       this.ProgressBar.IsIndeterminate = true;
-      var cancelToken = cancellationTokenSource.Token;
+      var cancelToken = this.cancellationTokenSource.Token;
       this.StatusMessage.Text = "Reading feed information ...";
 
       Task addFeedTask = Task.Factory.StartNew(() =>
@@ -133,12 +133,12 @@ namespace PodFul.WPF.Windows
     private void AddFeedForTreeView()
     {
       this.ProgressBar.IsIndeterminate = true;
-      var cancelToken = cancellationTokenSource.Token;
+      var cancelToken = this.cancellationTokenSource.Token;
       this.StatusMessage.Text = "Reading feed ...";
 
       // Allow synchronization on the feeds collection so that we can add a feed on the worker thread even
       // though the collection is owned by the UI thread.
-      BindingOperations.EnableCollectionSynchronization(this.feedCollectionViewModel.Feeds, collectionLock);
+      BindingOperations.EnableCollectionSynchronization(this.feedCollectionViewModel.Feeds, this.collectionLock);
 
       Task addFeedTask = Task.Factory.StartNew(() =>
       {

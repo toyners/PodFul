@@ -17,7 +17,6 @@ namespace PodFul.WPF.ViewModel
     Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
 
     void AddFeed(AddFeedToken addFeedToken, CancellationToken cancelToken);
-
     void RemoveFeed(FeedViewModel feedViewModel);
   }
 }

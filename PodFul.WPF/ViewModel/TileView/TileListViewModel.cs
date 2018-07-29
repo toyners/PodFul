@@ -11,8 +11,8 @@ namespace PodFul.WPF.ViewModel.TileView
 
   public class TileListViewModel : IFeedCollectionViewModel
   {
-    private IFileDownloadProxyFactory fileDownloadProxyFactory;
-    private IFeedCollection feedCollection;
+    private readonly IFileDownloadProxyFactory fileDownloadProxyFactory;
+    private readonly IFeedCollection feedCollection;
 
     public TileListViewModel(IFeedCollection feedCollection, IFileDownloadProxyFactory fileDownloadProxyFactory)
     {
