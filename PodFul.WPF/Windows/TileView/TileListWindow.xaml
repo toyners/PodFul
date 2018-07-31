@@ -56,7 +56,6 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
           <Button Width="70" Style="{StaticResource StandardButton}"  Click="AddFeedButtonClick">Add</Button>
-          <Button Name="RemoveButton" Width="70" Style="{StaticResource StandardButton}" Click="RemoveFeedClick" IsEnabled="False">Remove</Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" >
