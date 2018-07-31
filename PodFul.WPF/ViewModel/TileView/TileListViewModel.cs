@@ -23,11 +23,7 @@ namespace PodFul.WPF.ViewModel.TileView
       }
     }
 
-    public Action<Int32, String> CompletedImageDownloadNotificationEvent { get; set; }
     public ObservableCollection<FeedViewModel> Feeds { get; private set; }
-    public Action<Int32, String> SkippedImageDownloadNotificationEvent { get; set; }
-    public Action<Int32, String> StartImageDownloadNotificationEvent { get; set; }
-    public Action<Int32> TotalImageDownloadsRequiredEvent { get; set; }
 
     public void AddFeed(Feed feed)
     {

@@ -103,8 +103,14 @@ namespace PodFul.WPF.Windows.TileView
         return;
       }
 
+      IImageResolver imageResolver = null;
+      if (this.settings.DownloadImagesWhenAddingFeeds)
+      {
+        imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
+      }
+
       // Open dialog to show progress of adding new feed to the feed processor.
-      var addFeedProgressWindow = new AddFeedProgressWindow(this.feedCollectionViewModel, addFeedToken);
+      var addFeedProgressWindow = new AddFeedProgressWindow(this.feedCollectionViewModel, addFeedToken, imageResolver);
 
       addFeedProgressWindow.Owner = this;
       addFeedProgressWindow.ShowDialog();
@@ -113,12 +119,6 @@ namespace PodFul.WPF.Windows.TileView
       {
         // Cancelled or Faulted - nothing more to be done.
         return;
-      }
-
-      IImageResolver imageResolver = null;
-      if (this.settings.DownloadImagesWhenAddingFeeds)
-      {
-        imageResolver = new ImageResolver(this.imageDirectory, this.defaultImagePath);
       }
 
       var fileCount = GetCountOfExistingMediaFilesForFeed(feed);

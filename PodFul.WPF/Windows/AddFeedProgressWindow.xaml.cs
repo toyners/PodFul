@@ -17,6 +17,7 @@ namespace PodFul.WPF.Windows
   public partial class AddFeedProgressWindow : Window
   {
     #region Fields
+    private AddFeedToken addFeedToken;
     private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private IImageResolver imageResolver;
     private ILogController logController;
@@ -42,18 +43,13 @@ namespace PodFul.WPF.Windows
       InitializeComponent();
     }
 
-    private AddFeedToken addFeedToken;
-    public AddFeedProgressWindow(IFeedCollectionViewModel feedCollectionViewModel, AddFeedToken addFeedToken)
+    public AddFeedProgressWindow(IFeedCollectionViewModel feedCollectionViewModel, AddFeedToken addFeedToken, IImageResolver imageResolver)
     {
-      InitializeComponent();
-
       this.feedCollectionViewModel = feedCollectionViewModel;
-      this.feedCollectionViewModel.CompletedImageDownloadNotificationEvent = this.CompletedDownloadNotificationEventHandler;
-      this.feedCollectionViewModel.SkippedImageDownloadNotificationEvent = this.SkipDownloadNotificationEventHandler;
-      this.feedCollectionViewModel.StartImageDownloadNotificationEvent = this.StartDownloadNotificationEventHandler;
-      this.feedCollectionViewModel.TotalImageDownloadsRequiredEvent = this.TotalDownloadsRequiredEventHandler;
-
       this.addFeedToken = addFeedToken;
+      this.imageResolver = imageResolver;
+
+      InitializeComponent();
     }
     #endregion
 
@@ -144,6 +140,19 @@ namespace PodFul.WPF.Windows
       Task addFeedTask = Task.Factory.StartNew(() =>
       {
         feed = FeedFunctions.CreateFeed(this.addFeedToken.Url, this.addFeedToken.DownloadPath, this.addFeedToken.Directory, this.addFeedToken.DefaultPodcastImageFilePath, cancelToken);
+        if (this.imageResolver != null)
+        {
+          feed = this.imageResolver.ResolveFeedImage(feed);
+        }
+
+        if (this.imageResolver != null)
+        {
+          this.imageResolver.TotalDownloadsRequiredEvent = this.TotalDownloadsRequiredEventHandler;
+          this.imageResolver.StartDownloadNotificationEvent += this.StartDownloadNotificationEventHandler;
+          this.imageResolver.SkippedDownloadNotificationEvent += this.SkipDownloadNotificationEventHandler;
+          this.imageResolver.CompletedDownloadNotificationEvent += this.CompletedDownloadNotificationEventHandler;
+          this.imageResolver.ResolvePodcastImagesForFeed(feed, cancelToken);
+        }
       }, cancelToken);
 
       addFeedTask.ContinueWith(task =>
@@ -169,7 +178,14 @@ namespace PodFul.WPF.Windows
         else
         {
           this.feedCollectionViewModel.AddFeed(feed);
-          BindingOperations.DisableCollectionSynchronization(this.feedCollectionViewModel.Feeds);
+        }
+
+        if (this.imageResolver != null)
+        {
+          this.imageResolver.TotalDownloadsRequiredEvent -= this.TotalDownloadsRequiredEventHandler;
+          this.imageResolver.StartDownloadNotificationEvent -= this.StartDownloadNotificationEventHandler;
+          this.imageResolver.SkippedDownloadNotificationEvent -= this.SkipDownloadNotificationEventHandler;
+          this.imageResolver.CompletedDownloadNotificationEvent -= this.CompletedDownloadNotificationEventHandler;
         }
 
         Application.Current.Dispatcher.Invoke(() =>
