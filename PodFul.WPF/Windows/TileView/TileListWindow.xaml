@@ -473,10 +473,10 @@
                               <ColumnDefinition Width="40" />
                               <ColumnDefinition />
                               <ColumnDefinition Width="80" />
-                              <ColumnDefinition Width="120" />
+                              <ColumnDefinition Width="130" />
                               <ColumnDefinition />
                               <ColumnDefinition Width="80" />
-                              <ColumnDefinition Width="120" />
+                              <ColumnDefinition Width="130" />
                             </Grid.ColumnDefinitions>
 
                             <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">
@@ -486,13 +486,13 @@
 
                             <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="Added:" />
                             <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0.5">
-                              <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" 
+                              <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,3,0"
                                        Text="{Binding CreatedDate, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
                             </Border>
 
                             <TextBlock Grid.Column="5" VerticalAlignment="Top" Text="Updated:" />
                             <Border Grid.Column="6" BorderBrush="Black" BorderThickness="0.5">
-                              <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" 
+                              <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Padding="0,0,3,0"
                                        Text="{Binding UpdatedDate, Converter={StaticResource GeneralDateTimeConverter}, Mode=OneWay}" />
                             </Border>
                           </Grid>

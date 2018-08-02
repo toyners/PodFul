@@ -1,7 +1,6 @@
 ﻿
 namespace PodFul.WPF.ViewModel.TileView
 {
-  using System;
   using System.Collections.ObjectModel;
   using Miscellaneous;
   using PodFul.Library;
