@@ -448,7 +448,7 @@
                             <RowDefinition Height="22"/>
                             <RowDefinition Height="22"/>
                             <RowDefinition Height="22"/>
-                            <RowDefinition Height="22"/>
+                            <RowDefinition />
                           </Grid.RowDefinitions>
 
                           <TextBlock Grid.Column="0" Grid.Row="0" Margin="2,1" VerticalAlignment="Top" Text="Description:" />
@@ -509,23 +509,36 @@
                             <Button Grid.Column="1" Click="ChangeFeedDirectoryClick">...</Button>
                           </Grid>
 
-                          <TextBlock Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Margin="2,1,0,1" Text="Download:" ToolTip="Download Confirmation Threshold" />
+                          <StackPanel Grid.Column="0" Grid.Row="5" Height="22">
+                            <TextBlock VerticalAlignment="Center" Margin="2,1,0,1" Text="Download:" ToolTip="Download Confirmation Threshold"/>
+                          </StackPanel>
+                          
                           <Grid Grid.Column="1" Grid.Row="5" Margin="0,1">
                             <Grid.ColumnDefinitions>
-                              <ColumnDefinition Width="50"/>
                               <ColumnDefinition />
-                              <ColumnDefinition />
-                              <ColumnDefinition />
-                              <ColumnDefinition Width="100"/>
+                              <ColumnDefinition Width="28"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox Name="ConfirmDownloadThreshold" Grid.Column="0" VerticalAlignment="Center" TextChanged="DownloadConfirmationThresholdTextChanged"
-                                   Text="{Binding Path=ConfirmDownloadThreshold, Mode=OneWay}" Height="20" />
-                            <CheckBox Grid.Column="1" IsChecked="{Binding DoScan}" Margin="2,1,0,1" VerticalAlignment="Center">Include in Scan All</CheckBox>
-                            <CheckBox Grid.Column="2" IsChecked="{Binding CompleteDownloadsOnScan}" VerticalAlignment="Center">Perform Downloads</CheckBox>
-                            <CheckBox Grid.Column="3" IsChecked="{Binding DeliverDownloadsOnScan}" VerticalAlignment="Center" 
+                            <Grid Grid.Column="0" Grid.Row="0">
+                              <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                              </Grid.ColumnDefinitions>
+
+                              <TextBox Name="ConfirmDownloadThreshold" Grid.Column="0" VerticalAlignment="Center" TextChanged="DownloadConfirmationThresholdTextChanged"
+                                    Text="{Binding Path=ConfirmDownloadThreshold, Mode=OneWay}" Height="20" />
+                              <CheckBox Grid.Column="1" IsChecked="{Binding DoScan}" Margin="2,1,0,1" VerticalAlignment="Center">Include in Scan All</CheckBox>
+                              <CheckBox Grid.Column="2" IsChecked="{Binding CompleteDownloadsOnScan}" VerticalAlignment="Center">Perform Downloads</CheckBox>
+                              <CheckBox Grid.Column="3" IsChecked="{Binding DeliverDownloadsOnScan}" VerticalAlignment="Center" 
                                     Margin="5,0" HorizontalAlignment="Right">Deliver Downloads</CheckBox>
-                            <Button Grid.Column="4" Click="RemoveFeedClick">Delete Feed</Button>
+                            </Grid>
+
+                            <Button Grid.Column="1" Click="RemoveFeedClick" Padding="0" BorderThickness="0" 
+                                        VerticalAlignment="Center" Margin="0,0,3,0" Background="Transparent">
+                              <Image Source="..\..\Resources\failed.png" Width="25" Height="25" Margin="0"/>
+                            </Button>
                           </Grid>
                         </Grid>
                       </StackPanel>
