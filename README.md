@@ -1,6 +1,9 @@
 # PodFul
 **PodFul** is a podcast catcher written in F# and C#.
 
+## 3.3.0 (1.9.9.2)
+1. **Changed:** Implemented alternative UI representing feeds as tiles with podcasts nested underneath in tab. UI can be switched in the settings.
+
 ## 3.2.1 (1.9.9.1)
 1. **Fixed:** Scrolling bug in Podcast window.
 2. **Fixed:** Bug where download confirmation threshold was not being set correctly during feed scan.
